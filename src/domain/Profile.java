@@ -1,15 +1,15 @@
 package domain;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 import com.j256.ormlite.field.DatabaseField;
 
 /**
  * A users profile in the model. Its content is never modified 
  * because it is generated from an existing user. 
- * Modifications are done on the user iteself.
- * @author nacho 
- *
+ * Modifications are done on the user itself.
  */
 public class Profile {
 	
@@ -19,23 +19,63 @@ public class Profile {
 	/** the users id */
 	private final Integer usrId;
 	
+	/** the profile id*/
+	private final Integer profileId;
+	
 	/** the users name */
 	private final String name;
 	
 	/** the users surname */
 	private final String surname;
 	
+	/**the users sex, true= female, false= male*/
+	private boolean sex;
+	
 	/** the users brthDay */
 	private  Date brthDay;
-
 	
-	public Profile(String usrName, String name, String surname, Integer usrId, Date brthDay){
+	/** the users average rating*/
+	private Double rating; 
+	
+	/**the users friends*/
+	private Collection<Profile> friends;
+	
+	/**the users blocked users*/
+	private Collection<Profile> blockedUsr;
+	
+	/**the users past trips*/
+	private Collection<Trip> trips;
+	
+	/**the users reviews*/
+	private Collection<Review> rev;
+	
+	/**the groups the user belongs to*/
+	private Collection<Group> groups;
+	
+	/**
+	 * @param usrName
+	 * @param name
+	 * @param surname
+	 * @param usrId
+	 * @param profileId
+	 * @param brthDay
+	 * @param sex
+	 */
+	public Profile(String usrName, String name, String surname, Integer usrId, Integer profileId, Date brthDay, boolean sex){
 		this.usrName = usrName;
 		this.usrId = usrId;
 		this.name = name;
 		this.surname = surname;
 		this.brthDay=brthDay;
+		this.profileId=profileId;
+		this.sex=sex;
+		this.friends= new HashSet<Profile>();
+		this.blockedUsr= new HashSet<Profile>();
+		this.trips= new HashSet<Trip>();
+		this.rev = new HashSet<Review>();
+		this.groups=new HashSet<Group>();
 	}
+
 
 	/**
 	 * @return the usrName
@@ -65,11 +105,17 @@ public class Profile {
 		return surname;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Date getBirthDay()
 	{
 		return this.brthDay;
 	}
 
+	
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
