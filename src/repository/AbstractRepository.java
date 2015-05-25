@@ -110,6 +110,39 @@ public abstract class AbstractRepository<T> {
 	}
 	
 	/**
+	 * Adds the object. If failure, return number.
+	 * @param obj
+	 * @return 
+	 */
+	public void add(T obj){
+		ConnectionSource connectionSource = null;
+		try{
+			try{
+				Class.forName("org.sqlite.JDBC");
+				/** create a connection source to our database */
+				connectionSource = new JdbcConnectionSource(this.databaseUrl);
+	    
+				/** instantiate the dao */
+				Dao<T, String> dao = DaoManager.createDao(connectionSource, this.reposClass);
+				
+				/** check if object exists and update */
+				dao.create(obj);
+	    
+			}
+			catch(Exception e){
+				System.err.println("[ERROR] || " + e.getMessage());
+			}
+			finally{
+				/** close the connection source */
+				connectionSource.close();
+			}
+		}
+		catch(SQLException e){
+			System.err.println("[ERROR] || " + e.getMessage());
+		}
+	}
+	
+	/**
 	 * Removes the object referenced by id.
 	 * If it doesn't exist does nothing.
 	 * @param id
