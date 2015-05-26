@@ -9,13 +9,13 @@ public class Review {
 
 	//private enum Rating {veryBad, bad, regular, good, veryGood, excellent};
 		private Integer rating;
-		private Profile profile_target;
-		private Profile profile_origin;
+		private Profile profileTarget;
+		private Profile profileOrigin;
 		private String comment;
 		
-		public Review(Profile profile_orgin, Profile profile_target) {
-			this.profile_origin = profile_orgin;
-			this.profile_target = profile_target;
+		public Review(Profile profile_orgin, Profile profileTarget) {
+			this.profileOrigin = profile_orgin;
+			this.profileTarget = profileTarget;
 		}
 
 		/**
@@ -56,14 +56,14 @@ public class Review {
 		/**
 		 * @return the user the review is targeted to
 		 */
-		public Profile getProfile_target() {
-			return profile_target;
+		public Profile getprofileTarget() {
+			return profileTarget;
 		}
 		
 		/**
 		 * @return the user that is sending the review
 		 */
-		public Profile getProfile_origin() {
-			return profile_origin;
+		public Profile getprofileOrigin() {
+			return profileOrigin;
 		}
 }

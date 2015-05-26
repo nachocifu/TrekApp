@@ -1,5 +1,7 @@
 package services;
 
+import repository.AbstractRepository;
+
 /**
  * To be extended by all services.
  * Operates between the api and the repositorys.
@@ -8,11 +10,11 @@ package services;
  *
  */
 public abstract class AbstractService<T> {
+
+	private AbstractRepository<T> repo;
 	
-	public abstract T getById(Integer whoIs, Integer id);
-	
-	public abstract T save(Integer whoIs, T obj);
-	
-	
-	
+	public AbstractService(AbstractRepository<T> repo)
+	{
+		this.repo=repo;
+	}
 }
