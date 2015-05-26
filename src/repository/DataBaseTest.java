@@ -22,7 +22,6 @@ public class DataBaseTest {
 		DataBaseTest repo = new DataBaseTest();
 		
 		/** Start all tables. */
-		repo.startTables();
 		
 		
 	}
@@ -33,6 +32,7 @@ public class DataBaseTest {
 	public DataBaseTest(){
 	}
 	
+	/**no usar*/
 	private void startTables(){
 		System.err.println("###\n###\n###\tSTARTING TABLES\n###\n###");
 		
@@ -42,6 +42,7 @@ public class DataBaseTest {
 		start(Message.class);
 	}
 	
+	/**idem*/
 	private <T> void start(Class<T> type){
 		
 		System.out.println("### Starting table " + type.getSimpleName() + " ###");
