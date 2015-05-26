@@ -12,10 +12,10 @@ import com.j256.ormlite.table.DatabaseTable;
 /**
  * The representation of a user in the model
  * @author nati
- *
+ *@deprecated
  */
-@DatabaseTable(tableName = "User")
 
+@Deprecated
 public class User {
 	
 	/** the users profile, containing name, surname, birthdate, usrId and usrName*/

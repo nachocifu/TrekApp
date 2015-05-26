@@ -8,7 +8,7 @@ import java.util.HashSet;
 import repository.AbstractRepository;
 import domain.Profile;
 
-public class ProfileService{
+public class ProfileService implements ServiceInterface<Profile>{
 	
 	private AbstractRepository<Profile> repo;
 	
@@ -16,7 +16,7 @@ public class ProfileService{
 		this.repo=repo;
 	}
 	
-	public HashMap<String, Object> getProfile(Integer usrId){
+	public HashMap<String, Object> getById(Integer usrId){
 		HashMap<String, Object> profileHash=  new HashMap<String, Object>();
 		Profile profile= this.repo.getById(usrId);
 		profileHash.put("username", profile.getUsrName());
@@ -42,7 +42,7 @@ public class ProfileService{
 	}
 	
 	/**preguntar!!!!*/
-	public void deleteUser(Integer usrId){
+	public void delete(Integer usrId){
 		repo.remove(usrId);
 	}
 	
