@@ -29,10 +29,10 @@ public class Profile {
 	private final String surname;
 	
 	/**the users sex, true= female, false= male*/
-	private boolean sex;
+	private final boolean sex;
 	
 	/** the users brthDay */
-	private  Date brthDay;
+	private  final Date brthDay;
 	
 	/** the users average rating*/
 	private Double rating; 
@@ -83,7 +83,7 @@ public class Profile {
 	public String getUsrName() {
 		return usrName;
 	}
-
+	
 	/**
 	 * @return the usrId
 	 */
@@ -105,6 +105,11 @@ public class Profile {
 		return surname;
 	}
 	
+	public boolean getSex()
+	{
+		return this.sex;
+	}
+	
 	/**
 	 * @return
 	 */
@@ -113,6 +118,67 @@ public class Profile {
 		return this.brthDay;
 	}
 
+	public Double getRating()
+	{
+		return this.rating;
+	}
+	
+	public void setRating(Double rating)
+	{
+		this.rating=rating;
+	}
+	
+	public Collection<Profile> getFriends()
+	{
+		return this.friends;
+	}
+	
+	public void setFriends(Collection<Profile> friends)
+	{
+		this.friends=friends;
+	}
+	
+	public Collection<Profile> getBlockedUsrs()
+	{
+		return this.blockedUsr;
+	}
+	
+	public void setBlockedUsrs(Collection<Profile> blockedusrs)
+	{
+		this.blockedUsr=blockedusrs;
+	}
+	
+	public Collection<Trip> getTrips()
+	{
+		return this.trips;
+	}
+	
+	public void setTrips(Collection<Trip> trips)
+	{
+		this.trips=trips;
+	}
+	
+	public Collection<Review> getReviews()
+	{
+		return this.rev;
+	}
+	
+	public void setReviews(Collection<Review> revs)
+	{
+		this.rev=revs;
+	}
+	
+	public Collection<Group> getGroups()
+	{
+		return this.groups;
+	}
+	
+	public void setGroups(Collection<Group> groups)
+	{
+		this.groups=groups;
+	}
+	
+	
 	
 	
 	

@@ -1,9 +1,11 @@
-package src.services;
+package services;
 
 import java.util.Date;
 
-import src.domain.Trip;
-import src.domain.UniversalString;
+import domain.Trip;
+import domain.UniversalString;
+
+
 
 public class TripService extends AbstractService<Trip> {
 	
