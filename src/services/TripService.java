@@ -1,6 +1,7 @@
 package services;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import repository.AbstractRepository;
 import domain.Trip;
@@ -8,10 +9,10 @@ import domain.UniversalString;
 
 
 
-public class TripService extends AbstractService<Trip> {
+public class TripService implements ServiceInterface<Trip> {
 	
 	public TripService(AbstractRepository<Trip> repo) {
-		super(repo);
+		//super(repo);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -49,6 +50,18 @@ public class TripService extends AbstractService<Trip> {
 	 */
 	public void setTripStatus(Integer trip_id, String user_id ){
 		//Buscar Trip con id
+		
+	}
+
+	@Override
+	public HashMap<String, Object> getById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
 		
 	}
 	
