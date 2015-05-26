@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import services.invalidPasswordException;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 

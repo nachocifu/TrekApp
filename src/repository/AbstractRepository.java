@@ -147,7 +147,7 @@ public abstract class AbstractRepository<T> {
 	 * If it doesn't exist does nothing.
 	 * @param id
 	 */
-	public void remove(String id){
+	public void remove(Integer id){
 		
 		ConnectionSource connectionSource = null;
 		try{
@@ -174,5 +174,11 @@ public abstract class AbstractRepository<T> {
 		catch(SQLException e){
 			System.err.println("[ERROR] || " + e.getMessage());
 		}
+	}
+
+	/*NACHO HACELO*/
+	public Collection<T> searchBy(String searchTxt) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

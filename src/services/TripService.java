@@ -2,6 +2,7 @@ package services;
 
 import java.util.Date;
 
+import repository.AbstractRepository;
 import domain.Trip;
 import domain.UniversalString;
 
@@ -9,6 +10,11 @@ import domain.UniversalString;
 
 public class TripService extends AbstractService<Trip> {
 	
+	public TripService(AbstractRepository<Trip> repo) {
+		super(repo);
+		// TODO Auto-generated constructor stub
+	}
+
 	/**
 	 * Creates a trip
 	 * @param start_date
@@ -31,7 +37,8 @@ public class TripService extends AbstractService<Trip> {
 	 */
 	public String getTripStatus(Integer trip_id){
 		//Buscar Trip con id
-		return repoTrip.getTrip_status().toString();
+		//return repoTrip.getTrip_status().toString();
+		return null;
 	}
 	
 	/**
