@@ -8,6 +8,11 @@ package services;
  *
  */
 public abstract class AbstractService<T> {
-
+	
+	public abstract T getById(Integer whoIs, Integer id);
+	
+	public abstract T save(Integer whoIs, T obj);
+	
+	
 	
 }
