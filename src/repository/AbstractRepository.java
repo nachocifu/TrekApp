@@ -39,7 +39,7 @@ public abstract class AbstractRepository<T> {
 	 * @param id
 	 * @return response object requested or null
 	 */
-	public T getById(Integer id){
+	public T getById(String id){
 		
 		T response = null;
 		ConnectionSource connectionSource = null;
@@ -53,7 +53,7 @@ public abstract class AbstractRepository<T> {
 				Dao<T, String> dao = DaoManager.createDao(connectionSource, this.reposClass);
 	    
 				/** retrieve the object from the database by its id */
-				response = dao.queryForId(id.toString());
+				response = dao.queryForId(id);
 	    
 			}
 			catch(Exception e){
