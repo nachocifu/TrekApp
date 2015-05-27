@@ -1,10 +1,10 @@
 package domain;
 
-import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -13,66 +13,72 @@ import com.j256.ormlite.table.DatabaseTable;
  * because it is generated from an existing user. 
  * Modifications are done on the user itself.
  */
-@DatabaseTable(tableName="User")
+@DatabaseTable(tableName="Profile")
 public class Profile {
 	
 	/** the users username in the system */
-	private final String usrName;
+	@DatabaseField( id = true)
+	private String usrName = null;
 	
 	/** the users id */
-	@DatabaseField( id = true)
-	private final Integer usrId;
+	@DatabaseField
+	private Integer usrId = null;
 	
 	/** the users name */
 	@DatabaseField
-	private final String name;
+	private  String name = null;
 	
 	/** the users surname */
 	@DatabaseField
-	private final String surname;
+	private  String surname = null;
 	
 	/**the users sex, true= female, false= male*/
 	@DatabaseField
-	private final boolean sex;
+	private  boolean sex = false;
 	
 	/** the users brthDay */
 	@DatabaseField
-	private  final Date brthDay;
+	private Date brthDay = null;
 	
 	/** the users average rating*/
 	@DatabaseField
-	private Double rating; 
+	private Double rating = null; 
 	
 	/**the users city*/
 	@DatabaseField
-	private String city;
+	private String city = null;
 	
 	/**the users email*/
 	@DatabaseField
-	private String email;
+	private String email = null;
 	
 	/**the users friends*/
-	@DatabaseField
-	private Collection<Integer> friends;
+	@DatabaseField(dataType = DataType.SERIALIZABLE)
+	private HashSet<Integer> friends;
 	
 	/**the users blocked users*/
-	@DatabaseField
-	private Collection<Integer> blockedUsr;
+	@DatabaseField(dataType = DataType.SERIALIZABLE)
+	private HashSet<Integer> blockedUsr;
 	
 	/**the users past trips*/
-	@DatabaseField
-	private Collection<Integer> trips;
+	@DatabaseField(dataType = DataType.SERIALIZABLE)
+	private HashSet<Integer> trips;
 	
 	/**the users reviews*/
-	@DatabaseField
-	private Collection<Integer> rev;
+	@DatabaseField(dataType = DataType.SERIALIZABLE)
+	private HashSet<Integer> rev;
 	
 	/**the groups the user belongs to*/
-	@DatabaseField
-	private Collection<Integer> groups;
+	@DatabaseField(dataType = DataType.SERIALIZABLE)
+	private HashSet<Integer> groups;
 	
 	@DatabaseField
-	private String password;
+	private String password = null;
+	
+	/** Empty constructor for ORM persistence*/
+	public Profile(){
+		
+	}
 	
 	/**
 	 * @param usrName
@@ -206,7 +212,7 @@ public class Profile {
 		return this.friends;
 	}
 	
-	public void setFriends(Collection<Integer> friends){
+	public void setFriends(HashSet<Integer> friends){
 		this.friends=friends;
 	}
 	
@@ -214,7 +220,7 @@ public class Profile {
 		return this.blockedUsr;
 	}
 	
-	public void setBlockedUsrs(Collection<Integer> blockedusrs){
+	public void setBlockedUsrs(HashSet<Integer> blockedusrs){
 		this.blockedUsr=blockedusrs;
 	}
 	
@@ -222,7 +228,7 @@ public class Profile {
 		return this.trips;
 	}
 	
-	public void setTrips(Collection<Integer> trips){
+	public void setTrips(HashSet<Integer> trips){
 		this.trips=trips;
 	}
 	
@@ -230,7 +236,7 @@ public class Profile {
 		return this.rev;
 	}
 	
-	public void setReviews(Collection<Integer> revs){
+	public void setReviews(HashSet<Integer> revs){
 		this.rev=revs;
 	}
 	
@@ -238,7 +244,7 @@ public class Profile {
 		return this.groups;
 	}
 	
-	public void setGroups(Collection<Integer> groups){
+	public void setGroups(HashSet<Integer> groups){
 		this.groups=groups;
 	}
 	

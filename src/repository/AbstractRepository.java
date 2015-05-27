@@ -114,7 +114,7 @@ public abstract class AbstractRepository<T> {
 	 * @param obj
 	 * @return 
 	 */
-	public void add(T obj){
+	public boolean add(T obj){
 		ConnectionSource connectionSource = null;
 		try{
 			try{
@@ -139,7 +139,10 @@ public abstract class AbstractRepository<T> {
 		}
 		catch(SQLException e){
 			System.err.println("[ERROR] || " + e.getMessage());
+			return false;
 		}
+		return true;
+		
 	}
 	
 	/**
@@ -147,7 +150,7 @@ public abstract class AbstractRepository<T> {
 	 * If it doesn't exist does nothing.
 	 * @param id
 	 */
-	public void remove(Integer id){
+	public void remove(String id){
 		
 		ConnectionSource connectionSource = null;
 		try{

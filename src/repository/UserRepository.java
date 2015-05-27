@@ -4,7 +4,7 @@ package repository;
 import domain.Profile;
 import domain.User;
 
-public class UserRepository extends AbstractRepository<User> {
+public class UserRepository extends AbstractRepository<Profile> {
 
 	/** the class of the objects this repository handles */
 	private final Class<Profile> profileClass = null;

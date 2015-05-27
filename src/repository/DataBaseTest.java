@@ -6,22 +6,26 @@ import com.j256.ormlite.table.TableUtils;
 
 import domain.Chat;
 import domain.Message;
+import domain.Profile;
 import domain.UniversalString;
 import domain.User;
 
 /**
  * Esta clase se encarga de arrancar, testear y probar el servidor
  * Se usara para la parte de desarrollo y se borra para la version final.
+ * 
+ * NO EJECUTAR YA QUE PISA LA BASE DE DATOS
+ * 
  * @author nacho
  */
 public class DataBaseTest {
 
 	public static void main(String[] args) {
 		System.err.println("### Local Database TEST ###");
-		
-		DataBaseTest repo = new DataBaseTest();
-		
-		/** Start all tables. */
+		System.out.println("starting database admin");
+		DataBaseTest repoAdmin = new DataBaseTest();
+		System.out.println("starting tables");
+		repoAdmin.start(Profile.class);
 		
 		
 	}
@@ -32,17 +36,12 @@ public class DataBaseTest {
 	public DataBaseTest(){
 	}
 	
-	/**no usar*/
-	private void startTables(){
-		System.err.println("###\n###\n###\tSTARTING TABLES\n###\n###");
-		
-		start(User.class);
-		start(UniversalString.class);
-		start(Chat.class);
-		start(Message.class);
-	}
 	
-	/**idem*/
+	/**
+	 * NO USAR.
+	 * Activa las tablas. Los cambios que hace son en memoria de la base de datos!!!!
+	 * @param type
+	 */
 	private <T> void start(Class<T> type){
 		
 		System.out.println("### Starting table " + type.getSimpleName() + " ###");

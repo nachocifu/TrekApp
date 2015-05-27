@@ -1,6 +1,5 @@
 package services;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,7 +7,7 @@ import java.util.HashSet;
 import repository.AbstractRepository;
 import domain.Profile;
 
-public class ProfileService implements ServiceInterface<Profile>{
+public class ProfileService{
 	
 	private AbstractRepository<Profile> repo;
 	
@@ -52,21 +51,24 @@ public class ProfileService implements ServiceInterface<Profile>{
 	 * @param pass, should have at least 5 letters/digits
 	 * @throws IllegalArgumentException when the password of birthday are not valid
 	 */
-	public void newUser(String usrName, String name, String surname, Date brthDay, boolean sex, String pass, String city, String email)throws IllegalArgumentException{
+	@SuppressWarnings("deprecation")
+	public boolean newUser(String usrName, String name, String surname, Date brthDay, boolean sex, String pass, String city, String email)throws IllegalArgumentException{
 		if(brthDay.getYear() < 1930 || brthDay.getYear() > 1997)
 			throw new IllegalArgumentException("Year is not valid, insert a valid year");
 		if(pass.length() <5)
 			throw new IllegalArgumentException("The password must contain at least 5 letters/digits");
 		
 		Profile user= new Profile(usrName, name, surname, brthDay, sex, pass, city, email);
-		repo.add(user);
+		return repo.add(user);
+			
+		
 	}
 	
 	/**
 	 * @param usrId of the user to be deleted from the database
 	 */
 	public void delete(Integer usrId){
-		repo.remove(usrId);
+		repo.remove(usrId.toString());
 	}
 	
 	/**

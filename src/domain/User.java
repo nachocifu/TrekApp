@@ -4,10 +4,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import services.invalidPasswordException;
-
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.sun.xml.internal.ws.addressing.model.InvalidAddressingHeaderException;
 
 /**
  * The representation of a user in the model
@@ -39,7 +38,7 @@ public class User {
 	public User(String name,  String surname, String userName,  String password,  
 					Integer userId,  Date brthDay){
 		
-		this.user=new Profile(userName, name, surname, userId, brthDay);
+		this.user=new Profile(userName, name, surname, userId, brthDay, false, password, password, password);
 		this.password=password;
 		this.friends= new HashSet<Profile>();
 		this.blockedUsr= new HashSet<Profile>();
@@ -102,12 +101,13 @@ public class User {
 	/**
 	 * @param old password used to validate and check permissions to change pass
 	 * @param new password
+	 * @throws Exception 
 	 * @throws invalidPasswordException
 	 */
-	public void changePass(String oldpass, String newpass) throws invalidPasswordException
+	public void changePass(String oldpass, String newpass) throws Exception
 	{
 		if(!oldpass.equals(this.password))
-			throw new invalidPasswordException("The password is not valid");
+			throw new Exception("The password is not valid");
 		this.password=newpass;
 	}
 
