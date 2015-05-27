@@ -22,7 +22,7 @@ public class Profile {
 	
 	/** the users id */
 	@DatabaseField
-	private Integer usrId = null;
+	private String usrId = null;
 	
 	/** the users name */
 	@DatabaseField
@@ -51,6 +51,13 @@ public class Profile {
 	/**the users email*/
 	@DatabaseField
 	private String email = null;
+	
+	/**
+	 *the user will be able to checkIn in a specific location, it will save the last
+	 *location where the user checked-in
+	 */
+	@DatabaseField
+	private Coordenates checkIn;
 	
 	/**the users friends*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
@@ -89,13 +96,14 @@ public class Profile {
 	 * @param brthDay
 	 * @param sex
 	 */
-	public Profile(String usrName, String name, String surname, Integer usrId, Date brthDay, boolean sex, String password, String city, String email){
+	public Profile(String usrName, String name, String surname, String usrId, Date brthDay, boolean sex, String password, String city, String email){
 		this.usrName = usrName;
 		this.usrId = usrId;
 		this.name = name;
 		this.surname = surname;
 		this.brthDay=brthDay;
 		this.sex=sex;
+		this.checkIn=null;
 		this.friends= new HashSet<Integer>();
 		this.blockedUsr= new HashSet<Integer>();
 		this.trips= new HashSet<Integer>();
@@ -131,7 +139,7 @@ public class Profile {
 	/**
 	 * @return the users usrId
 	 */
-	public Integer getUsrId() {
+	public String getUsrId() {
 		return usrId;
 	}
 
@@ -205,6 +213,19 @@ public class Profile {
 		this.email=email;
 	}
 	
+	/**
+	 * @return the last location where the user has checked in
+	 */
+	public Coordenates getCheckIn(){
+		return this.checkIn;
+	}
+	
+	/**
+	 * @param location where the user has checked-in
+	 */
+	public void setCoordeantes(Coordenates location){
+		this.checkIn=location;
+	}
 	
 	/**aca getters y setters no los documento porque probablemente no los terminemos usando*/
 	
