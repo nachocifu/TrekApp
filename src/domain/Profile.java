@@ -43,6 +43,14 @@ public class Profile {
 	@DatabaseField
 	private Double rating; 
 	
+	/**the users city*/
+	@DatabaseField
+	private String city;
+	
+	/**the users email*/
+	@DatabaseField
+	private String email;
+	
 	/**the users friends*/
 	@DatabaseField
 	private Collection<Integer> friends;
@@ -75,7 +83,7 @@ public class Profile {
 	 * @param brthDay
 	 * @param sex
 	 */
-	public Profile(String usrName, String name, String surname, Integer usrId, Date brthDay, boolean sex, String password){
+	public Profile(String usrName, String name, String surname, Integer usrId, Date brthDay, boolean sex, String password, String city, String email){
 		this.usrName = usrName;
 		this.usrId = usrId;
 		this.name = name;
@@ -88,6 +96,8 @@ public class Profile {
 		this.rev = new HashSet<Integer>();
 		this.groups=new HashSet<Integer>();
 		this.password=password;
+		this.city=city;
+		this.email=email;
 	}
 
 
@@ -100,27 +110,27 @@ public class Profile {
 	 * @param brthDay
 	 * @param sex
 	 */
-	public Profile(String usrName, String name, String surname, Date brthDay, boolean sex, String password){
-		this(usrName, name, surname, null, brthDay, sex, password);
+	public Profile(String usrName, String name, String surname, Date brthDay, boolean sex, String password, String city, String email){
+		this(usrName, name, surname, null, brthDay, sex, password, city, email);
 	}
 
 	
 	/**
-	 * @return the usrName
+	 * @return the users usrName
 	 */
 	public String getUsrName() {
 		return usrName;
 	}
 	
 	/**
-	 * @return the usrId
+	 * @return the users usrId
 	 */
 	public Integer getUsrId() {
 		return usrId;
 	}
 
 	/**
-	 * @return the name
+	 * @return the users name
 	 */
 	public String getName() {
 		return name;
@@ -133,116 +143,174 @@ public class Profile {
 		return surname;
 	}
 	
-	public boolean getSex()
-	{
+	/**
+	 * @return the users sex
+	 */
+	public boolean getSex(){
 		return this.sex;
 	}
 	
 	/**
-	 * @return
+	 * @return the users BirthDay
 	 */
-	public Date getBirthDay()
-	{
+	public Date getBirthDay(){
 		return this.brthDay;
 	}
 
-	public Double getRating()
-	{
+	/**
+	 * @return the users rating
+	 */
+	public Double getRating(){
 		return this.rating;
 	}
 	
-	public void setRating(Double rating)
-	{
+	/**
+	 * @param rating that will be updated on the users profile, should be automatically updated each time a review is added
+	 */
+	public void setRating(Double rating){
 		this.rating=rating;
 	}
 	
-	public Collection<Integer> getFriends()
-	{
+	/**
+	 * @return the users actual city
+	 */
+	public String getCity(){
+		return this.city;
+	}
+	
+	/**
+	 * @param city
+	 */
+	public void setCity(String city){
+		this.city=city;
+	}
+	
+	/**
+	 * @return the users email
+	 */
+	public String getEmail(){
+		return this.email;
+	}
+	
+	/**
+	 * @param email
+	 */
+	public void setEmail(String email){
+		this.email=email;
+	}
+	
+	
+	/**aca getters y setters no los documento porque probablemente no los terminemos usando*/
+	
+	public Collection<Integer> getFriends(){
 		return this.friends;
 	}
 	
-	public void setFriends(Collection<Integer> friends)
-	{
+	public void setFriends(Collection<Integer> friends){
 		this.friends=friends;
 	}
 	
-	public Collection<Integer> getBlockedUsrs()
-	{
+	public Collection<Integer> getBlockedUsrs(){
 		return this.blockedUsr;
 	}
 	
-	public void setBlockedUsrs(Collection<Integer> blockedusrs)
-	{
+	public void setBlockedUsrs(Collection<Integer> blockedusrs){
 		this.blockedUsr=blockedusrs;
 	}
 	
-	public Collection<Integer> getTrips()
-	{
+	public Collection<Integer> getTrips(){
 		return this.trips;
 	}
 	
-	public void setTrips(Collection<Integer> trips)
-	{
+	public void setTrips(Collection<Integer> trips){
 		this.trips=trips;
 	}
 	
-	public Collection<Integer> getReviews()
-	{
+	public Collection<Integer> getReviews(){
 		return this.rev;
 	}
 	
-	public void setReviews(Collection<Integer> revs)
-	{
+	public void setReviews(Collection<Integer> revs){
 		this.rev=revs;
 	}
 	
-	public Collection<Integer> getGroups()
-	{
+	public Collection<Integer> getGroups(){
 		return this.groups;
 	}
 	
-	public void setGroups(Collection<Integer> groups)
-	{
+	public void setGroups(Collection<Integer> groups){
 		this.groups=groups;
 	}
 	
-	public void addFriend(Integer usrId)
-	{
+	
+	
+	/**
+	 * @param usrId of the users new friend
+	 */
+	public void addFriend(Integer usrId){
 		this.friends.add(usrId);
 	}
 	
+	/**
+	 * @param usrId of the user that will be removed from friends list
+	 */
 	public void deleteFriend(Integer usrId){
 		this.friends.remove(usrId);
 	}
 	
+	/**
+	 * @param usrId of user that will be blocked
+	 */
 	public void addBlockedUsr(Integer usrId){
 		this.blockedUsr.add(usrId);
 	}
 	
+	/**
+	 * @param usrId of the user that should be unblocked
+	 */
 	public void deleteBlockedUsr(Integer usrId){
 		this.blockedUsr.remove(usrId);
 	}
 	
+	/**
+	 * @param tripId that will be added to the users trips
+	 */
 	public void addTrip(Integer tripId){
 		this.trips.add(tripId);
 	}
 	
+	/**
+	 * @param revId that will be added to the users reviews
+	 */
 	public void addReview(Integer revId){
 		this.rev.add(revId);
 	}
 	
+	/**
+	 * @param groupId of group that the user will be added to
+	 */
 	public void addGroup(Integer groupId){
 		this.groups.add(groupId);
 	}
 	
+	/**
+	 * @param groupId of the group the user is leaving
+	 */
 	public void deleteGroup(Integer groupId){
 		this.groups.remove(groupId);
 	}
 	
+	/**
+	 * @return users password
+	 */
 	public String getPassword(){
 		return this.password;
 	}
 	
+	/**
+	 * @param password that will be changed
+	 * all validations will be done on the ProfileService
+	 */
 	public void setPassword(String password){
 		this.password=password;
 	}

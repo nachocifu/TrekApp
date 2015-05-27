@@ -12,10 +12,17 @@ public class ProfileService implements ServiceInterface<Profile>{
 	
 	private AbstractRepository<Profile> repo;
 	
+	/**
+	 * @param user repository
+	 */
 	public ProfileService(AbstractRepository<Profile> repo){
 		this.repo=repo;
 	}
 	
+/**
+ 	* @return HashMap<String, Object>, The key will be a string representing what the value actually is, and the value will be an Object, the HashMap will contain
+ * all the characteristics relevant to a users profile	
+ */
 	public HashMap<String, Object> getById(Integer usrId){
 		HashMap<String, Object> profileHash=  new HashMap<String, Object>();
 		Profile profile= this.repo.getById(usrId);
@@ -35,23 +42,111 @@ public class ProfileService implements ServiceInterface<Profile>{
 		return profileHash;
 	}
 	
-	/**validar todooo*/
-	public void newUser(String usrName, String name, String surname, Date brthDay, boolean sex, String pass){
-		Profile user= new Profile(usrName, name, surname, brthDay, sex, pass);
+	/**
+	 * Add a new user to the database
+	 * @param usrName
+	 * @param name
+	 * @param surname
+	 * @param brthDay, the users age should be between 18 and 85
+	 * @param sex
+	 * @param pass, should have at least 5 letters/digits
+	 * @throws IllegalArgumentException when the password of birthday are not valid
+	 */
+	public void newUser(String usrName, String name, String surname, Date brthDay, boolean sex, String pass, String city, String email)throws IllegalArgumentException{
+		if(brthDay.getYear() < 1930 || brthDay.getYear() > 1997)
+			throw new IllegalArgumentException("Year is not valid, insert a valid year");
+		if(pass.length() <5)
+			throw new IllegalArgumentException("The password must contain at least 5 letters/digits");
+		
+		Profile user= new Profile(usrName, name, surname, brthDay, sex, pass, city, email);
 		repo.add(user);
 	}
 	
-	/**preguntar!!!!*/
+	/**
+	 * @param usrId of the user to be deleted from the database
+	 */
 	public void delete(Integer usrId){
 		repo.remove(usrId);
 	}
 	
-	public void addFriend(Integer usrIdUser, Integer usrIdFriend){
-		Profile user= repo.getById(usrIdUser);
-		user.addFriend(usrIdFriend);
+	/**
+	 * @param usrIdUser1 user1 will be adding user2 to its friends list
+	 * @param usrIdUser2 user2 will be adding user1 to its friends list
+	 */
+	public void addFriend(Integer usrIdUser1, Integer usrIdUser2){
+		Profile user1= repo.getById(usrIdUser1);
+		Profile user2= repo.getById(usrIdUser2);
+		user1.addFriend(usrIdUser2);
+		user2.addFriend(usrIdUser1);
+		this.repo.update(user1);
+		this.repo.update(user2);
+	}
+
+	/**
+	 * @param usrIdUser1 deleted from User2's friends
+	 * @param usrIdUser2 deleted from User1's friends
+	 */
+	public void deleteFriend(Integer usrIdUser1, Integer usrIdUser2){
+		Profile user1=repo.getById(usrIdUser1);
+		Profile user2=repo.getById(usrIdUser2);
+		user1.deleteFriend(usrIdUser2);
+		user2.deleteFriend(usrIdUser1);
+		this.repo.update(user1);
+		this.repo.update(user2);
+	}
+	
+	/**ver si tengo que agregar una variable en profile que contenga quien lo bloqueo a ese usuario asi al a hora de mostrar los usuarios sabe cuales y no mostrar
+	 * @param usrId that will be blocking blckdUser
+	 * @param blckdUsr will be removed from usrId's friend list
+	 */
+	public void blockUser(Integer usrId, Integer blckdUsr){
+		Profile user=repo.getById(usrId);
+		user.deleteFriend(blckdUsr);
+		user.addBlockedUsr(blckdUsr);
+		Profile blcked=repo.getById(blckdUsr);
+		blcked.deleteFriend(usrId);
+		repo.update(user);
+		repo.update(blcked);
+		
+	}
+	
+	/**
+	 * @param usrId will unblock blckdUsr if it is blocked
+	 * @param blckdUsr
+	 */
+	public void unBlockUser(Integer usrId, Integer blckdUsr){
+		Profile user=repo.getById(usrId);
+		user.deleteBlockedUsr(blckdUsr);
+		this.repo.update(user);
+	}
+	
+	/**
+	 * @param usrId 
+	 * @param tripId
+	 */
+	public void addTrip(Integer usrId, Integer tripId){
+		Profile user=repo.getById(usrId);
+		user.addTrip(tripId);
 		repo.update(user);
 	}
 	
+	/**
+	 * @param usrId
+	 * @param groupId
+	 */
+	public void addGroup(Integer usrId, Integer groupId){
+		Profile user=repo.getById(usrId);
+		user.addGroup(groupId);
+		this.repo.update(user);
+	}
+	
+	/**
+	 * @param usrId user that will change its password
+	 * @param oldPass used to validate
+	 * @param newPass that will be established for the user
+	 * @return
+	 * @throws InvalidPasswordException if the oldpass is not valid
+	 */
 	public boolean changePass(Integer usrId, String oldPass, String newPass) throws InvalidPasswordException{
 		Profile user=repo.getById(usrId);
 		if(!user.getPassword().equals(oldPass))
@@ -61,7 +156,10 @@ public class ProfileService implements ServiceInterface<Profile>{
 		return true;
 	}
 	
-	/**agregar ubicacion en el perfil ese del hashmap y age*/
+	/**
+	 * @param searchTxt that will be used to search the database, it can be part of the username, name, surname, email, city, etc
+	 * @return a limited view of the profiles that validate the search text
+	 */
 	public HashSet<HashMap<String, Object>> searchBy(String searchTxt){
 		HashSet<HashMap<String,Object>> payload= new HashSet<HashMap<String, Object>>();
 		
@@ -70,11 +168,18 @@ public class ProfileService implements ServiceInterface<Profile>{
 			userHash.put("username", user.getName());
 			userHash.put("name", user.getName());
 			userHash.put("surname", user.getSurname());
+			userHash.put("city", user.getCity());
 			payload.add(userHash);
 		}
 		return payload;
 	}
 
+	/**
+	 * @param usrId
+	 * @param pass
+	 * @return true when the login is succesfull
+	 * @throws InvalidPasswordException when the password does not coincide with the users password
+	 */
 	public boolean logIn(Integer usrId, String pass) throws InvalidPasswordException{
 		Profile user=repo.getById(usrId);
 		if(!user.getPassword().equals(pass))

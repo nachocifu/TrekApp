@@ -11,6 +11,8 @@ import domain.UniversalString;
 
 public class TripService implements ServiceInterface<Trip> {
 	
+	
+	
 	public TripService(AbstractRepository<Trip> repo) {
 		//super(repo);
 		// TODO Auto-generated constructor stub
