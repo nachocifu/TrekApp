@@ -4,11 +4,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-import domain.Chat;
-import domain.Message;
 import domain.Profile;
-import domain.UniversalString;
-import domain.User;
 
 /**
  * Esta clase se encarga de arrancar, testear y probar el servidor
@@ -26,8 +22,6 @@ public class DataBaseTest {
 		DataBaseTest repoAdmin = new DataBaseTest();
 		System.out.println("starting tables");
 		repoAdmin.start(Profile.class);
-		
-		
 	}
 	
 	
