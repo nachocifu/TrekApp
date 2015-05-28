@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.j256.ormlite.dao.Dao;
@@ -181,7 +182,11 @@ public abstract class AbstractRepository<T> {
 		}
 	}
 
-	/*NACHO HACELO*/
-	public abstract Set<T> searchBy(String searchTxt);
+	/**
+	 * Search  the T objects for the search text.
+	 * @param searchTxt
+	 * @return response The list of objects that match the text in someway.
+	 */
+	public abstract List<T> searchBy(String searchTxt);
 		
 }
