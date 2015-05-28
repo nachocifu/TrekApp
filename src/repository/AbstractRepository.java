@@ -3,6 +3,8 @@ package repository;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -180,8 +182,6 @@ public abstract class AbstractRepository<T> {
 	}
 
 	/*NACHO HACELO*/
-	public Collection<T> searchBy(String searchTxt) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract Set<T> searchBy(String searchTxt);
+		
 }

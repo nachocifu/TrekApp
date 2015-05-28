@@ -8,12 +8,16 @@ import src.domain.Trip;
 import src.domain.UniversalString;
 import src.domainUI.TripUI;
 import src.repository.AbstractRepository;
+import repository.AbstractRepository;
+import domain.Profile;
+import domain.Trip;
+import domain.UniversalString;
 
 
 
 public class TripService implements ServiceInterface<Trip> {
 	
-	
+
 	private AbstractRepository<Trip> repo;
 	
 	/**
@@ -34,14 +38,16 @@ public class TripService implements ServiceInterface<Trip> {
 	 * @param origin_city
 	 * @param end_city
 	 */
-	public boolean createTrip(Date start_date, Date end_date, Integer group_id, Integer trip_id, Integer estimate_cost, UniversalString trip_description, String origin_city, String end_city){
-		Trip trip = new Trip(start_date, end_date, group_id, trip_id, estimate_cost, trip_description, origin_city, end_city);
-		return repo.add(trip);
+
+	public void createTrip(Date startDate, Date endDate, String groupId, String tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
+		Trip trip= new Trip(startDate, endDate, groupId, tripId, estimateCost, tripDescription, originCity, endCity);
+		repo.add(trip);
 	}
 	
 	/**
 	 * Gets the tripUI for the interface to show information
 	 * @param trip_id
+<<<<<<< HEAD
 	 * @param user_id
 	 * @return
 	 */
@@ -50,6 +56,10 @@ public class TripService implements ServiceInterface<Trip> {
 		Group group = this.repo.getById(trip.getGroup_id().toString());
 		TripUI tripUI = new TripUI(trip.getStart_date(), trip.getEnd_date(), trip.getEstimate_cost(), trip.getTrip_description(), trip.getOrigin_city(), trip.getEnd_city());
 		return tripUI;
+
+	public String getTripStatus(String tripId){
+		Trip trip= repo.getById(tripId);
+		return trip.getTripStatus().toString();
 	}
 	
 	/**
@@ -59,7 +69,6 @@ public class TripService implements ServiceInterface<Trip> {
 	 * @return
 	 */
 	public void setTripStatus(Integer trip_id, String user_id ){
-		//Buscar Trip con id
 		
 	}
 

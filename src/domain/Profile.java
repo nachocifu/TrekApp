@@ -17,13 +17,14 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Profile {
 	
 	/** the users username in the system */
-	@DatabaseField( id = true)
+	@DatabaseField
 	private String usrName = null;
 	
 	/** the users id */
-	@DatabaseField
+
+	@DatabaseField( generatedId = true)
 	private Integer usrId = null;
-	
+
 	/** the users name */
 	@DatabaseField
 	private  String name = null;
@@ -52,25 +53,34 @@ public class Profile {
 	@DatabaseField
 	private String email = null;
 	
+	/**
+	 *the user will be able to checkIn in a specific location, it will save the last
+	 *location where the user checked-in
+	 */
+	private Coordenates checkIn;
+	
 	/**the users friends*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<Integer> friends;
+	private HashSet<Profile> friends;
 	
 	/**the users blocked users*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<Integer> blockedUsr;
+	private HashSet<Profile> blockedUsr;
 	
 	/**the users past trips*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<Integer> trips;
+	private HashSet<Profile> trips;
 	
 	/**the users reviews*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<Integer> rev;
+	private HashSet<Profile> rev;
 	
+	
+	//podria hacer que adentro tengo un hashmap con boolean,string que el boolean
+	//indique si es admin o no
 	/**the groups the user belongs to*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<Integer> groups;
+	private HashSet<Profile> groups;
 	
 	@DatabaseField
 	private String password = null;
@@ -96,11 +106,12 @@ public class Profile {
 		this.surname = surname;
 		this.brthDay=brthDay;
 		this.sex=sex;
-		this.friends= new HashSet<Integer>();
-		this.blockedUsr= new HashSet<Integer>();
-		this.trips= new HashSet<Integer>();
-		this.rev = new HashSet<Integer>();
-		this.groups=new HashSet<Integer>();
+		this.checkIn=null;
+		this.friends= new HashSet<Profile>();
+		this.blockedUsr= new HashSet<Profile>();
+		this.trips= new HashSet<Profile>();
+		this.rev = new HashSet<Profile>();
+		this.groups=new HashSet<Profile>();
 		this.password=password;
 		this.city=city;
 		this.email=email;
@@ -205,46 +216,59 @@ public class Profile {
 		this.email=email;
 	}
 	
+	/**
+	 * @return the last location where the user has checked in
+	 */
+	public Coordenates getCheckIn(){
+		return this.checkIn;
+	}
+	
+	/**
+	 * @param location where the user has checked-in
+	 */
+	public void setCoordeantes(Coordenates location){
+		this.checkIn=location;
+	}
 	
 	/**aca getters y setters no los documento porque probablemente no los terminemos usando*/
 	
-	public Collection<Integer> getFriends(){
+	public Collection<Profile> getFriends(){
 		return this.friends;
 	}
 	
-	public void setFriends(HashSet<Integer> friends){
+	public void setFriends(HashSet<Profile> friends){
 		this.friends=friends;
 	}
 	
-	public Collection<Integer> getBlockedUsrs(){
+	public Collection<Profile> getBlockedUsrs(){
 		return this.blockedUsr;
 	}
 	
-	public void setBlockedUsrs(HashSet<Integer> blockedusrs){
+	public void setBlockedUsrs(HashSet<Profile> blockedusrs){
 		this.blockedUsr=blockedusrs;
 	}
 	
-	public Collection<Integer> getTrips(){
+	public Collection<Profile> getTrips(){
 		return this.trips;
 	}
 	
-	public void setTrips(HashSet<Integer> trips){
+	public void setTrips(HashSet<Profile> trips){
 		this.trips=trips;
 	}
 	
-	public Collection<Integer> getReviews(){
+	public Collection<Profile> getReviews(){
 		return this.rev;
 	}
 	
-	public void setReviews(HashSet<Integer> revs){
+	public void setReviews(HashSet<Profile> revs){
 		this.rev=revs;
 	}
 	
-	public Collection<Integer> getGroups(){
+	public Collection<Profile> getGroups(){
 		return this.groups;
 	}
 	
-	public void setGroups(HashSet<Integer> groups){
+	public void setGroups(HashSet<Profile> groups){
 		this.groups=groups;
 	}
 	
@@ -253,56 +277,56 @@ public class Profile {
 	/**
 	 * @param usrId of the users new friend
 	 */
-	public void addFriend(Integer usrId){
+	public void addFriend(Profile usrId){
 		this.friends.add(usrId);
 	}
 	
 	/**
 	 * @param usrId of the user that will be removed from friends list
 	 */
-	public void deleteFriend(Integer usrId){
+	public void deleteFriend(String usrId){
 		this.friends.remove(usrId);
 	}
 	
 	/**
 	 * @param usrId of user that will be blocked
 	 */
-	public void addBlockedUsr(Integer usrId){
+	public void addBlockedUsr(Profile usrId){
 		this.blockedUsr.add(usrId);
 	}
 	
 	/**
 	 * @param usrId of the user that should be unblocked
 	 */
-	public void deleteBlockedUsr(Integer usrId){
+	public void deleteBlockedUsr(String usrId){
 		this.blockedUsr.remove(usrId);
 	}
 	
 	/**
 	 * @param tripId that will be added to the users trips
 	 */
-	public void addTrip(Integer tripId){
+	public void addTrip(Profile tripId){
 		this.trips.add(tripId);
 	}
 	
 	/**
 	 * @param revId that will be added to the users reviews
 	 */
-	public void addReview(Integer revId){
+	public void addReview(Profile revId){
 		this.rev.add(revId);
 	}
 	
 	/**
 	 * @param groupId of group that the user will be added to
 	 */
-	public void addGroup(Integer groupId){
+	public void addGroup(Profile groupId){
 		this.groups.add(groupId);
 	}
 	
 	/**
 	 * @param groupId of the group the user is leaving
 	 */
-	public void deleteGroup(Integer groupId){
+	public void deleteGroup(String groupId){
 		this.groups.remove(groupId);
 	}
 	
