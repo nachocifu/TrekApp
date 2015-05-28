@@ -12,11 +12,15 @@ public class ProfileService{
 	
 	private AbstractRepository<Profile> repo;
 	
+	//preguntar
+	private HashMap<String, HashSet<String>> blcked;
+	
 	/**
 	 * @param user repository
 	 */
 	public ProfileService(AbstractRepository<Profile> repo){
 		this.repo=repo;
+		this.blcked=new HashMap<String, HashSet<String>>();
 	}
 	
 /**

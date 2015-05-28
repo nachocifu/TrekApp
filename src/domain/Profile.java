@@ -75,6 +75,9 @@ public class Profile {
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
 	private HashSet<Profile> rev;
 	
+	
+	//podria hacer que adentro tengo un hashmap con boolean,string que el boolean
+	//indique si es admin o no
 	/**the groups the user belongs to*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
 	private HashSet<Profile> groups;

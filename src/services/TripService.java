@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import repository.AbstractRepository;
+import domain.Profile;
 import domain.Trip;
 import domain.UniversalString;
 
@@ -11,7 +12,7 @@ import domain.UniversalString;
 
 public class TripService implements ServiceInterface<Trip> {
 	
-	
+	private AbstractRepository<Trip> repo;
 	
 	public TripService(AbstractRepository<Trip> repo) {
 		//super(repo);
@@ -29,19 +30,19 @@ public class TripService implements ServiceInterface<Trip> {
 	 * @param origin_city
 	 * @param end_city
 	 */
-	public void createTrip(Date start_date, Date end_date, Integer group_id, Integer trip_id, Integer estimate_cost, UniversalString trip_description, String origin_city, String end_city){
-		//Codigo entre repository y service
+	public void createTrip(Date startDate, Date endDate, String groupId, String tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
+		Trip trip= new Trip(startDate, endDate, groupId, tripId, estimateCost, tripDescription, originCity, endCity);
+		repo.add(trip);
 	}
 	
 	/**
 	 * Gets the tripStatus
 	 * @param trip_id
-	 * @return
+	 * @return a String containing the trip Status
 	 */
-	public String getTripStatus(Integer trip_id){
-		//Buscar Trip con id
-		//return repoTrip.getTrip_status().toString();
-		return null;
+	public String getTripStatus(String tripId){
+		Trip trip= repo.getById(tripId);
+		return trip.getTripStatus().toString();
 	}
 	
 	/**
@@ -51,7 +52,6 @@ public class TripService implements ServiceInterface<Trip> {
 	 * @return
 	 */
 	public void setTripStatus(Integer trip_id, String user_id ){
-		//Buscar Trip con id
 		
 	}
 
