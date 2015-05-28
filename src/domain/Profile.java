@@ -240,35 +240,35 @@ public class Profile {
 		this.friends=friends;
 	}
 	
-	public Collection<String> getBlockedUsrs(){
+	public Collection<Profile> getBlockedUsrs(){
 		return this.blockedUsr;
 	}
 	
-	public void setBlockedUsrs(HashSet<String> blockedusrs){
+	public void setBlockedUsrs(HashSet<Profile> blockedusrs){
 		this.blockedUsr=blockedusrs;
 	}
 	
-	public Collection<String> getTrips(){
+	public Collection<Profile> getTrips(){
 		return this.trips;
 	}
 	
-	public void setTrips(HashSet<String> trips){
+	public void setTrips(HashSet<Profile> trips){
 		this.trips=trips;
 	}
 	
-	public Collection<String> getReviews(){
+	public Collection<Profile> getReviews(){
 		return this.rev;
 	}
 	
-	public void setReviews(HashSet<String> revs){
+	public void setReviews(HashSet<Profile> revs){
 		this.rev=revs;
 	}
 	
-	public Collection<String> getGroups(){
+	public Collection<Profile> getGroups(){
 		return this.groups;
 	}
 	
-	public void setGroups(HashSet<String> groups){
+	public void setGroups(HashSet<Profile> groups){
 		this.groups=groups;
 	}
 	
@@ -291,7 +291,7 @@ public class Profile {
 	/**
 	 * @param usrId of user that will be blocked
 	 */
-	public void addBlockedUsr(String usrId){
+	public void addBlockedUsr(Profile usrId){
 		this.blockedUsr.add(usrId);
 	}
 	
@@ -305,21 +305,21 @@ public class Profile {
 	/**
 	 * @param tripId that will be added to the users trips
 	 */
-	public void addTrip(String tripId){
+	public void addTrip(Profile tripId){
 		this.trips.add(tripId);
 	}
 	
 	/**
 	 * @param revId that will be added to the users reviews
 	 */
-	public void addReview(String revId){
+	public void addReview(Profile revId){
 		this.rev.add(revId);
 	}
 	
 	/**
 	 * @param groupId of group that the user will be added to
 	 */
-	public void addGroup(String groupId){
+	public void addGroup(Profile groupId){
 		this.groups.add(groupId);
 	}
 	
