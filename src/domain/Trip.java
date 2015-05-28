@@ -1,11 +1,12 @@
-package domain;
+package src.domain;
 
 import java.util.Date;
 
 /**
- * A trip and its attributes
+ * A trip with its methods and its attributes
  */
 public class Trip {
+	
 	private Date start_date;
 	private Date end_date;
 	private Integer group_id;
