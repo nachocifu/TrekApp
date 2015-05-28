@@ -3,27 +3,26 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * A single message object. Many will make a chat.
- * @author nacho
- *
+ * A single message object. Many will make a chat or a wall (in groups)
  */
 @DatabaseTable(tableName = "Messages")
 public class Message {
 	
 	/** id of the message */
 	@DatabaseField( id = true)
-	private Integer id;
+	private String msgId;
 	
 	/** text of the message */ 
 	@DatabaseField
 	private String text;
 	
-	/** empty constructor for persistance usage */ 
+	/** empty constructor for persistence usage */ 
 	public Message(){
 	}
 	
-	public Message(String text){
+	public Message(String text, String msgId){
 		this.text = text;
+		this.msgId=msgId;
 	}
 
 	/**
@@ -36,8 +35,8 @@ public class Message {
 	/**
 	 * @return the id
 	 */
-	public Integer getId() {
-		return id;
+	public String getMsgId() {
+		return this.msgId;
 	}
 
 }
