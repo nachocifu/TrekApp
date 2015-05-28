@@ -1,4 +1,4 @@
-package services;
+package domain;
 
 //me conviene tener un paquete con exceptions ? 
 public class InvalidPasswordException extends Exception {
