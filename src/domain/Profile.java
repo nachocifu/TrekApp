@@ -21,7 +21,7 @@ public class Profile {
 	private String usrName = null;
 	
 	/** the users id */
-	@DatabaseField
+	@DatabaseField( generatedId = true)
 	private Integer usrId = null;
 	
 	/** the users name */
