@@ -47,6 +47,7 @@ public class DataBaseTest {
 			ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl);
 			
 			/** create the table */ 
+			TableUtils.dropTable(connectionSource, type, false);
 			TableUtils.createTableIfNotExists(connectionSource, type);
 	
 			/** close the connection source */

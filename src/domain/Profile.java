@@ -57,6 +57,7 @@ public class Profile {
 	 *the user will be able to checkIn in a specific location, it will save the last
 	 *location where the user checked-in
 	 */
+	@DatabaseField(foreignAutoCreate = true, foreign = true)
 	private Coordinates checkIn;
 	
 	/**the users friends*/
