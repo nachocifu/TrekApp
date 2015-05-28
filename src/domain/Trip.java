@@ -1,11 +1,12 @@
-package domain;
+package src.domain;
 
 import java.util.Date;
 
 /**
- * A trip and its attributes
+ * A trip with its methods and its attributes
  */
 public class Trip {
+
 	private Date startDate;
 	private Date endDate;
 	private String groupId;
@@ -16,6 +17,7 @@ public class Trip {
 	private String endCity;
 	public enum tripStatus {OPEN, IN_PROGRESS, CLOSED};
 	private tripStatus tripStatus;
+
 	
 	public Trip(Date startDate, Date endDate, String groupId, String tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
 		this.startDate = startDate;

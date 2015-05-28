@@ -57,7 +57,7 @@ public class Profile {
 	 *the user will be able to checkIn in a specific location, it will save the last
 	 *location where the user checked-in
 	 */
-	private Coordenates checkIn;
+	private Coordinates checkIn;
 	
 	/**the users friends*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
@@ -69,18 +69,15 @@ public class Profile {
 	
 	/**the users past trips*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<Profile> trips;
+	private HashSet<Trip> trips;
 	
 	/**the users reviews*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<Profile> rev;
+	private HashSet<Review> rev;
 	
-	
-	//podria hacer que adentro tengo un hashmap con boolean,string que el boolean
-	//indique si es admin o no
 	/**the groups the user belongs to*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<Profile> groups;
+	private HashSet<Group> groups;
 	
 	@DatabaseField
 	private String password = null;
@@ -109,9 +106,9 @@ public class Profile {
 		this.checkIn=null;
 		this.friends= new HashSet<Profile>();
 		this.blockedUsr= new HashSet<Profile>();
-		this.trips= new HashSet<Profile>();
-		this.rev = new HashSet<Profile>();
-		this.groups=new HashSet<Profile>();
+		this.trips= new HashSet<Trip>();
+		this.rev = new HashSet<Review>();
+		this.groups=new HashSet<Group>();
 		this.password=password;
 		this.city=city;
 		this.email=email;
@@ -219,80 +216,127 @@ public class Profile {
 	/**
 	 * @return the last location where the user has checked in
 	 */
-	public Coordenates getCheckIn(){
+	public Coordinates getCheckIn(){
 		return this.checkIn;
 	}
 	
 	/**
 	 * @param location where the user has checked-in
 	 */
-	public void setCoordeantes(Coordenates location){
+	public void checkIn(Coordinates location){
 		this.checkIn=location;
 	}
 	
-	/**aca getters y setters no los documento porque probablemente no los terminemos usando*/
+	/**
+	 * @param x coordinate from the users location
+	 * @param y coordinate from the users location
+	 */
+	public void checkIn(Double x, Double y){
+		Coordinates coor=new Coordinates(x,y);
+		this.checkIn=coor;
+	}
 	
 	public Collection<Profile> getFriends(){
 		return this.friends;
-	}
-	
-	public void setFriends(HashSet<Profile> friends){
-		this.friends=friends;
 	}
 	
 	public Collection<Profile> getBlockedUsrs(){
 		return this.blockedUsr;
 	}
 	
-	public void setBlockedUsrs(HashSet<Profile> blockedusrs){
-		this.blockedUsr=blockedusrs;
-	}
-	
-	public Collection<Profile> getTrips(){
+	public Collection<Trip> getTrips(){
 		return this.trips;
 	}
 	
-	public void setTrips(HashSet<Profile> trips){
-		this.trips=trips;
-	}
-	
-	public Collection<Profile> getReviews(){
+	public Collection<Review> getReviews(){
 		return this.rev;
 	}
-	
-	public void setReviews(HashSet<Profile> revs){
-		this.rev=revs;
-	}
-	
-	public Collection<Profile> getGroups(){
+
+	public Collection<Group> getGroups(){
 		return this.groups;
 	}
-	
-	public void setGroups(HashSet<Profile> groups){
-		this.groups=groups;
-	}
-	
-	
-	
+
+
 	/**
-	 * @param usrId of the users new friend
+	 * @param tripId that will be added to the users trips
 	 */
-	public void addFriend(Profile usrId){
-		this.friends.add(usrId);
+	public void addTrip(Trip trip){
+		this.trips.add(trip);
 	}
 	
 	/**
-	 * @param usrId of the user that will be removed from friends list
+	 * @param rev that will be added to the users reviews
+	 * the users rating will be automatically updated when addReview is invoked
 	 */
-	public void deleteFriend(String usrId){
-		this.friends.remove(usrId);
+	private void addReview(Review rev){
+		this.rev.add(rev);
+		Double rat=this.rating;
+		Integer size=this.rev.size();
+		rat+=rev.getRating();
+		rat/=size;
+		this.rating=rat;
+		
 	}
 	
 	/**
-	 * @param usrId of user that will be blocked
+	 * Will be used after two users have made a trip together, only a user that has shared a trip with the user can make a review
+	 * on the user
+	 * @param user the review is being sent to
+	 * @param rating, numerical value between 1 and 5 representing the users rating in the review
+	 * @param comment short comment describing the users performance
+	 * @throws IllegalArgumentException
 	 */
-	public void addBlockedUsr(Profile usrId){
-		this.blockedUsr.add(usrId);
+	public void sendReview(Profile user, Integer rating, String comment) throws IllegalArgumentException{
+		if(rating<1 || rating>5)
+			throw new IllegalArgumentException("The rating has to be between 1 and 5");
+		
+		Review rev=new Review(user, this, comment, rating);
+		user.addReview(rev);
+	}
+	
+	/**
+	 * @param group of group that the user will be added to
+	 */
+	public void addGroup(Group group){
+		this.groups.add(group);
+	}
+	
+	/**
+	 * @param group of the group the user is leaving
+	 */
+	public void deleteGroup(Group group){
+		this.groups.remove(group);
+	}
+	
+	/**
+	 * @return a boolean value indicating if the password is correct, this way the password remains private and is never
+	 * shared with a different object
+	 */
+	public boolean cmpPassword(String pass){
+		if(this.password.equals(pass))
+			return true;
+		return false;
+	}
+
+	/**
+	 * @param oldPass used to validate
+	 * @param newPass that will be established for the user
+	 * @return
+	 * @throws InvalidPasswordException if the oldpass is not valid
+	 */
+	public void changePass(String oldPass, String newPass) throws InvalidPasswordException{
+		if(!this.password.equals(oldPass))
+			throw new InvalidPasswordException("Password is not valid");
+		this.password=newPass;
+	}
+	
+	/**
+	 * @param blckdUsr will be removed from usrId's friend list if it contains it
+	 * and will be added to the blocked user
+	 */
+	public void blockUser(Profile blckdUser){
+		this.friends.remove(blckdUser);
+		this.blockedUsr.add(blckdUser);
 	}
 	
 	/**
@@ -302,51 +346,59 @@ public class Profile {
 		this.blockedUsr.remove(usrId);
 	}
 	
+	
+	
 	/**
-	 * @param tripId that will be added to the users trips
+	 * @param usr that will be added
 	 */
-	public void addTrip(Profile tripId){
-		this.trips.add(tripId);
+	private void putFriend(Profile usr){
+		this.friends.add(usr);
 	}
 	
 	/**
-	 * @param revId that will be added to the users reviews
+	 * @param usr that will be removed
 	 */
-	public void addReview(Profile revId){
-		this.rev.add(revId);
+	private void removeFriend(Profile usr){
+		this.friends.remove(usr);
 	}
 	
 	/**
-	 * @param groupId of group that the user will be added to
+	 * @param friend that will be added to the users friend list,
+	 * this will be added to friend's list as well
 	 */
-	public void addGroup(Profile groupId){
-		this.groups.add(groupId);
+	public void addFriend(Profile friend){
+		this.friends.add(friend);
+		friend.putFriend(this);
 	}
 	
 	/**
-	 * @param groupId of the group the user is leaving
+	 * @param friend that will be removed from the users friend list
+	 * this will also be deleted from friend's list
 	 */
-	public void deleteGroup(String groupId){
-		this.groups.remove(groupId);
+	public void deleteFriend(Profile friend){
+		this.friends.remove(friend);
+		friend.removeFriend(this);
 	}
 	
 	/**
-	 * @return users password
+	 * revisar 
+	 * @return the age, it compares todays date with the day of birth of the user
 	 */
-	public String getPassword(){
-		return this.password;
+	@SuppressWarnings("deprecation")
+	public int getAge(){
+		Date dt = new Date();
+		Date aux= this.getBirthDay();
+		if(dt.getMonth() < aux.getMonth())
+			return dt.getYear()-aux.getYear();
+		if(dt.getMonth() > aux.getMonth())
+			return dt.getYear()-aux.getYear() +1;
+		if(dt.getDay() < dt.getDay())
+			return dt.getYear() - aux.getYear();
+		return dt.getYear() - aux.getYear() +1;
 	}
 	
-	/**
-	 * @param password that will be changed
-	 * all validations will be done on the ProfileService
-	 */
-	public void setPassword(String password){
-		this.password=password;
-	}
-
-
-
+	
+	
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

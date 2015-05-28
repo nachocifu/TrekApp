@@ -1,8 +1,13 @@
-package services;
+package src.services;
 
 import java.util.Date;
 import java.util.HashMap;
 
+import src.domain.Group;
+import src.domain.Trip;
+import src.domain.UniversalString;
+import src.domainUI.TripUI;
+import src.repository.AbstractRepository;
 import repository.AbstractRepository;
 import domain.Profile;
 import domain.Trip;
@@ -12,11 +17,14 @@ import domain.UniversalString;
 
 public class TripService implements ServiceInterface<Trip> {
 	
+
 	private AbstractRepository<Trip> repo;
 	
+	/**
+	 * @param user repository
+	 */
 	public TripService(AbstractRepository<Trip> repo) {
-		//super(repo);
-		// TODO Auto-generated constructor stub
+		this.repo = repo;
 	}
 
 	/**
@@ -30,16 +38,25 @@ public class TripService implements ServiceInterface<Trip> {
 	 * @param origin_city
 	 * @param end_city
 	 */
+
 	public void createTrip(Date startDate, Date endDate, String groupId, String tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
 		Trip trip= new Trip(startDate, endDate, groupId, tripId, estimateCost, tripDescription, originCity, endCity);
 		repo.add(trip);
 	}
 	
 	/**
-	 * Gets the tripStatus
+	 * Gets the tripUI for the interface to show information
 	 * @param trip_id
-	 * @return a String containing the trip Status
+<<<<<<< HEAD
+	 * @param user_id
+	 * @return
 	 */
+	public TripUI getTripUI(Integer trip_id, String user_id){
+		Trip trip = this.repo.getById(trip_id.toString());
+		Group group = this.repo.getById(trip.getGroup_id().toString());
+		TripUI tripUI = new TripUI(trip.getStart_date(), trip.getEnd_date(), trip.getEstimate_cost(), trip.getTrip_description(), trip.getOrigin_city(), trip.getEnd_city());
+		return tripUI;
+
 	public String getTripStatus(String tripId){
 		Trip trip= repo.getById(tripId);
 		return trip.getTripStatus().toString();
@@ -62,9 +79,9 @@ public class TripService implements ServiceInterface<Trip> {
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void delete(Integer trip_Id) {
 		// TODO Auto-generated method stub
-		
+		repo.remove(trip_Id.toString());
 	}
 	
 	

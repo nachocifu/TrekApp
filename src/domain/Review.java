@@ -17,6 +17,13 @@ public class Review {
 			this.profileOrigin = profile_orgin;
 			this.profileTarget = profileTarget;
 		}
+		
+		public Review(Profile rec, Profile send, String msg, Integer rat){
+			this.rating=rat;
+			this.profileTarget=rec;
+			this.profileOrigin=send;
+			this.msg=msg;
+		}
 
 		/**
 		 * @return the reviews rating
