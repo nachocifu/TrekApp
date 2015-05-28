@@ -17,13 +17,13 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Profile {
 	
 	/** the users username in the system */
-	@DatabaseField( id = true)
+	@DatabaseField
 	private String usrName = null;
 	
 	/** the users id */
 
 	@DatabaseField( generatedId = true)
-	private String usrId = null;
+	private Integer usrId = null;
 
 	/** the users name */
 	@DatabaseField
@@ -57,28 +57,27 @@ public class Profile {
 	 *the user will be able to checkIn in a specific location, it will save the last
 	 *location where the user checked-in
 	 */
-	@DatabaseField
 	private Coordenates checkIn;
 	
 	/**the users friends*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<String> friends;
+	private HashSet<Profile> friends;
 	
 	/**the users blocked users*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<String> blockedUsr;
+	private HashSet<Profile> blockedUsr;
 	
 	/**the users past trips*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<String> trips;
+	private HashSet<Profile> trips;
 	
 	/**the users reviews*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<String> rev;
+	private HashSet<Profile> rev;
 	
 	/**the groups the user belongs to*/
 	@DatabaseField(dataType = DataType.SERIALIZABLE)
-	private HashSet<String> groups;
+	private HashSet<Profile> groups;
 	
 	@DatabaseField
 	private String password = null;
@@ -97,7 +96,7 @@ public class Profile {
 	 * @param brthDay
 	 * @param sex
 	 */
-	public Profile(String usrName, String name, String surname, String usrId, Date brthDay, boolean sex, String password, String city, String email){
+	public Profile(String usrName, String name, String surname, Integer usrId, Date brthDay, boolean sex, String password, String city, String email){
 		this.usrName = usrName;
 		this.usrId = usrId;
 		this.name = name;
@@ -105,11 +104,11 @@ public class Profile {
 		this.brthDay=brthDay;
 		this.sex=sex;
 		this.checkIn=null;
-		this.friends= new HashSet<String>();
-		this.blockedUsr= new HashSet<String>();
-		this.trips= new HashSet<String>();
-		this.rev = new HashSet<String>();
-		this.groups=new HashSet<String>();
+		this.friends= new HashSet<Profile>();
+		this.blockedUsr= new HashSet<Profile>();
+		this.trips= new HashSet<Profile>();
+		this.rev = new HashSet<Profile>();
+		this.groups=new HashSet<Profile>();
 		this.password=password;
 		this.city=city;
 		this.email=email;
@@ -140,7 +139,7 @@ public class Profile {
 	/**
 	 * @return the users usrId
 	 */
-	public String getUsrId() {
+	public Integer getUsrId() {
 		return usrId;
 	}
 
@@ -230,11 +229,11 @@ public class Profile {
 	
 	/**aca getters y setters no los documento porque probablemente no los terminemos usando*/
 	
-	public Collection<String> getFriends(){
+	public Collection<Profile> getFriends(){
 		return this.friends;
 	}
 	
-	public void setFriends(HashSet<String> friends){
+	public void setFriends(HashSet<Profile> friends){
 		this.friends=friends;
 	}
 	
@@ -275,7 +274,7 @@ public class Profile {
 	/**
 	 * @param usrId of the users new friend
 	 */
-	public void addFriend(String usrId){
+	public void addFriend(Profile usrId){
 		this.friends.add(usrId);
 	}
 	
