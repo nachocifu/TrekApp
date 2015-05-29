@@ -51,6 +51,7 @@ public class DataBaseTest {
             /**Populate*/
             pool.add(new Profile("nacho", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "mail"));
 
+
             for(Profile each : pool)
                 dao.createOrUpdate(each);
 
