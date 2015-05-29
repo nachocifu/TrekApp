@@ -9,12 +9,13 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * A users profile in the model. Its content is never modified 
- * because it is generated from an existing user. 
+ * A users profile in the model. Its content is never modified
+ * because it is generated from an existing user.
  * Modifications are done on the user itself.
  */
 @DatabaseTable(tableName="Profile")
 public class Profile {
+
 	
 	/** the users username in the system */
 	@DatabaseField
@@ -458,5 +459,4 @@ public class Profile {
 			return false;
 		return true;
 	}
-
 }

@@ -3,10 +3,13 @@ package domain;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "Group")
 public class Group {
-	
+
 	
 	@DatabaseField
 	private String groupName;
@@ -107,7 +110,7 @@ public class Group {
 	public Double getCosts(){
 		return this.costs;
 	}
-	
+
 
 }
 
