@@ -1,4 +1,4 @@
-package src.domain;
+package domain;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ public class Trip {
 	private Date startDate;
 	private Date endDate;
 	private String groupId;
-	private String tripId;
+	private Integer tripId;
 	private Integer estimateCost;
 	private UniversalString tripDescription;
 	private String originCity;
@@ -19,7 +19,7 @@ public class Trip {
 	private tripStatus tripStatus;
 
 	
-	public Trip(Date startDate, Date endDate, String groupId, String tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
+	public Trip(Date startDate, Date endDate, String groupId, Integer tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.groupId = groupId;
@@ -55,11 +55,11 @@ public class Trip {
 		this.groupId = groupId;
 	}
 
-	public String getId() {
+	public Integer getId() {
 		return tripId;
 	}
 
-	public void setId(String tripId) {
+	public void setId(Integer tripId) {
 		this.tripId = tripId;
 	}
 
