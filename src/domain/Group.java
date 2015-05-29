@@ -18,41 +18,42 @@ public class Group {
 	private String groupId;
 	
 	/**
-	 * The admin's userId that will be used to validate permissions
+	 * The admin's user that will be used to validate permissions
 	 */
 	@DatabaseField
-	private String adminUserId;
+	private Profile admin;
 	
 	/**
-	 * HashSet containing the userId's of the groups members
+	 * HashSet containing the users of the groups members
 	 */
 	@DatabaseField
-	private HashSet<String> members;
+	private HashSet<Profile> members;
 	
 	/**
-	 * Hashset containing the tripIds of the group Trips
+	 * Hashset containing the trips of the group Trips
 	 */
 	@DatabaseField
-	private HashSet<String> groupTrips; 
-	
+	private HashSet<Trip> groupTrips;
 	
 	/**
 	 *key: msgId, value:usrId of user that posted the message
 	 */
-	private HashMap<String, String> posts;
-	
-	//private double avlbPlaces;
+	private HashMap<Message, Profile> wall;
 	
 	private Double costs;
 	
-	public Group(String groupName, String groupId, String adminUserId){
+	
+	public Group(String groupName, String groupId, Profile admin){
 		this.groupName=groupName;
 		this.groupId=groupId;
-		this.adminUserId=adminUserId;
-		this.members=new HashSet<String>();
-		this.groupTrips=new HashSet<String>();
-		this.posts=new HashMap<String, String>();
+		this.admin=admin;
+		this.members=new HashSet<Profile>();
+		this.groupTrips=new HashSet<Trip>();
+		this.wall=new HashMap<Message, Profile>();
 		this.costs=null;
+	}
+
+	public Group(){
 	}
 	
 	public String getGroupName(){
@@ -67,36 +68,36 @@ public class Group {
 		return this.groupId;
 	}
 	
-	public String getAdminUserId(){
-		return this.adminUserId;
+	public Profile getAdminUser(){
+		return this.admin;
 	}
 	
-	public void setAdminUserId(String admin){
-		this.adminUserId=admin;
+	public void setAdminUserId(Profile admin){
+		this.admin=admin;
 	}
 	
-	public void addMember(String userId){
-		this.members.add(userId);
+	public void addMember(Profile user){
+		this.members.add(user);
 	}
 	
-	public void deleteMember(String userId){
-		this.members.remove(userId);
+	public void deleteMember(Profile user){
+		this.members.remove(user);
 	}
 	
-	public void addGroupTrip(String tripId){
-		this.groupTrips.add(tripId);
+	public void addGroupTrip(Trip trip){
+		this.groupTrips.add(trip);
 	}
 	
-	public void deleteGroupTrip(String tripId){
-		this.groupTrips.remove(tripId);
+	public void deleteGroupTrip(Trip trip){
+		this.groupTrips.remove(trip);
 	}
 	
-	public void addPost(String usrId, String msgId){
-		this.posts.put(usrId, msgId);
+	public void addPost(Profile user, Message msg){
+		this.wall.put(msg, user);
 	}
 	
 	public void deletePost(String msgId){
-		this.posts.remove(msgId);
+		this.wall.remove(msgId);
 	}
 	
 	public void setCosts(Double costs){

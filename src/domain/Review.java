@@ -22,7 +22,7 @@ public class Review {
 			this.rating=rat;
 			this.profileTarget=rec;
 			this.profileOrigin=send;
-			this.msg=msg;
+			this.comment=msg;
 		}
 
 		/**

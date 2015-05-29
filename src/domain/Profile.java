@@ -399,6 +399,18 @@ public class Profile {
 	
 	
 	
+	/**
+	 * @param group the post will be added to
+	 * @param msg that will be added to the group
+	 * @throws IllegalArgumentException when the user does not belong to the requested group
+	 */
+	public void postInGroup(Group group, String msg) throws IllegalArgumentException{
+		if(!this.groups.contains(group))
+			throw new IllegalArgumentException("the user does not belong to the requested group");
+		Message post=new Message(msg);
+		group.addPost(this, post);
+	}
+	
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

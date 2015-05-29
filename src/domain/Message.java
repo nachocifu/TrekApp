@@ -20,9 +20,8 @@ public class Message {
 	public Message(){
 	}
 	
-	public Message(String text, String msgId){
+	public Message(String text){
 		this.text = text;
-		this.msgId=msgId;
 	}
 
 	/**
