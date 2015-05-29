@@ -1,61 +1,54 @@
-package src.domainUI;
+package domainUI;
 
 import java.util.Date;
 
-import src.domain.UniversalString;
+import domain.Trip;
+
+import domain.UniversalString;
 
 /**
  * 
- * An object only to get info and show it on the interface
+ * An intermediate for the FrontEnd to use
  *
  */
 public class TripUI extends AbstractDomainUI {
 	
-	private Date start_date;
-	private Date end_date;
-	private Integer estimate_cost;
-	private UniversalString trip_description;
-	private String origin_city;
-	private String end_city;
-	private enum Trip_status {OPEN, IN_PROGRESS, CLOSED};
-	private Trip_status trip_status;
+	private Trip trip;
 	
-	public TripUI(Date start_date, Date end_date, Integer estimate_cost, UniversalString trip_description, String origin_city, String end_city){
-		this.start_date = start_date;
-		this.end_date = end_date;
-		this.estimate_cost = estimate_cost;
-		this.trip_description = trip_description;
-		this.origin_city = origin_city;
-		this.end_city = end_city;
-		this.trip_status = Trip_status.OPEN;
+	public TripUI(Trip trip){
+		this.trip = trip;
 		}
 
 	public Date getStart_date() {
-		return start_date;
+		return this.trip.getstartDate();
 	}
 
 	public Date getEnd_date() {
-		return end_date;
+		return this.trip.getendDate();
 	}
 
 	public Integer getEstimate_cost() {
-		return estimate_cost;
+		return this.trip.getestimateCost();
 	}
 
 	public UniversalString getTrip_description() {
-		return trip_description;
+		return this.trip.gettripDescription();
 	}
 
 	public String getOrigin_city() {
-		return origin_city;
+		return this.trip.getoriginCity();
 	}
 
 	public String getEnd_city() {
-		return end_city;
+		return this.trip.getendCity();
 	}
 
-	public Trip_status getTrip_status() {
-		return trip_status;
+	public Trip.tripStatus getTrip_status() {
+		return this.trip.getTripStatus();
+	}
+	
+	public Integer getTripId(){
+		return this.trip.getId();
 	}
 	
 	

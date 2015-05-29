@@ -1,13 +1,13 @@
-package src.services;
+package services;
 
 import java.util.Date;
 import java.util.HashMap;
 
-import src.domain.Group;
-import src.domain.Trip;
-import src.domain.UniversalString;
-import src.domainUI.TripUI;
-import src.repository.AbstractRepository;
+import domain.Group;
+import domain.Trip;
+import domain.UniversalString;
+import domainUI.TripUI;
+import repository.AbstractRepository;
 import repository.AbstractRepository;
 import domain.Profile;
 import domain.Trip;
@@ -26,17 +26,20 @@ public class TripService implements ServiceInterface<Trip> {
 	public TripService(AbstractRepository<Trip> repo) {
 		this.repo = repo;
 	}
+	
+	public TripService() {
+	}
 
 	/**
 	 * Creates a trip
-	 * @param start_date
-	 * @param end_date
-	 * @param group_id
-	 * @param trip_id
-	 * @param estimate_cost
-	 * @param trip_description
-	 * @param origin_city
-	 * @param end_city
+	 * @param startDate
+	 * @param endDate
+	 * @param groupId
+	 * @param tripId
+	 * @param estimateCost
+	 * @param tripDescription
+	 * @param originCity
+	 * @param endCity
 	 */
 
 	public void createTrip(Date startDate, Date endDate, String groupId, String tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
@@ -46,12 +49,11 @@ public class TripService implements ServiceInterface<Trip> {
 	
 	/**
 	 * Gets the tripUI for the interface to show information
-	 * @param trip_id
-<<<<<<< HEAD
-	 * @param user_id
+	 * @param tripId
+	 * @param userId
 	 * @return
 	 */
-	public TripUI getTripUI(Integer trip_id, String user_id){
+	public TripUI getTripUI(Integer tripId, String userId){
 		Trip trip = this.repo.getById(trip_id.toString());
 		Group group = this.repo.getById(trip.getGroup_id().toString());
 		TripUI tripUI = new TripUI(trip.getStart_date(), trip.getEnd_date(), trip.getEstimate_cost(), trip.getTrip_description(), trip.getOrigin_city(), trip.getEnd_city());
