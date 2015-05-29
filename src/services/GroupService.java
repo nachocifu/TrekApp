@@ -28,10 +28,6 @@ public class GroupService {
         this.repo.delete(groupId);
     }
 
-
-    //es orientado a objetos tener un metodo en groupService para agregar a un miembro
-    //y un metodo en profileService para agregar a un objeto o deberia todo ne uno?
-    //como deberia hacer para acceder al repo de usuarios si es que lo hago de esta forma?
     public void addMember(String groupId, String userId){
         //this.repo.getById(groupId);
     }

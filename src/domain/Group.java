@@ -89,6 +89,7 @@ public class Group {
 		if(LoggedUser.getInstance().equals(admin))
 			throw new InvalidPermissionException("the logged user has to be the group admin to add new members into the group");
 		this.members.add(user);
+		user.addGroup(this);
 	}
 	
 	/**

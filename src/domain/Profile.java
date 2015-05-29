@@ -343,8 +343,8 @@ public class Profile {
 	/**
 	 * @param usrId of the user that should be unblocked
 	 */
-	public void deleteBlockedUsr(String usrId){
-		this.blockedUsr.remove(usrId);
+	public void deleteBlockedUsr(Profile usr){
+		this.blockedUsr.remove(usr);
 	}
 	
 	
