@@ -9,9 +9,6 @@ import domain.Group;
 
 /**
  * The connection to the file system regarding groups and their persistence.
- *
- * @author nacho
- *
  */
 public class GroupRepository extends AbstractRepository<Group> {
 

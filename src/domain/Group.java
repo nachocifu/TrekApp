@@ -43,8 +43,11 @@ public class Group {
 	 */
 	private HashMap<Message, Profile> wall;
 	
+	/**
+	 * a value representing the costs that are to be shared equally between
+	 * all members of the travel group
+	 */
 	private Double costs;
-	
 	
 	public Group(String groupName, String groupId, Profile admin){
 		this.groupName=groupName;
@@ -56,6 +59,11 @@ public class Group {
 		this.costs=null;
 	}
 
+	public Group(String groupName, Profile admin){
+		this.admin=admin;
+		this.groupName=groupName;
+	}
+	
 	public Group(){
 	}
 	
@@ -145,14 +153,40 @@ public class Group {
 		this.wall.remove(msg);
 	}
 	
+	/**
+	 * @param costs of the travel group
+	 */
 	public void setCosts(Double costs){
 		this.costs=costs;
 	}
 	
+	/**
+	 * @param newCost that will be added to the travel costs
+	 */
+	public void addCost(Double newCost){
+		this.costs=this.costs+newCost;
+	}
+	
+	/**
+	 * @return costs of the travel group
+	 */
 	public Double getCosts(){
 		return this.costs;
 	}
 
+	/**
+	 * @return the costs divided the total amount of members, this way you get the 
+	 * cost of each individual member
+	 */
+	public Double getCostsPerMember(){
+		return costs/members.size();
+	}
 
+	/**
+	 * @return the amount of group members
+	 */
+	public Integer groupSize(){
+		return this.members.size();
+	}
 }
 

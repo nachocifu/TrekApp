@@ -348,7 +348,6 @@ public class Profile {
 	}
 	
 	
-	
 	/**
 	 * @param usr that will be added
 	 */
@@ -397,7 +396,6 @@ public class Profile {
 			return dt.getYear() - aux.getYear();
 		return dt.getYear() - aux.getYear() +1;
 	}
-	
 	
 	
 	/**
