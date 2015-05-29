@@ -79,28 +79,69 @@ public class Group {
 		this.admin=admin;
 	}
 	
-	public void addMember(Profile user){
+	/**
+	 * LoggedUser will add a member into the group, this will only be possible if the 
+	 * loggedUser is the admin of the group
+	 * @param user to be added to the Group
+	 * @throws InvalidPermissionException
+	 */
+	public void addMember(Profile user) throws InvalidPermissionException{
+		if(LoggedUser.getInstance().equals(admin))
+			throw new InvalidPermissionException("the logged user has to be the group admin to add new members into the group");
 		this.members.add(user);
 	}
 	
-	public void deleteMember(Profile user){
+	/**
+	 * LoggedUser will delete a member of the group, this will only be possible if the
+	 * logged user is the Group admin
+	 * @param user that will be deleted
+	 * @throws InvalidPermissionException
+	 */
+	public void deleteMember(Profile user) throws InvalidPermissionException, IllegalArgumentException{
+		if(!members.contains(user))
+			throw new IllegalArgumentException("the user that is trying to be deleted does not belong to the group");
+		if(LoggedUser.getInstance().equals(admin))
+			throw new InvalidPermissionException("the logged user has to be the group admin to add new members into the group");
 		this.members.remove(user);
 	}
 	
+	/**
+	 * Any member of the group can add a Group trip
+	 * @param trip
+	 */
 	public void addGroupTrip(Trip trip){
 		this.groupTrips.add(trip);
 	}
 	
-	public void deleteGroupTrip(Trip trip){
+	/**
+	 * A groupTrip can only be deleted if the loggedUser is the Group admin
+	 * @param trip
+	 */
+	public void deleteGroupTrip(Trip trip) throws InvalidPermissionException{
+		if(!LoggedUser.getInstance().equals(admin))
+			throw new InvalidPermissionException("Only the group admin can delete a Group Trip");
 		this.groupTrips.remove(trip);
 	}
 	
+	/**
+	 * @param user posting the message on the wall
+	 * @param msg being posted
+	 */
 	public void addPost(Profile user, Message msg){
 		this.wall.put(msg, user);
 	}
 	
-	public void deletePost(String msgId){
-		this.wall.remove(msgId);
+	/**
+	 * Only the group admin or the writer of the message can delete the message
+	 * @param msgId
+	 */
+	public void deletePost(Message msg) throws IllegalArgumentException, InvalidPermissionException{
+		if(!this.wall.containsKey(msg))
+			throw new IllegalArgumentException("the message does not exists");
+		if(!LoggedUser.getInstance().equals(admin) && !this.wall.get(msg).equals(LoggedUser.getInstance()))
+			throw new InvalidPermissionException("the only users with permission to delete a wall post is the group admin or the writer of the post");
+
+		this.wall.remove(msg);
 	}
 	
 	public void setCosts(Double costs){
