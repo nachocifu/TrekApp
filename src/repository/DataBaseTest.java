@@ -10,6 +10,7 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import domain.Group;
 import domain.Profile;
 
 /**
@@ -29,6 +30,41 @@ public class DataBaseTest {
         System.out.println("Starting tables");
         repoAdmin.start(Profile.class);
         repoAdmin.populateUsers();
+        repoAdmin.start(Group.class);
+        //repoAdmin.populateGroups();
+    }
+
+
+    private void populateGroups() {
+        System.out.println("### Populating Group table ###");
+
+        Class<Group> type = Group.class;
+        List<Group> pool = new ArrayList<Group>();
+        boolean status = true;
+
+        try{
+
+            Class.forName("org.sqlite.JDBC");
+
+            /** create a connection source to our database */
+            ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl);
+
+            /**create DAO*/
+            Dao<Group, String> dao = DaoManager.createDao(connectionSource, type);
+
+            /**Populate*/
+            //pool.add(Group e)
+
+            for(Group each : pool)
+                dao.createOrUpdate(each);
+
+            /** close the connection source */
+            connectionSource.close();
+        }catch(Exception e){
+            System.err.println("[ERROR] || " + e.getMessage() + "\n" + e.getStackTrace().toString());
+            status = false;
+        }
+        if(status) System.out.println("OK");
     }
 
 
@@ -37,6 +73,7 @@ public class DataBaseTest {
 
         Class<Profile> type = Profile.class;
         List<Profile> pool = new ArrayList<Profile>();
+        boolean status = true;
 
         try{
 
@@ -59,9 +96,9 @@ public class DataBaseTest {
             connectionSource.close();
         }catch(Exception e){
             System.err.println("[ERROR] || " + e.getMessage());
-            System.err.println("ERROR");
+            status = false;
         }
-        System.err.println("OK");;
+        if(status) System.out.println("OK");
     }
 
 
@@ -80,6 +117,7 @@ public class DataBaseTest {
     private <T> void start(Class<T> type){
 
         System.out.println("### Starting table " + type.getSimpleName() + " ###");
+        boolean status = true;
         try{
 
             Class.forName("org.sqlite.JDBC");
@@ -94,10 +132,10 @@ public class DataBaseTest {
             /** close the connection source */
             connectionSource.close();
         }catch(Exception e){
-            System.err.println("[ERROR] || " + e.getMessage());
-            System.err.println("ERROR");
+            System.err.println("[ERROR] || " + e.getMessage() + e.getStackTrace().toString());
+            status = false;
         }
-        System.err.println("OK");;
+        if(status) System.out.println("OK");
     }
 }
 

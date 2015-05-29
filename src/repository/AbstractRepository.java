@@ -113,9 +113,9 @@ public abstract class AbstractRepository<T> {
     }
 
     /**
-     * Adds the object. If failure, return number.
-     * @param obj
-     * @return
+     * Adds the object. Returns if it succeedes.
+     * @param obj to save on system
+     * @return status if success is true or false
      */
     public boolean add(T obj){
         ConnectionSource connectionSource = null;
@@ -153,7 +153,7 @@ public abstract class AbstractRepository<T> {
      * If it doesn't exist does nothing.
      * @param id
      */
-    public void remove(String id){
+    public void delete(String id){
 
         ConnectionSource connectionSource = null;
         try{

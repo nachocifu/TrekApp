@@ -46,7 +46,7 @@ public class ProfileService{
      * @param usrId of the user to be deleted from the database
      */
     public void delete(String usrId){
-        repo.remove(usrId);
+        repo.delete(usrId);
     }
 
     /**
