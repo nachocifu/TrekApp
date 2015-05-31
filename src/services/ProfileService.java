@@ -1,11 +1,11 @@
-package services;
+package src.services;
 
 import java.util.Date;
 
-import repository.AbstractRepository;
-import repository.UserRepository;
-import domain.InvalidPasswordException;
-import domain.Profile;
+import src.repository.AbstractRepository;
+import src.repository.UserRepository;
+import src.domain.InvalidPasswordException;
+import src.domain.Profile;
 
 public class ProfileService{
 
@@ -45,8 +45,8 @@ public class ProfileService{
     /**
      * @param usrId of the user to be deleted from the database
      */
-    public void delete(String usrId){
-        repo.delete(usrId);
+    public void delete(Profile loggedUser){
+        repo.delete(loggedUser.getUsrId());
     }
 
     /**

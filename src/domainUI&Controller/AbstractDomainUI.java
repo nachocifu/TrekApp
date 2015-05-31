@@ -1,4 +1,4 @@
-package domainUI;
+package src.domainUI&Controller;
 
 
 public class AbstractDomainUI {
