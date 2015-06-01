@@ -1,4 +1,4 @@
-package repository;
+package src.repository;
 
 
 import java.sql.SQLException;
@@ -14,8 +14,8 @@ import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 
-import domain.Profile;
-import domain.User;
+import src.domain.Profile;
+import src.domain.User;
 
 public class UserRepository extends AbstractRepository<Profile> {
 

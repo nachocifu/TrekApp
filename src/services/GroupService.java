@@ -1,10 +1,15 @@
-package services;
+package src.services;
 
-import repository.AbstractRepository;
-import repository.GroupRepository;
-import domain.Group;
-import domain.Profile;
-import domain.Trip;
+import java.util.Collection;
+import java.util.HashSet;
+
+import src.repository.AbstractRepository;
+import src.repository.GroupRepository;
+import src.domainUI_Controller.GroupUI;
+import src.domainUI_Controller.TripUI;
+import src.domain.Group;
+import src.domain.Profile;
+import src.domain.Trip;
 
 public class GroupService {
 
@@ -26,6 +31,14 @@ public class GroupService {
     public void deleteGroup(String groupId){
         this.repo.delete(groupId);
     }
+    
+    public Collection<GroupUI> getProfileGroupsUI(Profile profile){
+	    Collection<GroupUI> groups = new HashSet<GroupUI>();
+		for (Group group : profile.getGroups()) {
+			groups.add(new GroupUI(group));
+		}
+		return groups;
+	}
 
 
 

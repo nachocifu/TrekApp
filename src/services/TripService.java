@@ -1,17 +1,20 @@
-package services;
+package src.services;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 
-import domain.Group;
-import domain.Trip;
-import domain.UniversalString;
-import domainUI.TripUI;
-import repository.AbstractRepository;
-import repository.AbstractRepository;
-import domain.Profile;
-import domain.Trip;
-import domain.UniversalString;
+import src.domain.Group;
+import src.domain.Trip;
+import src.domain.UniversalString;
+import src.domainUI_Controller.PastTripUI;
+import src.domainUI_Controller.ProfileUI;
+import src.domainUI_Controller.TripUI;
+import src.repository.AbstractRepository;
+import src.domain.Profile;
+import src.domain.Trip;
+import src.domain.UniversalString;
 
 
 
@@ -42,7 +45,7 @@ public class TripService implements ServiceInterface<Trip> {
 	 * @param endCity
 	 */
 
-	public void createTrip(Date startDate, Date endDate, String groupId, String tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
+	public void createTrip(Date startDate, Date endDate, Integer groupId, Integer tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
 		Trip trip= new Trip(startDate, endDate, groupId, tripId, estimateCost, tripDescription, originCity, endCity);
 		repo.add(trip);
 	}
@@ -53,15 +56,25 @@ public class TripService implements ServiceInterface<Trip> {
 	 * @param userId
 	 * @return
 	 */
-	public TripUI getTripUI(Integer tripId, String userId){
-		Trip trip = this.repo.getById(trip_id.toString());
-		Group group = this.repo.getById(trip.getGroup_id().toString());
-		TripUI tripUI = new TripUI(trip.getStart_date(), trip.getEnd_date(), trip.getEstimate_cost(), trip.getTrip_description(), trip.getOrigin_city(), trip.getEnd_city());
-		return tripUI;
-
-	public String getTripStatus(String tripId){
-		Trip trip= repo.getById(tripId);
-		return trip.getTripStatus().toString();
+	public TripUI getTripUI(Trip trip){	
+		return new TripUI(trip);
+	}
+	
+	public Collection<PastTripUI> getProfilePastTripsUI(Profile profile){
+	    Collection<PastTripUI> pastTrips = new HashSet<PastTripUI>();
+		for (Trip pastTrip : profile.getTrips()) {
+			pastTrips.add(new PastTripUI(pastTrip));
+		}
+		return pastTrips;
+	}
+	
+	public Collection<ProfileUI> getTripParticipantsUI(Trip trip){
+		Collection<ProfileUI> participantsUI = new HashSet<ProfileUI>();
+		Collection<Profile> participants = this.repo.getById(trip.getGroupId()).getMemebers();
+		for (Profile profile : participants) {
+			participantsUI.add(new ProfileUI(profile));
+		}
+		return participantsUI;
 	}
 	
 	/**
@@ -80,10 +93,11 @@ public class TripService implements ServiceInterface<Trip> {
 		return null;
 	}
 
+
 	@Override
-	public void delete(Integer trip_Id) {
+	public void delete(Integer id) {
 		// TODO Auto-generated method stub
-		repo.remove(trip_Id.toString());
+		
 	}
 	
 	
