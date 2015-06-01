@@ -1,11 +1,17 @@
 package src.services;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 import src.repository.AbstractRepository;
 import src.repository.UserRepository;
+import src.domain.Group;
 import src.domain.InvalidPasswordException;
 import src.domain.Profile;
+import src.domainUI_Controller.GroupUI;
+import src.domainUI_Controller.ProfileUI;
+import src.domainUI_Controller.TripUI;
 
 public class ProfileService{
 
@@ -55,12 +61,28 @@ public class ProfileService{
      * @return true when the login is successful
      * @throws InvalidPasswordException when the password does not coincide with the users password
      */
-    public boolean logIn(String usrId, String pass) throws InvalidPasswordException{
-        Profile user=repo.getById(usrId);
+    public boolean logIn(String usrName, String pass) throws InvalidPasswordException{
+        Profile user = repo.getById(usrName);
         if(!user.cmpPassword(pass))
             throw new InvalidPasswordException("Password or username not valid");
         return true;
     }
 
+    public Collection<ProfileUI> getProfileFriendsUI(Profile profile){
+	    Collection<ProfileUI> friends = new HashSet<ProfileUI>();
+		for (Profile friend : profile.getFriends()) {
+			friends.add(new ProfileUI(friend));
+		}
+		return friends;
+	}
+    
+    public Profile getLoggedProfile(String usrName){
+    	return repo.getById(usrName);	
+    }
+    
+    public ProfileUI getProfileUI(Profile profile){
+    	return new ProfileUI(profile);
+    }
+   
 
 }

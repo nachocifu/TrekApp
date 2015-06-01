@@ -1,5 +1,4 @@
-package src.domainUI&Controller;
-
+package src.domainUI_Controller;
 
 public class AbstractDomainUI {
 	

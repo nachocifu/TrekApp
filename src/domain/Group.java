@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -65,6 +66,10 @@ public class Group {
 	}
 	
 	public Group(){
+	}
+	
+	public Collection<Profile> getMembers(){
+		return this.members;
 	}
 	
 	public String getGroupName(){
