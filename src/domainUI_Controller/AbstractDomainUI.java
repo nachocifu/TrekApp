@@ -1,12 +1,12 @@
-package src.domainUI_Controller;
+package domainUI_Controller;
 
 public class AbstractDomainUI {
-	
-	/* Variables required by interface*/
-	//...
-	/* Getters used by interface*/
-	//...
-	
-	
-	
+
+    /* Variables required by interface*/
+    //...
+    /* Getters used by interface*/
+    //...
+
+
+
 }

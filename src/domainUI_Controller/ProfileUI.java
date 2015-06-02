@@ -1,14 +1,14 @@
-package src.domainUI_Controller;
+package domainUI_Controller;
 
 import java.util.Collection;
 import java.util.Date;
 
-import src.services.GroupService;
-import src.services.ProfileService;
-import src.services.TripService;
-import src.domain.Review;
-import src.domainUI_Controller.TripUI;
-import src.domain.Profile;
+import services.GroupService;
+import services.ProfileService;
+import services.TripService;
+import domain.Review;
+import domainUI_Controller.TripUI;
+import domain.Profile;
 
 
 public class ProfileUI extends AbstractDomainUI {

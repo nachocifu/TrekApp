@@ -1,10 +1,10 @@
-package src.domainUI_Controller;
+package domainUI_Controller;
 
 import java.util.Date;
 
-import src.domain.Trip;
+import domain.Trip;
 
-import src.domain.UniversalString;
+import domain.UniversalString;
 
 /**
  * 

@@ -1,17 +1,17 @@
-package src.services;
+package services;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import src.repository.AbstractRepository;
-import src.repository.UserRepository;
-import src.domain.Group;
-import src.domain.InvalidPasswordException;
-import src.domain.Profile;
-import src.domainUI_Controller.GroupUI;
-import src.domainUI_Controller.ProfileUI;
-import src.domainUI_Controller.TripUI;
+import repository.AbstractRepository;
+import repository.UserRepository;
+import domain.Group;
+import domain.InvalidPasswordException;
+import domain.Profile;
+import domainUI_Controller.GroupUI;
+import domainUI_Controller.ProfileUI;
+import domainUI_Controller.TripUI;
 
 public class ProfileService{
 

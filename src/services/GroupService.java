@@ -1,15 +1,15 @@
-package src.services;
+package services;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-import src.repository.AbstractRepository;
-import src.repository.GroupRepository;
-import src.domainUI_Controller.GroupUI;
-import src.domainUI_Controller.TripUI;
-import src.domain.Group;
-import src.domain.Profile;
-import src.domain.Trip;
+import repository.AbstractRepository;
+import repository.GroupRepository;
+import domainUI_Controller.GroupUI;
+import domainUI_Controller.TripUI;
+import domain.Group;
+import domain.Profile;
+import domain.Trip;
 
 public class GroupService {
 

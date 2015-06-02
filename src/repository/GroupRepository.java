@@ -6,6 +6,7 @@ package repository;
 import java.util.List;
 
 import domain.Group;
+import domain.Profile;
 
 /**
  * The connection to the file system regarding groups and their persistence.
@@ -25,7 +26,7 @@ public class GroupRepository extends AbstractRepository<Group> {
      * @return response the list of groups to return
      */
     @Override
-    public List<Group> searchBy(String searchTxt, Group currentUser) {
+    public List<Group> searchBy(String searchTxt, Profile currentUser) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -12,8 +12,8 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 
+import domain.Profile;
 import domain.QueryFilters;
-import domain.User;
 
 /**
  *
@@ -187,6 +187,6 @@ public abstract class AbstractRepository<T> {
      * @param searchTxt
      * @return response The list of objects that match the text in someway.
      */
-    public abstract List<T> searchBy(String searchTxt, T currentUser);
+    public abstract List<T> searchBy(String searchTxt, Profile currentUser);
 
 }
