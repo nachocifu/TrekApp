@@ -44,8 +44,6 @@ public class ProfileService{
 
         Profile user= new Profile(usrName, name, surname, brthDay, sex, pass, city, email);
         return repo.add(user);
-
-
     }
 
     /**
@@ -76,6 +74,7 @@ public class ProfileService{
 		return friends;
 	}
     
+    //Cambiar
     public Profile getLoggedProfile(String usrName){
     	return repo.getById(usrName);	
     }
