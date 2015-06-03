@@ -1,4 +1,4 @@
-package domainUI_Controller;
+package src.domainUI_Controller;
 
 import java.util.Collection;
 import java.util.Date;

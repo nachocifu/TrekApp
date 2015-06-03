@@ -44,8 +44,6 @@ public class ProfileService{
 
         Profile user= new Profile(usrName, name, surname, brthDay, sex, pass, city, email);
         return repo.add(user);
-
-
     }
 
     /**

@@ -13,12 +13,13 @@ public class UIController {
     private GroupService groupService;
     private ProfileService profileService;
     private TripService tripService;
-    private Profile loggedUser;
+    private Profile loggedUser; //Cambiar a ProfileUI
 
     public UIController(){
         this.groupService = new GroupService();
         this.profileService = new ProfileService();
         this.tripService = new TripService();
+        //Poner repos
     }
 
     public boolean createUser(String usrName, String name, String surname, Date brthDay, boolean sex, String pass, String city, String email){
@@ -45,8 +46,4 @@ public class UIController {
         }
         return false;
     }
-
-
-
-
 }
