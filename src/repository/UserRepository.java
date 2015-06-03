@@ -75,4 +75,8 @@ public class UserRepository extends AbstractRepository<Profile> {
         }
         return response;
     }
+
+    /**
+     * get user by username
+     */
 }

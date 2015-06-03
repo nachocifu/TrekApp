@@ -69,20 +69,20 @@ public class ProfileService{
     }
 
     public Collection<ProfileUI> getProfileFriendsUI(Profile profile){
-	    Collection<ProfileUI> friends = new HashSet<ProfileUI>();
-		for (Profile friend : profile.getFriends()) {
-			friends.add(new ProfileUI(friend));
-		}
-		return friends;
-	}
-    
+        Collection<ProfileUI> friends = new HashSet<ProfileUI>();
+        for (Profile friend : profile.getFriends()) {
+            friends.add(new ProfileUI(friend));
+        }
+        return friends;
+    }
+
     public Profile getLoggedProfile(String usrName){
-    	return repo.getById(usrName);	
+        return repo.getById(usrName);
     }
-    
+
     public ProfileUI getProfileUI(Profile profile){
-    	return new ProfileUI(profile);
+        return new ProfileUI(profile);
     }
-   
+
 
 }

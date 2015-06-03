@@ -57,7 +57,6 @@ public abstract class AbstractRepository<T> {
 
                 /** retrieve the object from the database by its id */
                 response = dao.queryForId(id);
-
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());
