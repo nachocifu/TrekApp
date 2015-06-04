@@ -49,7 +49,7 @@ public class ProfileService{
     /**
      * @param usrId of the user to be deleted from the database
      */
-    public void delete(Profile loggedUser){
+    public void delete(ProfileUI loggedUser){
         repo.delete(loggedUser.getUsrId());
     }
 
@@ -74,8 +74,8 @@ public class ProfileService{
         return friends;
     }
 
-    public Profile getLoggedProfile(String usrName){
-        return repo.getById(usrName);
+    public ProfileUI getLoggedProfileUI(String usrName){
+        return new ProfileUI(repo.getById(usrName));
     }
 
     public ProfileUI getProfileUI(Profile profile){

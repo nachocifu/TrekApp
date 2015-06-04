@@ -1,19 +1,19 @@
-package src.domainUI_Controller;
+package domainUI_Controller;
 
 import java.util.Date;
 
-import src.services.GroupService;
-import src.services.TripService;
-import src.domain.InvalidPasswordException;
-import src.domain.Profile;
-import src.services.ProfileService;
+import services.GroupService;
+import services.TripService;
+import domain.InvalidPasswordException;
+import domain.Profile;
+import services.ProfileService;
 
 public class UIController {
 
     private GroupService groupService;
     private ProfileService profileService;
     private TripService tripService;
-    private Profile loggedUser; //Cambiar a ProfileUI
+    private ProfileUI loggedUser; //Cambiar a ProfileUI
 
     public UIController(){
         this.groupService = new GroupService();
@@ -31,7 +31,7 @@ public class UIController {
     }
 
     public ProfileUI getMyProfileUI(){
-        return this.profileService.getProfileUI(this.loggedUser);
+        return this.loggedUser;
     }
 
     /*
@@ -41,7 +41,7 @@ public class UIController {
 
     public Boolean logIn(String usrName, String password) throws InvalidPasswordException{
         if(this.profileService.logIn(usrName, password)){
-            this.loggedUser = profileService.getLoggedProfile(usrName);
+            this.loggedUser = profileService.getLoggedProfileUI(usrName);
             return true;
         }
         return false;
