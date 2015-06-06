@@ -15,6 +15,9 @@ import domain.Trip;
 
 public class Application{
 
+    /* Singleton Reference*/
+    private static Application application = null;
+
     /* Default database to be used if non selected.*/
     private String DEFAULT_DATABASE = "DataBase";
 
@@ -25,7 +28,8 @@ public class Application{
 
     /**
      * Constructor of the application.
-     * @param pathToDataBase Path to dataBase standing on src/
+     * NOTE: If database non existant, it will be created.
+     * @param pathToDataBase Path to dataBase from  ./src/
      */
     private Application(String pathToDataBase){
         String pathString = pathToDataBase.trim();
@@ -40,6 +44,26 @@ public class Application{
         tripRepo = new TripRepository(pathToDataBase, Trip.class);
     }
 
+    /**
+     * Request singeton reference to the Application
+     * @return application The Application
+     */
+    public static Application getInstance(){
+        if(application == null)
+            application = new Application("");
+        return application;
+    }
+
+    /**
+     * Change the Default Data Base.
+     * NOTE: ALL sessions are imediately logged out.
+     * @param pathToDataBase
+     */
+    public void changeDataBase(String pathToDataBase){
+        Session.getInstance().logOut();
+        application = new Application(pathToDataBase);
+    }
+
 
     public boolean validate(String userName, String passWord) {
         return this.userRepo.validateCredentials(userName,passWord);
@@ -49,4 +73,8 @@ public class Application{
         return new ProfileController(userRepo);
     }
 
+    public CurrentProfileController getCurrentProfileController(){
+        return new CurrentProfileController(userRepo);
+    }
 }
+

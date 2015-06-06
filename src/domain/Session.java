@@ -1,11 +1,14 @@
 package domain;
 
-import controllers.ControllerFactory;
+import controllers.Application;
 
 public class Session {
 
+    /* Singleton Session Reference*/
+    private static Session session = null;
+
     /* Current user's username*/
-    private String userName;
+    private String userName = null;
 
     /* Signals if there is session in progress */
     private Boolean isActive = false;
@@ -13,15 +16,22 @@ public class Session {
     /* Signals if busy waiting for a response */
     private Boolean waitingForCallBack = false;
 
+    /**
+     * Private constructor for singleton implementation.
+     */
+    private Session(){
+
+    }
 
     /**
-     * Returns the current session.
+     * Returns the singleton session.
      *
      * @return
      */
     public static Session getInstance() {
-        // TODO Auto-generated method stub
-
+        if( session == null)
+            session = new Session();
+        return session;
     }
 
     /**
@@ -48,7 +58,7 @@ public class Session {
         /* Validate Credentials */
         this.waitingForCallBack = true;
 
-        if (application.validate( userName, passWord )){
+        if (Application.getInstance().validate( userName, passWord )){
             this.waitingForCallBack = false;
             this.userName = userName;
             this.isActive = true;
