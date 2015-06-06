@@ -3,9 +3,9 @@ package src.domainUI_Controller;
 import java.util.Collection;
 import java.util.Date;
 
-import services.GroupService;
-import services.ProfileService;
-import services.TripService;
+import controllers.GroupService;
+import controllers.ProfileService;
+import controllers.TripService;
 import domain.Review;
 import domainUI_Controller.TripUI;
 import domain.Profile;

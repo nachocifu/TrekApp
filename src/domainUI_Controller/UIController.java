@@ -2,11 +2,11 @@ package domainUI_Controller;
 
 import java.util.Date;
 
-import services.GroupService;
-import services.TripService;
+import controllers.GroupService;
+import controllers.ProfileService;
+import controllers.TripService;
 import domain.InvalidPasswordException;
 import domain.Profile;
-import services.ProfileService;
 
 public class UIController {
 
