@@ -15,7 +15,6 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 
 import domain.Profile;
-import domain.User;
 
 public class UserRepository extends AbstractRepository<Profile> {
 
@@ -77,6 +76,59 @@ public class UserRepository extends AbstractRepository<Profile> {
     }
 
     /**
+     * Query if username and password match to any users.
+     * NOTE: count(*) is not used do to limited knowledge on OrmLite
+     * @param userName
+     * @param passWord
+     * @return boolean If username and password exist and match.
+     */
+    public boolean validateCredentials(String userName, String passWord) {
+        ConnectionSource connectionSource = null;
+        Boolean flag = false;
+
+        try{
+            try{
+                Class.forName("org.sqlite.JDBC");
+                /** create a connection source to our database */
+                connectionSource = new JdbcConnectionSource(this.databaseUrl);
+
+                /** instantiate the dao */
+                Dao<Profile, String> dao = DaoManager.createDao(connectionSource, Profile.class);
+
+                /** Build native query */
+                StringBuffer qryBuilder = new StringBuffer();
+                qryBuilder.append("SELECT prf ");
+                qryBuilder.append("FROM Profile prfl ");
+                qryBuilder.append("WHERE ");
+                qryBuilder.append( "prf.usrName = " + userName);
+                qryBuilder.append(" AND prf.password = " + passWord);
+
+                String query = qryBuilder.toString();
+
+                RawRowMapper<Profile> mapper = dao.getRawRowMapper();
+                GenericRawResults<Profile> rawResponse = dao. queryRaw(query, mapper);
+
+                if(rawResponse.getResults().size() > 0)
+                    flag = true;
+            }
+            catch(Exception e){
+                System.err.println("[ERROR] || " + e.getMessage());
+            }
+            finally{
+                /** close the connection source */
+                connectionSource.close();
+            }
+        }
+        catch(SQLException e){
+            System.err.println("[ERROR] || " + e.getMessage());
+        }
+        return flag;
+    }
+
+    /**
      * get user by username
      */
+    public Profile getById(String username){
+        return null;
+    }
 }
