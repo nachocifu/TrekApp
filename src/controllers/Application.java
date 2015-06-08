@@ -1,5 +1,7 @@
 package controllers;
 
+import java.rmi.ServerException;
+import java.util.Date;
 import java.util.HashSet;
 
 import com.sun.xml.internal.ws.util.StringUtils;
@@ -12,6 +14,7 @@ import domain.Group;
 import domain.Profile;
 import domain.Session;
 import domain.Trip;
+import domain.UserNameAlreadyExistsException;
 
 public class Application{
 
@@ -52,6 +55,31 @@ public class Application{
         if(application == null)
             application = new Application("");
         return application;
+    }
+
+    /**
+     * Registers a new user in the system. If username exists throws exception.
+     * @param username
+     * @param name
+     * @param surname
+     * @param brthDay
+     * @param sex
+     * @param password
+     * @param city
+     * @param email
+     * @throws ServerException
+     * @throws UserNameAlreadyExistsException
+     */
+    public void registerUser(String username, String name, String surname, Date brthDay, boolean sex, String password, String city, String email ) throws ServerException, UserNameAlreadyExistsException{
+        if(    username.trim().isEmpty()
+            || name.trim().isEmpty()
+            || surname.trim().isEmpty()
+            || brthDay == null
+            || password.trim().isEmpty()
+            || city.trim().isEmpty() )
+            throw new IllegalArgumentException("ERROR || Error registering user. Check arguments.");
+
+        this.userRepo.add( new Profile(username, name, surname, brthDay, sex, password, city, email));
     }
 
     /**

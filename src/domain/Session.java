@@ -20,7 +20,7 @@ public class Session {
      * Private constructor for singleton implementation.
      */
     private Session(){
-
+        // Exists only to defeat instantiation.
     }
 
     /**

@@ -1,11 +1,14 @@
 package repository;
 
+import java.rmi.ServerException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.management.openmbean.KeyAlreadyExistsException;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -14,6 +17,7 @@ import com.j256.ormlite.support.ConnectionSource;
 
 import domain.Profile;
 import domain.QueryFilters;
+import domain.UserNameAlreadyExistsException;
 
 /**
  *
@@ -115,8 +119,10 @@ public abstract class AbstractRepository<T> {
      * Adds the object. Returns if it succeedes.
      * @param obj to save on system
      * @return status if success is true or false
+     * @throws UserNameAlreadyExistsException
+     * @throws ServerException
      */
-    public boolean add(T obj){
+    public void add(T obj) throws UserNameAlreadyExistsException, ServerException{
         ConnectionSource connectionSource = null;
         try{
             try{
@@ -139,12 +145,14 @@ public abstract class AbstractRepository<T> {
                 connectionSource.close();
             }
         }
+        catch(KeyAlreadyExistsException e){
+            System.err.println("[ERROR] || " + e.getMessage());
+            throw new UserNameAlreadyExistsException("ERROR || Unable to register user. Username already exists.");
+        }
         catch(SQLException e){
             System.err.println("[ERROR] || " + e.getMessage());
-            return false;
+            throw new ServerException("ERROR || Failed to register new user.");
         }
-        return true;
-
     }
 
     /**

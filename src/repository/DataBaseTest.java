@@ -22,6 +22,8 @@ import domain.Profile;
  * @author nacho
  */
 public class DataBaseTest {
+    private String databaseUrl = "jdbc:sqlite:DataBase";
+
 
     public static void main(String[] args) {
         System.err.println("### Local Database TEST ###");
@@ -87,6 +89,8 @@ public class DataBaseTest {
 
             /**Populate*/
             pool.add(new Profile("nacho", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "mail"));
+            pool.add(new Profile("naty", "Natalia", "Navas", new Date(1,1,1994), true, "agua", "Portena", "naty.navas@gmail.com"));
+            pool.add(new Profile("kochi", "Daniel", "Kochian", null, false, "agua", "neuquen", "kochis.mail@gmail.com") );
 
 
             for(Profile each : pool)
@@ -103,7 +107,6 @@ public class DataBaseTest {
 
 
 
-    private String databaseUrl = "jdbc:sqlite:DataBase";
 
     public DataBaseTest(){
     }
