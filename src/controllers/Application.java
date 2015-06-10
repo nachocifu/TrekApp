@@ -15,6 +15,7 @@ import domain.Profile;
 import domain.Session;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
+import domainUI_Controller.GroupUI;
 
 public class Application{
 

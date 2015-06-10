@@ -1,23 +1,23 @@
-package src.domainUI_Controller;
+package domainUI_Controller;
 
 import java.util.Collection;
 
-import src.domain.Trip;
-import src.services.TripService;
-
+import domain.Trip;
+import services.TripService;
+@Deprecated
 public class PastTripUI extends AbstractDomainUI{
 
-	private Trip trip;
-	private TripService tripService;
-	
-	public PastTripUI(Trip trip){
-		this.trip = trip;
-		this.tripService = new TripService();
-	}
-	
-	public Collection<ProfileUI> getIntegrants(){
-		return this.tripService.getTripParticipantsUI(this.trip);
-	}
-	
-	
+    private Trip trip;
+    private TripService tripService;
+    @Deprecated
+    public PastTripUI(Trip trip){
+        this.trip = trip;
+        this.tripService = new TripService();
+    }
+    @Deprecated
+    public Collection<ProfileUI> getIntegrants(){
+        return this.tripService.getTripParticipantsUI(this.trip);
+    }
+
+
 }

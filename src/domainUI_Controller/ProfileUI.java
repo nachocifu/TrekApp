@@ -1,4 +1,4 @@
-package src.domainUI_Controller;
+package domainUI_Controller;
 
 import java.util.Collection;
 import java.util.Date;
@@ -10,7 +10,7 @@ import domain.Review;
 import domainUI_Controller.TripUI;
 import domain.Profile;
 
-
+@Deprecated
 public class ProfileUI extends AbstractDomainUI {
 
     private Profile profile;
@@ -18,6 +18,7 @@ public class ProfileUI extends AbstractDomainUI {
     private GroupService groupService;
     private ProfileService profileService;
 
+    @Deprecated
     public ProfileUI(Profile profile){
         this.profile = profile;
         this.tripService = new TripService();

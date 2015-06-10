@@ -7,50 +7,51 @@ import domain.Trip;
 import domain.UniversalString;
 
 /**
- * 
- * An intermediate for the FrontEnd to use
  *
+ * An intermediate for the FrontEnd to use
+ *@deprecated
  */
+
 public class TripUI extends AbstractDomainUI {
-	
-	private Trip trip;
-	
-	public TripUI(Trip trip){
-		this.trip = trip;
-		}
 
-	public Date getStart_date() {
-		return this.trip.getstartDate();
-	}
+    private Trip trip;
+    @Deprecated
+    public TripUI(Trip trip){
+        this.trip = trip;
+        }
+@Deprecated
+    public Date getStart_date() {
+        return this.trip.getstartDate();
+    }
 
-	public Date getEnd_date() {
-		return this.trip.getendDate();
-	}
+    public Date getEnd_date() {
+        return this.trip.getendDate();
+    }
 
-	public Integer getEstimate_cost() {
-		return this.trip.getestimateCost();
-	}
+    public Integer getEstimate_cost() {
+        return this.trip.getestimateCost();
+    }
 
-	public UniversalString getTrip_description() {
-		return this.trip.gettripDescription();
-	}
+    public UniversalString getTrip_description() {
+        return this.trip.gettripDescription();
+    }
 
-	public String getOrigin_city() {
-		return this.trip.getoriginCity();
-	}
+    public String getOrigin_city() {
+        return this.trip.getoriginCity();
+    }
 
-	public String getEnd_city() {
-		return this.trip.getendCity();
-	}
+    public String getEnd_city() {
+        return this.trip.getendCity();
+    }
 
-	public Trip.tripStatus getTrip_status() {
-		return this.trip.getTripStatus();
-	}
-	
-	public Integer getTripId(){
-		return this.trip.getId();
-	}
-	
-	
-	
+    public Trip.tripStatus getTrip_status() {
+        return this.trip.getTripStatus();
+    }
+
+    public Integer getTripId(){
+        return this.trip.getId();
+    }
+
+
+
 }

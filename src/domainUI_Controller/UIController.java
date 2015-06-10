@@ -7,14 +7,14 @@ import controllers.ProfileService;
 import controllers.TripService;
 import domain.InvalidPasswordException;
 import domain.Profile;
-
+@Deprecated
 public class UIController {
 
     private GroupService groupService;
     private ProfileService profileService;
     private TripService tripService;
     private ProfileUI loggedUser; //Cambiar a ProfileUI
-
+@Deprecated
     public UIController(){
         this.groupService = new GroupService();
         this.profileService = new ProfileService();
