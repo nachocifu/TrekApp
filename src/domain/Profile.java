@@ -231,6 +231,7 @@ public class Profile {
     /**
      * @param x coordinate from the users location
      * @param y coordinate from the users location
+     * @deprecated ESTO AL FINAL SE USA O LO PODEMOS VOLAR???
      */
     public void checkIn(Double x, Double y){
         Coordinates coor=new Coordinates(x,y);
@@ -261,8 +262,15 @@ public class Profile {
     /**
      * @param tripId that will be added to the users trips
      */
-    public void addTrip(Trip trip){
+    public void joinTrip(Trip trip){
         this.trips.add(trip);
+    }
+
+    /**
+     * @param tripId that will be deleted from the users trips
+     */
+    public void leaveTrip(Trip trip){
+        this.trips.remove(trip);
     }
 
     /**
@@ -298,20 +306,21 @@ public class Profile {
     /**
      * @param group of group that the user will be added to
      */
-    public void addGroup(Group group){
+    public void joinGroup(Group group){
         this.groups.add(group);
     }
 
     /**
      * @param group of the group the user is leaving
      */
-    public void deleteGroup(Group group){
+    public void leaveGroup(Group group){
         this.groups.remove(group);
     }
 
     /**
      * @return a boolean value indicating if the password is correct, this way the password remains private and is never
      * shared with a different object
+     * @deprecated REALMENTE NECESITAMOS ESTO? DEJEMOSLO POR LAS DUDAS
      */
     public boolean cmpPassword(String pass){
         if(this.password.equals(pass))

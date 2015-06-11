@@ -1,6 +1,7 @@
 package controllers;
 
 import domain.ControllerNotLoadedException;
+import domain.InvalidPasswordException;
 import domain.Session;
 import domain.SessionNotActiveException;
 import repository.GroupRepository;
@@ -73,5 +74,33 @@ public class CurrentProfileController extends ProfileController {
         this.validateEnvironment();
         this.validateController(user);
         this.obj.unBlockedUsr(user.getObject());
+    }
+
+    public void changePass(String oldPass, String newPass) throws InvalidPasswordException {
+        this.obj.changePass(oldPass, newPass);
+    }
+
+    public void joinGroup(GroupController group) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(group);
+        this.obj.joinGroup(group.getObject());
+    }
+
+    public void leaveGroup(GroupController group) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(group);
+        this.obj.leaveGroup(group.getObject());
+    }
+
+    public void joinTrip(TripController trip) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(trip);
+        this.obj.joinTrip(trip.getObject());
+    }
+
+    public void leaveTrip(TripController trip) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(trip);
+        this.obj.leaveTrip(trip.getObject());
     }
 }
