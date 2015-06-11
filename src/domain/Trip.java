@@ -11,13 +11,13 @@ public class Trip {
     private Date endDate;
     private Integer groupId;
     private Integer tripId;
-    private Integer estimateCost;
+    private Double estimateCost;
     private UniversalString tripDescription;
     private String originCity;
     private String endCity;
     public TripStatus tripStatus;
 
-    public Trip(Date startDate, Date endDate, Integer groupId, Integer tripId, Integer estimateCost, UniversalString tripDescription, String originCity, String endCity){
+    public Trip(Date startDate, Date endDate, Integer groupId, Integer tripId, Double estimateCost, UniversalString tripDescription, String originCity, String endCity){
         this.startDate = startDate;
         this.endDate = endDate;
         this.groupId = groupId;
@@ -26,10 +26,10 @@ public class Trip {
         this.tripDescription = tripDescription;
         this.originCity = originCity;
         this.endCity = endCity;
-        this.tripStatus = tripStatus.OPEN;
+        this.tripStatus = TripStatus.OPEN;
         }
 
-    public Date getstartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
@@ -37,11 +37,11 @@ public class Trip {
         this.startDate = startDate;
     }
 
-    public Date getendDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setendDate(Date endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
@@ -57,35 +57,35 @@ public class Trip {
         this.tripId = tripId;
     }
 
-    public Integer getestimateCost() {
+    public Double getEstimateCost() {
         return estimateCost;
     }
 
-    public void setestimateCost(Integer estimateCost) {
+    public void setEstimateCost(Double estimateCost) {
         this.estimateCost = estimateCost;
     }
 
-    public UniversalString gettripDescription() {
+    public UniversalString getTripDescription() {
         return tripDescription;
     }
 
-    public void settripDescription(UniversalString tripDescription) {
+    public void setTripDescription(UniversalString tripDescription) {
         this.tripDescription = tripDescription;
     }
 
-    public String getoriginCity() {
+    public String getOriginCity() {
         return originCity;
     }
 
-    public void setoriginCity(String originCity) {
+    public void setOriginCity(String originCity) {
         this.originCity = originCity;
     }
 
-    public String getendCity() {
+    public String getEndCity() {
         return endCity;
     }
 
-    public void setendCity(String endCity) {
+    public void setEndCity(String endCity) {
         this.endCity = endCity;
     }
 

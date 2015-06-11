@@ -103,7 +103,7 @@ public class Application{
     }
 
     public CurrentProfileController getCurrentProfileController(){
-        return new CurrentProfileController(userRepo);
+        return new CurrentProfileController(userRepo, tripRepo, groupRepo);
     }
 }
 

@@ -31,6 +31,14 @@ public class MyGroupController extends GroupController {
 		Profile member = profileController.getObject();
 		if(!member.equals(this.obj.getAdminUser())){
 			this.obj.deleteMember(member);
+			Profile newAdmin = this.obj.getMembers().iterator().next();
+			if(newAdmin != null){
+				this.obj.setAdminUser(newAdmin);
+			}
+			
+		}
+		else{
+			this.obj.deleteMember(member);
 		}
 	}
 	

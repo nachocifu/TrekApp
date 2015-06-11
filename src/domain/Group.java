@@ -88,7 +88,7 @@ public class Group {
 		return this.admin;
 	}
 	
-	public void setAdminUserId(Profile admin){
+	public void setAdminUser(Profile admin){
 		this.admin=admin;
 	}
 	
