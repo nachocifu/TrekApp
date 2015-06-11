@@ -99,7 +99,7 @@ public class Application{
     }
 
     public ProfileController getProfileController(){
-        return new ProfileController(userRepo);
+        return new ProfileController(userRepo, tripRepo, groupRepo);
     }
 
     public CurrentProfileController getCurrentProfileController(){

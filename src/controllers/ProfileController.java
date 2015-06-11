@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashSet;
 
 import repository.AbstractRepository;
+import repository.GroupRepository;
+import repository.TripRepository;
 import repository.UserRepository;
 import domain.ControllerNotLoadedException;
 import domain.Profile;
@@ -16,14 +18,9 @@ import domainUI_Controller.PastTripUI;
 
 public class ProfileController extends AbstractController<Profile> {
 
-    /* The profile to be controlled*/
-    private Profile profile;
-
-    /*The profile repository to request the profile*/
-    private UserRepository profileRepo;
-
-    public ProfileController(UserRepository repo) {
-        this.profileRepo =  repo;
+    public ProfileController(UserRepository profileRepo,
+            TripRepository tripRepo, GroupRepository groupRepo) {
+        super(profileRepo, tripRepo, groupRepo);
     }
 
     /**
@@ -48,92 +45,58 @@ public class ProfileController extends AbstractController<Profile> {
         Profile response = this.profileRepo.getById(username);
 
         if(response != null){
-            profile = response;
+            obj = response;
             return true;
         }
         else
             return false;
     }
 
-    /**
-     * Check that
-     * @throws SessionNotActiveException
-     * @throws ControllerNotLoadedException
-     */
-    private void validateEnvironment() throws SessionNotActiveException, ControllerNotLoadedException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        if( this.profile == null )
-            throw new ControllerNotLoadedException("ERROR || Cannot operate on unloaded controller.");
-    }
-
-
     /* #### TODOS LOS METODOS EN ESTE SON GETTERS,,,NO HAY SETTERS#######*/
     /* TODOS los metodos, al principio lo primero que hacen es validar que la session este abierta.*/
     public String getUsername(){
-
-        return this.profile.getUsrName();
+        this.validateEnvironment();
+        return this.obj.getUsrName();
     }
 
-    public String getUserName() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.profile.getName();
+    public String getUserName() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.obj.getName();
     }
 
-    public String getSurname() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.profile.getSurname();
+    public String getSurname() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.obj.getSurname();
     }
 
-    public Boolean getSex() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.profile.getSex();
+    public Boolean getSex() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.obj.getSex();
     }
 
-    public Date getBirthday() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.profile.getBirthDay();
+    public Date getBirthday() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.obj.getBirthDay();
     }
 
-    public Double getRating() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.profile.getRating();
+    public Double getRating() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.obj.getRating();
     }
 
-    public String getCity() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
+    public String getCity() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
         return this.getCity();
     }
 
-    public String getMail() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.profile.getEmail();
+    public String getMail() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.obj.getEmail();
     }
 
-    public HashSet<ProfileController> getFriends() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-
-        HashSet<ProfileController> response = new HashSet<ProfileController>();
-        Application app = Application.getInstance();
-        ProfileController controller;
-        for(Profile each: profile.getFriends()){
-            if(each.getUsrName().equals(Session.getInstance().getUserName()))
-                controller = app.getCurrentProfileController();
-            else
-                controller = app.getProfileController();
-
-            controller.load(each.getUsrName());
-            response.add(controller);
-        }
-        return	response;
+    public HashSet<ProfileController> getFriends() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.generateListOfProfileControllers(obj.getFriends());
     }
 
     public Collection<GroupUI> getGroups(){
@@ -151,7 +114,7 @@ public class ProfileController extends AbstractController<Profile> {
     public Collection<Review> getReviews() throws SessionNotActiveException{
         if(!Session.getInstance().isActive())
             throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.profile.getReviews();
+        return this.obj.getReviews();
     }
 
 
