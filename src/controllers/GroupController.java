@@ -74,11 +74,13 @@ public class GroupController extends AbstractController<Group> {
 
     public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
+        this.validateController(profileController);
         this.obj.addPost(profileController.getObject(), msg);
     }
 
     public void addGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
+        this.validateController(tripController);
         this.obj.addGroupTrip(tripController.getObject);
     }
 

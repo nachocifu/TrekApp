@@ -25,8 +25,10 @@ public class MyGroupController extends GroupController {
 		}
 	}
 	
+	//Hacer la logica de poder irte y pasarle el admin a otro o al siguiente
 	public void deleteMember(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException{
 		this.validateEnvironment();
+		this.validateController(profileController);
 		Profile member = profileController.getObject();
 		if(!member.equals(this.obj.getAdminUser())){
 			this.obj.deleteMember(member);
@@ -45,6 +47,7 @@ public class MyGroupController extends GroupController {
 	
 	public void deleteGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
 		this.validateEnvironment();
+		 this.validateController(tripController);
 		this.obj.deleteGroupTrip(tripController.getObject());
 	}
 	
