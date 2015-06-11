@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.Date;
 import java.util.HashSet;
 
 import domain.ControllerNotLoadedException;
@@ -10,9 +9,7 @@ import domain.SessionNotActiveException;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
-import src.domain.Message;
-import src.domain.Profile;
-import src.domain.Trip;
+import domain.Message;
 
 
 public class GroupController extends AbstractController<Group> {
@@ -44,23 +41,7 @@ public class GroupController extends AbstractController<Group> {
         return response;
     }
 
-    /**
-     * Sets the Group for the Controller
-     * @param groupId
-     * @return
-     */
-    protected Boolean setGroup(Integer groupId){
-        Group response = this.groupRepo.getById(groupId);
-
-        if(response != null){
-            obj = response;
-            return true;
-        }
-        else
-            return false;
-    }
-
-    //A continuaci�n solo getters
+    //A continuaci�n solo getters y métodos que pueden hacer todos
 
     public Double getCosts() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
@@ -69,7 +50,7 @@ public class GroupController extends AbstractController<Group> {
 
     public Double getCostsPerMember() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        return costs/members.size();
+        return this.obj.getCostsPerMember();
     }
 
     public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException{
@@ -81,10 +62,16 @@ public class GroupController extends AbstractController<Group> {
     public void addGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(tripController);
-        this.obj.addGroupTrip(tripController.getObject);
+        this.obj.addGroupTrip(tripController.getObject());
     }
 
     public Integer groupSize(){
         return this.obj.groupSize();
     }
+
+	@Override
+	protected Boolean setObj(Integer objId) throws SessionNotActiveException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
