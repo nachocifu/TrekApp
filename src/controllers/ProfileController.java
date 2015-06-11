@@ -36,17 +36,6 @@ public class ProfileController extends AbstractController<Profile> {
         return this.setObj( username );
     }
 
-    protected Boolean setObj(Integer objId) throws SessionNotActiveException{
-        Profile response = this.profileRepo.getById(objId);
-
-        if(response != null){
-            obj = response;
-            return true;
-        }
-        else
-            return false;
-    }
-
     /**
      * Generates the request to server and loads response.
      * @param username The username of the user
