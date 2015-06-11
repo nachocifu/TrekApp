@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Date;
 import java.util.HashSet;
 
 import domain.ControllerNotLoadedException;
@@ -37,6 +38,12 @@ public class GroupController extends AbstractController<Group> {
 
         response.load(Session.getInstance().getUserName());
         return response;
+    }
+
+    public void setStartDate(Date startDate) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+
+
     }
 
 

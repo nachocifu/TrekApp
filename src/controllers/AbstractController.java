@@ -12,7 +12,7 @@ import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
 
-public class AbstractController<T> {
+public abstract class AbstractController<T> {
 
     /* The object to be controlled*/
     protected T obj;
@@ -63,5 +63,19 @@ public class AbstractController<T> {
         return response;
     }
 
+    /**
+     * Sets the Object to be controlled by this controller.
+     * @param objId the object id
+     * @return success If load was successful
+     * @throws SessionNotActiveException
+     */
+    public Boolean load(Integer objId) throws SessionNotActiveException{
+        if(!Session.getInstance().isActive())
+            throw new SessionNotActiveException("ERROR || You must log in before operating.");
+
+        return this.setObj( objId );
+    }
+
+    protected abstract Boolean setObj(Integer objId ) throws SessionNotActiveException;
 
 }

@@ -33,7 +33,7 @@ public class Trip {
         return startDate;
     }
 
-    public void setstartDate(Date startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 

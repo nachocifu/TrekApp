@@ -6,6 +6,8 @@ import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
 import domain.ControllerNotLoadedException;
+import domain.Profile;
+import domain.Session;
 import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.TripStatus;
@@ -16,6 +18,22 @@ public class TripController extends AbstractController<Trip> {
     public TripController(UserRepository profileRepo, TripRepository tripRepo,
             GroupRepository groupRepo) {
         super(profileRepo, tripRepo, groupRepo);
+    }
+
+    /**
+     * Generates the request to server and loads response.
+     * @param username The id of the user
+     * @return boolean To signal success
+     */
+    protected Boolean setObj(Integer objId){
+        Trip response = this.profileRepo.getById(objId);
+
+        if(response != null){
+            obj = response;
+            return true;
+        }
+        else
+            return false;
     }
 
     public Date getStart_date() throws SessionNotActiveException, ControllerNotLoadedException {
@@ -51,11 +69,6 @@ public class TripController extends AbstractController<Trip> {
     public TripStatus getTrip_status() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getTripStatus();
-    }
-
-    public Integer getTripId() throws SessionNotActiveException, ControllerNotLoadedException{
-        this.validateEnvironment();
-        return this.obj.getId();
     }
 
 }

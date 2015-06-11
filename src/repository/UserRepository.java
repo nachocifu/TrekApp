@@ -170,4 +170,50 @@ public class UserRepository extends AbstractRepository<Profile> {
         }
         return response;
     }
+
+    /**
+     * Query for profile by user ID
+     * @param id The user ID
+     * @return response The Profile or null if no results
+     */
+    public Profile getById(Integer userId){
+        ConnectionSource connectionSource = null;
+        Profile response = null;
+
+        try{
+            try{
+                Class.forName("org.sqlite.JDBC");
+                /** create a connection source to our database */
+                connectionSource = new JdbcConnectionSource(this.databaseUrl);
+
+                /** instantiate the dao */
+                Dao<Profile, String> dao = DaoManager.createDao(connectionSource, Profile.class);
+
+                /** Build native query */
+                StringBuffer qryBuilder = new StringBuffer();
+                qryBuilder.append("SELECT prfl.* ");
+                qryBuilder.append("FROM Profile prfl ");
+                qryBuilder.append("WHERE ");
+                qryBuilder.append( "prfl.usrId = " + userId);
+
+                String query = qryBuilder.toString();
+
+                RawRowMapper<Profile> mapper = dao.getRawRowMapper();
+                GenericRawResults<Profile> rawResponse = dao. queryRaw(query, mapper);
+
+                response = rawResponse.getFirstResult();
+            }
+            catch(Exception e){
+                System.err.println("[ERROR] || " + e.getMessage());
+            }
+            finally{
+                /** close the connection source */
+                connectionSource.close();
+            }
+        }
+        catch(SQLException e){
+            System.err.println("[ERROR] || " + e.getMessage());
+        }
+        return response;
+    }
 }

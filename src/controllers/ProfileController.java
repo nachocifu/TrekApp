@@ -24,8 +24,8 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * Sets the profile to be controlled by this controller.
-     * @param username The username of the user
+     * Sets the Profile to be controlled by this controller.
+     * @param profile the object id
      * @return success If load was successful
      * @throws SessionNotActiveException
      */
@@ -33,7 +33,18 @@ public class ProfileController extends AbstractController<Profile> {
         if(!Session.getInstance().isActive())
             throw new SessionNotActiveException("ERROR || You must log in before operating.");
 
-        return this.setProfile( username);
+        return this.setObj( username );
+    }
+
+    protected Boolean setObj(Integer objId) throws SessionNotActiveException{
+        Profile response = this.profileRepo.getById(objId);
+
+        if(response != null){
+            obj = response;
+            return true;
+        }
+        else
+            return false;
     }
 
     /**
@@ -41,7 +52,7 @@ public class ProfileController extends AbstractController<Profile> {
      * @param username The username of the user
      * @return boolean To signal success
      */
-    protected Boolean setProfile(String username){
+    protected Boolean setObj(String username){
         Profile response = this.profileRepo.getById(username);
 
         if(response != null){
@@ -54,7 +65,7 @@ public class ProfileController extends AbstractController<Profile> {
 
     /* #### TODOS LOS METODOS EN ESTE SON GETTERS,,,NO HAY SETTERS#######*/
     /* TODOS los metodos, al principio lo primero que hacen es validar que la session este abierta.*/
-    public String getUsername(){
+    public String getUsername() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getUsrName();
     }
