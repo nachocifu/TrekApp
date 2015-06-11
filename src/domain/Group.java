@@ -127,9 +127,7 @@ public class Group {
 	 * A groupTrip can only be deleted if the loggedUser is the Group admin
 	 * @param trip
 	 */
-	public void deleteGroupTrip(Trip trip) throws InvalidPermissionException{
-		if(!LoggedUser.getInstance().equals(admin))
-			throw new InvalidPermissionException("Only the group admin can delete a Group Trip");
+	public void deleteGroupTrip(Trip trip){
 		this.groupTrips.remove(trip);
 	}
 	
@@ -148,9 +146,6 @@ public class Group {
 	public void deletePost(Message msg) throws IllegalArgumentException, InvalidPermissionException{
 		if(!this.wall.containsKey(msg))
 			throw new IllegalArgumentException("the message does not exists");
-		if(!LoggedUser.getInstance().equals(admin) && !this.wall.get(msg).equals(LoggedUser.getInstance()))
-			throw new InvalidPermissionException("the only users with permission to delete a wall post is the group admin or the writer of the post");
-
 		this.wall.remove(msg);
 	}
 	
