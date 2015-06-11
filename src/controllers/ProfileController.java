@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import repository.AbstractRepository;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
@@ -13,7 +12,6 @@ import domain.Profile;
 import domain.Review;
 import domain.Session;
 import domain.SessionNotActiveException;
-import domainUI_Controller.GroupUI;
 import domainUI_Controller.PastTripUI;
 
 public class ProfileController extends AbstractController<Profile> {
@@ -94,13 +92,12 @@ public class ProfileController extends AbstractController<Profile> {
 
     public HashSet<ProfileController> getFriends() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        return this.generateListOfProfileControllers(obj.getFriends());
+        return ProfileController.generateListOfControllers(obj.getFriends());
     }
 
-    public Collection<GroupUI> getGroups(){
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.groupService.getProfileGroupsUI(profile);
+    public Collection<GroupController> getGroups(){
+        this.validateEnvironment();
+        return this.getProfileGroupsUI(profile);
     }
 
     public Collection<PastTripUI> getPastTripsUI(){
@@ -115,5 +112,27 @@ public class ProfileController extends AbstractController<Profile> {
         return this.obj.getReviews();
     }
 
+    /**
+     * Generate list of controllers from list of T objects
+     * @param list
+     * @return response List of controllers
+     * @throws SessionNotActiveException
+     */
+    protected static HashSet<ProfileController> generateListOfControllers(Collection<Profile> list) throws SessionNotActiveException{
+        HashSet<ProfileController> response = new  HashSet<ProfileController>();
+        Application app = Application.getInstance();
+        String currentUser = Session.getInstance().getUserName();
+        ProfileController controller;
 
+        for(Profile each: list){
+            if(each.getUsrName().equals(currentUser))
+                controller = app.getCurrentProfileController();
+            else
+                controller = app.getProfileController();
+
+            controller.load(each);
+            response.add(controller);
+        }
+        return response;
+    }
 }

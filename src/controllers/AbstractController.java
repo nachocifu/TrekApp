@@ -3,14 +3,13 @@ package controllers;
 import java.util.Collection;
 import java.util.HashSet;
 
-import domain.ControllerNotLoadedException;
-import domain.Profile;
-import domain.Session;
-import domain.SessionNotActiveException;
 import repository.AbstractRepository;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
+import domain.ControllerNotLoadedException;
+import domain.Session;
+import domain.SessionNotActiveException;
 
 public abstract class AbstractController<T> {
 
@@ -33,6 +32,12 @@ public abstract class AbstractController<T> {
     }
 
     /**
+     * Get the actualRepository
+     * @return
+     */
+    protected abstract AbstractRepository<T> getRepository();
+
+    /**
      * Check for environment irregularities.
      *
      * @throws SessionNotActiveException
@@ -50,24 +55,6 @@ public abstract class AbstractController<T> {
             throw new IllegalArgumentException("ERROR || Illegal parameter.");
         if(controller.getObject() == null)
             throw new IllegalArgumentException("ERROR || Cannot operate with not loaded controller.");
-    }
-
-    protected HashSet<ProfileController> generateListOfProfileControllers(Collection<Profile> profiles) throws SessionNotActiveException{
-        HashSet<ProfileController> response = new  HashSet<ProfileController>();
-        Application app = Application.getInstance();
-        ProfileController controller;
-
-        for(Profile each: profiles){
-            if(each.getUsrName().equals(Session.getInstance().getUserName()))
-                controller = app.getCurrentProfileController();
-            else
-                controller = app.getProfileController();
-
-            controller.load(each.getUsrName());
-            response.add(controller);
-        }
-
-        return response;
     }
 
     /**
@@ -88,5 +75,9 @@ public abstract class AbstractController<T> {
 
     protected T getObject(){
         return this.obj;
+    }
+
+    protected void saveChanges(){
+        this.repo.update(algo)
     }
 }

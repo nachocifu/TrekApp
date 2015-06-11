@@ -103,7 +103,40 @@ public class Application{
     }
 
     public CurrentProfileController getCurrentProfileController(){
-        return new CurrentProfileController(userRepo);
+        return new CurrentProfileController(userRepo, tripRepo, groupRepo);
+    }
+
+    public GroupController getGroupController(){
+        return new GroupController(userRepo, tripRepo, groupRepo);
+    }
+
+    public MyGroupController getMyGroupController(){
+        return new MyGroupController(userRepo, tripRepo, groupRepo);
+    }
+
+    public TripController getTripController(){
+        return new TripController(userRepo, tripRepo, groupRepo);
+    }
+
+    public MyTripController getMyTripController(){
+        return new MyTripController(userRepo, tripRepo, groupRepo);
+    }
+
+    public ProfileController getController(Profile profile) {
+        if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
+            return getCurrentProfileController();
+        } else {
+            return getProfileController();
+        }
+    }
+
+    public TripController getController(Trip profile) {
+        return null;
+//        if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
+//            return getCurrentProfileController();
+//        } else {
+//            return getProfileController();
+//        }
     }
 }
 
