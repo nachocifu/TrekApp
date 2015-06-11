@@ -45,6 +45,13 @@ public abstract class AbstractController<T> {
             throw new ControllerNotLoadedException("ERROR || Cannot operate on unloaded controller.");
     }
 
+    protected void validateController(AbstractController<?> controller){
+        if(controller == null)
+            throw new IllegalArgumentException("ERROR || Illegal parameter.");
+        if(controller.getObject() == null)
+            throw new IllegalArgumentException("ERROR || Cannot operate with not loaded controller.");
+    }
+
     protected HashSet<ProfileController> generateListOfProfileControllers(Collection<Profile> profiles) throws SessionNotActiveException{
         HashSet<ProfileController> response = new  HashSet<ProfileController>();
         Application app = Application.getInstance();

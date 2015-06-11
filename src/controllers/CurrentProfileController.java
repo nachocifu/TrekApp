@@ -1,5 +1,6 @@
 package controllers;
 
+import domain.ControllerNotLoadedException;
 import domain.Session;
 import domain.SessionNotActiveException;
 import repository.GroupRepository;
@@ -50,20 +51,27 @@ public class CurrentProfileController extends ProfileController {
         return this.load();
     }
 
-    public void deleteFriend(ProfileController friend){
-        if(friend == null)
-            throw new IllegalArgumentException();
-        if(friend.getObject() == null)
-            throw new IllegalArgumentException();
-
+    public void deleteFriend(ProfileController friend) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(friend);
         this.obj.deleteFriend(friend.getObject());
     }
 
-    public void addFriend(ProfileController friend){
+    public void addFriend(ProfileController friend) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(friend);
         this.obj.addFriend(friend.getObject());
     }
 
-    public void blockUser(ProfileController user){
+    public void blockUser(ProfileController user) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(user);
         this.obj.blockUser(user.getObject());
+    }
+
+    public void unBlockUser(ProfileController user) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(user);
+        this.obj.unBlockedUsr(user.getObject());
     }
 }
