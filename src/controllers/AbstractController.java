@@ -72,18 +72,19 @@ public abstract class AbstractController<T> {
 
     /**
      * Sets the Object to be controlled by this controller.
-     * @param objId the object id
+     * Only available for other Controllers
+     * @param obj the object to be controlled
      * @return success If load was successful
      * @throws SessionNotActiveException
      */
-    public Boolean load(Integer objId) throws SessionNotActiveException{
+    protected void load(T obj) throws SessionNotActiveException{
         if(!Session.getInstance().isActive())
             throw new SessionNotActiveException("ERROR || You must log in before operating.");
+        if(obj == null)
+            throw new IllegalArgumentException("ERROR || Illegal operation");
+        this.obj = obj;
 
-        return this.setObj( objId );
     }
-
-    protected abstract Boolean setObj(Integer objId ) throws SessionNotActiveException;
 
     protected T getObject(){
         return this.obj;
