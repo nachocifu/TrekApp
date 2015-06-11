@@ -12,6 +12,7 @@ import repository.TripRepository;
 import repository.UserRepository;
 import src.domain.Message;
 import src.domain.Profile;
+import src.domain.Trip;
 
 public class GroupController extends AbstractController<Group> {
 
@@ -60,16 +61,27 @@ public class GroupController extends AbstractController<Group> {
 
     //A continuaci�n solo getters
 
-    public Double getCosts(){
+    public Double getCosts() throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
         return this.obj.getCosts();
     }
 
-    public Double getCostsPerMember(){
+    public Double getCostsPerMember() throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
         return costs/members.size();
     }
 
-    public void addPost(String usrName, Message msg){
-        Profile member = this.profileRepo.getById(usrName);
-        this.obj.addPost(member, msg);
+    public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+        this.obj.addPost(profileController.getObject(), msg);
     }
+    
+    public void addGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+		this.obj.addGroupTrip(tripController.getObject);
+	}
+    
+    public Integer groupSize(){
+		return this.obj.groupSize();
+	}
 }
