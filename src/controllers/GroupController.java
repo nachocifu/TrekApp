@@ -38,4 +38,6 @@ public class GroupController extends AbstractController<Group> {
         response.load(Session.getInstance().getUserName());
         return response;
     }
+
+
 }
