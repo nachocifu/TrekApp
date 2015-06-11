@@ -9,6 +9,8 @@ import domain.SessionNotActiveException;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
+import src.domain.Message;
+import src.domain.Profile;
 
 public class GroupController extends AbstractController<Group> {
 
@@ -38,6 +40,35 @@ public class GroupController extends AbstractController<Group> {
         response.load(Session.getInstance().getUserName());
         return response;
     }
+    
+    /**
+     * Sets the Group for the Controller
+     * @param groupId
+     * @return
+     */
+    protected Boolean setGroup(Integer groupId){
+        Group response = this.groupRepo.getById(groupId);
 
-
+        if(response != null){
+            obj = response;
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    //A continuación solo getters
+    
+    public Double getCosts(){
+    	return this.obj.getCosts();
+    }
+    
+    public Double getCostsPerMember(){
+		return costs/members.size();
+	}
+    
+    public void addPost(String usrName, Message msg){
+    	Profile member = this.profileRepo.getById(usrName);
+		this.obj.addPost(member, msg);
+	}
 }

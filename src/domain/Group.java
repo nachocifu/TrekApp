@@ -98,9 +98,7 @@ public class Group {
 	 * @param user to be added to the Group
 	 * @throws InvalidPermissionException
 	 */
-	public void addMember(Profile user) throws InvalidPermissionException{
-		if(LoggedUser.getInstance().equals(admin))
-			throw new InvalidPermissionException("the logged user has to be the group admin to add new members into the group");
+	public void addMember(Profile user){
 		this.members.add(user);
 		user.addGroup(this);
 	}
@@ -111,11 +109,9 @@ public class Group {
 	 * @param user that will be deleted
 	 * @throws InvalidPermissionException
 	 */
-	public void deleteMember(Profile user) throws InvalidPermissionException, IllegalArgumentException{
+	public void deleteMember(Profile user) throws IllegalArgumentException{
 		if(!members.contains(user))
 			throw new IllegalArgumentException("the user that is trying to be deleted does not belong to the group");
-		if(LoggedUser.getInstance().equals(admin))
-			throw new InvalidPermissionException("the logged user has to be the group admin to add new members into the group");
 		this.members.remove(user);
 	}
 	
