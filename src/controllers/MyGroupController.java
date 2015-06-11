@@ -1,4 +1,4 @@
-package src.controllers;
+package controllers;
 
 import domain.Profile;
 import repository.GroupRepository;

@@ -6,8 +6,6 @@ import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
 import domain.ControllerNotLoadedException;
-import domain.Profile;
-import domain.Session;
 import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.TripStatus;
@@ -26,7 +24,7 @@ public class TripController extends AbstractController<Trip> {
      * @return boolean To signal success
      */
     protected Boolean setObj(Integer objId){
-        Trip response = this.profileRepo.getById(objId);
+        Trip response = this.tripRepo.getById(objId);
 
         if(response != null){
             obj = response;

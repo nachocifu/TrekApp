@@ -78,4 +78,7 @@ public abstract class AbstractController<T> {
 
     protected abstract Boolean setObj(Integer objId ) throws SessionNotActiveException;
 
+    protected T getObject(){
+        return this.obj;
+    }
 }

@@ -49,4 +49,21 @@ public class CurrentProfileController extends ProfileController {
     public Boolean load(Integer objId) throws SessionNotActiveException{
         return this.load();
     }
+
+    public void deleteFriend(ProfileController friend){
+        if(friend == null)
+            throw new IllegalArgumentException();
+        if(friend.getObject() == null)
+            throw new IllegalArgumentException();
+
+        this.obj.deleteFriend(friend.getObject());
+    }
+
+    public void addFriend(ProfileController friend){
+        this.obj.addFriend(friend.getObject());
+    }
+
+    public void blockUser(ProfileController user){
+        this.obj.blockUser(user.getObject());
+    }
 }

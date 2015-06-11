@@ -347,21 +347,6 @@ public class Profile {
         this.blockedUsr.remove(usr);
     }
 
-
-    /**
-     * @param usr that will be added
-     */
-    private void putFriend(Profile usr){
-        this.friends.add(usr);
-    }
-
-    /**
-     * @param usr that will be removed
-     */
-    private void removeFriend(Profile usr){
-        this.friends.remove(usr);
-    }
-
     /**
      * @param friend that will be added to the users friend list,
      * this will be added to friend's list as well

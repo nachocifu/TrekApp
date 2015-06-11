@@ -10,8 +10,8 @@ import domain.SessionNotActiveException;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
-import src.domain.Message;
-import src.domain.Profile;
+import domain.Message;
+import domain.Profile;
 
 public class GroupController extends AbstractController<Group> {
 

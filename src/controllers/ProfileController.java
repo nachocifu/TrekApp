@@ -63,9 +63,7 @@ public class ProfileController extends AbstractController<Profile> {
             return false;
     }
 
-    /* #### TODOS LOS METODOS EN ESTE SON GETTERS,,,NO HAY SETTERS#######*/
-    /* TODOS los metodos, al principio lo primero que hacen es validar que la session este abierta.*/
-    public String getUsername() throws SessionNotActiveException, ControllerNotLoadedException{
+   public String getUsername() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getUsrName();
     }

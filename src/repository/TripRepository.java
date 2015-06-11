@@ -76,8 +76,6 @@ public class TripRepository extends AbstractRepository<Trip> {
         }
         return response;
     }
-        return null;
-    }
 
     @Override
     public List<Trip> searchBy(String searchTxt, Profile currentUser) {
