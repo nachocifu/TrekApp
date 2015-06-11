@@ -1,14 +1,13 @@
 package controllers;
 
 import domain.ControllerNotLoadedException;
+import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.SessionNotActiveException;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.UserRepository;
-import src.domain.Message;
-import src.domain.Trip;
-import GroupController;
+import domain.Message;
 
 public class MyGroupController extends GroupController {
 
@@ -51,7 +50,7 @@ public class MyGroupController extends GroupController {
 		this.obj.deleteGroupTrip(tripController.getObject());
 	}
 	
-	public void deletePost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException{
+	public void deletePost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, IllegalArgumentException, InvalidPermissionException{
 		this.validateEnvironment();
 		this.obj.deletePost(msg);
 	}

@@ -100,7 +100,7 @@ public class Group {
 	 */
 	public void addMember(Profile user){
 		this.members.add(user);
-		user.addGroup(this);
+		user.joinGroup(this);
 	}
 	
 	/**
