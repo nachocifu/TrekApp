@@ -9,7 +9,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Message {
 	
 	/** id of the message */
-	@DatabaseField( id = true)
+	@DatabaseField( generatedId = true)
 	private String msgId;
 	
 	/** text of the message */ 

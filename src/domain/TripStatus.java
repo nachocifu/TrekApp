@@ -5,6 +5,7 @@ package domain;
  * @author nacho
  *
  */
+
 public enum TripStatus {
     OPEN("open"), IN_PROGRESS("in_progress"), CLOSED("closed");
 

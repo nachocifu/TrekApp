@@ -2,26 +2,45 @@ package domain;
 
 import java.util.Date;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 /**
  * A trip with its methods and its attributes
  */
+@DatabaseTable( tableName = "Trip")
 public class Trip {
-
+    @DatabaseField
     private Date startDate;
+
+    @DatabaseField
     private Date endDate;
-    private Integer groupId;
+
+    @DatabaseField( generatedId = true)
     private Integer tripId;
+
+    @DatabaseField
     private Double estimateCost;
-    private UniversalString tripDescription;
+
+    @DatabaseField
+    private String tripDescription;
+
+    @DatabaseField
     private String originCity;
+
+    @DatabaseField
     private String endCity;
+
+    @DatabaseField
     public TripStatus tripStatus;
 
-    public Trip(Date startDate, Date endDate, Integer groupId, Integer tripId, Double estimateCost, UniversalString tripDescription, String originCity, String endCity){
+    public Trip(){
+
+    }
+
+    public Trip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity){
         this.startDate = startDate;
         this.endDate = endDate;
-        this.groupId = groupId;
-        this.tripId = tripId;
         this.estimateCost = estimateCost;
         this.tripDescription = tripDescription;
         this.originCity = originCity;
@@ -45,14 +64,6 @@ public class Trip {
         this.endDate = endDate;
     }
 
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
-    public Integer getId() {
-        return tripId;
-    }
-
     public void setId(Integer tripId) {
         this.tripId = tripId;
     }
@@ -65,11 +76,11 @@ public class Trip {
         this.estimateCost = estimateCost;
     }
 
-    public UniversalString getTripDescription() {
+    public String getTripDescription() {
         return tripDescription;
     }
 
-    public void setTripDescription(UniversalString tripDescription) {
+    public void setTripDescription(String tripDescription) {
         this.tripDescription = tripDescription;
     }
 
@@ -95,10 +106,6 @@ public class Trip {
 
     public void setTripStatus(TripStatus tripStatus) {
         this.tripStatus = tripStatus;
-    }
-
-    public Integer getGroupId(){
-        return this.groupId;
     }
 
     @Override

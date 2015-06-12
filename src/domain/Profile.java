@@ -362,7 +362,7 @@ public class Profile {
      */
     public void addFriend(Profile friend){
         this.friends.add(friend);
-        friend.putFriend(this);
+        friend.addFriend(this);
     }
 
     /**
@@ -371,7 +371,7 @@ public class Profile {
      */
     public void deleteFriend(Profile friend){
         this.friends.remove(friend);
-        friend.removeFriend(this);
+        friend.addFriend(this);
     }
 
     /**

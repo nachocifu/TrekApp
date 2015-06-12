@@ -2,11 +2,6 @@ package controllers;
 
 import java.rmi.ServerException;
 import java.util.Date;
-import java.util.HashSet;
-
-import com.sun.xml.internal.ws.util.StringUtils;
-
-import repository.AbstractRepository;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.ProfileRepository;
@@ -15,7 +10,6 @@ import domain.Profile;
 import domain.Session;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
-import domainUI_Controller.GroupUI;
 
 public class Application{
 

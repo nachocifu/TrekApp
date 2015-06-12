@@ -12,6 +12,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import domain.Group;
 import domain.Profile;
+import domain.Trip;
 
 /**
  * Esta clase se encarga de arrancar, testear y probar el servidor
@@ -34,6 +35,9 @@ public class DataBaseTest {
         repoAdmin.populateUsers();
         repoAdmin.start(Group.class);
         //repoAdmin.populateGroups();
+        repoAdmin.start(Trip.class);
+
+        System.out.println("--------END-------");
     }
 
 
