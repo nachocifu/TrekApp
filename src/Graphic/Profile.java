@@ -34,6 +34,7 @@ import javax.swing.JRadioButton;
 
 
 
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -58,6 +59,7 @@ import javax.swing.border.LineBorder;
 
 import controllers.Application;
 import domain.ControllerNotLoadedException;
+import domain.InvalidPasswordException;
 import domain.Session;
 import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
@@ -69,16 +71,16 @@ public class Profile extends JFrame {
 	 */
 	private static final long serialVersionUID = -7008575209671670763L;
 	private static JPanel panel;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private JTextField tFName;
+	private JTextField tFSurName;
+	private JTextField tFUserName;
 	private Integer flag;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField_1;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField tFAge;
+	private JTextField tFRate;
 	private JLabel lblProfile;
-	private JTextField textField_2;
+	private JTextField tFEmail;
 	
 	/**
 	 * Launch the application.
@@ -100,7 +102,7 @@ public class Profile extends JFrame {
 	}
 
 	
-	/*choice corresponde al porque entra al frame profile. si choice es 1 entra debido a que ya existe el usuario y el usuario selecciono la opcion de ver su perfil,
+	/*choice corresponde al porque entra al frame profile. Si choice es 1 entra debido a que ya existe el usuario y el usuario selecciono la opcion de ver su perfil,
 		 si choice es 0 corresponde a la creacion de un usuario nuevo y si choice es 2 un usuario que no es el propio entro a ver el perfil*/
 	
 	public Profile(final Application instance, final Integer choice, final Session session) {
@@ -157,33 +159,33 @@ public class Profile extends JFrame {
 		lblConfirmPass.setBounds(371, 244, 206, 20);
 		panel.add(lblConfirmPass);
 		
-		textField_3 = new JTextField();
-		textField_3.setDisabledTextColor(Color.BLACK);
-		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_3.setEnabled(true);
-		textField_3.setColumns(10);
-		textField_3.setBounds(254, 95, 123, 20);
-		panel.add(textField_3);
+		tFName = new JTextField();
+		tFName.setDisabledTextColor(Color.BLACK);
+		tFName.setHorizontalAlignment(SwingConstants.CENTER);
+		tFName.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tFName.setEnabled(true);
+		tFName.setColumns(10);
+		tFName.setBounds(254, 95, 123, 20);
+		panel.add(tFName);
 
 		
-		textField_4 = new JTextField();
-		textField_4.setDisabledTextColor(Color.BLACK);
-		textField_4.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_4.setEnabled(true);
-		textField_4.setColumns(10);
-		textField_4.setBounds(559, 96, 123, 20);
-		panel.add(textField_4);
+		tFSurName = new JTextField();
+		tFSurName.setDisabledTextColor(Color.BLACK);
+		tFSurName.setHorizontalAlignment(SwingConstants.CENTER);
+		tFSurName.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tFSurName.setEnabled(true);
+		tFSurName.setColumns(10);
+		tFSurName.setBounds(559, 96, 123, 20);
+		panel.add(tFSurName);
 		
-		textField_5 = new JTextField();
-		textField_5.setDisabledTextColor(Color.BLACK);
-		textField_5.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_5.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_5.setEnabled(true);
-		textField_5.setColumns(10);
-		textField_5.setBounds(148, 142, 123, 20);
-		panel.add(textField_5);
+		tFUserName = new JTextField();
+		tFUserName.setDisabledTextColor(Color.BLACK);
+		tFUserName.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tFUserName.setHorizontalAlignment(SwingConstants.CENTER);
+		tFUserName.setEnabled(true);
+		tFUserName.setColumns(10);
+		tFUserName.setBounds(148, 142, 123, 20);
+		panel.add(tFUserName);
 
 		final JButton btnApply = new JButton();
 		btnApply.setBounds(700, 544, 97, 23);
@@ -282,10 +284,10 @@ public class Profile extends JFrame {
 		choice2.setBounds(712, 143, 85, 20);
 		panel.add(choice2);
 		
-		textField = new JTextField();
-		textField.setBounds(505, 141, 97, 20);
-		panel.add(textField);
-		textField.setColumns(10);
+		tFAge = new JTextField();
+		tFAge.setBounds(505, 141, 97, 20);
+		panel.add(tFAge);
+		tFAge.setColumns(10);
 		
 		final JLabel lblCalif = new JLabel();
 		lblCalif.setForeground(Color.BLACK);
@@ -293,15 +295,15 @@ public class Profile extends JFrame {
 		lblCalif.setBounds(559, 302, 123, 20);
 		panel.add(lblCalif);
 		
-		textField_1 = new JTextField();
-		textField_1.setEditable(false);
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		textField_1.setEnabled(false);
-		textField_1.setDisabledTextColor(Color.BLACK);
-		textField_1.setColumns(10);
-		textField_1.setBounds(690, 302, 54, 20);
-		panel.add(textField_1);
+		tFRate = new JTextField();
+		tFRate.setEditable(false);
+		tFRate.setHorizontalAlignment(SwingConstants.CENTER);
+		tFRate.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		tFRate.setEnabled(false);
+		tFRate.setDisabledTextColor(Color.BLACK);
+		tFRate.setColumns(10);
+		tFRate.setBounds(690, 302, 54, 20);
+		panel.add(tFRate);
 		
 		
 		
@@ -333,24 +335,22 @@ public class Profile extends JFrame {
 		
 		if(session != null){
 			try {
-				textField_3.setText(instance.getCurrentProfileController().getUsername());
-				textField_5.setText(instance.getCurrentProfileController().getUserName());
-				textField_4.setText(instance.getCurrentProfileController().getSurname());
+				tFName.setText(instance.getCurrentProfileController().getUsername());
+				tFUserName.setText(instance.getCurrentProfileController().getUserName());
+				tFSurName.setText(instance.getCurrentProfileController().getSurname());
+				tFAge.setText(instance.getCurrentProfileController().getBirthday().toString());
+				tFEmail.setText(instance.getCurrentProfileController().getMail());
+				tFRate.setText(instance.getCurrentProfileController().getRating().toString());
 			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 			
 			}
 			
 		}
-		else{
-			textField_3.setText(null);
-			textField_4.setText(null);
-			textField_5.setText(null);
-		}
 		
 		if(choice == 0){
-			textField_3.setEnabled(true);
-			textField_4.setEnabled(true);
-			textField_5.setEnabled(true);
+			tFName.setEnabled(true);
+			tFSurName.setEnabled(true);
+			tFUserName.setEnabled(true);
 			label_6.setVisible(true);
 			label_7.setVisible(true);
 			label_8.setVisible(true);
@@ -377,7 +377,13 @@ public class Profile extends JFrame {
 					if(radioButton.isSelected()){
 						if(passwordField.getText().equals(passwordField_1.getText()) && !passwordField.getText().equals("") ){
 							flag = 0;
-							//instance.getCurrentProfileController().setPassword(passwordField.getText());
+							if(instance != null){
+								try {
+									instance.getCurrentProfileController().changePass(passwordField.getText(), passwordField_1.getText());
+								} catch (InvalidPasswordException e) {
+									
+								}
+							}
 						}
 						else{
 							flag = 1;
@@ -399,7 +405,7 @@ public class Profile extends JFrame {
 				
 				if(choice == 0){
 					
-					if(textField_3.getText().isEmpty() && textField_4.getText().isEmpty() && textField_5.getText().isEmpty()){
+					if(tFName.getText().isEmpty() && tFSurName.getText().isEmpty() && tFUserName.getText().isEmpty()){
 						flag = 3;
 					}
 					if(flag == 0){
@@ -411,9 +417,9 @@ public class Profile extends JFrame {
 					}
 					
 					
-					int day = Integer.parseInt(textField_2.getText().substring(0, 2));
-					int month = Integer.parseInt(textField_2.getText().substring(3, 5));
-					int year = Integer.parseInt(textField_2.getText().substring(6, 8));
+					int day = Integer.parseInt(tFEmail.getText().substring(0, 2));
+					int month = Integer.parseInt(tFEmail.getText().substring(3, 5));
+					int year = Integer.parseInt(tFEmail.getText().substring(6, 8));
 					Date date = new Date(year,month,day);
 					boolean sex;
 					if(choice2.getSelectedItem().equals("Male")){
@@ -422,7 +428,7 @@ public class Profile extends JFrame {
 						sex= false;
 					}
 					try {
-						instance.registerUser(textField_3.getText(), textField_4.getText(), textField_5.getText(), date , sex , passwordField.getText(), null, textField.getText());
+						instance.registerUser(tFName.getText(), tFSurName.getText(), tFUserName.getText(), date , sex , passwordField.getText(), null, tFAge.getText());
 					} catch (ServerException e) {
 						e.printStackTrace();
 					} catch (UserNameAlreadyExistsException e) {
@@ -468,20 +474,20 @@ public class Profile extends JFrame {
 		lblEmail.setBounds(320, 302, 72, 20);
 		panel.add(lblEmail);
 			
-		textField_2 = new JTextField();
-		textField_2.setBounds(386, 304, 145, 20);
-		panel.add(textField_2);
-		textField_2.setColumns(10);	
+		tFEmail = new JTextField();
+		tFEmail.setBounds(386, 304, 145, 20);
+		panel.add(tFEmail);
+		tFEmail.setColumns(10);	
 		
 		if(choice == 0){
 			btnContacts.setVisible(false);
 			btnPastTrip.setVisible(false);
 			btnPresenttrips.setVisible(false);
 		}else if(choice == 1){
-			textField_3.setEditable(false);
-			textField_4.setEditable(false);
-			textField_5.setEditable(false);
-			textField.setEditable(false);
+			tFName.setEditable(false);
+			tFSurName.setEditable(false);
+			tFUserName.setEditable(false);
+			tFAge.setEditable(false);
 			choice2.setEnabled(false);
 			btnContacts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -493,10 +499,10 @@ public class Profile extends JFrame {
 				}
 			});
 		}else if(choice == 2){
-			textField_3.setEditable(false);
-			textField_4.setEditable(false);
-			textField_5.setEditable(false);
-			textField.setEditable(false);
+			tFName.setEditable(false);
+			tFSurName.setEditable(false);
+			tFUserName.setEditable(false);
+			tFAge.setEditable(false);
 			choice2.setEnabled(false);
 			btnPresenttrips.setVisible(false);
 			btnContacts.setVisible(false);

@@ -24,6 +24,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import javax.swing.JList;
@@ -32,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controllers.Application;
+import controllers.TripController;
 import domain.Session;
 
 
@@ -190,37 +193,30 @@ public class OldTrips extends JFrame {
 		
 		
 		/**/
-		final LinkedList<Viajeback> prueba = new LinkedList<Viajeback>();
-	    Viajeback p1 = new Viajeback("cala", "mu1", "chi", "ta");
-	    Viajeback p2 = new Viajeback("cal", "mu2", "chi", "ta");
-	    Viajeback p3 = new Viajeback("ca", "mu3", "chi", "ta");
-	    Viajeback p4 = new Viajeback("c", "mu4", "chi", "ta");
-	    prueba.add(p1);
-	    prueba.add(p2);
-	    prueba.add(p3);
-	    prueba.add(p4);  
+		final Collection<TripController> pastTrips = new LinkedList<TripController>();
+		pastTrips = instance.getProfileController().getTrips();
 		
 //		if (session != null){
-	    DefaultListModel<String> dim1 = new DefaultListModel<String>();
+	    DefaultListModel<String> trips = new DefaultListModel<String>();
 //			for(Entry<String, Consumable> e : consumiblese.entrySet() ){
 //					dim1.addElement(e.getValue().getName()  );
 //			}
 //			list_1.setModel(dim1);
 //		}
 	    
-	    for(int i = 0; i < prueba.size(); i++){
-	    	 dim1.addElement(prueba.get(i).getDesde() + " " + prueba.get(i).getHasta() + " " + prueba.get(i).getOrigen() + " " + prueba.get(i).getLlegada());	
+	    for(int i = 0; i < pastTrips.size(); i++){
+	    	trips.addElement(pastTrips. + " " + pastTrips.get(i).getHasta() + " " + pastTrips.get(i).getOrigen() + " " + pastTrips.get(i).getLlegada());	
 		}
-	    list_1.setModel(dim1);
+	    list_1.setModel(trips);
 	    list_1.addMouseListener(new MouseAdapter()
         {
             @Override
             public void mousePressed(MouseEvent e)
             {
-				textField_2.setText(prueba.get(list_1.getSelectedIndex()).getDesde());
-				textField_3.setText(prueba.get(list_1.getSelectedIndex()).getHasta());	
-				textField.setText(prueba.get(list_1.getSelectedIndex()).getOrigen());	
-				textField_1.setText(prueba.get(list_1.getSelectedIndex()).getLlegada());	
+				textField_2.setText(pastTrips.get(list_1.getSelectedIndex()).getDesde());
+				textField_3.setText(pastTrips.get(list_1.getSelectedIndex()).getHasta());	
+				textField.setText(pastTrips.get(list_1.getSelectedIndex()).getOrigen());	
+				textField_1.setText(pastTrips.get(list_1.getSelectedIndex()).getLlegada());	
             }
         });
 	    

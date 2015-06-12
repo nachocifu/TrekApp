@@ -25,7 +25,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import controllers.Application;
+import domain.ControllerNotLoadedException;
 import domain.Session;
+import domain.SessionNotActiveException;
 
 
 public class Viaje extends JFrame {
@@ -35,13 +37,13 @@ public class Viaje extends JFrame {
 	 */
 	private static final long serialVersionUID = -8548069016778574983L;
 	private static JPanel panel;
-	private ObservingTextField textField;
-	private ObservingTextField textField_1;
-	private JTextField textField_2;
+	private ObservingTextField tFLeaving;
+	private ObservingTextField tFArriving;
+	private JTextField tFStatus;
 	private DatePicker dp1;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private JTextField tFFrom;
+	private JTextField tFTo;
+	private JTextField tFCost;
 	private Viajeback prueba;
 	private JTextArea textArea;
 	/**
@@ -80,24 +82,24 @@ public class Viaje extends JFrame {
 		
 		final JButton btnNewButton = new JButton();
 		
-		textField = new ObservingTextField();
-		textField.setEnabled(false);
-		textField.setDisabledTextColor(Color.BLACK);
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textField.setBounds(176, 77, 106, 28);
-		panel.add(textField);
-		textField.setColumns(10);
+		tFLeaving = new ObservingTextField();
+		tFLeaving.setEnabled(false);
+		tFLeaving.setDisabledTextColor(Color.BLACK);
+		tFLeaving.setHorizontalAlignment(SwingConstants.CENTER);
+		tFLeaving.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		tFLeaving.setBounds(176, 77, 106, 28);
+		panel.add(tFLeaving);
+		tFLeaving.setColumns(10);
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(i == 1 || i == 0){					
 					String lang = null;
 					final Locale locale = getLocale(lang);
-					DatePicker dp = new DatePicker(textField, locale);
-					Date selectedDate = dp.parseDate(textField.getText());
+					DatePicker dp = new DatePicker(tFLeaving, locale);
+					Date selectedDate = dp.parseDate(tFLeaving.getText());
 					dp.setSelectedDate(selectedDate);
-					dp.start(textField);
+					dp.start(tFLeaving);
 				}else{
 					btnNewButton.setEnabled(false);
 				}
@@ -114,14 +116,14 @@ public class Viaje extends JFrame {
 		lblTrip.setBounds(390, 20, 92, 35);
 		panel.add(lblTrip);
 		
-		textField_1 = new ObservingTextField();
-		textField_1.setDisabledTextColor(Color.BLACK);
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textField_1.setEnabled(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(176, 123, 106, 28);
-		panel.add(textField_1);
+		tFArriving = new ObservingTextField();
+		tFArriving.setDisabledTextColor(Color.BLACK);
+		tFArriving.setHorizontalAlignment(SwingConstants.CENTER);
+		tFArriving.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		tFArriving.setEnabled(false);
+		tFArriving.setColumns(10);
+		tFArriving.setBounds(176, 123, 106, 28);
+		panel.add(tFArriving);
 		
 		final JButton button = new JButton();
 		button.addActionListener(new ActionListener() {
@@ -129,10 +131,10 @@ public class Viaje extends JFrame {
 				if(i == 1 || i == 0){
 					String lang = null;
 					final Locale locale = getLocale(lang);
-					dp1 = new DatePicker(textField_1, locale);
-					Date selectedDate = dp1.parseDate(textField_1.getText());
+					dp1 = new DatePicker(tFArriving, locale);
+					Date selectedDate = dp1.parseDate(tFArriving.getText());
 					dp1.setSelectedDate(selectedDate);
-					dp1.start(textField_1);
+					dp1.start(tFArriving);
 				}else{
 					button.setEnabled(false);
 				}
@@ -148,13 +150,13 @@ public class Viaje extends JFrame {
 		lblState.setBounds(412, 87, 180, 35);
 		panel.add(lblState);
 		
-		textField_2 = new JTextField();
-		textField_2.setDisabledTextColor(Color.BLACK);
-		textField_2.setEnabled(false);
-		textField_2.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		textField_2.setBounds(602, 87, 138, 35);
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		tFStatus = new JTextField();
+		tFStatus.setDisabledTextColor(Color.BLACK);
+		tFStatus.setEnabled(false);
+		tFStatus.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tFStatus.setBounds(602, 87, 138, 35);
+		panel.add(tFStatus);
+		tFStatus.setColumns(10);
 		
 		final JButton btnReady = new JButton();
 		btnReady.addActionListener(new ActionListener() {
@@ -174,22 +176,22 @@ public class Viaje extends JFrame {
 				//flag=6 no introdujo un costo estimado del viaje correcto
 				//flag=7 no introdujo una descripcion del viaje
 				try{
-					day1 = Integer.parseInt(textField.getText().substring(0, 2));
-					day2 = Integer.parseInt(textField_1.getText().substring(0, 2));
-					month1 = Integer.parseInt(textField.getText().substring(3, 5));
-					month2 = Integer.parseInt(textField_1.getText().substring(3, 5));
-					year1 = Integer.parseInt(textField.getText().substring(6, 8));
-					year2 = Integer.parseInt(textField_1.getText().substring(6, 8));
+					day1 = Integer.parseInt(tFLeaving.getText().substring(0, 2));
+					day2 = Integer.parseInt(tFArriving.getText().substring(0, 2));
+					month1 = Integer.parseInt(tFLeaving.getText().substring(3, 5));
+					month2 = Integer.parseInt(tFArriving.getText().substring(3, 5));
+					year1 = Integer.parseInt(tFLeaving.getText().substring(6, 8));
+					year2 = Integer.parseInt(tFArriving.getText().substring(6, 8));
 					
 					if(day1 > day2 && month1 == month2 & year1 == year2 || month1 > month2 && year1 == year2 || year1 > year2){	
 						flag = 2;
-					}else if(textField_3.getText().isEmpty()){
+					}else if(tFFrom.getText().isEmpty()){
 						flag = 3;
-					} else if(textField_4.getText().isEmpty()){
+					} else if(tFTo.getText().isEmpty()){
 						flag = 4;
-					}else if(textField_5.getText().isEmpty()){
+					}else if(tFCost.getText().isEmpty()){
 						flag = 5;
-					}else if(!isNumeric(textField_5.getText())){
+					}else if(!isNumeric(tFCost.getText())){
 						flag = 6;
 					}else if(textArea.getText().isEmpty()){
 						flag = 7;
@@ -205,6 +207,7 @@ public class Viaje extends JFrame {
 				switch(flag){
 					case 1:
 						//viaje = new Viaje();
+						
 						if(i == 0){
 							Grupo frame = new Grupo(0,null/*viaje*/,aux, instance, session);
 							frame.setVisible(true);
@@ -275,10 +278,10 @@ public class Viaje extends JFrame {
 		lblFrom.setBounds(26, 212, 180, 35);
 		panel.add(lblFrom);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(253, 222, 134, 20);
-		panel.add(textField_3);
-		textField_3.setColumns(10);
+		tFFrom = new JTextField();
+		tFFrom.setBounds(253, 222, 134, 20);
+		panel.add(tFFrom);
+		tFFrom.setColumns(10);
 		
 		final JLabel lblTo = new JLabel();
 		lblTo.setForeground(Color.WHITE);
@@ -292,10 +295,10 @@ public class Viaje extends JFrame {
 		lbltrip.setBounds(79, 298, 106, 35);
 		panel.add(lbltrip);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(253, 293, 134, 20);
-		panel.add(textField_4);
-		textField_4.setColumns(10);
+		tFTo = new JTextField();
+		tFTo.setBounds(253, 293, 134, 20);
+		panel.add(tFTo);
+		tFTo.setColumns(10);
 
 		final JLabel label = new JLabel();
 		label.setFont(new Font("Tahoma", Font.BOLD, 17));
@@ -309,25 +312,41 @@ public class Viaje extends JFrame {
 		lblCost.setBounds(452, 253, 180, 35);
 		panel.add(lblCost);
 		
-		textField_5 = new JTextField();
-		textField_5.setBounds(640, 263, 86, 20);
-		panel.add(textField_5);
-		textField_5.setColumns(10);
+		tFCost = new JTextField();
+		tFCost.setBounds(640, 263, 86, 20);
+		panel.add(tFCost);
+		tFCost.setColumns(10);
 		
-		if(i == 1 || i == 0){
-			textField_3.setEditable(true);
-			textField_4.setEditable(true);
-			textField_5.setEditable(true);
+		if(i == 0 || i == 1){
+			tFFrom.setEditable(true);
+			tFTo.setEditable(true);
+			tFCost.setEditable(true);
 			textArea.setEditable(true);
-		}else if(i == 2){
-			textField_3.setEditable(false);
-			textField_4.setEditable(false);
-			textField_5.setEditable(false);
+		}else if( i == 2 ){
+			tFFrom.setEditable(false);
+			tFTo.setEditable(false);
+			tFCost.setEditable(false);
 			textArea.setEditable(false);
 		}
+		
+		if((i== 1 || i == 2) && instance != null){
+			try {
+				tFFrom.setText(instance.getTripController().getOriginCity());
+				tFTo.setText(instance.getTripController().getEndCity());
+				tFLeaving.setText(instance.getTripController().getStartDate().toString());
+				tFArriving.setText(instance.getTripController().getStartDate().toString());
+				tFCost.setText(" $ " + instance.getTripController().getEstimateCost().toString());
+				tFStatus.setText(instance.getTripController().getTripStatus().getName());
+				textArea.setText(instance.getTripController().getTripDescription());
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
+		}
 		if(prueba != null){
-			textField.setText(prueba.getDesde());
-			textField_1.setText(prueba.getHasta());
+			tFLeaving.setText(prueba.getDesde());
+			tFArriving.setText(prueba.getHasta());
 		}
 		
 		JButton img = new JButton();
@@ -411,12 +430,10 @@ public class Viaje extends JFrame {
 	}
 	 public static boolean isNumeric(String str)  
 	  {  
-	    try  
-	    {  
+	    try {  
 	      Double.parseDouble(str);  
 	    }  
-	    catch(NumberFormatException nfe)  
-	    {  
+	    catch(NumberFormatException nfe){  
 	      return false;  
 	    }  
 	    return true;  

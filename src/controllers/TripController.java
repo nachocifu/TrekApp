@@ -37,7 +37,7 @@ public class TripController extends AbstractController<Trip> {
         return this.obj.getEstimateCost();
     }
 
-    public UniversalString getTripDescription() throws SessionNotActiveException, ControllerNotLoadedException {
+    public String getTripDescription() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getTripDescription();
     }
@@ -70,7 +70,7 @@ public class TripController extends AbstractController<Trip> {
         TripController controller;
 
         for(Trip each: list){
-            if(each. getUsrName().equals(currentUser))
+            if(each.getUsrName().equals(currentUser))
                 controller = app.getMyTripController();
             else
                 controller = app.getTripController();

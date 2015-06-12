@@ -102,6 +102,11 @@ public class ProfileController extends AbstractController<Profile> {
         this.validateEnvironment();
         return ProfileController.generateListOfControllers(obj.getFriends());
     }
+    
+    public HashSet<ProfileController> getBlockUsers() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return ProfileController.generateListOfControllers(obj.getBlockedUsrs());
+    }
 
     public Collection<GroupController> getGroups() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();

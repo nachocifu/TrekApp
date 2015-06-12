@@ -12,6 +12,8 @@ import javax.swing.SwingConstants;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import javax.swing.DefaultListModel;
@@ -24,8 +26,11 @@ import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 
 import controllers.Application;
-
+import controllers.GroupController;
+import controllers.ProfileController;
+import domain.ControllerNotLoadedException;
 import domain.Session;
+import domain.SessionNotActiveException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -40,9 +45,9 @@ public class Grupo extends JFrame {
 	 */
 	private static final long serialVersionUID = 8667069963378135326L;
 	private static JPanel panel;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextField tFName;
+	private JTextField tFCap;
+	private JTextField tFAdmin;
 	private JButton btnBack;
 
 	/**
@@ -52,7 +57,7 @@ public class Grupo extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Grupo frame = new Grupo(1,null, null,null,null);
+					Grupo frame = new Grupo(0,null, null,null,null);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -84,12 +89,12 @@ public class Grupo extends JFrame {
 		lblGroupName.setBounds(200, 58, 173, 34);
 		panel.add(lblGroupName);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		textField.setDisabledTextColor(new Color(0, 0, 0));
-		textField.setBounds(408, 64, 185, 25);
-		panel.add(textField);
-		textField.setColumns(10);
+		tFName = new JTextField();
+		tFName.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tFName.setDisabledTextColor(new Color(0, 0, 0));
+		tFName.setBounds(408, 64, 185, 25);
+		panel.add(tFName);
+		tFName.setColumns(10);
 		
 		final JLabel lblCapacity = new JLabel();
 		lblCapacity.setFont(new Font("Tahoma", Font.PLAIN, 19));
@@ -97,14 +102,14 @@ public class Grupo extends JFrame {
 		lblCapacity.setBounds(200, 103, 159, 34);
 		panel.add(lblCapacity);
 		
-		textField_1 = new JTextField();
-		textField_1.setForeground(Color.BLACK);
-		textField_1.setDisabledTextColor(new Color(0, 0, 0));
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setBounds(408, 105, 43, 30);
-		panel.add(textField_1);
-		textField_1.setColumns(10);
+		tFCap = new JTextField();
+		tFCap.setForeground(Color.BLACK);
+		tFCap.setDisabledTextColor(new Color(0, 0, 0));
+		tFCap.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tFCap.setHorizontalAlignment(SwingConstants.CENTER);
+		tFCap.setBounds(408, 105, 43, 30);
+		panel.add(tFCap);
+		tFCap.setColumns(10);
 		
 		final JButton btnTrip = new JButton();
 		if(i == 0){
@@ -124,30 +129,27 @@ public class Grupo extends JFrame {
 		
 		/*lista de integrantes del trip*/
 		
-		final DefaultListModel hola2 = new DefaultListModel();
-		
-		LinkedList<String> hola = new LinkedList<String>();
-		hola.add("a");
-		hola.add("b");
-		hola.add("c");
-		hola.add("d");
-		hola.add("e");
-		hola.add("g");
-		hola.add("f");
-		for(String each : hola){
-			hola2.addElement(each);
+		final DefaultListModel members = new DefaultListModel();
+		HashSet<ProfileController> auxMembers = new HashSet<>();
+		if(instance != null){
+			try {
+				auxMembers = instance.getGroupController().getMembers();
+				for(ProfileController each : auxMembers){
+					members.addElement(each.getUsername() + " " + each.getSurname());
+				}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
+			
 		}
-		hola.add("h");
-		hola.add("i");
-		
-		/**/
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
 		scrollPane.setBounds(408, 206, 202, 169);
 		panel.add(scrollPane);
 		
-		JList<String> list = new JList<String>(hola2);
+		JList<String> list = new JList<String>(members);
 		scrollPane.setViewportView(list);
 		list.setForeground(Color.BLACK);
 		list.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -160,19 +162,27 @@ public class Grupo extends JFrame {
 		final Choice requests = new Choice();
 		requests.setVisible(false);
 		requests.setBounds(233, 457, 200, 30);
-		for(int i25 = 0; i25 < hola.size(); i25++){
-			requests.add(hola.get(i25));
-		}
 		
-		/**/
-		
+		HashMap<ProfileController, Integer> requestsTrip = new HashMap<ProfileController, Integer>();
+		if(instance != null){
+			try {
+				requestsTrip = instance.getMyGroupController().getMemberRequests();
+				for (ProfileController key : requestsTrip.keySet()) {
+					requests.add(key.getUsername() + " " + key.getSurname());
+				}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
+		}		
 		panel.add(requests);
 		
 		final JButton btnReject = new JButton();
 		final JButton btnAccept = new JButton();
 		btnAccept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				hola2.addElement(requests.getSelectedItem());
+				members.addElement(requests.getSelectedItem());
 				requests.remove(requests.getSelectedItem());
 				if((requests.getItemCount()) < 1){
 					btnReject.setEnabled(false);
@@ -232,11 +242,11 @@ public class Grupo extends JFrame {
 		lblAdmin.setBounds(200, 148, 200, 34);
 		panel.add(lblAdmin);
 		
-		textField_2 = new JTextField();
-		textField_2.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		textField_2.setBounds(408, 152, 185, 25);
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		tFAdmin = new JTextField();
+		tFAdmin.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tFAdmin.setBounds(408, 152, 185, 25);
+		panel.add(tFAdmin);
+		tFAdmin.setColumns(10);
 		
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
@@ -259,9 +269,9 @@ public class Grupo extends JFrame {
 				//flag=2 no introdujo el nombre del grupo
 				//flag=3 no introdujo la capacidad maxima del viaje planeado
 				//flag=4 no se creo un viaje
-				if(textField.getText().isEmpty()){
+				if(tFName.getText().isEmpty()){
 					flag = 2;
-				} else if(textField_1.getText().isEmpty()){
+				} else if(tFCap.getText().isEmpty()){
 					flag = 3;
 				}else if(viaje != null){
 					flag = 4;
@@ -272,7 +282,11 @@ public class Grupo extends JFrame {
 				case 1:
 					int confirm = JOptionPane.showConfirmDialog(null, "�Desea crear el viaje?", "Confirmar", JOptionPane.YES_NO_OPTION);
 					if(confirm == JOptionPane.YES_OPTION){
+						
+						
 						//new group y trip
+			
+						
 						Options frame = new Options(instance, session);
 						frame.setVisible(true);
 						frame.pack();
@@ -296,6 +310,18 @@ public class Grupo extends JFrame {
 		panel.add(btnCreatetrip);
 		
 		if( i == 1){
+			tFName.setEnabled(false);
+			tFCap.setEnabled(false);
+			tFAdmin.setEnabled(false);
+			try {
+				tFName.setText(instance.getGroupController().getGroupName());
+				tFCap.setText(instance.getGroupController().groupSize().toString());
+				tFAdmin.setText(instance.getGroupController().getAdmin().getUsername() + " " + instance.getGroupController().getAdmin().getUsername());
+			} catch (SessionNotActiveException e2) {
+				e2.printStackTrace();
+			} catch (ControllerNotLoadedException e2) {
+				e2.printStackTrace();
+			}
 			btnTrip.setText("Modificar Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -308,14 +334,22 @@ public class Grupo extends JFrame {
 			});
 			btnRequestcheck.setText("Ver Solicitudes");
 			btnDelete.setVisible(true);
-			textField.setEnabled(false);
-			textField_1.setEnabled(false);
-			textField_2.setEnabled(false);
 		}else if(i == 2){
 			
-			textField.setEnabled(false);
-			textField_1.setEnabled(false);
-			textField_2.setEnabled(false);
+			tFName.setEnabled(false);
+			tFCap.setEnabled(false);
+			tFAdmin.setEnabled(false);
+			if( instance != null){
+				try {
+					tFName.setText(instance.getGroupController().getGroupName());
+					tFCap.setText(instance.getGroupController().groupSize().toString());
+					tFAdmin.setText(instance.getGroupController().getAdmin().getUsername() + " " + instance.getGroupController().getAdmin().getUsername());
+				} catch (SessionNotActiveException e2) {
+					e2.printStackTrace();
+				} catch (ControllerNotLoadedException e2) {
+					e2.printStackTrace();
+				}
+			}
 			btnTrip.setText("Ver Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -330,24 +364,30 @@ public class Grupo extends JFrame {
 			btnRequestcheck.setText("Enviar Solicitud");
 			btnRequestcheck.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					//send request
+					try {
+						instance.getGroupController().sendMemberRequest(instance.getCurrentProfileController());
+					} catch (SessionNotActiveException e1) {
+						e1.printStackTrace();
+					} catch (ControllerNotLoadedException e1) {
+						e1.printStackTrace();
+					}
 				}
 			});	
 			
 		}else if(i == 0){
 			if(aux != null){
-				textField.setText(aux.get(0));
-				textField_1.setText(aux.get(1));
-				textField_2.setText(aux.get(2));
+				tFName.setText(aux.get(0));
+				tFCap.setText(aux.get(1));
+				tFAdmin.setText(aux.get(2));
 			}
 			btnCreatetrip.setVisible(true);
 			btnTrip.setText("Crear Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					ArrayList<String> aux = new ArrayList<String>();
-					aux.add(textField.getText());
-					aux.add(textField_1.getText());
-					aux.add(textField_2.getText());
+					aux.add(tFName.getText());
+					aux.add(tFCap.getText());
+					aux.add(tFAdmin.getText());
 					Viaje frame = new Viaje(0,null,aux, instance, session);
 					frame.setVisible(true);
 					frame.pack();
@@ -355,10 +395,8 @@ public class Grupo extends JFrame {
 					close();
 				}
 			});
-			btnRequestcheck.setText("Ver Solicitudes");
 			btnDelete.setVisible(false);
 			btnRequestcheck.setVisible(false);
-			btnRequestcheck.setBounds(416, 386, 123, 23);
 		}
 		
 		JButton img = new JButton();
@@ -377,7 +415,6 @@ public class Grupo extends JFrame {
 				lblCapacity.setText("Cupos Restantes :");
 				if(i == 0){
 					btnTrip.setText("Crear Viaje");
-					btnRequestcheck.setText("Ver Solicitudes");
 				}else if(i == 1){
 					btnTrip.setText("Modificar Viaje");
 					btnRequestcheck.setText("Ver Solicitudes");

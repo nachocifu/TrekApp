@@ -26,7 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 
 import controllers.Application;
+import domain.ControllerNotLoadedException;
 import domain.Session;
+import domain.SessionNotActiveException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -104,28 +106,38 @@ public class TripGroups extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				try{
-					if (arg0.getClickCount() == 2 && prueba.get(table.getSelectedRow()) != null) {
-//						if(is admin){
-//							Grupo frame = new Grupo(1,prueba.get(table.getSelectedRow()),null);
-//							frame.setVisible(true);
-//							frame.pack();
-//							frame.setSize(900, 602);
-//							close();
-//						}else{
-//							Grupo frame = new Grupo(2,prueba.get(table.getSelectedRow()),null);
-//							frame.setVisible(true);
-//							frame.pack();
-//							frame.setSize(900, 602);
-//							close();
-//						}
-						
-						/* ELIMINAR LO QUE SIGUE DESPUES*/
-						Grupo frame = new Grupo(2,prueba.get(table.getSelectedRow()),null,instance, session);
-						frame.setVisible(true);
-						frame.pack();
-						frame.setSize(900, 602);
-						close();
-						/*HASTA ACA*/
+					if (arg0.getClickCount() == 2 ) {
+						String admin = null;
+						if(instance != null){
+							try {
+								admin = instance.getMyGroupController().getAdmin().getUserName();
+							} catch (SessionNotActiveException e) {
+								e.printStackTrace();
+							} catch (ControllerNotLoadedException e) {
+								e.printStackTrace();
+							}
+							if( prueba.get(table.getSelectedRow()) == null ){
+								
+							}else if(session.getUserName().equals(admin) && instance != null){
+								Grupo frame = new Grupo(1,prueba.get(table.getSelectedRow()),null, instance, session);
+								frame.setVisible(true);
+								frame.pack();
+								frame.setSize(900, 602);
+								close();
+							}else{
+								Grupo frame = new Grupo(2,prueba.get(table.getSelectedRow()),null, instance, session);
+								frame.setVisible(true);
+								frame.pack();
+								frame.setSize(900, 602);
+								close();
+							}
+						}else{
+							Grupo frame = new Grupo(2, null, null, null, null);
+							frame.setVisible(true);
+							frame.pack();
+							frame.setSize(900, 602);
+							close();
+						}
 					}
 				}catch(IndexOutOfBoundsException e){
 					e.printStackTrace();

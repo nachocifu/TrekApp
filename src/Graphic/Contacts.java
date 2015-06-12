@@ -82,16 +82,16 @@ public class Contacts extends JFrame {
 		
 		final DefaultListModel block = new DefaultListModel();
 		HashSet<ProfileController> auxBlock = new HashSet<>();
-		//auxBlock = instance.getCurrentProfileController().get
-		LinkedList<String> hola2 = new LinkedList<String>();
-		hola2.add("j");
-		hola2.add("k");
-		hola2.add("l");
-		for(String each : hola2){
-			block.addElement(each);
+		try {
+			auxBlock = instance.getCurrentProfileController().getBlockUsers();
+			for(ProfileController each : auxBlock){
+				block.addElement(each.getUsername());
+			}
+		} catch (SessionNotActiveException e1) {
+			e1.printStackTrace();
+		} catch (ControllerNotLoadedException e1) {
+			e1.printStackTrace();
 		}
-		hola2.add("m");
-		hola2.add("n");
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
@@ -140,7 +140,7 @@ public class Contacts extends JFrame {
 		panel.add(lblContacts);
 		
 		final Choice requests = new Choice();
-//		requests.setBounds(377, 405, 200, 30);
+		requests.setBounds(377, 405, 200, 30);
 //		for(int i25 = 0; i25 < hola.size(); i25++){
 //			requests.add(hola.get(i25));
 //		}
