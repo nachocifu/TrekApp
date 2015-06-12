@@ -1,22 +1,24 @@
 package controllers;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import domain.ControllerNotLoadedException;
 import domain.Group;
+import domain.Profile;
 import domain.Session;
 import domain.SessionNotActiveException;
+import repository.AbstractRepository;
 import repository.GroupRepository;
 import repository.TripRepository;
-import repository.UserRepository;
+import repository.ProfileRepository;
 import domain.Message;
 
 
 public class GroupController extends AbstractController<Group> {
 
-    public GroupController(UserRepository profileRepo, TripRepository tripRepo,
-            GroupRepository groupRepo) {
-        super(profileRepo, tripRepo, groupRepo);
+    public GroupController(GroupRepository groupRepo) {
+        super(groupRepo);
     }
 
     public String getGroupName() throws SessionNotActiveException, ControllerNotLoadedException{
@@ -26,7 +28,7 @@ public class GroupController extends AbstractController<Group> {
 
     public HashSet<ProfileController> getMembers() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        return this.generateListOfProfileControllers(obj.getMembers());
+        return ProfileController.generateListOfControllers(obj.getMembers());
     }
 
     public ProfileController getAdmin() throws SessionNotActiveException, ControllerNotLoadedException{
@@ -69,9 +71,32 @@ public class GroupController extends AbstractController<Group> {
         return this.obj.groupSize();
     }
 
-	@Override
-	protected Boolean setObj(Integer objId) throws SessionNotActiveException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /**
+     * Generate list of controllers from list of T objects
+     * @param list
+     * @return response List of controllers
+     * @throws SessionNotActiveException
+     */
+    protected static HashSet<GroupController> generateListOfControllers(Collection<Group> list) throws SessionNotActiveException{
+        HashSet<GroupController> response = new  HashSet<GroupController>();
+        Application app = Application.getInstance();
+        String currentUser = Session.getInstance().getUserName();
+        GroupController controller;
+
+        for(Group each: list){
+            if(each.getAdminUser().getUsrName().equals(currentUser))
+                controller = app.getMyGroupController();
+            else
+                controller = app.getGroupController();
+
+            controller.load(each);
+            response.add(controller);
+        }
+        return response;
+    }
+
+    @Override
+    protected AbstractRepository<Group> getRepository() {
+        return (GroupRepository) this.repository;
+    }
 }

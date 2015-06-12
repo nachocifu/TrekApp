@@ -4,21 +4,17 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import repository.GroupRepository;
-import repository.TripRepository;
-import repository.UserRepository;
+import repository.AbstractRepository;
+import repository.ProfileRepository;
 import domain.ControllerNotLoadedException;
 import domain.Profile;
-import domain.Review;
 import domain.Session;
 import domain.SessionNotActiveException;
-import domainUI_Controller.PastTripUI;
 
 public class ProfileController extends AbstractController<Profile> {
 
-    public ProfileController(UserRepository profileRepo,
-            TripRepository tripRepo, GroupRepository groupRepo) {
-        super(profileRepo, tripRepo, groupRepo);
+    public ProfileController(AbstractRepository<Profile> repo) {
+        super(repo);
     }
 
     /**
@@ -40,7 +36,7 @@ public class ProfileController extends AbstractController<Profile> {
      * @return boolean To signal success
      */
     protected Boolean setObj(String username){
-        Profile response = this.profileRepo.getById(username);
+        Profile response = this.getRepository().getById(username);
 
         if(response != null){
             obj = response;
@@ -95,21 +91,14 @@ public class ProfileController extends AbstractController<Profile> {
         return ProfileController.generateListOfControllers(obj.getFriends());
     }
 
-    public Collection<GroupController> getGroups(){
+    public Collection<GroupController> getGroups() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        return this.getProfileGroupsUI(profile);
+        return GroupController.generateListOfControllers(obj.getGroups());
     }
 
-    public Collection<PastTripUI> getPastTripsUI(){
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.tripService.getProfilePastTripsUI(profile);
-    }
-
-    public Collection<Review> getReviews() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
-        return this.obj.getReviews();
+    public Collection<TripController> getTrips() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return TripController.generateListOfControllers(obj.getTrips());
     }
 
     /**
@@ -134,5 +123,10 @@ public class ProfileController extends AbstractController<Profile> {
             response.add(controller);
         }
         return response;
+    }
+
+    @Override
+    protected  ProfileRepository getRepository() {
+        return (ProfileRepository) this.repository;
     }
 }

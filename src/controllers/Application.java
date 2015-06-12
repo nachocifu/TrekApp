@@ -9,7 +9,7 @@ import com.sun.xml.internal.ws.util.StringUtils;
 import repository.AbstractRepository;
 import repository.GroupRepository;
 import repository.TripRepository;
-import repository.UserRepository;
+import repository.ProfileRepository;
 import domain.Group;
 import domain.Profile;
 import domain.Session;
@@ -26,7 +26,7 @@ public class Application{
     private String DEFAULT_DATABASE = "DataBase";
 
     /* Store references to all repository's*/
-    private UserRepository userRepo;
+    private ProfileRepository userRepo;
     private GroupRepository groupRepo;
     private TripRepository tripRepo;
 
@@ -43,7 +43,7 @@ public class Application{
         pathString = "jdbc:sqlite:" + pathString;
 
         /* Start all Databases */
-        userRepo = new UserRepository(pathToDataBase, Profile.class);
+        userRepo = new ProfileRepository(pathToDataBase, Profile.class);
         groupRepo = new GroupRepository(pathToDataBase, Group.class);
         tripRepo = new TripRepository(pathToDataBase, Trip.class);
     }
@@ -99,27 +99,27 @@ public class Application{
     }
 
     public ProfileController getProfileController(){
-        return new ProfileController(userRepo, tripRepo, groupRepo);
+        return new ProfileController(userRepo);
     }
 
     public CurrentProfileController getCurrentProfileController(){
-        return new CurrentProfileController(userRepo, tripRepo, groupRepo);
+        return new CurrentProfileController(userRepo);
     }
 
     public GroupController getGroupController(){
-        return new GroupController(userRepo, tripRepo, groupRepo);
+        return new GroupController(groupRepo);
     }
 
     public MyGroupController getMyGroupController(){
-        return new MyGroupController(userRepo, tripRepo, groupRepo);
+        return new MyGroupController(groupRepo);
     }
 
     public TripController getTripController(){
-        return new TripController(userRepo, tripRepo, groupRepo);
+        return new TripController(tripRepo);
     }
 
     public MyTripController getMyTripController(){
-        return new MyTripController(userRepo, tripRepo, groupRepo);
+        return new MyTripController(tripRepo);
     }
 
     public ProfileController getController(Profile profile) {
@@ -128,15 +128,6 @@ public class Application{
         } else {
             return getProfileController();
         }
-    }
-
-    public TripController getController(Trip profile) {
-        return null;
-//        if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
-//            return getCurrentProfileController();
-//        } else {
-//            return getProfileController();
-//        }
     }
 }
 

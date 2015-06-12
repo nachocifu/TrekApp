@@ -16,12 +16,12 @@ import com.j256.ormlite.support.ConnectionSource;
 
 import domain.Profile;
 
-public class UserRepository extends AbstractRepository<Profile> {
+public class ProfileRepository extends AbstractRepository<Profile> {
 
     /** the class of the objects this repository handles */
     private final Class<Profile> profileClass = null;
 
-    public UserRepository(String pathToDataBase,Class reposClass) {
+    public ProfileRepository(String pathToDataBase,Class reposClass) {
         super(pathToDataBase, reposClass);
         // TODO Auto-generated constructor stub
     }

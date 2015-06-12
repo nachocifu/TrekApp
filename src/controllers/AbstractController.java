@@ -1,12 +1,6 @@
 package controllers;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import repository.AbstractRepository;
-import repository.GroupRepository;
-import repository.TripRepository;
-import repository.UserRepository;
 import domain.ControllerNotLoadedException;
 import domain.Session;
 import domain.SessionNotActiveException;
@@ -16,19 +10,14 @@ public abstract class AbstractController<T> {
     /* The object to be controlled*/
     protected T obj;
 
-    /*The repositories to be accessed by any controller*/
-    protected UserRepository profileRepo;
-    protected TripRepository tripRepo;
-    protected GroupRepository groupRepo;
+    /*The repositories to be accessed by the controller*/
+    protected AbstractRepository<T> repository;
 
 
-    public AbstractController(UserRepository profileRepo, TripRepository tripRepo, GroupRepository groupRepo){
-        if(profileRepo == null || tripRepo == null || groupRepo == null)
+    public AbstractController(AbstractRepository<T> repo){
+        if(repo == null)
             throw new IllegalArgumentException();
-
-        this.profileRepo = profileRepo;
-        this.tripRepo = tripRepo;
-        this.groupRepo = groupRepo;
+        repository = repo;
     }
 
     /**
@@ -78,6 +67,6 @@ public abstract class AbstractController<T> {
     }
 
     protected void saveChanges(){
-        this.repo.update(algo)
+        this.repository.update(this.obj);
     }
 }

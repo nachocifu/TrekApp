@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import repository.AbstractRepository;
-import repository.UserRepository;
+import repository.ProfileRepository;
 import domain.Group;
 import domain.InvalidPasswordException;
 import domain.Profile;
@@ -15,12 +15,12 @@ import domainUI_Controller.TripUI;
 
 public class ProfileService{
 
-    private UserRepository repo;
+    private ProfileRepository repo;
 
     /**
      * @param user repository
      */
-    public ProfileService(UserRepository repo){
+    public ProfileService(ProfileRepository repo){
         this.repo=repo;
     }
 

@@ -6,13 +6,12 @@ import domain.Session;
 import domain.SessionNotActiveException;
 import repository.GroupRepository;
 import repository.TripRepository;
-import repository.UserRepository;
+import repository.ProfileRepository;
 
 public class CurrentProfileController extends ProfileController {
 
-    public CurrentProfileController(UserRepository profileRepo,
-            TripRepository tripRepo, GroupRepository groupRepo) {
-        super(profileRepo, tripRepo, groupRepo);
+    public CurrentProfileController(ProfileRepository profileRepo) {
+        super(profileRepo);
     }
 
 
