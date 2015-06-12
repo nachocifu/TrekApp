@@ -51,26 +51,26 @@ public class Group {
      * 0 if he has been rejected and 1 if is waiting for acceptance
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashMap<Profile, Integer> memberRequests;
+    private HashMap<Profile, RequestStatus> memberRequests;
     
     @DatabaseField
-    private Integer filter1_edad;
+    private Integer filterAge;
     
     @DatabaseField
-    private String filter2_ciudad;
+    private String filterCity;
     
     @DatabaseField
     private Integer maxGroupSize;
 
-    public Group(String groupName, Profile admin, Integer maxGroupSize){
+    public Group(String groupName, Profile admin, Integer maxGroupSize, Integer filterAge, String filterCity){
         this.groupName=groupName;
         this.admin=admin;
         this.members=new HashSet<Profile>();
         this.wall=new HashMap<Message, Profile>();
-        this.memberRequests = new HashMap<Profile, Integer>();
+        this.memberRequests = new HashMap<Profile, RequestStatus>();
         this.maxGroupSize = maxGroupSize;   
-        this.filter1_edad = null;
-        this.filter2_ciudad = null;
+        this.filterAge = filterAge;
+        this.filterCity = filterCity;
         admin.joinGroup(this);
     }
 
@@ -115,7 +115,7 @@ public class Group {
      * @param newMember
      */
     public void acceptMember(Profile newMember){
-    	if(memberRequests.containsKey(newMember) && memberRequests.get(newMember) != 0 && this.maxGroupSize > this.groupSize()){
+    	if(memberRequests.containsKey(newMember) && memberRequests.get(newMember) == RequestStatus.WAITING && this.maxGroupSize > this.groupSize()){
     		memberRequests.remove(newMember);
     		members.add(newMember);
     		newMember.joinGroup(this);
@@ -129,8 +129,8 @@ public class Group {
      * @param possibleMember
      */
     public void addMemberRequest(Profile possibleMember){
-    	if(possibleMember.getBirthDay().equals(this.filter1_edad) && possibleMember.getCity().equals(this.filter2_ciudad))
-    	memberRequests.put(possibleMember, 0);
+    	if(possibleMember.getBirthDay().equals(this.filterAge) && possibleMember.getCity().equals(this.filterCity))
+    	memberRequests.put(possibleMember, RequestStatus.WAITING);
     }
 
     /**
@@ -226,24 +226,24 @@ public class Group {
 		this.maxGroupSize = maxGroupSize;
 	}
 
-	public HashMap<Profile, Integer> getMemberRequests() {
+	public HashMap<Profile, RequestStatus> getMemberRequests() {
 		return memberRequests;
 	}
 
-	public Integer getFilter1_edad() {
-		return filter1_edad;
+	public Integer getFilter1_age() {
+		return filterAge;
 	}
 
-	public void setFilter1_edad(Integer filter1_edad) {
-		this.filter1_edad = filter1_edad;
+	public void setFilterAge(Integer filter1_edad) {
+		this.filterAge = filter1_edad;
 	}
 
-	public String getFilter2_ciudad() {
-		return filter2_ciudad;
+	public String getFilterCity() {
+		return filterCity;
 	}
 
-	public void setFilter2_ciudad(String filter2_ciudad) {
-		this.filter2_ciudad = filter2_ciudad;
+	public void setFilterCity(String filter2_ciudad) {
+		this.filterCity = filter2_ciudad;
 	}
 	
 	

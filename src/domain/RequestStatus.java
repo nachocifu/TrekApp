@@ -2,7 +2,7 @@ package domain;
 
 public enum RequestStatus {
 	
-	 REJECTED(new Integer(0)), WAITING(new Integer(1));
+	 REJECTED(0), WAITING(1);
 	 
 	 private Integer status;
 	 

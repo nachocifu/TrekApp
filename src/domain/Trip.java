@@ -35,7 +35,6 @@ public class Trip {
     public TripStatus tripStatus;
 
     public Trip(){
-
     }
 
     public Trip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity){

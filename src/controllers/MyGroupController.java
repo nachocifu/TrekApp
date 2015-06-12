@@ -6,6 +6,7 @@ import java.util.HashSet;
 import domain.ControllerNotLoadedException;
 import domain.InvalidPermissionException;
 import domain.Profile;
+import domain.RequestStatus;
 import domain.SessionNotActiveException;
 import repository.GroupRepository;
 import repository.TripRepository;
@@ -65,9 +66,9 @@ public class MyGroupController extends GroupController {
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
-    public HashMap<ProfileController, Integer> getMemberRequests() throws SessionNotActiveException, ControllerNotLoadedException{
+    public HashMap<ProfileController, RequestStatus> getMemberRequests() throws SessionNotActiveException, ControllerNotLoadedException{
     	this.validateEnvironment();
-    	HashMap<ProfileController, Integer> newMap = new HashMap<>();
+    	HashMap<ProfileController, RequestStatus> newMap = new HashMap<>();
     	Application app = Application.getInstance();
     	for (Profile profile : this.obj.getMemberRequests().keySet()) {
     		ProfileController controller = app.getProfileController();
@@ -99,12 +100,26 @@ public class MyGroupController extends GroupController {
 //        this.obj.addCost(costToAdd);
 //    }
 
+    /**
+     * Deletes a trip from the group
+     * @param tripController
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public void deleteGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
          this.validateController(tripController);
         this.obj.deleteGroupTrip(tripController.getObject());
     }
 
+    /**
+     * Deletes a post from the group
+     * @param msg
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     * @throws IllegalArgumentException
+     * @throws InvalidPermissionException
+     */
     public void deletePost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, IllegalArgumentException, InvalidPermissionException{
         this.validateEnvironment();
         this.obj.deletePost(msg);
@@ -117,10 +132,10 @@ public class MyGroupController extends GroupController {
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
-    public void setFilters(Integer edad, String ciudad) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void setFilters(Integer age, String city) throws SessionNotActiveException, ControllerNotLoadedException{
     	this.validateEnvironment();
-    	this.obj.setFilter1_edad(edad);
-    	this.obj.setFilter2_ciudad(ciudad);
+    	this.obj.setFilterAge(age);
+    	this.obj.setFilterCity(city);
     }
     
     /**

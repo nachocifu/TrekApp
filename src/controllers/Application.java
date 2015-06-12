@@ -66,7 +66,7 @@ public class Application{
      * @throws UserNameAlreadyExistsException
      */
     public void registerUser(String username, String name, String surname, Date brthDay, boolean sex, String password, String city, String email ) throws ServerException, UserNameAlreadyExistsException{
-        if(    username.trim().isEmpty()
+        if(username.trim().isEmpty()
             || name.trim().isEmpty()
             || surname.trim().isEmpty()
             || brthDay == null
@@ -77,12 +77,44 @@ public class Application{
         this.userRepo.add( new Profile(username, name, surname, brthDay, sex, password, city, email));
     }
     
-    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize) throws ServerException, UserNameAlreadyExistsException{
-    	if(groupName.trim().isEmpty() || admin == null || maxGroupSize <= 0)
+    /**
+     * Registers a new group into the system.
+     * @param groupName
+     * @param admin
+     * @param maxGroupSize
+     * @param filterAge
+     * @param filterCity
+     * @return
+     * @throws ServerException
+     * @throws UserNameAlreadyExistsException
+     */
+    //Revisar el throwsUserName
+    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, UserNameAlreadyExistsException{
+    	if(groupName.trim().isEmpty() || admin == null || maxGroupSize <= 0 || filterAge <= 0 || filterCity.trim().isEmpty())
                 throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
-        Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize);
+        Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
     	this.groupRepo.add(newGroup);
         return new MyGroupController(groupRepo);    
+    }
+    /**
+     * Registers a new trip into the system,
+     * @param startDate
+     * @param endDate
+     * @param estimateCost
+     * @param tripDescription
+     * @param originCity
+     * @param endCity
+     * @return
+     * @throws ServerException
+     * @throws UserNameAlreadyExistsException
+     */
+    //Revisar el throwsUserName
+    public MyTripController registerTrip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity) throws ServerException, UserNameAlreadyExistsException{
+    	if(estimateCost < 0 || endCity.trim().isEmpty() || originCity.trim().isEmpty() || tripDescription.trim().isEmpty())
+                throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
+        Trip newTrip = new Trip(startDate, endDate, estimateCost, tripDescription, originCity, endCity);
+    	this.tripRepo.add(newTrip);
+        return new MyTripController(tripRepo);    
     }
 
     /**

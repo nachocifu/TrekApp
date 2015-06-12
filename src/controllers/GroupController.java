@@ -22,6 +22,12 @@ public class GroupController extends AbstractController<Group> {
         super(groupRepo);
     }
 
+    /**
+     * Returns the group name
+     * @return
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public String getGroupName() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getGroupName();
@@ -38,6 +44,12 @@ public class GroupController extends AbstractController<Group> {
         return ProfileController.generateListOfControllers(obj.getMembers());
     }
 
+    /**
+     * Returns
+     * @return
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public ProfileController getAdmin() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         ProfileController response = null;
@@ -61,12 +73,28 @@ public class GroupController extends AbstractController<Group> {
 //        return this.obj.getCostsPerMember();
 //    }
 
+    /**
+     * Ads a post to the wall if the profile is a member of the group
+     * @param profileController
+     * @param msg
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException
+     */
     public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(profileController);
         this.obj.addPost(profileController.getObject(), msg);
     }
 
+    /**
+     * Ads a trip to the group if the profile is a member of the group
+     * @param profileController
+     * @param tripController
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException
+     */
     public void addGroupTrip(ProfileController profileController, TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(tripController);
