@@ -8,6 +8,7 @@ import repository.AbstractRepository;
 import repository.ProfileRepository;
 import domain.ControllerNotLoadedException;
 import domain.Profile;
+import domain.Review;
 import domain.Session;
 import domain.SessionNotActiveException;
 
@@ -44,6 +45,17 @@ public class ProfileController extends AbstractController<Profile> {
         }
         else
             return false;
+    }
+    
+    /**
+     * This method is called from the method sendReviewToAMember in GroupController
+     * @param rec
+     * @param send
+     * @param msg
+     * @param rating
+     */
+    public void addReview(Profile rec, Profile send, String msg, Integer rating){
+    	this.obj.addReview(rec, send, msg, rating);;
     }
 
    public String getUsername() throws SessionNotActiveException, ControllerNotLoadedException{
@@ -99,6 +111,11 @@ public class ProfileController extends AbstractController<Profile> {
     public Collection<TripController> getTrips() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return TripController.generateListOfControllers(obj.getTrips());
+    }
+    
+    public Collection<Review> getReviews() throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	return this.obj.getReviews();
     }
 
     /**

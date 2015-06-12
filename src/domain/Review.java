@@ -7,7 +7,7 @@ package domain;
 
 public class Review {
 
-	//private enum Rating {veryBad, bad, regular, good, veryGood, excellent};
+		// private enum Rating {veryBad, bad, regular, good, veryGood, excellent};
 		private Integer rating;
 		private Profile profileTarget;
 		private Profile profileOrigin;
@@ -19,10 +19,10 @@ public class Review {
 		}
 		
 		public Review(Profile rec, Profile send, String msg, Integer rat){
-			this.rating=rat;
-			this.profileTarget=rec;
-			this.profileOrigin=send;
-			this.comment=msg;
+			setRating(rat);
+			this.profileTarget = rec;
+			this.profileOrigin = send;
+			this.comment = msg;
 		}
 
 		/**
@@ -36,26 +36,18 @@ public class Review {
 		 * @param rating
 		 * @throws IllegalArgumentException
 		 */
-		public void setRating(Integer rating) throws IllegalArgumentException {
+		private void setRating(Integer rating) throws IllegalArgumentException {
 			if(rating >= 0 && rating <= 5){
 				this.rating = rating;
 			}else{
 				throw new IllegalArgumentException();
 			}
 		}
-
-		/**
-		 * @param comment that will be added to the review
-		 */
-		public void setComm(String comment)
-		{
-			this.comment=comment;
-		}
 		
 		/**
 		 * @return the review's comment
 		 */
-		public String getComm()
+		public String getComment()
 		{
 			return this.comment;
 		}

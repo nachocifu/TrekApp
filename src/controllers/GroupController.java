@@ -26,6 +26,12 @@ public class GroupController extends AbstractController<Group> {
         return this.obj.getGroupName();
     }
 
+    /**
+     * Returns a Collection of ProfileControllers
+     * @return
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public HashSet<ProfileController> getMembers() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return ProfileController.generateListOfControllers(obj.getMembers());
@@ -71,6 +77,36 @@ public class GroupController extends AbstractController<Group> {
         return this.obj.groupSize();
     }
 
+    /**
+     * Validates who is sending the review and if that "member" is a member of the group
+     * @param loggedUser
+     * @param member
+     * @param msg
+     * @param rating
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public void sendReviewToAMember(CurrentProfileController loggedUser, ProfileController member, String msg, Integer rating) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+        this.validateController(loggedUser);
+        this.validateController(member);
+    	if(!loggedUser.getObject().equals(member.getObject()) && this.obj.getMembers().contains(loggedUser.getObject()) && this.obj.getMembers().contains(member.getObject())){
+    		member.addReview(loggedUser.getObject(), member.getObject(), msg, rating);
+    	}	
+    }
+    
+    /**
+     * Ads a member request to the group
+     * @param possibleMember
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public void sendMemberRequest(ProfileController possibleMember) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+        this.validateController(possibleMember);
+        this.obj.addMemberRequest(possibleMember.getObject());
+    }
+    
     /**
      * Generate list of controllers from list of T objects
      * @param list

@@ -12,6 +12,8 @@ import domain.Review;
 import domain.Session;
 import domain.SessionNotActiveException;
 
+
+//NO SE USA, NO ES NECESARIA YA QUE LAS REVIEWS COMO OBJETOS NO TIENEN NADA QUE ESCONDER DEL FRONT, TIENEN SOLO GETTERS Y NO SE PUEDEN MODIFICAR UNA VEZ CREADAS
 public class ReviewController extends AbstractController<Review>{
 
     public ReviewController(UserRepository profileRepo,

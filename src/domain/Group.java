@@ -35,7 +35,7 @@ public class Group {
     private HashSet<Profile> members;
 
     /**
-     * Hashset containing the trips of the group Trips
+     * HashSet containing the trips of the group Trips
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashSet<Trip> groupTrips;
@@ -52,6 +52,13 @@ public class Group {
      */
     @DatabaseField
     private Double costs;
+    
+    /**
+     * 0 if he has been rejected and 1 if is waiting for acceptance
+     */
+    private HashMap<Profile, Integer> memberRequests;
+    
+    private Integer maxGroupSize;
 
     public Group(String groupName, Profile admin){
         this.groupName=groupName;
@@ -60,6 +67,8 @@ public class Group {
         this.groupTrips=new HashSet<Trip>();
         this.wall=new HashMap<Message, Profile>();
         this.costs=null;
+        this.memberRequests = new HashMap<Profile, Integer>();
+        this.maxGroupSize = null;    
     }
 
     public Group(){
@@ -92,8 +101,31 @@ public class Group {
      * @throws InvalidPermissionException
      */
     public void addMember(Profile user){
-        this.members.add(user);
-        user.joinGroup(this);
+    	if(this.maxGroupSize > this.groupSize()){
+    		 this.members.add(user);
+    	     user.joinGroup(this);
+    	}
+    }
+    
+    /**
+     * Accepts a member of the request list if he hasn´t been rejected
+     * @param newMember
+     */
+    public void acceptMember(Profile newMember){
+    	if(memberRequests.containsKey(newMember) && memberRequests.get(newMember) != 0 && this.maxGroupSize > this.groupSize()){
+    		memberRequests.remove(newMember);
+    		members.add(newMember);
+    		newMember.joinGroup(this);
+    		this.maxGroupSize += 1;
+    	}
+    }
+    
+    /**
+     * Adds a member request to be accepted or not
+     * @param possibleMember
+     */
+    public void addMemberRequest(Profile possibleMember){
+    	memberRequests.put(possibleMember, 0);
     }
 
     /**
@@ -106,6 +138,7 @@ public class Group {
         if(!members.contains(user))
             throw new IllegalArgumentException("the user that is trying to be deleted does not belong to the group");
         this.members.remove(user);
+        this.maxGroupSize -= 1;
     }
 
     /**
@@ -177,5 +210,21 @@ public class Group {
     public Integer groupSize(){
         return this.members.size();
     }
+
+	public Integer getMaxGroupSize() {
+		return maxGroupSize;
+	}
+
+	public void setMaxGroupSize(Integer maxGroupSize) {
+		this.maxGroupSize = maxGroupSize;
+	}
+
+	public HashMap<Profile, Integer> getMemberRequests() {
+		return memberRequests;
+	}
+	
+	
+    
+    
 }
 

@@ -74,7 +74,7 @@ public class Profile {
 
     /**the users reviews*/
     @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashSet<Review> rev;
+    private HashSet<Review> reviews;
 
     /**the groups the user belongs to*/
     @DatabaseField(dataType = DataType.SERIALIZABLE)
@@ -108,7 +108,7 @@ public class Profile {
         this.friends= new HashSet<Profile>();
         this.blockedUsr= new HashSet<Profile>();
         this.trips= new HashSet<Trip>();
-        this.rev = new HashSet<Review>();
+        this.reviews = new HashSet<Review>();
         this.groups=new HashSet<Group>();
         this.password=password;
         this.city=city;
@@ -176,7 +176,13 @@ public class Profile {
      * @return the users rating
      */
     public Double getRating(){
-        return this.rating;
+    	Double rating1 = 0.0;
+    	for (Review review : reviews) {
+			rating1 += review.getRating();
+		}
+    	if(reviews.size() != 0)
+    		rating1 = rating/reviews.size();
+        return rating1;
     }
 
     /**
@@ -251,7 +257,7 @@ public class Profile {
     }
 
     public Collection<Review> getReviews(){
-        return this.rev;
+        return this.reviews;
     }
 
     public Collection<Group> getGroups(){
@@ -277,14 +283,14 @@ public class Profile {
      * @param rev that will be added to the users reviews
      * the users rating will be automatically updated when addReview is invoked
      */
-    private void addReview(Review rev){
-        this.rev.add(rev);
-        Double rat=this.rating;
-        Integer size=this.rev.size();
-        rat+=rev.getRating();
-        rat/=size;
-        this.rating=rat;
-
+    public void addReview(Profile rec, Profile send, String msg, Integer rating){
+    	Review rev = new Review(rec, send, msg, rating);
+        this.reviews.add(rev);
+        Double rat = this.rating;
+        Integer size = this.reviews.size();
+        rat += rev.getRating();
+        rat /= size;
+        this.rating = rat;
     }
 
     /**
@@ -295,13 +301,16 @@ public class Profile {
      * @param comment short comment describing the users performance
      * @throws IllegalArgumentException
      */
+    /*
     public void sendReview(Profile user, Integer rating, String comment) throws IllegalArgumentException{
         if(rating<1 || rating>5)
             throw new IllegalArgumentException("The rating has to be between 1 and 5");
 
         Review rev=new Review(user, this, comment, rating);
-        user.addReview(rev);
+        user.addReview(user);
     }
+    */
+    
 
     /**
      * @param group of group that the user will be added to
