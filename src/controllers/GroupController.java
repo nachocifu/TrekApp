@@ -136,6 +136,15 @@ public class GroupController extends AbstractController<Group> {
         this.obj.addMemberRequest(possibleMember.getObject());
     }
     
+    public MyTripController getMyTripController(CurrentProfileController currentUser, TripRepository tripRepo) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+        this.validateController(currentUser);
+        if(!this.obj.getMembers().contains(currentUser.getObject())){
+        	throw new IllegalArgumentException("You are not a member of this group");
+        }
+        return new MyTripController(tripRepo);
+    }
+    
     /**
      * Generate list of controllers from list of T objects
      * @param list

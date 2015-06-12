@@ -5,9 +5,11 @@ import java.util.Date;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.ProfileRepository;
+import domain.ControllerNotLoadedException;
 import domain.Group;
 import domain.Profile;
 import domain.Session;
+import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
 
@@ -111,7 +113,7 @@ public class Application{
     //Revisar el throwsUserName
     public MyTripController registerTrip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity) throws ServerException, UserNameAlreadyExistsException{
     	if(estimateCost < 0 || endCity.trim().isEmpty() || originCity.trim().isEmpty() || tripDescription.trim().isEmpty())
-                throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
+                throw new IllegalArgumentException("ERROR || Error registering trip. Check arguments.");
         Trip newTrip = new Trip(startDate, endDate, estimateCost, tripDescription, originCity, endCity);
     	this.tripRepo.add(newTrip);
         return new MyTripController(tripRepo);    
@@ -152,8 +154,8 @@ public class Application{
         return new TripController(tripRepo);
     }
 
-    public MyTripController getMyTripController(){
-        return new MyTripController(tripRepo);
+    public MyTripController getMyTripController(CurrentProfileController currentUser, GroupController tripGroup) throws SessionNotActiveException, ControllerNotLoadedException{
+        return tripGroup.getMyTripController(currentUser, tripRepo);
     }
 
     public ProfileController getController(Profile profile) {
