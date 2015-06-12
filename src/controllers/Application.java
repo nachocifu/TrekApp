@@ -76,6 +76,14 @@ public class Application{
 
         this.userRepo.add( new Profile(username, name, surname, brthDay, sex, password, city, email));
     }
+    
+    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize) throws ServerException, UserNameAlreadyExistsException{
+    	if(groupName.trim().isEmpty() || admin == null || maxGroupSize <= 0)
+                throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
+        Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize);
+    	this.groupRepo.add(newGroup);
+        return new MyGroupController(groupRepo);    
+    }
 
     /**
      * Change the Default Data Base.

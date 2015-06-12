@@ -8,6 +8,11 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import domain.Coordinates;
+import domain.Group;
+import domain.Review;
+import domain.Trip;
+
 /**
  * A users profile in the model. Its content is never modified
  * because it is generated from an existing user.

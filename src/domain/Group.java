@@ -39,24 +39,18 @@ public class Group {
      * HashSet containing the trips of the group Trips
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashSet<Trip> groupTrips;
+    private Trip groupTrip;
 
     /**
      *key: msgId, value:usrId of user that posted the message
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Message, Profile> wall;
-
-    /**
-     * a value representing the costs that are to be shared equally between
-     * all members of the travel group
-     */
-    @DatabaseField
-    private Double costs;
     
     /**
      * 0 if he has been rejected and 1 if is waiting for acceptance
      */
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Profile, Integer> memberRequests;
     
     @DatabaseField
@@ -68,17 +62,16 @@ public class Group {
     @DatabaseField
     private Integer maxGroupSize;
 
-    public Group(String groupName, Profile admin){
+    public Group(String groupName, Profile admin, Integer maxGroupSize){
         this.groupName=groupName;
         this.admin=admin;
         this.members=new HashSet<Profile>();
-        this.groupTrips=new HashSet<Trip>();
         this.wall=new HashMap<Message, Profile>();
-        this.costs=null;
         this.memberRequests = new HashMap<Profile, Integer>();
-        this.maxGroupSize = null;   
+        this.maxGroupSize = maxGroupSize;   
         this.filter1_edad = null;
         this.filter2_ciudad = null;
+        admin.joinGroup(this);
     }
 
     public Group(){
@@ -118,7 +111,7 @@ public class Group {
     }
     
     /**
-     * Accepts a member of the request list if he hasn´t been rejected
+     * Accepts a member of the request list if he hasnï¿½t been rejected
      * @param newMember
      */
     public void acceptMember(Profile newMember){
@@ -136,7 +129,7 @@ public class Group {
      * @param possibleMember
      */
     public void addMemberRequest(Profile possibleMember){
-    	if(possibleMember.getBirthDay().getYear().equals(this.filter1_edad) && possibleMember.getCity().equals(this.filter2_ciudad))
+    	if(possibleMember.getBirthDay().equals(this.filter1_edad) && possibleMember.getCity().equals(this.filter2_ciudad))
     	memberRequests.put(possibleMember, 0);
     }
 
@@ -156,9 +149,12 @@ public class Group {
     /**
      * Any member of the group can add a Group trip
      * @param trip
+     * @throws InvalidPermissionException 
      */
-    public void addGroupTrip(Trip trip){
-        this.groupTrips.add(trip);
+    public void addGroupTrip(Profile user, Trip trip) throws InvalidPermissionException{
+    	if(!this.members.contains(user))
+    		throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
+        this.groupTrip = trip;
     }
 
     /**
@@ -166,15 +162,20 @@ public class Group {
      * @param trip
      */
     public void deleteGroupTrip(Trip trip){
-        this.groupTrips.remove(trip);
+        this.groupTrip = null;
     }
 
     /**
      * @param user posting the message on the wall
      * @param msg being posted
+     * @throws InvalidPermissionException 
      */
-    public void addPost(Profile user, Message msg){
-        this.wall.put(msg, user);
+    public void addPost(Profile user, Message msg) throws InvalidPermissionException{
+    	if(!this.members.contains(user))
+    		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
+    	this.wall.put(msg, user);
+
+    	
     }
 
     /**
@@ -182,39 +183,33 @@ public class Group {
      * @param msgId
      */
     public void deletePost(Message msg) throws IllegalArgumentException, InvalidPermissionException{
-        if(!this.wall.containsKey(msg))
+    	if(!this.wall.containsKey(msg))
             throw new IllegalArgumentException("the message does not exists");
         this.wall.remove(msg);
     }
 
-    /**
-     * @param costs of the travel group
-     */
-    public void setCosts(Double costs){
-        this.costs=costs;
-    }
-
-    /**
-     * @param newCost that will be added to the travel costs
-     */
-    public void addCost(Double newCost){
-        this.costs=this.costs+newCost;
-    }
-
-    /**
-     * @return costs of the travel group
-     */
-    public Double getCosts(){
-        return this.costs;
-    }
-
-    /**
-     * @return the costs divided the total amount of members, this way you get the
-     * cost of each individual member
-     */
-    public Double getCostsPerMember(){
-        return costs/members.size();
-    }
+//    
+//    /**
+//     * @param newCost that will be added to the travel costs
+//     */
+//    public void addCost(Double newCost){
+//        this.costs=this.costs+newCost;
+//    }
+//
+//    /**
+//     * @return costs of the travel group
+//     */
+//    public Double getCosts(){
+//        return this.costs;
+//    }
+//
+//    /**
+//     * @return the costs divided the total amount of members, this way you get the
+//     * cost of each individual member
+//     */
+//    public Double getCostsPerMember(){
+//        return costs/members.size();
+//    }
 
     /**
      * @return the amount of group members

@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import domain.ControllerNotLoadedException;
 import domain.Group;
+import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.Session;
 import domain.SessionNotActiveException;
@@ -49,28 +50,28 @@ public class GroupController extends AbstractController<Group> {
         return response;
     }
 
-    //A continuaci�n solo getters y métodos que pueden hacer todos
+//    //A continuaci�n solo getters y métodos que pueden hacer todos
+//    public Double getCosts() throws SessionNotActiveException, ControllerNotLoadedException{
+//        this.validateEnvironment();
+//        return this.obj.getCosts();
+//    }
+//
+//    public Double getCostsPerMember() throws SessionNotActiveException, ControllerNotLoadedException{
+//        this.validateEnvironment();
+//        return this.obj.getCostsPerMember();
+//    }
 
-    public Double getCosts() throws SessionNotActiveException, ControllerNotLoadedException{
-        this.validateEnvironment();
-        return this.obj.getCosts();
-    }
-
-    public Double getCostsPerMember() throws SessionNotActiveException, ControllerNotLoadedException{
-        this.validateEnvironment();
-        return this.obj.getCostsPerMember();
-    }
-
-    public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(profileController);
         this.obj.addPost(profileController.getObject(), msg);
     }
 
-    public void addGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void addGroupTrip(ProfileController profileController, TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(tripController);
-        this.obj.addGroupTrip(tripController.getObject());
+        this.validateController(profileController);
+        this.obj.addGroupTrip(profileController.getObject(), tripController.getObject());
     }
 
     public Integer groupSize(){

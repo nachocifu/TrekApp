@@ -89,15 +89,15 @@ public class MyGroupController extends GroupController {
     	this.obj.acceptMember(newMember.getObject());
     }
 
-    public void setCost(Double newCost) throws SessionNotActiveException, ControllerNotLoadedException{
-        this.validateEnvironment();
-        this.obj.setCosts(newCost);
-    }
-
-    public void addCost(Double costToAdd) throws SessionNotActiveException, ControllerNotLoadedException{
-        this.validateEnvironment();
-        this.obj.addCost(costToAdd);
-    }
+//    public void setCost(Double newCost) throws SessionNotActiveException, ControllerNotLoadedException{
+//        this.validateEnvironment();
+//        this.obj.setCosts(newCost);
+//    }
+//
+//    public void addCost(Double costToAdd) throws SessionNotActiveException, ControllerNotLoadedException{
+//        this.validateEnvironment();
+//        this.obj.addCost(costToAdd);
+//    }
 
     public void deleteGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
