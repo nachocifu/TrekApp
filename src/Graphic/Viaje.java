@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import controllers.Application;
+import controllers.TripController;
 import domain.ControllerNotLoadedException;
 import domain.Session;
 import domain.SessionNotActiveException;
@@ -44,7 +45,7 @@ public class Viaje extends JFrame {
 	private JTextField tFFrom;
 	private JTextField tFTo;
 	private JTextField tFCost;
-	private Viajeback prueba;
+
 	private JTextArea textArea;
 	/**
 	 * Launch the application.
@@ -69,8 +70,8 @@ public class Viaje extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Viaje(final Integer i, final Viajeback prueba, final ArrayList<String> aux, final Application instance, final Session session) {
-		this.prueba = prueba;
+	public Viaje(final Integer i, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session) {
+
 		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage());
 		setContentPane(panel);
 		setTitle("TreckApp");
@@ -182,6 +183,8 @@ public class Viaje extends JFrame {
 					month2 = Integer.parseInt(tFArriving.getText().substring(3, 5));
 					year1 = Integer.parseInt(tFLeaving.getText().substring(6, 8));
 					year2 = Integer.parseInt(tFArriving.getText().substring(6, 8));
+					
+					System.out.println(year1 + " " + year2);
 					
 					if(day1 > day2 && month1 == month2 & year1 == year2 || month1 > month2 && year1 == year2 || year1 > year2){	
 						flag = 2;
@@ -331,22 +334,18 @@ public class Viaje extends JFrame {
 		
 		if((i== 1 || i == 2) && instance != null){
 			try {
-				tFFrom.setText(instance.getTripController().getOriginCity());
-				tFTo.setText(instance.getTripController().getEndCity());
-				tFLeaving.setText(instance.getTripController().getStartDate().toString());
-				tFArriving.setText(instance.getTripController().getStartDate().toString());
-				tFCost.setText(" $ " + instance.getTripController().getEstimateCost().toString());
-				tFStatus.setText(instance.getTripController().getTripStatus().getName());
-				textArea.setText(instance.getTripController().getTripDescription());
+				tFFrom.setText(trip.getOriginCity());
+				tFTo.setText(trip.getEndCity());
+				tFLeaving.setText(trip.getStartDate().toString());
+				tFArriving.setText(trip.getStartDate().toString());
+				tFCost.setText(" $ " + trip.getEstimateCost().toString());
+				tFStatus.setText(trip.getTripStatus().getName());
+				textArea.setText(trip.getTripDescription());
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
 			} catch (ControllerNotLoadedException e1) {
 				e1.printStackTrace();
 			}
-		}
-		if(prueba != null){
-			tFLeaving.setText(prueba.getDesde());
-			tFArriving.setText(prueba.getHasta());
 		}
 		
 		JButton img = new JButton();

@@ -84,17 +84,15 @@ public class Calif extends JFrame {
 		scrollPane.setBounds(145, 181, 190, 120);
 		panel.add(scrollPane);
 		
-		final DefaultListModel block = new DefaultListModel();
+		final DefaultListModel profiles = new DefaultListModel();
 		
-		LinkedList<String> hola2 = new LinkedList<String>();
-		hola2.add("j");
-		hola2.add("k");
-		hola2.add("l");
-		for(String each : hola2){
-			block.addElement(each);
+		LinkedList<String> profileCol = new LinkedList<String>();
+		//profileCol = instance.getGroupController().
+		for(String each : profileCol){
+			profiles.addElement(each);
 		}
 		
-		final JList list = new JList(block);
+		final JList list = new JList(profiles);
 		scrollPane.setViewportView(list);
 		
 		final JButton btnBack = new JButton();
@@ -119,7 +117,7 @@ public class Calif extends JFrame {
 				}
 				if(list.getSelectedValue() != null){
 					System.out.println(list.getSelectedValue() + " " + requests.getSelectedItem());
-					block.remove(list.getSelectedIndex());//si no se selecciona un objeto tira null pointer exception
+					profiles.remove(list.getSelectedIndex());//si no se selecciona un objeto tira null pointer exception
 				}
 			}
 		});

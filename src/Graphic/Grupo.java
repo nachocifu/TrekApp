@@ -216,6 +216,13 @@ public class Grupo extends JFrame {
 		final JButton btnDelete = new JButton();
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					instance.getMyGroupController().deleteGroup();
+				} catch (SessionNotActiveException e1) {
+					e1.printStackTrace();
+				} catch (ControllerNotLoadedException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnDelete.setBounds(397, 386, 145, 23);
@@ -325,7 +332,7 @@ public class Grupo extends JFrame {
 			btnTrip.setText("Modificar Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = new Viaje(1,viaje,null, instance, session);
+					Viaje frame = new Viaje(1, instance.getTripController() ,null, instance, session);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);
@@ -353,7 +360,7 @@ public class Grupo extends JFrame {
 			btnTrip.setText("Ver Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = new Viaje(2,viaje,null, instance, session);
+					Viaje frame = new Viaje(2,instance.getTripController(),null, instance, session);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);

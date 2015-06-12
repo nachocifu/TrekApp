@@ -101,8 +101,6 @@ public class Connect extends JFrame {
 			
 			public void mouseClicked(MouseEvent e) {
 				String password = String.valueOf(passwordField.getPassword());
-				//System.out.println(Connect.this.instance);
-				System.out.println(textField);
 				if(instance.validate(textField.getText(), password) != false ){
 					Session session = Session.getInstance();
 					session.logIn(textField.getText(), passwordField.getText());
