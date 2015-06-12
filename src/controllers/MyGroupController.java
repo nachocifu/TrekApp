@@ -111,6 +111,19 @@ public class MyGroupController extends GroupController {
     }
     
     /**
+     * Sets filters to filter member requests
+     * @param edad
+     * @param ciudad
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public void setFilters(Integer edad, String ciudad) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	this.obj.setFilter1_edad(edad);
+    	this.obj.setFilter2_ciudad(ciudad);
+    }
+    
+    /**
      * Deletes the group from all of its members
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException

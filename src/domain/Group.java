@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -58,6 +59,13 @@ public class Group {
      */
     private HashMap<Profile, Integer> memberRequests;
     
+    @DatabaseField
+    private Integer filter1_edad;
+    
+    @DatabaseField
+    private String filter2_ciudad;
+    
+    @DatabaseField
     private Integer maxGroupSize;
 
     public Group(String groupName, Profile admin){
@@ -68,7 +76,9 @@ public class Group {
         this.wall=new HashMap<Message, Profile>();
         this.costs=null;
         this.memberRequests = new HashMap<Profile, Integer>();
-        this.maxGroupSize = null;    
+        this.maxGroupSize = null;   
+        this.filter1_edad = null;
+        this.filter2_ciudad = null;
     }
 
     public Group(){
@@ -120,11 +130,13 @@ public class Group {
     	}
     }
     
+    //VER COMO ARREGLAR LO DE DATE
     /**
-     * Adds a member request to be accepted or not
+     * Adds a member request to be accepted or not using the filters
      * @param possibleMember
      */
     public void addMemberRequest(Profile possibleMember){
+    	if(possibleMember.getBirthDay().getYear().equals(this.filter1_edad) && possibleMember.getCity().equals(this.filter2_ciudad))
     	memberRequests.put(possibleMember, 0);
     }
 
@@ -221,6 +233,22 @@ public class Group {
 
 	public HashMap<Profile, Integer> getMemberRequests() {
 		return memberRequests;
+	}
+
+	public Integer getFilter1_edad() {
+		return filter1_edad;
+	}
+
+	public void setFilter1_edad(Integer filter1_edad) {
+		this.filter1_edad = filter1_edad;
+	}
+
+	public String getFilter2_ciudad() {
+		return filter2_ciudad;
+	}
+
+	public void setFilter2_ciudad(String filter2_ciudad) {
+		this.filter2_ciudad = filter2_ciudad;
 	}
 	
 	
