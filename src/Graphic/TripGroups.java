@@ -25,6 +25,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
+import controllers.Application;
+import domain.Session;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -42,7 +45,7 @@ public class TripGroups extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TripGroups frame = new TripGroups();
+					TripGroups frame = new TripGroups(null, null);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -56,7 +59,7 @@ public class TripGroups extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TripGroups() {
+	public TripGroups(final Application instance, final Session session) {
 		panel = new ImagePanel(new ImageIcon("TripGroups.jpg").getImage());
 		setTitle("TreckApp");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -69,7 +72,7 @@ public class TripGroups extends JFrame {
 		scrollPane_1.setBounds(68, 146, 751, 272);
 		panel.add(scrollPane_1);
 		
-		//String [] espa�ol = new String[] {"Desde", "Hasta", "Ciudad de Origen", "Ciudad de Finalizacion"};
+		//String [] spanish = new String[] {"Desde", "Hasta", "Ciudad de Origen", "Ciudad de Finalizacion"};
 		String [] english = new String[] {"Name of the Group","Leaving on", "Returning on", "From","To"};
 		
 		table = new JTable(){
@@ -117,7 +120,7 @@ public class TripGroups extends JFrame {
 //						}
 						
 						/* ELIMINAR LO QUE SIGUE DESPUES*/
-						Grupo frame = new Grupo(2,prueba.get(table.getSelectedRow()),null);
+						Grupo frame = new Grupo(2,prueba.get(table.getSelectedRow()),null,instance, session);
 						frame.setVisible(true);
 						frame.pack();
 						frame.setSize(900, 602);
@@ -179,7 +182,7 @@ public class TripGroups extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(/*null, 1, null*/);
+				Profile frame = new Profile(instance, 1, session);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);

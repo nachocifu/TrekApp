@@ -24,6 +24,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+import controllers.Application;
+import domain.Session;
+
 
 public class Viaje extends JFrame {
 
@@ -49,7 +52,7 @@ public class Viaje extends JFrame {
 			public void run() {
 				try {
 					
-					Viaje frame = new Viaje(1,null,null);
+					Viaje frame = new Viaje(1,null,null, null, null);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -64,7 +67,7 @@ public class Viaje extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Viaje(final Integer i, final Viajeback prueba, final ArrayList<String> aux) {
+	public Viaje(final Integer i, final Viajeback prueba, final ArrayList<String> aux, final Application instance, final Session session) {
 		this.prueba = prueba;
 		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage());
 		setContentPane(panel);
@@ -203,19 +206,19 @@ public class Viaje extends JFrame {
 					case 1:
 						//viaje = new Viaje();
 						if(i == 0){
-							Grupo frame = new Grupo(0,null/*viaje*/,aux);
+							Grupo frame = new Grupo(0,null/*viaje*/,aux, instance, session);
 							frame.setVisible(true);
 							frame.pack();
 							frame.setSize(900, 602);
 							close();
 						}else if(i == 1){
-							Grupo frame = new Grupo(1,null/*viaje*/,aux);
+							Grupo frame = new Grupo(1,null/*viaje*/,aux, instance, session);
 							frame.setVisible(true);
 							frame.pack();
 							frame.setSize(900, 602);
 							close();
 						}else if(i == 2){
-							Grupo frame = new Grupo(2 ,null/*viaje*/,aux);
+							Grupo frame = new Grupo(2 ,null/*viaje*/,aux, instance, session);
 							frame.setVisible(true);
 							frame.pack();
 							frame.setSize(900, 602);
@@ -223,25 +226,25 @@ public class Viaje extends JFrame {
 						}
 						break;
 					case 2:
-						JOptionPane.showMessageDialog(new Viaje(i, prueba,aux), "No introdujo una fecha correcta", "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "No introdujo una fecha correcta", "ERROR", JOptionPane.ERROR_MESSAGE);
 						break;
 					case 3:
-						JOptionPane.showMessageDialog(new Viaje(i, prueba,aux), "No introdujo una ciudad de origen", "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "No introdujo una ciudad de origen", "ERROR", JOptionPane.ERROR_MESSAGE);
 						break;
 					case 4:
-						JOptionPane.showMessageDialog(new Viaje(i, prueba,aux), "No introdujo una ciudad de finalizacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "No introdujo una ciudad de finalizacion", "ERROR", JOptionPane.ERROR_MESSAGE);
 						break;
 					case 5:
-						JOptionPane.showMessageDialog(new Viaje(i, prueba,aux), "No introdujo un costo estimado del viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "No introdujo un costo estimado del viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
 						break;
 					case 6: 
-						JOptionPane.showMessageDialog(new Viaje(i, prueba,aux), "No introdujo un costo estimado del viaje correcto", "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "No introdujo un costo estimado del viaje correcto", "ERROR", JOptionPane.ERROR_MESSAGE);
 						break;
 					case 7:
-						JOptionPane.showMessageDialog(new Viaje(i, prueba,aux), "No introdujo una descripcion del viaje que quiere crear", "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "No introdujo una descripcion del viaje que quiere crear", "ERROR", JOptionPane.ERROR_MESSAGE);
 						break;
 					default:
-						JOptionPane.showMessageDialog(new Viaje(i, prueba,aux), "No introdujo datos obligatorios", "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "No introdujo datos obligatorios", "ERROR", JOptionPane.ERROR_MESSAGE);
 						break;
 				}
 			}

@@ -72,7 +72,7 @@ public class Options extends JFrame {
 		final JButton btnProfile = new JButton();
 		btnProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance,1, session);
+				Profile frame = new Profile(instance, 1 , session);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 620);
@@ -118,12 +118,12 @@ public class Options extends JFrame {
 		final JButton btnSignOut = new JButton();
 		btnSignOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-//				instance.logOut(session);
-//				Connect frame = new Connect(instance);
-//				frame.setVisible(true);
-//				frame.pack();
-//			    frame.setSize(900, 602);
-//				close();
+				session.logOut();
+				Connect frame = new Connect();
+				frame.setVisible(true);
+				frame.pack();
+			    frame.setSize(900, 602);
+				close();
 			}
 		});
 		btnSignOut.setBounds(361, 367, 131, 29);
@@ -132,7 +132,7 @@ public class Options extends JFrame {
 		final JButton btnNewGroup = new JButton();
 		btnNewGroup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Grupo frame = new Grupo(0,null,null);
+				Grupo frame = new Grupo(0,null,null, instance, session);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -145,7 +145,7 @@ public class Options extends JFrame {
 		final JButton btnCalif = new JButton();
 		btnCalif.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Calif frame = new Calif();
+				Calif frame = new Calif(instance, session);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);

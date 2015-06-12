@@ -23,6 +23,10 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 
+import controllers.Application;
+
+import domain.Session;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -48,7 +52,7 @@ public class Grupo extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Grupo frame = new Grupo(1,null, null);
+					Grupo frame = new Grupo(1,null, null,null,null);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -63,7 +67,7 @@ public class Grupo extends JFrame {
 	 * Create the frame.
 	 */
 	// i = 0 creando, i = 1 viendo el propio, i = 2 viendo el de otro
-	public Grupo(final Integer i, final Viajeback viaje, final ArrayList<String> aux) {
+	public Grupo(final Integer i,/* va un tripController aca*/ final Viajeback viaje, final ArrayList<String> aux, final Application instance, final Session session) {
 		setTitle("TreckApp");
 		setBounds(0, 0, 902, 602);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -118,7 +122,7 @@ public class Grupo extends JFrame {
 		lblMembers.setBounds(200, 208, 203, 34);
 		panel.add(lblMembers);
 		
-		/**/
+		/*lista de integrantes del trip*/
 		
 		final DefaultListModel hola2 = new DefaultListModel();
 		
@@ -237,7 +241,7 @@ public class Grupo extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Options frame = new Options(/*null, 1, null*/);
+				Options frame = new Options(instance, session);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -266,9 +270,10 @@ public class Grupo extends JFrame {
 				}
 				switch(flag){
 				case 1:
-					int confirm =JOptionPane.showConfirmDialog(new Options(), "�Desea crear el viaje?", "Confirmar", JOptionPane.YES_NO_OPTION);
+					int confirm = JOptionPane.showConfirmDialog(null, "�Desea crear el viaje?", "Confirmar", JOptionPane.YES_NO_OPTION);
 					if(confirm == JOptionPane.YES_OPTION){
-						Options frame = new Options();
+						//new group y trip
+						Options frame = new Options(instance, session);
 						frame.setVisible(true);
 						frame.pack();
 						frame.setSize(900, 602);
@@ -276,13 +281,13 @@ public class Grupo extends JFrame {
 					}
 					break;
 				case 2:
-					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux), "No introdujo el nombre del grupo", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux,instance, session), "No introdujo el nombre del grupo", "ERROR", JOptionPane.ERROR_MESSAGE);
 					break;
 				case 3:
-					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux), "No introdujo la capacidad maxima del viaje planeado", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux,instance, session), "No introdujo la capacidad maxima del viaje planeado", "ERROR", JOptionPane.ERROR_MESSAGE);
 					break;
 				case 4:
-					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux), "No creo ningun viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux,instance, session), "No creo ningun viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
 			}
@@ -294,7 +299,7 @@ public class Grupo extends JFrame {
 			btnTrip.setText("Modificar Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = new Viaje(1,viaje,null);
+					Viaje frame = new Viaje(1,viaje,null, instance, session);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);
@@ -314,7 +319,7 @@ public class Grupo extends JFrame {
 			btnTrip.setText("Ver Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = new Viaje(2,viaje,null);
+					Viaje frame = new Viaje(2,viaje,null, instance, session);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -343,7 +348,7 @@ public class Grupo extends JFrame {
 					aux.add(textField.getText());
 					aux.add(textField_1.getText());
 					aux.add(textField_2.getText());
-					Viaje frame = new Viaje(0,null,aux);
+					Viaje frame = new Viaje(0,null,aux, instance, session);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);

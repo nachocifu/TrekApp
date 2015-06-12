@@ -1,5 +1,6 @@
 package Graphic;
 
+
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
@@ -19,6 +20,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
+import Graphic.ImagePanel;
+import Graphic.Options;
 import controllers.Application;
 import domain.Session;
 
@@ -36,7 +39,7 @@ public class BuscadorUsuario extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BuscadorUsuario frame = new BuscadorUsuario();
+					BuscadorUsuario frame = new BuscadorUsuario(null, null);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -84,16 +87,16 @@ public class BuscadorUsuario extends JFrame {
 		});
 		btnCheckUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!(textField.getText()).isEmpty() && Profile.get.textField.getText()){
-					//abrir el profile cargado
-					Profile frame = new Profile(instance, 2, session);
-					frame.setVisible(true);
-				    frame.pack();
-				    frame.setSize(900, 620);
-					close();
-				}else{
-					JOptionPane.showMessageDialog(new BuscadorUsuario(instance,session), "No existe el usurio que esta buscando", "ERROR", JOptionPane.ERROR_MESSAGE);
-				}
+//				if(!(textField.getText()).isEmpty() && Profile.get.textField.getText()){
+//					//abrir el profile cargado
+//					Profile frame = new Profile(instance, 2, session);
+//					frame.setVisible(true);
+//				    frame.pack();
+//				    frame.setSize(900, 620);
+//					close();
+//				}else{
+//					JOptionPane.showMessageDialog(new BuscadorUsuario(instance,session), "No existe el usurio que esta buscando", "ERROR", JOptionPane.ERROR_MESSAGE);
+//				}
 			}
 		});
 		btnCheckUser.setBounds(342, 243, 135, 23);

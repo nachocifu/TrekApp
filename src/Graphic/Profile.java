@@ -31,6 +31,9 @@ import javax.swing.JRadioButton;
 
 
 
+
+
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -44,6 +47,8 @@ import java.awt.event.MouseEvent;
 import java.awt.Choice;
 import java.io.File;
 import java.io.IOException;
+import java.rmi.ServerException;
+import java.util.Date;
 import java.util.LinkedList;
 
 import javax.swing.JList;
@@ -52,7 +57,10 @@ import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
 import controllers.Application;
+import domain.ControllerNotLoadedException;
 import domain.Session;
+import domain.SessionNotActiveException;
+import domain.UserNameAlreadyExistsException;
 
 public class Profile extends JFrame {
 
@@ -312,7 +320,7 @@ public class Profile extends JFrame {
 		final JButton btnPastTrip = new JButton();
 		btnPastTrip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				OldTrips frame = new OldTrips();
+				OldTrips frame = new OldTrips(instance, session);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -324,9 +332,14 @@ public class Profile extends JFrame {
 		
 		
 		if(session != null){
-			textField_3.setText(session.getUser().getName());
-			textField_5.setText(session.getUser().getUserName());
-			textField_4.setText(session.getUser().getLastName());
+			try {
+				textField_3.setText(instance.getCurrentProfileController().getUsername());
+				textField_5.setText(instance.getCurrentProfileController().getUserName());
+				textField_4.setText(instance.getCurrentProfileController().getSurname());
+			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
+			
+			}
+			
 		}
 		else{
 			textField_3.setText(null);
@@ -347,7 +360,7 @@ public class Profile extends JFrame {
 			radioButton.setEnabled(false);
 		}
 		else{
-			btnCancelar.setVisible(false);
+			//btnCancelar.setVisible(false);
 		}
 		
 		btnApply.addActionListener(new ActionListener() {
@@ -364,23 +377,23 @@ public class Profile extends JFrame {
 					if(radioButton.isSelected()){
 						if(passwordField.getText().equals(passwordField_1.getText()) && !passwordField.getText().equals("") ){
 							flag = 0;
-							instance.getCurrentProfileController().setPassword(passwordField.getText());
+							//instance.getCurrentProfileController().setPassword(passwordField.getText());
 						}
 						else{
 							flag = 1;
 						}
 					}
 					if(flag == 0){
-						Options frame = new Options(Profile.this.instance, session);
+						Options frame = new Options(instance, session);
 						frame.setVisible(true);
 						frame.setSize(484, 315);
 						close();
 					}
 					else{
 						if(flag == 1){
-							JOptionPane.showMessageDialog(new Profile(Profile.this.instance,1,session), "No coinciden las Contrase\u00f1as", "ERROR", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(new Profile(instance,1,session), "No coinciden las Contrase\u00f1as", "ERROR", JOptionPane.ERROR_MESSAGE);
 						}
-						else JOptionPane.showMessageDialog(new Profile(Profile.this.instance,1,session), "No introdujo una direcci\u00f3n correcta", "ERROR", JOptionPane.ERROR_MESSAGE);
+						else JOptionPane.showMessageDialog(new Profile(instance,1,session), "No introdujo una direcci\u00f3n correcta", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 				
@@ -396,14 +409,25 @@ public class Profile extends JFrame {
 							flag = 1;
 						}
 					}
-					if(flag == 0){
-						if(instace.hasUser(textField_5.getText())){
-							lblYaExiste.setVisible(true);
-							flag = 4;
-							
-						}
+					
+					
+					int day = Integer.parseInt(textField_2.getText().substring(0, 2));
+					int month = Integer.parseInt(textField_2.getText().substring(3, 5));
+					int year = Integer.parseInt(textField_2.getText().substring(6, 8));
+					Date date = new Date(year,month,day);
+					boolean sex;
+					if(choice2.getSelectedItem().equals("Male")){
+						sex = true;
+					}else{
+						sex= false;
 					}
-					instance.registerUser(textField_3, textField_4, textField_5, brthDay, sex, password, city, email)
+					try {
+						instance.registerUser(textField_3.getText(), textField_4.getText(), textField_5.getText(), date , sex , passwordField.getText(), null, textField.getText());
+					} catch (ServerException e) {
+						e.printStackTrace();
+					} catch (UserNameAlreadyExistsException e) {
+						lblExists.setVisible(true);
+					}
 						
 				}
 			}
@@ -423,7 +447,7 @@ public class Profile extends JFrame {
 		final JButton btnPresenttrips = new JButton();
 		btnPresenttrips.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TripGroups frame = new TripGroups();
+				TripGroups frame = new TripGroups(instance, session);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 602);
@@ -449,51 +473,50 @@ public class Profile extends JFrame {
 		panel.add(textField_2);
 		textField_2.setColumns(10);	
 		
-//		if(choice == 0){
-//			btnContacts.setVisible(false);
-//			btnPastTrip.setVisible(false);
-//			btnPresenttrips.setVisible(false);
-//		}else if(choice == 1){
-//			textField_3.setEditable(false);
-//			textField_4.setEditable(false);
-//			textField_5.setEditable(false);
-//			textField.setEditable(false);
-//			choice.setEnabled(false);
-	//		btnContacts.addActionListener(new ActionListener() {
-	//		public void actionPerformed(ActionEvent e) {
-	//			Contacts frame = new Contacts();
-	//			frame.setVisible(true);
-	//		    frame.pack();
-	//		    frame.setSize(900, 602);
-	//		    close();
-	//			}
-	//		});
-//		}else if(choice == 2){
-//			textField_3.setEditable(false);
-//			textField_4.setEditable(false);
-//			textField_5.setEditable(false);
-//			textField.setEditable(false);
-//			choice.setEnabled(false);
-//			btnPresenttrips.setVisible(false);
-//			btnContacts.setVisible(false);
-//			lblChangePass.setVisible(false);
-//			lblConfirmPass.setVisible(false);
-//			lblNewPass.setVisible(false);
-//			passwordField.setVisible(false);
-//			passwordField_1.setVisible(false);
-//			radioButton.setVisible(false);
-//			btnContacts.addActionListener(new ActionListener() {
-//				public void actionPerformed(ActionEvent e) {
-//				}
-//			});
-//		}
+		if(choice == 0){
+			btnContacts.setVisible(false);
+			btnPastTrip.setVisible(false);
+			btnPresenttrips.setVisible(false);
+		}else if(choice == 1){
+			textField_3.setEditable(false);
+			textField_4.setEditable(false);
+			textField_5.setEditable(false);
+			textField.setEditable(false);
+			choice2.setEnabled(false);
+			btnContacts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Contacts frame = new Contacts(instance, session);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();
+				}
+			});
+		}else if(choice == 2){
+			textField_3.setEditable(false);
+			textField_4.setEditable(false);
+			textField_5.setEditable(false);
+			textField.setEditable(false);
+			choice2.setEnabled(false);
+			btnPresenttrips.setVisible(false);
+			btnContacts.setVisible(false);
+			lblChangePass.setVisible(false);
+			lblConfirmPass.setVisible(false);
+			lblNewPass.setVisible(false);
+			passwordField.setVisible(false);
+			passwordField_1.setVisible(false);
+			radioButton.setVisible(false);
+			btnContacts.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				}
+			});
+		}
 		
-//		if(choice == 1){
+		if(choice == 1){
 			btnContacts.setText("Contactos");
-//		}else if(choice == 2){
-			btnContacts.setText("Enviar Solicitud de Amistad");
-//			
-//		}
+		}else if(choice == 2){
+			btnContacts.setText("Enviar Solicitud de Amistad");			
+		}
 		
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {

@@ -246,7 +246,7 @@ public class BuscadorViaje extends JFrame {
 //					close();
 //				}
 					/* ELIMINAR LO QUE SIGUE DESPUES*/
-					Grupo frame = new Grupo(0,prueba.get(table.getSelectedRow()), null);
+					Grupo frame = new Grupo(0,prueba.get(table.getSelectedRow()), null, instance, session);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);

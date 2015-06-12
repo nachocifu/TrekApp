@@ -31,6 +31,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import controllers.Application;
+import domain.Session;
+
 
 public class OldTrips extends JFrame {
 
@@ -52,7 +55,7 @@ public class OldTrips extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					OldTrips frame = new OldTrips();
+					OldTrips frame = new OldTrips(null, null);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -66,7 +69,7 @@ public class OldTrips extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OldTrips() {
+	public OldTrips(final Application instance, final Session session) {
 		setTitle("TreckApp");
 		setBounds(0, 0, 902, 602);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -226,7 +229,7 @@ public class OldTrips extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(/*null, 1, null*/);
+				Profile frame = new Profile(instance, 1, session);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);

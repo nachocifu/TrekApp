@@ -26,7 +26,9 @@ import javax.swing.border.LineBorder;
 
 import controllers.Application;
 import controllers.ProfileController;
+import domain.ControllerNotLoadedException;
 import domain.Session;
+import domain.SessionNotActiveException;
 
 public class Contacts extends JFrame {
 
@@ -67,12 +69,16 @@ public class Contacts extends JFrame {
 		
 		final DefaultListModel friends = new DefaultListModel();
 		HashSet<ProfileController> auxFriends = new HashSet<>();
-		auxFriends = instance.getCurrentProfileController().getFriends();
-		
-		for(ProfileController each : auxFriends){
-			friends.addElement(each.getUsername());
+		try {
+			auxFriends = instance.getCurrentProfileController().getFriends();
+			for(ProfileController each : auxFriends){
+				friends.addElement(each.getUsername());
+			}
+		} catch (SessionNotActiveException e1) {
+			e1.printStackTrace();
+		} catch (ControllerNotLoadedException e1) {
+			e1.printStackTrace();
 		}
-
 		
 		final DefaultListModel block = new DefaultListModel();
 		HashSet<ProfileController> auxBlock = new HashSet<>();
@@ -134,10 +140,10 @@ public class Contacts extends JFrame {
 		panel.add(lblContacts);
 		
 		final Choice requests = new Choice();
-		requests.setBounds(377, 405, 200, 30);
-		for(int i25 = 0; i25 < hola.size(); i25++){
-			requests.add(hola.get(i25));
-		}
+//		requests.setBounds(377, 405, 200, 30);
+//		for(int i25 = 0; i25 < hola.size(); i25++){
+//			requests.add(hola.get(i25));
+//		}
 		panel.add(requests);
 		/**/
 		
