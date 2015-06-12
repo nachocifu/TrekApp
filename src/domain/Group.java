@@ -154,7 +154,9 @@ public class Group {
     public void addGroupTrip(Profile user, Trip trip) throws InvalidPermissionException{
     	if(!this.members.contains(user))
     		throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
-        this.groupTrip = trip;
+    	else if(this.groupTrip == null){
+    		this.groupTrip = trip;
+    	}
     }
 
     /**

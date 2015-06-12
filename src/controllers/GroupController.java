@@ -85,6 +85,7 @@ public class GroupController extends AbstractController<Group> {
         this.validateEnvironment();
         this.validateController(profileController);
         this.obj.addPost(profileController.getObject(), msg);
+        saveChanges();
     }
 
     /**
@@ -100,6 +101,7 @@ public class GroupController extends AbstractController<Group> {
         this.validateController(tripController);
         this.validateController(profileController);
         this.obj.addGroupTrip(profileController.getObject(), tripController.getObject());
+        saveChanges();
     }
 
     public Integer groupSize(){
@@ -134,15 +136,6 @@ public class GroupController extends AbstractController<Group> {
     	this.validateEnvironment();
         this.validateController(possibleMember);
         this.obj.addMemberRequest(possibleMember.getObject());
-    }
-    
-    public MyTripController getMyTripController(CurrentProfileController currentUser, TripRepository tripRepo) throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-        this.validateController(currentUser);
-        if(!this.obj.getMembers().contains(currentUser.getObject())){
-        	throw new IllegalArgumentException("You are not a member of this group");
-        }
-        return new MyTripController(tripRepo);
     }
     
     /**

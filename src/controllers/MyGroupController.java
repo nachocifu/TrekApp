@@ -33,6 +33,22 @@ public class MyGroupController extends GroupController {
             this.obj.addMember(member);
         }
     }
+    /**
+     * Returns a MyTripController that only the group admin can use
+     * @param currentUser
+     * @param tripRepo
+     * @return
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public MyTripController getMyTripController(CurrentProfileController currentUser, TripRepository tripRepo) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+        this.validateController(currentUser);
+        if(!this.obj.getMembers().contains(currentUser.getObject())){
+        	throw new IllegalArgumentException("You are not a member of this group");
+        }
+        return new MyTripController(tripRepo);
+    }
 
     /**
      * Deletes a member and if that member is yourself then a new admin is set

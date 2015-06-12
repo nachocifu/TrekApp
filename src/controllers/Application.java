@@ -98,6 +98,7 @@ public class Application{
     	this.groupRepo.add(newGroup);
         return new MyGroupController(groupRepo);    
     }
+    
     /**
      * Registers a new trip into the system,
      * @param startDate
@@ -154,7 +155,7 @@ public class Application{
         return new TripController(tripRepo);
     }
 
-    public MyTripController getMyTripController(CurrentProfileController currentUser, GroupController tripGroup) throws SessionNotActiveException, ControllerNotLoadedException{
+    public MyTripController getMyTripController(CurrentProfileController currentUser, MyGroupController tripGroup) throws SessionNotActiveException, ControllerNotLoadedException{
         return tripGroup.getMyTripController(currentUser, tripRepo);
     }
 
