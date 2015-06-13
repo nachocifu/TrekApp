@@ -40,7 +40,7 @@ public class Review {
 			if(rating >= 0 && rating <= 5){
 				this.rating = rating;
 			}else{
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("Ingrese un rating entre 0 y 5");
 			}
 		}
 		

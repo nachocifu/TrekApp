@@ -54,8 +54,8 @@ public class ProfileController extends AbstractController<Profile> {
      * @param msg
      * @param rating
      */
-    public void addReview(Profile rec, Profile send, String msg, Integer rating){
-    	this.obj.addReview(rec, send, msg, rating);;
+    public void addReview(Profile sender, String msg, Integer rating){
+    	this.obj.addReview(sender, msg, rating);
     }
 
    public String getUsername() throws SessionNotActiveException, ControllerNotLoadedException{

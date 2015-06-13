@@ -6,11 +6,9 @@ import java.util.HashSet;
 import domain.ControllerNotLoadedException;
 import domain.Group;
 import domain.InvalidPermissionException;
-import domain.Session;
 import domain.SessionNotActiveException;
 import repository.AbstractRepository;
 import repository.GroupRepository;
-import repository.TripRepository;
 import domain.Message;
 
 
@@ -101,9 +99,16 @@ public class GroupController extends AbstractController<Group> {
     	this.validateEnvironment();
         this.validateController(loggedUser);
         this.validateController(member);
-    	if(!loggedUser.getObject().equals(member.getObject()) && this.obj.getMembers().contains(loggedUser.getObject()) && this.obj.getMembers().contains(member.getObject())){
-    		member.addReview(loggedUser.getObject(), member.getObject(), msg, rating);
-    	}	
+    	if(loggedUser.getObject().equals(member.getObject())){
+    		throw new IllegalArgumentException("No puedes mandar una review a ti mismo");
+    	}
+    	else if(!this.obj.getMembers().contains(loggedUser.getObject())){
+    		throw new IllegalArgumentException("No puedes enviar una review porque no perteneces a este grupo");
+    	}
+    	else if(!this.obj.getMembers().contains(member.getObject())){
+    		throw new IllegalArgumentException("No puedes enviar una review a esa persona porque no pertenece a este grupo");
+    	}
+    	member.addReview(loggedUser.getObject(), msg, rating);
     }
     
     /**

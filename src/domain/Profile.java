@@ -288,34 +288,25 @@ public class Profile {
      * @param rev that will be added to the users reviews
      * the users rating will be automatically updated when addReview is invoked
      */
-    public void addReview(Profile rec, Profile send, String msg, Integer rating){
-    	Review rev = new Review(rec, send, msg, rating);
+    public void addReview(Profile sender, String msg, Integer rating){
+    	if(msg == null || rating == null)
+    		throw new IllegalArgumentException("No fue completado el mensaje o el rating");
+    	Review rev = new Review(this, sender, msg, rating);
         this.reviews.add(rev);
-        Double rat = this.rating;
+        updateRating(rating);
+    } 
+    
+    /**
+     * Update the rating when adding a new review
+     * @param rating
+     */
+    private void updateRating(Integer rating){
+    	Double rat = this.rating;
         Integer size = this.reviews.size();
-        rat += rev.getRating();
+        rat += rating;
         rat /= size;
         this.rating = rat;
     }
-
-    /**
-     * Will be used after two users have made a trip together, only a user that has shared a trip with the user can make a review
-     * on the user
-     * @param user the review is being sent to
-     * @param rating, numerical value between 1 and 5 representing the users rating in the review
-     * @param comment short comment describing the users performance
-     * @throws IllegalArgumentException
-     */
-    /*
-    public void sendReview(Profile user, Integer rating, String comment) throws IllegalArgumentException{
-        if(rating<1 || rating>5)
-            throw new IllegalArgumentException("The rating has to be between 1 and 5");
-
-        Review rev=new Review(user, this, comment, rating);
-        user.addReview(user);
-    }
-    */
-    
 
     /**
      * @param group of group that the user will be added to
@@ -404,19 +395,6 @@ public class Profile {
             return dt.getYear() - aux.getYear();
         return dt.getYear() - aux.getYear() +1;
     }
-
-//
-//    /**
-//     * @param group the post will be added to
-//     * @param msg that will be added to the group
-//     * @throws IllegalArgumentException when the user does not belong to the requested group
-//     */
-//    public void postInGroup(Group group, String msg) throws IllegalArgumentException{
-//        if(!this.groups.contains(group))
-//            throw new IllegalArgumentException("the user does not belong to the requested group");
-//        Message post=new Message(msg);
-//        group.addPost(this, post);
-//    }
 
     public int hashCode() {
         final int prime = 31;
