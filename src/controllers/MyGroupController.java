@@ -31,21 +31,6 @@ public class MyGroupController extends GroupController {
             this.obj.addMember(member);
         }
     }
-    
-    /**
-     * Returns a MyTripController that only the group admin can use
-     * @param currentUser
-     * @param tripRepo
-     * @return
-     * @throws SessionNotActiveException
-     * @throws ControllerNotLoadedException
-     */
-    public MyTripController getMyTripController(TripRepository tripRepo) throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-        MyTripController groupTrip = new MyTripController(tripRepo);
-        groupTrip.load(this.obj.getGroupTrip());
-        return groupTrip;
-    }
 
     /**
      * Deletes a member and if that member is yourself then a new admin is set
@@ -74,7 +59,7 @@ public class MyGroupController extends GroupController {
     }
     
     /**
-     * Returns a HashMap so that the front can list it and its values (0 if he has been rejected and 1 if is waiting for acceptance)
+     * Returns a HashMap so that the front can list it and its values (REJECTED if he has been rejected and WAITING if is waiting for acceptance)
      * @return
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -84,8 +69,7 @@ public class MyGroupController extends GroupController {
     	HashMap<ProfileController, RequestStatus> newMap = new HashMap<>();
     	Application app = Application.getInstance();
     	for (Profile profile : this.obj.getMemberRequests().keySet()) {
-    		ProfileController controller = app.getProfileController();
-    		controller.load(profile);
+    		ProfileController controller = app.getAProfileController(profile);
 			newMap.put(controller, this.obj.getMemberRequests().get(profile));
 		}
     	return newMap;

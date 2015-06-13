@@ -6,9 +6,7 @@ import domain.ControllerNotLoadedException;
 import domain.SessionNotActiveException;
 import domain.TripStatus;
 
-import repository.GroupRepository;
 import repository.TripRepository;
-import repository.ProfileRepository;
 
 
 /**

@@ -5,16 +5,11 @@ import java.util.Date;
 import java.util.HashSet;
 
 import repository.AbstractRepository;
-import repository.GroupRepository;
 import repository.TripRepository;
-import repository.ProfileRepository;
 import domain.ControllerNotLoadedException;
-import domain.Profile;
-import domain.Session;
 import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.TripStatus;
-import domain.UniversalString;
 
 public class TripController extends AbstractController<Trip> {
 
@@ -63,21 +58,11 @@ public class TripController extends AbstractController<Trip> {
      * @return response List of controllers
      * @throws SessionNotActiveException
      */  
-    //Revisar
-    protected static HashSet<TripController> generateListOfControllers(Collection<Trip> list) throws SessionNotActiveException{
+    protected static HashSet<TripController> generateListOfControllers(Collection<Trip> list) throws SessionNotActiveException {
         HashSet<TripController> response = new  HashSet<TripController>();
         Application app = Application.getInstance();
-        String currentUser = Session.getInstance().getUserName();
-        TripController controller;
-
         for(Trip each: list){
-            if(each.getUsrName().equals(currentUser))
-                controller = app.getMyTripController();
-            else
-                controller = app.getTripController();
-
-            controller.load(each);
-            response.add(controller);
+            response.add(app.getATripController(each, null));
         }
         return response;
     }

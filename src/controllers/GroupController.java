@@ -50,26 +50,7 @@ public class GroupController extends AbstractController<Group> {
      */
     public ProfileController getAdmin() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        ProfileController response = null;
-        
-        if(Session.getInstance().getUserName().equals(obj.getAdminUser().getUsrName()))
-            response = Application.getInstance().getCurrentProfileController();
-        else
-            response = Application.getInstance().getProfileController();
-
-        response.load(Session.getInstance().getUserName());
-        return response;
-    }
-
-//    //A continuaci�n solo getters y métodos que pueden hacer todos
-//    public Double getCosts() throws SessionNotActiveException, ControllerNotLoadedException{
-//        this.validateEnvironment();
-//        return this.obj.getCosts();
-//    }
-//
-    public Double getCostsPerMember() throws SessionNotActiveException, ControllerNotLoadedException{
-        this.validateEnvironment();
-        return this.obj.getCostsPerMember();
+        return Application.getInstance().getAProfileController(this.obj.getAdminUser());
     }
 
     /**
@@ -125,11 +106,16 @@ public class GroupController extends AbstractController<Group> {
     	}	
     }
     
-    public TripController getTripController(TripRepository tripRepo) throws SessionNotActiveException, ControllerNotLoadedException{
+    /**
+     * Returns a TripController or a MyTripController depending of the admin access
+     * @return
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public TripController getTripController() throws SessionNotActiveException, ControllerNotLoadedException{
     	this.validateEnvironment();
-    	TripController groupTrip = new TripController(tripRepo);
-    	groupTrip.load(this.obj.getGroupTrip());
-    	return groupTrip;
+    	Application app = Application.getInstance();
+    	return app.getATripController(this.obj.getGroupTrip(), this.obj.getAdminUser());
     }
     
     /**
@@ -153,10 +139,8 @@ public class GroupController extends AbstractController<Group> {
     protected static HashSet<GroupController> generateListOfControllers(Collection<Group> list) throws SessionNotActiveException{
         HashSet<GroupController> response = new  HashSet<GroupController>();
         Application app = Application.getInstance();
-        GroupController controller;
         for(Group each: list){
-            controller = app.getAGroupController(each);
-            response.add(controller);
+            response.add(app.getAGroupController(each));
         }
         return response;
     }

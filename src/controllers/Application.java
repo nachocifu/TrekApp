@@ -5,7 +5,6 @@ import java.util.Date;
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.ProfileRepository;
-import domain.ControllerNotLoadedException;
 import domain.Group;
 import domain.Profile;
 import domain.Session;
@@ -139,39 +138,65 @@ public class Application{
     public boolean validate(String userName, String passWord) {
         return this.userRepo.validateCredentials(userName,passWord);
     }
-
-    /**
-     * Receives a group Controller and returns a trip Controller
-     * @param groupController
-     * @return
-     * @throws SessionNotActiveException
-     * @throws ControllerNotLoadedException
-     */
-    public TripController getTripController(GroupController groupController) throws SessionNotActiveException, ControllerNotLoadedException{
-        return groupController.getTripController(tripRepo);
-    }
     
     /**
-     * Receives a  group Controller with admin properties and returns the group trip Controller with admin properties
-     * @param tripGroup
+     * Returns a Controller of the actual logged user
      * @return
      * @throws SessionNotActiveException
-     * @throws ControllerNotLoadedException
      */
-    public MyTripController getMyTripController(MyGroupController tripGroup) throws SessionNotActiveException, ControllerNotLoadedException{
-        return tripGroup.getMyTripController(tripRepo);
-    }
-    
     public CurrentProfileController getCurrentProfileController() throws SessionNotActiveException{
     	if(!Session.getInstance().isActive()){
     		throw new SessionNotActiveException("No hay un usuario loggeado");
     	}
     	Profile currentProfile = this.userRepo.getById(Session.getInstance().getUserName());
-    	CurrentProfileController newController = new CurrentProfileController(userRepo);
-    	newController.load(currentProfile);
-    	return newController;
+    	return getCurrentProfileController(currentProfile);
     }
-
+    
+    /**
+     * Returns a trip Controller depending on the admin access
+     * @param trip
+     * @param groupAdmin
+     * @return
+     * @throws SessionNotActiveException
+     */
+    public TripController getATripController(Trip trip, Profile groupAdmin) throws SessionNotActiveException{
+    	if (groupAdmin != null && groupAdmin.getUsrName().equals(Session.getInstance().getUserName())) {
+		    return getMyTripController(trip);
+		} else {
+		    return getTripController(trip);
+		}
+    }
+    
+    /**
+     * For internal use to create a TripController
+     * @param trip
+     * @return
+     * @throws SessionNotActiveException
+     */
+    private TripController getTripController(Trip trip) throws SessionNotActiveException{
+		TripController newController = new TripController(tripRepo);
+		newController.load(trip);
+		return newController;
+	}
+    
+    /**
+     * For internal use to create a TripController
+     * @param trip
+     * @return
+     * @throws SessionNotActiveException
+     */
+    private MyTripController getMyTripController(Trip trip) throws SessionNotActiveException{
+		MyTripController newController = new MyTripController(tripRepo);
+		newController.load(trip);
+		return newController;
+	}
+    
+    /**
+     * Returns a profile Controller depending on the admin access
+     * @param profile
+     * @return
+     * @throws SessionNotActiveException
+     */
     public ProfileController getAProfileController(Profile profile) throws SessionNotActiveException {
 		if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
 		    return getCurrentProfileController(profile);
@@ -180,18 +205,36 @@ public class Application{
 		}
     }
     
+    /**
+     * For internal use to create a ProfileController
+     * @param profile
+     * @return
+     * @throws SessionNotActiveException
+     */
 	private ProfileController getProfileController(Profile profile) throws SessionNotActiveException{
 		ProfileController newController = new ProfileController(userRepo);
 		newController.load(profile);
 		return newController;
 	}
-	    
+	
+	/**
+	 * For internal use to create a ProfileController 
+	 * @param profile
+	 * @return
+	 * @throws SessionNotActiveException
+	 */
 	private CurrentProfileController getCurrentProfileController(Profile profile) throws SessionNotActiveException{
 		CurrentProfileController newController = new CurrentProfileController(userRepo);
 		newController.load(profile);
 		return newController;
 	}
 	
+	/**
+	 * Returns a group Controller depending on the admin access
+	 * @param group
+	 * @return
+	 * @throws SessionNotActiveException
+	 */
 	public GroupController getAGroupController(Group group) throws SessionNotActiveException{
 		if (group.getAdminUser().getUsrName().equals(Session.getInstance().getUserName())) {
 		    return getMyGroupController(group);
@@ -200,12 +243,24 @@ public class Application{
 		}
 	}
 	
+	/**
+	 * For internal use to create a GroupController
+	 * @param group
+	 * @return
+	 * @throws SessionNotActiveException
+	 */
 	private MyGroupController getMyGroupController(Group group) throws SessionNotActiveException{
 	    MyGroupController newController = new MyGroupController(groupRepo);
 	    newController.load(group);
 	    return newController;
 	}
 	
+	/**
+	 * For internal use to create a GroupController
+	 * @param group
+	 * @return
+	 * @throws SessionNotActiveException
+	 */
 	private GroupController getGroupController(Group group) throws SessionNotActiveException{
 		GroupController newController = new GroupController(groupRepo);
 		newController.load(group);
