@@ -154,8 +154,8 @@ public class Application{
         return new MyGroupController(groupRepo);
     }
 
-    public TripController getTripController(){
-        return new TripController(tripRepo);
+    public TripController getTripController(GroupController groupController) throws SessionNotActiveException, ControllerNotLoadedException{
+        return groupController.getTripController(tripRepo);
     }
 
     public MyTripController getMyTripController(CurrentProfileController currentUser, MyGroupController tripGroup) throws SessionNotActiveException, ControllerNotLoadedException{

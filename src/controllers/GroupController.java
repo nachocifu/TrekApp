@@ -126,6 +126,13 @@ public class GroupController extends AbstractController<Group> {
     	}	
     }
     
+    public TripController getTripController(TripRepository tripRepo) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	TripController groupTrip = new TripController(tripRepo);
+    	groupTrip.load(this.obj.getGroupTrip());
+    	return groupTrip;
+    }
+    
     /**
      * Ads a member request to the group
      * @param possibleMember
