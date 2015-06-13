@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Date;
@@ -25,10 +26,12 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import controllers.Application;
+import controllers.MyTripController;
 import controllers.TripController;
 import domain.ControllerNotLoadedException;
 import domain.Session;
 import domain.SessionNotActiveException;
+import domain.UserNameAlreadyExistsException;
 
 
 public class Viaje extends JFrame {
@@ -55,7 +58,7 @@ public class Viaje extends JFrame {
 			public void run() {
 				try {
 					
-					Viaje frame = new Viaje(1,null,null, null, null);
+					Viaje frame = new Viaje(1,null,null,null, null, null);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -70,8 +73,7 @@ public class Viaje extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Viaje(final Integer i, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session) {
-
+	public Viaje(final Integer i, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session) {
 		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage());
 		setContentPane(panel);
 		setTitle("TreckApp");
@@ -209,22 +211,33 @@ public class Viaje extends JFrame {
 				
 				switch(flag){
 					case 1:
-						//viaje = new Viaje();
-						
+						MyTripController viaje = null;
 						if(i == 0){
-							Grupo frame = new Grupo(0,null/*viaje*/,aux, instance, session);
+							
+							Date dateL = new Date(year1, month1, day1);
+							Date dateA = new Date(year2, month2, day2);
+							try {
+								viaje = instance.registerTrip(dateL, dateA, Double.parseDouble(tFCost.getText()), textArea.getText(), tFTo.getText(), tFFrom.getText());
+							} catch (ServerException e1) {
+								e1.printStackTrace();
+							} catch (NumberFormatException e1) {
+								e1.printStackTrace();
+							} catch (UserNameAlreadyExistsException e1) {
+								e1.printStackTrace();
+							}
+							Grupo frame = new Grupo(0,viaje, null ,aux, instance, session);
 							frame.setVisible(true);
 							frame.pack();
 							frame.setSize(900, 602);
 							close();
 						}else if(i == 1){
-							Grupo frame = new Grupo(1,null/*viaje*/,aux, instance, session);
+							Grupo frame = new Grupo(1,viaje,null, null, instance, session);
 							frame.setVisible(true);
 							frame.pack();
 							frame.setSize(900, 602);
 							close();
 						}else if(i == 2){
-							Grupo frame = new Grupo(2 ,null/*viaje*/,aux, instance, session);
+							Grupo frame = new Grupo(2 ,null, trip ,null, instance, session);
 							frame.setVisible(true);
 							frame.pack();
 							frame.setSize(900, 602);
@@ -332,7 +345,7 @@ public class Viaje extends JFrame {
 			textArea.setEditable(false);
 		}
 		
-		if((i== 1 || i == 2) && instance != null){
+		if((trip != null || myTrip != null) && instance != null){
 			try {
 				tFFrom.setText(trip.getOriginCity());
 				tFTo.setText(trip.getEndCity());

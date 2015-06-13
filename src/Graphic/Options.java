@@ -132,7 +132,7 @@ public class Options extends JFrame {
 		final JButton btnNewGroup = new JButton();
 		btnNewGroup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Grupo frame = new Grupo(0,null,null, instance, session);
+				Grupo frame = new Grupo(0,null,null,null, instance, session);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);

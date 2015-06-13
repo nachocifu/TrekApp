@@ -9,6 +9,8 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Locale;
 
@@ -26,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 
 import controllers.Application;
+import controllers.GroupController;
 import domain.ControllerNotLoadedException;
 import domain.Session;
 import domain.SessionNotActiveException;
@@ -89,16 +92,10 @@ public class TripGroups extends JFrame {
 	    };
 	    
 	    /**/
+	    final Collection<GroupController> trips = new ArrayList<GroupController>();
+	    trips = instance.getCurrentProfileController().getGroups();
 	    
-	    final LinkedList<Viajeback> prueba = new LinkedList<Viajeback>();
-	    Viajeback p1 = new Viajeback("cala", "mu1", "chi", "ta");
-	    Viajeback p2 = new Viajeback("cal", "mu2", "chi", "ta");
-	    Viajeback p3 = new Viajeback("ca", "mu3", "chi", "ta");
-	    Viajeback p4 = new Viajeback("c", "mu4", "chi", "ta");
-	    prueba.add(p1);
-	    prueba.add(p2);
-	    prueba.add(p3);
-	    prueba.add(p4);
+	    
 	 
 	    /**/
 	    
@@ -116,16 +113,16 @@ public class TripGroups extends JFrame {
 							} catch (ControllerNotLoadedException e) {
 								e.printStackTrace();
 							}
-							if( prueba.get(table.getSelectedRow()) == null ){
+							if( trips.get(table.getSelectedRow()) == null ){
 								
 							}else if(session.getUserName().equals(admin) && instance != null){
-								Grupo frame = new Grupo(1,prueba.get(table.getSelectedRow()),null, instance, session);
+								Grupo frame = new Grupo(1,trips.get(table.getSelectedRow()),null, instance, session);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
 							}else{
-								Grupo frame = new Grupo(2,prueba.get(table.getSelectedRow()),null, instance, session);
+								Grupo frame = new Grupo(2,trips.get(table.getSelectedRow()),null, instance, session);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
@@ -207,12 +204,19 @@ public class TripGroups extends JFrame {
 		
 		/**/
 		
-		for(int i = 0; i < prueba.size(); i++){
-			table.setValueAt(prueba.get(i).getDesde(), i, 0);
-			table.setValueAt(prueba.get(i).getHasta(), i, 1);
-			table.setValueAt(prueba.get(i).getOrigen(), i, 2);
-			table.setValueAt(prueba.get(i).getLlegada(), i, 3);
+		for(int i = 0; i < trips.size(); i++){
+			table.setValueAt(((UIManager) trips).get(i)., i, 0);
+			table.setValueAt(trips.get(i).getHasta(), i, 1);
+			table.setValueAt(trips.get(i).getOrigen(), i, 2);
+			table.setValueAt(trips.get(i).getLlegada(), i, 3);
 			
+		}
+		
+		for(GroupController each : trips){
+			table.setValueAt(((UIManager) trips).get(i)., i, 0);
+			table.setValueAt(each..getHasta(), i, 1);
+			table.setValueAt(trips.get(i).getOrigen(), i, 2);
+			table.setValueAt(trips.get(i).getLlegada(), i, 3);
 		}
 		
 		/**/

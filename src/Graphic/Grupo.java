@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import java.awt.Font;
+import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,10 +28,16 @@ import javax.swing.ListSelectionModel;
 
 import controllers.Application;
 import controllers.GroupController;
+import controllers.MyGroupController;
+import controllers.MyTripController;
 import controllers.ProfileController;
+import controllers.TripController;
 import domain.ControllerNotLoadedException;
+import domain.InvalidPermissionException;
+import domain.RequestStatus;
 import domain.Session;
 import domain.SessionNotActiveException;
+import domain.UserNameAlreadyExistsException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -57,7 +64,7 @@ public class Grupo extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Grupo frame = new Grupo(0,null, null,null,null);
+					Grupo frame = new Grupo(0,null, null,null,null, null);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -72,7 +79,7 @@ public class Grupo extends JFrame {
 	 * Create the frame.
 	 */
 	// i = 0 creando, i = 1 viendo el propio, i = 2 viendo el de otro
-	public Grupo(final Integer i,/* va un tripController aca*/ final Viajeback viaje, final ArrayList<String> aux, final Application instance, final Session session) {
+	public Grupo(final Integer i, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session) {
 		setTitle("TreckApp");
 		setBounds(0, 0, 902, 602);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -127,8 +134,6 @@ public class Grupo extends JFrame {
 		lblMembers.setBounds(200, 208, 203, 34);
 		panel.add(lblMembers);
 		
-		/*lista de integrantes del trip*/
-		
 		final DefaultListModel members = new DefaultListModel();
 		HashSet<ProfileController> auxMembers = new HashSet<>();
 		if(instance != null){
@@ -158,12 +163,11 @@ public class Grupo extends JFrame {
 		list.setValueIsAdjusting(true);
 		list.setEnabled(false);
 		
-		/**/
 		final Choice requests = new Choice();
 		requests.setVisible(false);
 		requests.setBounds(233, 457, 200, 30);
 		
-		HashMap<ProfileController, Integer> requestsTrip = new HashMap<ProfileController, Integer>();
+		HashMap<ProfileController, RequestStatus> requestsTrip = new HashMap<ProfileController, RequestStatus>();
 		if(instance != null){
 			try {
 				requestsTrip = instance.getMyGroupController().getMemberRequests();
@@ -280,7 +284,7 @@ public class Grupo extends JFrame {
 					flag = 2;
 				} else if(tFCap.getText().isEmpty()){
 					flag = 3;
-				}else if(viaje != null){
+				}else if(myTrip == null){
 					flag = 4;
 				}else{
 					flag = 0;
@@ -289,10 +293,24 @@ public class Grupo extends JFrame {
 				case 1:
 					int confirm = JOptionPane.showConfirmDialog(null, "�Desea crear el viaje?", "Confirmar", JOptionPane.YES_NO_OPTION);
 					if(confirm == JOptionPane.YES_OPTION){
-						
-						
-						//new group y trip
-			
+
+						try {
+							MyGroupController group;
+							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), 25, "Buenos Aires");
+							group.addGroupTrip(instance.getProfileController(), myTrip);
+						} catch (SessionNotActiveException e) {
+							e.printStackTrace();
+						} catch (ControllerNotLoadedException e) {
+							e.printStackTrace();
+						} catch (InvalidPermissionException e) {
+							e.printStackTrace();
+						}catch (NumberFormatException e) {
+							e.printStackTrace();
+						} catch (UserNameAlreadyExistsException e) {
+							e.printStackTrace();
+						}catch (ServerException e) {
+							e.printStackTrace();
+						}
 						
 						Options frame = new Options(instance, session);
 						frame.setVisible(true);
@@ -302,13 +320,13 @@ public class Grupo extends JFrame {
 					}
 					break;
 				case 2:
-					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux,instance, session), "No introdujo el nombre del grupo", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "No introdujo el nombre del grupo", "ERROR", JOptionPane.ERROR_MESSAGE);
 					break;
 				case 3:
-					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux,instance, session), "No introdujo la capacidad maxima del viaje planeado", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "No introdujo la capacidad maxima del viaje planeado", "ERROR", JOptionPane.ERROR_MESSAGE);
 					break;
 				case 4:
-					JOptionPane.showMessageDialog(new Grupo(i,viaje,aux,instance, session), "No creo ningun viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "No creo ningun viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
 			}
@@ -318,7 +336,7 @@ public class Grupo extends JFrame {
 		
 		if( i == 1){
 			tFName.setEnabled(false);
-			tFCap.setEnabled(false);
+			tFCap.setEnabled(true);
 			tFAdmin.setEnabled(false);
 			try {
 				tFName.setText(instance.getGroupController().getGroupName());
@@ -332,7 +350,14 @@ public class Grupo extends JFrame {
 			btnTrip.setText("Modificar Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = new Viaje(1, instance.getTripController() ,null, instance, session);
+					Viaje frame = null;
+					try {
+						frame = new Viaje(1, instance.getMyTripController(instance.getCurrentProfileController(), instance.getMyGroupController()),null ,null, instance, session);
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
+					}
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);
@@ -360,7 +385,7 @@ public class Grupo extends JFrame {
 			btnTrip.setText("Ver Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = new Viaje(2,instance.getTripController(),null, instance, session);
+					Viaje frame = new Viaje(2,trip, null,null, instance, session);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -395,7 +420,14 @@ public class Grupo extends JFrame {
 					aux.add(tFName.getText());
 					aux.add(tFCap.getText());
 					aux.add(tFAdmin.getText());
-					Viaje frame = new Viaje(0,null,aux, instance, session);
+					if(myTrip != null){
+						Viaje frame = new Viaje(0,myTrip,null,aux, instance, session);
+						frame.setVisible(true);
+						frame.pack();
+					    frame.setSize(900, 602);
+						close();
+					}
+					Viaje frame = new Viaje(0,null,null,aux, instance, session);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);
