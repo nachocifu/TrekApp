@@ -101,9 +101,8 @@ public class Connect extends JFrame {
 			
 			public void mouseClicked(MouseEvent e) {
 				String password = String.valueOf(passwordField.getPassword());
-				if(instance.validate(textField.getText(), password) != false ){
-					Session session = Session.getInstance();
-					session.logIn(textField.getText(), passwordField.getText());
+				Session session = Session.getInstance();
+				if(session.logIn(textField.getText(), password) != false ){
 					Options frame = new Options(instance, session);
 					frame.setVisible(true);
 					frame.setSize(484, 315);
@@ -114,6 +113,7 @@ public class Connect extends JFrame {
 					frame.setVisible(true);
 					frame.setSize(484, 315);
 					close();
+					//cartel ingreso mal los datos
 				}
 					
 			}

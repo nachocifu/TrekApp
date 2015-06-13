@@ -138,7 +138,7 @@ public class Grupo extends JFrame {
 		HashSet<ProfileController> auxMembers = new HashSet<>();
 		if(instance != null){
 			try {
-				auxMembers = instance.getGroupController().getMembers();
+				auxMembers = instance.getgetGroupController().getMembers();
 				for(ProfileController each : auxMembers){
 					members.addElement(each.getUsername() + " " + each.getSurname());
 				}

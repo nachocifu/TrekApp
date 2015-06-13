@@ -3,7 +3,7 @@ package Graphic;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
-import javax.imageio.ImageIO;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.WindowEvent;
 
-import javax.swing.DefaultListModel;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
@@ -38,6 +38,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
@@ -91,9 +93,19 @@ public class Profile extends JFrame {
 		 si choice es 0 corresponde a la creacion de un usuario nuevo y si choice es 2 un usuario que no es el propio entro a ver el perfil*/
 	
 	public Profile(final Application instance, final Integer choice, final Session session) {
-		panel = new ImagePanel(new ImageIcon(Messages.getString("Profile.0")).getImage()); //$NON-NLS-1$
+		
+		
+		if(instance != null ){
+			
+		}
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle",currentLocale); 
+		
+		
+		panel = new ImagePanel(new ImageIcon(messages.getString("Profile.0")).getImage()); //$NON-NLS-1$
 		panel.setBackground(Color.BLACK);
-		setTitle(Messages.getString("Profile.1")); //$NON-NLS-1$
+		setTitle(messages.getString("Profile.1")); //$NON-NLS-1$
 		setBounds(0, 0, 826, 616);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
@@ -372,9 +384,11 @@ public class Profile extends JFrame {
 								flag = 0;
 								if(instance != null){
 									try {
-										instance.getCurrentProfileController().changePass(passwordField.getText(), passwordField_1.getText());
+											instance.getCurrentProfileController().changePass(passwordField.getText(), passwordField_1.getText());
 									} catch (InvalidPasswordException e) {
 										
+									}catch (SessionNotActiveException e) {
+										e.printStackTrace();
 									}
 								}
 							}
@@ -392,9 +406,9 @@ public class Profile extends JFrame {
 							close();
 						}else{
 							if(flag == 1){
-								JOptionPane.showMessageDialog(null, Messages.getString("Profile.29"), Messages.getString("Profile.30"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								JOptionPane.showMessageDialog(null, messages.getString("Profile.29"), messages.getString("Profile.30"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							}else if(flag == 2){
-								JOptionPane.showMessageDialog(null, Messages.getString("Profile.31"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								JOptionPane.showMessageDialog(null, messages.getString("Profile.31"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							}
 						}
 					}
@@ -410,7 +424,7 @@ public class Profile extends JFrame {
 						}
 						
 						boolean sex;
-						if(choice2.getSelectedItem().equals(Messages.getString("Profile.33"))){ //$NON-NLS-1$
+						if(choice2.getSelectedItem().equals(messages.getString("Profile.33"))){ //$NON-NLS-1$
 							sex = true;
 						}else{
 							sex= false;
@@ -441,13 +455,13 @@ public class Profile extends JFrame {
 							frame.setSize(900, 602);
 							close();
 						}else if(flag == 1){
-								JOptionPane.showMessageDialog(null, Messages.getString("Profile.38"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								JOptionPane.showMessageDialog(null, messages.getString("Profile.38"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 						}else if(flag == 2){
-								JOptionPane.showMessageDialog(null, Messages.getString("Profile.40"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								JOptionPane.showMessageDialog(null, messages.getString("Profile.40"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 						}else if(flag == 3){
-							JOptionPane.showMessageDialog(null, Messages.getString("Profile.42"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Profile.42"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 						}else if(flag == 4){
-							JOptionPane.showMessageDialog(null, Messages.getString("Profile.44"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Profile.44"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 						}
 					}
 				}
@@ -483,7 +497,7 @@ public class Profile extends JFrame {
 		panel.add(btnContacts);
 		
 		JLabel lblEmail = new JLabel();
-		lblEmail.setText(Messages.getString("Profile.47")); //$NON-NLS-1$
+		lblEmail.setText(messages.getString("Profile.47")); //$NON-NLS-1$
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblEmail.setForeground(Color.BLACK);
 		lblEmail.setBounds(320, 302, 72, 20);
@@ -523,7 +537,7 @@ public class Profile extends JFrame {
 			tFUserName.setEditable(false);
 			tFAge.setEditable(false);
 			choice2.setEnabled(false);
-			btnContacts.setText(Messages.getString("Profile.50")); //$NON-NLS-1$
+			btnContacts.setText(messages.getString("Profile.50")); //$NON-NLS-1$
 			btnContacts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Contacts frame = new Contacts(instance, session);
@@ -638,32 +652,32 @@ public class Profile extends JFrame {
 		img2.setVisible(true); 
 		
 		if(choice == 1){
-			btnContacts.setText(Messages.getString("Profile.53")); //$NON-NLS-1$
-			btnApply.setText(Messages.getString("Profile.54")); //$NON-NLS-1$
+			btnContacts.setText(messages.getString("Profile.53")); //$NON-NLS-1$
+			btnApply.setText(messages.getString("Profile.54")); //$NON-NLS-1$
 		}else if(choice == 2){
-			btnContacts.setText(Messages.getString("Profile.55")); //$NON-NLS-1$
+			btnContacts.setText(messages.getString("Profile.55")); //$NON-NLS-1$
 		}else if(choice == 0){
-			btnApply.setText(Messages.getString("Profile.56")); //$NON-NLS-1$
+			btnApply.setText(messages.getString("Profile.56")); //$NON-NLS-1$
 		}
 		
-		choice2.add(Messages.getString("Profile.57")); //$NON-NLS-1$
-		choice2.add(Messages.getString("Profile.58")); //$NON-NLS-1$
-		lblLanguage.setText(Messages.getString("Profile.59")); //$NON-NLS-1$
-		btnPresenttrips.setText(Messages.getString("Profile.60")); //$NON-NLS-1$
-		lblProfile.setText(Messages.getString("Profile.61")); //$NON-NLS-1$
-		lblName.setText(Messages.getString("Profile.62")); //$NON-NLS-1$
-		lblLastName.setText(Messages.getString("Profile.63")); //$NON-NLS-1$
-		lblUser.setText(Messages.getString("Profile.64")); //$NON-NLS-1$
-		lblChangePass.setText(Messages.getString("Profile.65")); //$NON-NLS-1$
-		lblNewPass.setText(Messages.getString("Profile.66")); //$NON-NLS-1$
-		lblConfirmPass.setText(Messages.getString("Profile.67")); //$NON-NLS-1$
-		lblExists.setText(Messages.getString("Profile.68")); //$NON-NLS-1$
-		label_11.setText(Messages.getString("Profile.69")); //$NON-NLS-1$
-		btn.setText(Messages.getString("Profile.70")); //$NON-NLS-1$
-		lblAge.setText(Messages.getString("Profile.71")); //$NON-NLS-1$
-		lblGender.setText(Messages.getString("Profile.72")); //$NON-NLS-1$
-		lblCalif.setText(Messages.getString("Profile.73")); //$NON-NLS-1$
-		btnPastTrip.setText(Messages.getString("Profile.74")); //$NON-NLS-1$
+		choice2.add(messages.getString("Profile.57")); //$NON-NLS-1$
+		choice2.add(messages.getString("Profile.58")); //$NON-NLS-1$
+		lblLanguage.setText(messages.getString("Profile.59")); //$NON-NLS-1$
+		btnPresenttrips.setText(messages.getString("Profile.60")); //$NON-NLS-1$
+		lblProfile.setText(messages.getString("Profile.61")); //$NON-NLS-1$
+		lblName.setText(messages.getString("Profile.62")); //$NON-NLS-1$
+		lblLastName.setText(messages.getString("Profile.63")); //$NON-NLS-1$
+		lblUser.setText(messages.getString("Profile.64")); //$NON-NLS-1$
+		lblChangePass.setText(messages.getString("Profile.65")); //$NON-NLS-1$
+		lblNewPass.setText(messages.getString("Profile.66")); //$NON-NLS-1$
+		lblConfirmPass.setText(messages.getString("Profile.67")); //$NON-NLS-1$
+		lblExists.setText(messages.getString("Profile.68")); //$NON-NLS-1$
+		label_11.setText(messages.getString("Profile.69")); //$NON-NLS-1$
+		btn.setText(messages.getString("Profile.70")); //$NON-NLS-1$
+		lblAge.setText(messages.getString("Profile.71")); //$NON-NLS-1$
+		lblGender.setText(messages.getString("Profile.72")); //$NON-NLS-1$
+		lblCalif.setText(messages.getString("Profile.73")); //$NON-NLS-1$
+		btnPastTrip.setText(messages.getString("Profile.74")); //$NON-NLS-1$
 	}
 	public void close(){
 

@@ -139,6 +139,9 @@ public class Contacts extends JFrame {
 		lblContacts.setBounds(348, 28, 145, 36);
 		panel.add(lblContacts);
 		
+		//instance.getCurrentProfileController().requestsfriends
+		
+		
 		final Choice requests = new Choice();
 		requests.setBounds(377, 405, 200, 30);
 //		for(int i25 = 0; i25 < hola.size(); i25++){
@@ -187,7 +190,7 @@ public class Contacts extends JFrame {
 		final JLabel lblNewRequest = new JLabel();
 		lblNewRequest.setForeground(Color.WHITE);
 		lblNewRequest.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewRequest.setBounds(30, 391, 326, 34);
+		lblNewRequest.setBounds(22, 390, 326, 34);
 		panel.add(lblNewRequest);
 		
 		btnBack = new JButton();

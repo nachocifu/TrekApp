@@ -214,7 +214,7 @@ public class TripGroups extends JFrame {
 		
 		for(GroupController each : trips){
 			table.setValueAt(((UIManager) trips).get(i)., i, 0);
-			table.setValueAt(each..getHasta(), i, 1);
+			table.setValueAt(instance.each..getHasta(), i, 1);
 			table.setValueAt(trips.get(i).getOrigen(), i, 2);
 			table.setValueAt(trips.get(i).getLlegada(), i, 3);
 		}
