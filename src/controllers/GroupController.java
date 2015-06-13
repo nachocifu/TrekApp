@@ -6,13 +6,11 @@ import java.util.HashSet;
 import domain.ControllerNotLoadedException;
 import domain.Group;
 import domain.InvalidPermissionException;
-import domain.Profile;
 import domain.Session;
 import domain.SessionNotActiveException;
 import repository.AbstractRepository;
 import repository.GroupRepository;
 import repository.TripRepository;
-import repository.ProfileRepository;
 import domain.Message;
 
 
@@ -53,6 +51,7 @@ public class GroupController extends AbstractController<Group> {
     public ProfileController getAdmin() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         ProfileController response = null;
+        
         if(Session.getInstance().getUserName().equals(obj.getAdminUser().getUsrName()))
             response = Application.getInstance().getCurrentProfileController();
         else
@@ -154,16 +153,9 @@ public class GroupController extends AbstractController<Group> {
     protected static HashSet<GroupController> generateListOfControllers(Collection<Group> list) throws SessionNotActiveException{
         HashSet<GroupController> response = new  HashSet<GroupController>();
         Application app = Application.getInstance();
-        String currentUser = Session.getInstance().getUserName();
         GroupController controller;
-
         for(Group each: list){
-            if(each.getAdminUser().getUsrName().equals(currentUser))
-                controller = app.getMyGroupController();
-            else
-                controller = app.getGroupController();
-
-            controller.load(each);
+            controller = app.getAGroupController(each);
             response.add(controller);
         }
         return response;

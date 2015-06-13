@@ -113,14 +113,17 @@ public class Application{
      * @return
      * @throws ServerException
      * @throws UserNameAlreadyExistsException
+     * @throws SessionNotActiveException 
      */
     //Revisar el throwsUserName
-    public MyTripController registerTrip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity) throws ServerException, UserNameAlreadyExistsException{
+    public MyTripController registerTrip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException{
     	if(estimateCost < 0 || endCity.trim().isEmpty() || originCity.trim().isEmpty() || tripDescription.trim().isEmpty())
                 throw new IllegalArgumentException("ERROR || Error registering trip. Check arguments.");
         Trip newTrip = new Trip(startDate, endDate, estimateCost, tripDescription, originCity, endCity);
     	this.tripRepo.add(newTrip);
-        return new MyTripController(tripRepo);    
+        MyTripController myTripController = new MyTripController(tripRepo);
+        myTripController.load(newTrip);
+    	return myTripController;    
     }
 
     /**
@@ -133,41 +136,80 @@ public class Application{
         application = new Application(pathToDataBase);
     }
 
-
     public boolean validate(String userName, String passWord) {
         return this.userRepo.validateCredentials(userName,passWord);
     }
 
-    public ProfileController getProfileController(){
-        return new ProfileController(userRepo);
-    }
-
-    public CurrentProfileController getCurrentProfileController(){
-        return new CurrentProfileController(userRepo);
-    }
-
-    public GroupController getGroupController(){
-        return new GroupController(groupRepo);
-    }
-
-    public MyGroupController getMyGroupController(){
-        return new MyGroupController(groupRepo);
-    }
-
+    /**
+     * Receives a group Controller and returns a trip Controller
+     * @param groupController
+     * @return
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public TripController getTripController(GroupController groupController) throws SessionNotActiveException, ControllerNotLoadedException{
         return groupController.getTripController(tripRepo);
     }
-
-    public MyTripController getMyTripController(CurrentProfileController currentUser, MyGroupController tripGroup) throws SessionNotActiveException, ControllerNotLoadedException{
-        return tripGroup.getMyTripController(currentUser, tripRepo);
+    
+    /**
+     * Receives a  group Controller with admin properties and returns the group trip Controller with admin properties
+     * @param tripGroup
+     * @return
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public MyTripController getMyTripController(MyGroupController tripGroup) throws SessionNotActiveException, ControllerNotLoadedException{
+        return tripGroup.getMyTripController(tripRepo);
+    }
+    
+    public CurrentProfileController getCurrentProfileController() throws SessionNotActiveException{
+    	if(!Session.getInstance().isActive()){
+    		throw new SessionNotActiveException("No hay un usuario loggeado");
+    	}
+    	Profile currentProfile = this.userRepo.getById(Session.getInstance().getUserName());
+    	CurrentProfileController newController = new CurrentProfileController(userRepo);
+    	newController.load(currentProfile);
+    	return newController;
     }
 
-    public ProfileController getController(Profile profile) {
-        if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
-            return getCurrentProfileController();
-        } else {
-            return getProfileController();
-        }
+    public ProfileController getAProfileController(Profile profile) throws SessionNotActiveException {
+		if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
+		    return getCurrentProfileController(profile);
+		} else {
+		    return getProfileController(profile);
+		}
     }
+    
+	private ProfileController getProfileController(Profile profile) throws SessionNotActiveException{
+		ProfileController newController = new ProfileController(userRepo);
+		newController.load(profile);
+		return newController;
+	}
+	    
+	private CurrentProfileController getCurrentProfileController(Profile profile) throws SessionNotActiveException{
+		CurrentProfileController newController = new CurrentProfileController(userRepo);
+		newController.load(profile);
+		return newController;
+	}
+	
+	public GroupController getAGroupController(Group group) throws SessionNotActiveException{
+		if (group.getAdminUser().getUsrName().equals(Session.getInstance().getUserName())) {
+		    return getMyGroupController(group);
+		} else {
+		    return getGroupController(group);
+		}
+	}
+	
+	private MyGroupController getMyGroupController(Group group) throws SessionNotActiveException{
+	    MyGroupController newController = new MyGroupController(groupRepo);
+	    newController.load(group);
+	    return newController;
+	}
+	
+	private GroupController getGroupController(Group group) throws SessionNotActiveException{
+		GroupController newController = new GroupController(groupRepo);
+		newController.load(group);
+	    return newController;
+	}
 }
 

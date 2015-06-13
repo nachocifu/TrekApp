@@ -1,7 +1,6 @@
 package controllers;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 import domain.ControllerNotLoadedException;
 import domain.InvalidPermissionException;
@@ -10,7 +9,6 @@ import domain.RequestStatus;
 import domain.SessionNotActiveException;
 import repository.GroupRepository;
 import repository.TripRepository;
-import repository.ProfileRepository;
 import domain.Message;
 
 public class MyGroupController extends GroupController {
@@ -33,6 +31,7 @@ public class MyGroupController extends GroupController {
             this.obj.addMember(member);
         }
     }
+    
     /**
      * Returns a MyTripController that only the group admin can use
      * @param currentUser
@@ -41,13 +40,11 @@ public class MyGroupController extends GroupController {
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
-    public MyTripController getMyTripController(CurrentProfileController currentUser, TripRepository tripRepo) throws SessionNotActiveException, ControllerNotLoadedException{
+    public MyTripController getMyTripController(TripRepository tripRepo) throws SessionNotActiveException, ControllerNotLoadedException{
     	this.validateEnvironment();
-        this.validateController(currentUser);
-        if(!this.obj.getMembers().contains(currentUser.getObject())){
-        	throw new IllegalArgumentException("You are not a member of this group");
-        }
-        return new MyTripController(tripRepo);
+        MyTripController groupTrip = new MyTripController(tripRepo);
+        groupTrip.load(this.obj.getGroupTrip());
+        return groupTrip;
     }
 
     /**
@@ -105,16 +102,6 @@ public class MyGroupController extends GroupController {
     	this.validateController(newMember);
     	this.obj.acceptMember(newMember.getObject());
     }
-
-//    public void setCost(Double newCost) throws SessionNotActiveException, ControllerNotLoadedException{
-//        this.validateEnvironment();
-//        this.obj.setCosts(newCost);
-//    }
-//
-//    public void addCost(Double costToAdd) throws SessionNotActiveException, ControllerNotLoadedException{
-//        this.validateEnvironment();
-//        this.obj.addCost(costToAdd);
-//    }
 
     /**
      * Deletes a trip from the group
