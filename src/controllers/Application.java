@@ -54,7 +54,7 @@ public class Application{
     }
 
     /**
-     * Registers a new user in the system. If username exists throws exception.
+     * Registers a new user into the system. If username exists throws exception.
      * @param username
      * @param name
      * @param surname
@@ -153,13 +153,13 @@ public class Application{
     }
     
     /**
-     * Returns a trip Controller depending on the admin access
+     * Returns a trip Controller depending on the admin access, only for Controllers use inside this package
      * @param trip
      * @param groupAdmin
      * @return
      * @throws SessionNotActiveException
      */
-    public TripController getATripController(Trip trip, Profile groupAdmin) throws SessionNotActiveException{
+    protected TripController getATripController(Trip trip, Profile groupAdmin) throws SessionNotActiveException{
     	if (groupAdmin != null && groupAdmin.getUsrName().equals(Session.getInstance().getUserName())) {
 		    return getMyTripController(trip);
 		} else {
@@ -192,12 +192,12 @@ public class Application{
 	}
     
     /**
-     * Returns a profile Controller depending on the admin access
+     * Returns a profile Controller depending on the admin access, only for Controllers use inside this package
      * @param profile
      * @return
      * @throws SessionNotActiveException
      */
-    public ProfileController getAProfileController(Profile profile) throws SessionNotActiveException {
+    protected ProfileController getAProfileController(Profile profile) throws SessionNotActiveException {
 		if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
 		    return getCurrentProfileController(profile);
 		} else {
@@ -230,12 +230,12 @@ public class Application{
 	}
 	
 	/**
-	 * Returns a group Controller depending on the admin access
+	 * Returns a group Controller depending on the admin access, only for Controllers use inside this package
 	 * @param group
 	 * @return
 	 * @throws SessionNotActiveException
 	 */
-	public GroupController getAGroupController(Group group) throws SessionNotActiveException{
+	protected GroupController getAGroupController(Group group) throws SessionNotActiveException{
 		if (group.getAdminUser().getUsrName().equals(Session.getInstance().getUserName())) {
 		    return getMyGroupController(group);
 		} else {

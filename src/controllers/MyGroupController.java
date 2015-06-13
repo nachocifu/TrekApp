@@ -56,6 +56,7 @@ public class MyGroupController extends GroupController {
         else{
             this.obj.deleteMember(member);
         }
+        saveChanges();
     }
     
     /**
@@ -69,8 +70,7 @@ public class MyGroupController extends GroupController {
     	HashMap<ProfileController, RequestStatus> newMap = new HashMap<>();
     	Application app = Application.getInstance();
     	for (Profile profile : this.obj.getMemberRequests().keySet()) {
-    		ProfileController controller = app.getAProfileController(profile);
-			newMap.put(controller, this.obj.getMemberRequests().get(profile));
+			newMap.put(app.getAProfileController(profile), this.obj.getMemberRequests().get(profile));
 		}
     	return newMap;
     }
@@ -135,6 +135,7 @@ public class MyGroupController extends GroupController {
     	for (Profile member : this.obj.getMembers()) {
 			member.leaveGroup(this.obj);
 		}
+    	getRepository().delete(this); // Crear delete para group con id integer
     	
     }
 
