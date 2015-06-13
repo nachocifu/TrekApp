@@ -112,12 +112,12 @@ public class Profile {
         this.checkIn=null;
         this.friends= new HashSet<Profile>();
         this.blockedUsr= new HashSet<Profile>();
-        this.trips= new HashSet<Trip>();
+        this.trips = new HashSet<Trip>();
         this.reviews = new HashSet<Review>();
-        this.groups=new HashSet<Group>();
-        this.password=password;
-        this.city=city;
-        this.email=email;
+        this.groups = new HashSet<Group>();
+        this.password = password;
+        this.city = city;
+        this.email = email;
     }
 
 

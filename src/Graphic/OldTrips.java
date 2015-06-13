@@ -35,7 +35,9 @@ import javax.swing.SwingConstants;
 
 import controllers.Application;
 import controllers.TripController;
+import domain.ControllerNotLoadedException;
 import domain.Session;
+import domain.SessionNotActiveException;
 
 
 public class OldTrips extends JFrame {
@@ -192,31 +194,47 @@ public class OldTrips extends JFrame {
 		panel.add(textField_3);
 		
 		
-		/**/
-		final Collection<TripController> pastTrips = new LinkedList<TripController>();
-		pastTrips = instance.getProfileController().getTrips();
-		
-//		if (session != null){
-	    DefaultListModel<String> trips = new DefaultListModel<String>();
-//			for(Entry<String, Consumable> e : consumiblese.entrySet() ){
-//					dim1.addElement(e.getValue().getName()  );
-//			}
-//			list_1.setModel(dim1);
-//		}
-	    
-	    for(int i = 0; i < pastTrips.size(); i++){
-	    	trips.addElement(pastTrips. + " " + pastTrips.get(i).getHasta() + " " + pastTrips.get(i).getOrigen() + " " + pastTrips.get(i).getLlegada());	
+		Collection<TripController> pastTripsAux = null;
+		try {
+			pastTripsAux = instance.getCurrentProfileController().getTrips();
+		} catch (SessionNotActiveException e3) {
+			e3.printStackTrace();
+		} catch (ControllerNotLoadedException e3) {
+			e3.printStackTrace();
 		}
+		/**/
+		final ArrayList<TripController> pastTrips = new ArrayList<>(pastTripsAux);
+		/**/
+		
+	    DefaultListModel<String> trips = new DefaultListModel<String>();
+
+    	try {
+    		for (TripController each : pastTrips) {
+    			trips.addElement(each.getStartDate().toString() + " " + each.getEndDate().toString() + " " + each.getOriginCity() + " " + each.getEndCity());
+    		}
+		} catch (SessionNotActiveException e1) {
+			e1.printStackTrace();
+		} catch (ControllerNotLoadedException e1) {
+			e1.printStackTrace();
+		}
+		
 	    list_1.setModel(trips);
 	    list_1.addMouseListener(new MouseAdapter()
         {
             @Override
             public void mousePressed(MouseEvent e)
             {
-				textField_2.setText(pastTrips.get(list_1.getSelectedIndex()).getDesde());
-				textField_3.setText(pastTrips.get(list_1.getSelectedIndex()).getHasta());	
-				textField.setText(pastTrips.get(list_1.getSelectedIndex()).getOrigen());	
-				textField_1.setText(pastTrips.get(list_1.getSelectedIndex()).getLlegada());	
+				try {
+					textField_2.setText(pastTrips.get(list_1.getSelectedIndex()).getStartDate().toString());
+					textField_3.setText(pastTrips.get(list_1.getSelectedIndex()).getEndDate().toString());	
+					textField.setText(pastTrips.get(list_1.getSelectedIndex()).getOriginCity());	
+					textField_1.setText(pastTrips.get(list_1.getSelectedIndex()).getEndCity());	
+				} catch (SessionNotActiveException e1) {
+					e1.printStackTrace();
+				} catch (ControllerNotLoadedException e1) {
+					e1.printStackTrace();
+				}
+				
             }
         });
 	    

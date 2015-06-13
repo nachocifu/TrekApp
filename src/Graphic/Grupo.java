@@ -64,7 +64,7 @@ public class Grupo extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Grupo frame = new Grupo(0,null, null,null,null, null);
+					Grupo frame = new Grupo(0,null, null,null,null, null,null);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -79,7 +79,8 @@ public class Grupo extends JFrame {
 	 * Create the frame.
 	 */
 	// i = 0 creando, i = 1 viendo el propio, i = 2 viendo el de otro
-	public Grupo(final Integer i, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session) {
+	public Grupo(final Integer i, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController) {
+		
 		setTitle("TreckApp");
 		setBounds(0, 0, 902, 602);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -136,9 +137,9 @@ public class Grupo extends JFrame {
 		
 		final DefaultListModel members = new DefaultListModel();
 		HashSet<ProfileController> auxMembers = new HashSet<>();
-		if(instance != null){
+		if(instance != null && groupController != null){
 			try {
-				auxMembers = instance.getgetGroupController().getMembers();
+				auxMembers = groupController.getMembers();
 				for(ProfileController each : auxMembers){
 					members.addElement(each.getUsername() + " " + each.getSurname());
 				}
@@ -168,9 +169,9 @@ public class Grupo extends JFrame {
 		requests.setBounds(233, 457, 200, 30);
 		
 		HashMap<ProfileController, RequestStatus> requestsTrip = new HashMap<ProfileController, RequestStatus>();
-		if(instance != null){
+		if(instance != null && i == 1){
 			try {
-				requestsTrip = instance.getMyGroupController().getMemberRequests();
+				requestsTrip = ((MyGroupController)groupController).getMemberRequests();
 				for (ProfileController key : requestsTrip.keySet()) {
 					requests.add(key.getUsername() + " " + key.getSurname());
 				}
@@ -220,12 +221,14 @@ public class Grupo extends JFrame {
 		final JButton btnDelete = new JButton();
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					instance.getMyGroupController().deleteGroup();
-				} catch (SessionNotActiveException e1) {
-					e1.printStackTrace();
-				} catch (ControllerNotLoadedException e1) {
-					e1.printStackTrace();
+				if(instance != null && i == 1){
+					try {
+						((MyGroupController)groupController).deleteGroup();
+					} catch (SessionNotActiveException e1) {
+						e1.printStackTrace();
+					} catch (ControllerNotLoadedException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -297,7 +300,7 @@ public class Grupo extends JFrame {
 						try {
 							MyGroupController group;
 							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), 25, "Buenos Aires");
-							group.addGroupTrip(instance.getProfileController(), myTrip);
+							group.addGroupTrip(group.getAdmin(), myTrip);
 						} catch (SessionNotActiveException e) {
 							e.printStackTrace();
 						} catch (ControllerNotLoadedException e) {
@@ -339,9 +342,9 @@ public class Grupo extends JFrame {
 			tFCap.setEnabled(true);
 			tFAdmin.setEnabled(false);
 			try {
-				tFName.setText(instance.getGroupController().getGroupName());
-				tFCap.setText(instance.getGroupController().groupSize().toString());
-				tFAdmin.setText(instance.getGroupController().getAdmin().getUsername() + " " + instance.getGroupController().getAdmin().getUsername());
+				tFName.setText(groupController.getGroupName());
+				tFCap.setText(groupController.groupSize().toString());
+				tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname());
 			} catch (SessionNotActiveException e2) {
 				e2.printStackTrace();
 			} catch (ControllerNotLoadedException e2) {
@@ -352,7 +355,7 @@ public class Grupo extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					Viaje frame = null;
 					try {
-						frame = new Viaje(1, instance.getMyTripController(instance.getCurrentProfileController(), instance.getMyGroupController()),null ,null, instance, session);
+						frame = new Viaje(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController);
 					} catch (SessionNotActiveException e) {
 						e.printStackTrace();
 					} catch (ControllerNotLoadedException e) {
@@ -366,16 +369,15 @@ public class Grupo extends JFrame {
 			});
 			btnRequestcheck.setText("Ver Solicitudes");
 			btnDelete.setVisible(true);
-		}else if(i == 2){
-			
+		}else if(i == 2){		
 			tFName.setEnabled(false);
 			tFCap.setEnabled(false);
 			tFAdmin.setEnabled(false);
 			if( instance != null){
 				try {
-					tFName.setText(instance.getGroupController().getGroupName());
-					tFCap.setText(instance.getGroupController().groupSize().toString());
-					tFAdmin.setText(instance.getGroupController().getAdmin().getUsername() + " " + instance.getGroupController().getAdmin().getUsername());
+					tFName.setText(groupController.getGroupName());
+					tFCap.setText(groupController.groupSize().toString());
+					tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname());
 				} catch (SessionNotActiveException e2) {
 					e2.printStackTrace();
 				} catch (ControllerNotLoadedException e2) {
@@ -385,7 +387,7 @@ public class Grupo extends JFrame {
 			btnTrip.setText("Ver Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = new Viaje(2,trip, null,null, instance, session);
+					Viaje frame = new Viaje(2,trip, null,null, instance, session,groupController);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -397,7 +399,7 @@ public class Grupo extends JFrame {
 			btnRequestcheck.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						instance.getGroupController().sendMemberRequest(instance.getCurrentProfileController());
+						groupController.sendMemberRequest(instance.getCurrentProfileController());
 					} catch (SessionNotActiveException e1) {
 						e1.printStackTrace();
 					} catch (ControllerNotLoadedException e1) {
@@ -421,13 +423,13 @@ public class Grupo extends JFrame {
 					aux.add(tFCap.getText());
 					aux.add(tFAdmin.getText());
 					if(myTrip != null){
-						Viaje frame = new Viaje(0,myTrip,null,aux, instance, session);
+						Viaje frame = new Viaje(0,myTrip,null,aux, instance, session, groupController);
 						frame.setVisible(true);
 						frame.pack();
 					    frame.setSize(900, 602);
 						close();
 					}
-					Viaje frame = new Viaje(0,null,null,aux, instance, session);
+					Viaje frame = new Viaje(0,null,null,aux, instance, session, groupController);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);

@@ -201,7 +201,7 @@ public class BuscadorViaje extends JFrame {
 		panel.add(btnBack);
 		
 		//String [] espa�ol = new String[] {"Desde", "Hasta", "Ciudad de Origen", "Ciudad de Finalizacion"};
-		String [] english = new String[] {"Leaving on", "Returning on", "From","To"};
+		//String [] english = new String[] {"Leaving on", "Returning on", "From","To"};
 		
 		table = new JTable(){
 	        /**
@@ -289,7 +289,7 @@ public class BuscadorViaje extends JFrame {
 				{null, null, null, null},
 				{null, null, null, null},
 			},
-			english
+			 new String[] {"Desde", "Hasta", "Ciudad de Origen", "Ciudad de Finalizacion"}
 		));
 		table.setBorder(UIManager.getBorder("ScrollPane.border"));
 		table.setForeground(Color.WHITE);

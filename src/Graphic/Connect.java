@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -28,6 +29,8 @@ import domain.Session;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 public class Connect extends JFrame {
@@ -66,8 +69,12 @@ public class Connect extends JFrame {
 	 */
 	public Connect() {
 		
-		panel = new ImagePanel(new ImageIcon("Connect.jpg").getImage());
-		setTitle("TreckApp");
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
+		
+		panel = new ImagePanel(new ImageIcon("Connect.jpg").getImage()); //$NON-NLS-1$
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel.setEnabled(true);
 		panel.setLayout(null);
@@ -76,13 +83,13 @@ public class Connect extends JFrame {
 		
 		final JLabel lblUser = new JLabel();
 		lblUser.setForeground(Color.WHITE);
-		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblUser.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblUser.setBounds(260, 176, 132, 37);
 		panel.add(lblUser);
 		
 		final JLabel lblPass = new JLabel();
 		lblPass.setForeground(Color.WHITE);
-		lblPass.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblPass.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblPass.setBounds(260, 232, 170, 37);
 		panel.add(lblPass);
 		
@@ -109,11 +116,7 @@ public class Connect extends JFrame {
 					close();
 				}
 				else{
-					Connect frame = new Connect();
-					frame.setVisible(true);
-					frame.setSize(484, 315);
-					close();
-					//cartel ingreso mal los datos
+					JOptionPane.showMessageDialog(null, Messages.getString("Connect.4"), Messages.getString("Connect.5"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 					
 			}
@@ -138,13 +141,13 @@ public class Connect extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				language = 1;
-				btnNewUser.setText("NUEVO USUARIO");
-				btnConnect.setText("CONECTAR");
-				lblPass.setText("CONTRASE\u00D1A :");
-				lblUser.setText("USUARIO :");
+//				btnNewUser.setText("NUEVO USUARIO");
+//				btnConnect.setText("CONECTAR");
+//				lblPass.setText("CONTRASE\u00D1A :");
+//				lblUser.setText("USUARIO :");
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -155,25 +158,26 @@ public class Connect extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				language = 2;
-				btnNewUser.setText("NEW USER");
-				btnConnect.setText("CONNECT");
-				lblPass.setText("PASSWORD :");
-				lblUser.setText("USER :");
+//				btnNewUser.setText("NEW USER");
+//				btnConnect.setText("CONNECT");
+//				lblPass.setText("PASSWORD :");
+//				lblUser.setText("USER :");
 			}
 		});
 
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		btnNewUser.setText("NUEVO USUARIO");
-		btnConnect.setText("CONECTAR");
-		lblPass.setText("CONTRASE\u00D1A :");
-		lblUser.setText("USUARIO :");
+		
 
+		btnNewUser.setText(messages.getString("Connect.6")); //$NON-NLS-1$
+		btnConnect.setText(messages.getString("Connect.7")); //$NON-NLS-1$
+		lblPass.setText(messages.getString("Connect.8")); //$NON-NLS-1$
+		lblUser.setText(messages.getString("Connect.9")); //$NON-NLS-1$
 
 	}
 	

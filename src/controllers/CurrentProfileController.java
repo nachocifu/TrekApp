@@ -4,8 +4,6 @@ import domain.ControllerNotLoadedException;
 import domain.InvalidPasswordException;
 import domain.Session;
 import domain.SessionNotActiveException;
-import repository.GroupRepository;
-import repository.TripRepository;
 import repository.ProfileRepository;
 
 public class CurrentProfileController extends ProfileController {

@@ -56,6 +56,7 @@ public class ProfileController extends AbstractController<Profile> {
      */
     public void addReview(Profile sender, String msg, Integer rating){
     	this.obj.addReview(sender, msg, rating);
+    	saveChanges();
     }
 
    public String getUsername() throws SessionNotActiveException, ControllerNotLoadedException{

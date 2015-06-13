@@ -26,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import controllers.Application;
+import controllers.GroupController;
 import controllers.MyTripController;
 import controllers.TripController;
 import domain.ControllerNotLoadedException;
@@ -58,7 +59,7 @@ public class Viaje extends JFrame {
 			public void run() {
 				try {
 					
-					Viaje frame = new Viaje(1,null,null,null, null, null);
+					Viaje frame = new Viaje(1,null,null,null, null, null, null);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -73,7 +74,7 @@ public class Viaje extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Viaje(final Integer i, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session) {
+	public Viaje(final Integer i, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController) {
 		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage());
 		setContentPane(panel);
 		setTitle("TreckApp");
@@ -186,8 +187,6 @@ public class Viaje extends JFrame {
 					year1 = Integer.parseInt(tFLeaving.getText().substring(6, 8));
 					year2 = Integer.parseInt(tFArriving.getText().substring(6, 8));
 					
-					System.out.println(year1 + " " + year2);
-					
 					if(day1 > day2 && month1 == month2 & year1 == year2 || month1 > month2 && year1 == year2 || year1 > year2){	
 						flag = 2;
 					}else if(tFFrom.getText().isEmpty()){
@@ -208,63 +207,66 @@ public class Viaje extends JFrame {
 					System.err.println("No introdujo fechas");
 				}
 
-				
-				switch(flag){
-					case 1:
-						MyTripController viaje = null;
-						if(i == 0){
-							
-							Date dateL = new Date(year1, month1, day1);
-							Date dateA = new Date(year2, month2, day2);
-							try {
-								viaje = instance.registerTrip(dateL, dateA, Double.parseDouble(tFCost.getText()), textArea.getText(), tFTo.getText(), tFFrom.getText());
-							} catch (ServerException e1) {
-								e1.printStackTrace();
-							} catch (NumberFormatException e1) {
-								e1.printStackTrace();
-							} catch (UserNameAlreadyExistsException e1) {
-								e1.printStackTrace();
+				if(instance != null){
+					switch(flag){
+						case 1:
+							MyTripController viaje = null;
+							if(i == 0){
+								
+								Date dateL = new Date(year1, month1, day1);
+								Date dateA = new Date(year2, month2, day2);
+								try {
+									viaje = instance.registerTrip(dateL, dateA, Double.parseDouble(tFCost.getText()), textArea.getText(), tFTo.getText(), tFFrom.getText());
+								} catch (ServerException e1) {
+									e1.printStackTrace();
+								} catch (NumberFormatException e1) {
+									e1.printStackTrace();
+								} catch (UserNameAlreadyExistsException e1) {
+									e1.printStackTrace();
+								} catch (SessionNotActiveException e1) {
+									e1.printStackTrace();
+								}
+								Grupo frame = new Grupo(0,viaje, null ,aux, instance, session, groupController);
+								frame.setVisible(true);
+								frame.pack();
+								frame.setSize(900, 602);
+								close();
+							}else if(i == 1){
+								Grupo frame = new Grupo(1,viaje,null, null, instance, session, groupController);
+								frame.setVisible(true);
+								frame.pack();
+								frame.setSize(900, 602);
+								close();
+							}else if(i == 2){
+								Grupo frame = new Grupo(2 ,null, trip ,null, instance, session, groupController);
+								frame.setVisible(true);
+								frame.pack();
+								frame.setSize(900, 602);
+								close();
 							}
-							Grupo frame = new Grupo(0,viaje, null ,aux, instance, session);
-							frame.setVisible(true);
-							frame.pack();
-							frame.setSize(900, 602);
-							close();
-						}else if(i == 1){
-							Grupo frame = new Grupo(1,viaje,null, null, instance, session);
-							frame.setVisible(true);
-							frame.pack();
-							frame.setSize(900, 602);
-							close();
-						}else if(i == 2){
-							Grupo frame = new Grupo(2 ,null, trip ,null, instance, session);
-							frame.setVisible(true);
-							frame.pack();
-							frame.setSize(900, 602);
-							close();
-						}
-						break;
-					case 2:
-						JOptionPane.showMessageDialog(null, "No introdujo una fecha correcta", "ERROR", JOptionPane.ERROR_MESSAGE);
-						break;
-					case 3:
-						JOptionPane.showMessageDialog(null, "No introdujo una ciudad de origen", "ERROR", JOptionPane.ERROR_MESSAGE);
-						break;
-					case 4:
-						JOptionPane.showMessageDialog(null, "No introdujo una ciudad de finalizacion", "ERROR", JOptionPane.ERROR_MESSAGE);
-						break;
-					case 5:
-						JOptionPane.showMessageDialog(null, "No introdujo un costo estimado del viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
-						break;
-					case 6: 
-						JOptionPane.showMessageDialog(null, "No introdujo un costo estimado del viaje correcto", "ERROR", JOptionPane.ERROR_MESSAGE);
-						break;
-					case 7:
-						JOptionPane.showMessageDialog(null, "No introdujo una descripcion del viaje que quiere crear", "ERROR", JOptionPane.ERROR_MESSAGE);
-						break;
-					default:
-						JOptionPane.showMessageDialog(null, "No introdujo datos obligatorios", "ERROR", JOptionPane.ERROR_MESSAGE);
-						break;
+							break;
+						case 2:
+							JOptionPane.showMessageDialog(null, "No introdujo una fecha correcta", "ERROR", JOptionPane.ERROR_MESSAGE);
+							break;
+						case 3:
+							JOptionPane.showMessageDialog(null, "No introdujo una ciudad de origen", "ERROR", JOptionPane.ERROR_MESSAGE);
+							break;
+						case 4:
+							JOptionPane.showMessageDialog(null, "No introdujo una ciudad de finalizacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+							break;
+						case 5:
+							JOptionPane.showMessageDialog(null, "No introdujo un costo estimado del viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
+							break;
+						case 6: 
+							JOptionPane.showMessageDialog(null, "No introdujo un costo estimado del viaje correcto", "ERROR", JOptionPane.ERROR_MESSAGE);
+							break;
+						case 7:
+							JOptionPane.showMessageDialog(null, "No introdujo una descripcion del viaje que quiere crear", "ERROR", JOptionPane.ERROR_MESSAGE);
+							break;
+						default:
+							JOptionPane.showMessageDialog(null, "No introdujo datos obligatorios", "ERROR", JOptionPane.ERROR_MESSAGE);
+							break;
+					}
 				}
 			}
 		});

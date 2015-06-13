@@ -8,7 +8,6 @@ import domain.Profile;
 import domain.RequestStatus;
 import domain.SessionNotActiveException;
 import repository.GroupRepository;
-import repository.TripRepository;
 import domain.Message;
 
 public class MyGroupController extends GroupController {
@@ -29,6 +28,7 @@ public class MyGroupController extends GroupController {
         Profile member = profileController.getObject();
         if(!member.equals(this.obj.getAdminUser())){
             this.obj.addMember(member);
+            saveChanges();
         }
     }
 

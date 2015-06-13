@@ -99,8 +99,8 @@ public class Profile extends JFrame {
 			
 		}
 		
-		Locale currentLocale = new Locale("en","US");
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle",currentLocale); 
+		Locale currentLocale = new Locale("es","AR");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		
 		panel = new ImagePanel(new ImageIcon(messages.getString("Profile.0")).getImage()); //$NON-NLS-1$
@@ -300,12 +300,11 @@ public class Profile extends JFrame {
 		choice2.setBounds(712, 143, 85, 20);
 		panel.add(choice2);
 		
-		DateFormat format = new SimpleDateFormat("dd/mm/aa"); //$NON-NLS-1$
-		tFAge = new JFormattedTextField(format);
+		tFAge = new JFormattedTextField(/*format*/);
 		try {
-			MaskFormatter dateMask = new MaskFormatter("##/##/####"); //$NON-NLS-1$
+			MaskFormatter dateMask = new MaskFormatter("##/##/####"); 
             dateMask.install(tFAge);
-        	}catch (ParseException ex) {
+        }catch (ParseException ex) {
         }
 		tFAge.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
 		tFAge.setHorizontalAlignment(SwingConstants.CENTER);
@@ -434,9 +433,9 @@ public class Profile extends JFrame {
 						int month = Integer.parseInt(tFAge.getText().substring(3, 5));
 						int year = Integer.parseInt(tFAge.getText().substring(6, 10));
 						Date date = null;
-						String inputDate = new String(year + "-" + month + "-" + day); //$NON-NLS-1$ //$NON-NLS-2$
+						String inputDate = new String(year + "-" + month + "-" + day); 
 						try {
-						    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
+						    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
 						    formatter.setLenient(false);
 						    date = formatter.parse(inputDate);
 						} catch (ParseException e) { 
@@ -482,11 +481,18 @@ public class Profile extends JFrame {
 		final JButton btnPresenttrips = new JButton();
 		btnPresenttrips.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TripGroups frame = new TripGroups(instance, session);
-				frame.setVisible(true);
-			    frame.pack();
-			    frame.setSize(900, 602);
-			    close();
+				TripGroups frame;
+				try {
+					frame = new TripGroups(instance, session);
+					frame.setVisible(true);
+				    frame.pack();
+				    frame.setSize(900, 602);
+				    close();
+				} catch (SessionNotActiveException e) {
+					e.printStackTrace();
+				} catch (ControllerNotLoadedException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		btnPresenttrips.setBounds(297, 424, 193, 23);

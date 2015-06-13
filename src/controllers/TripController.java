@@ -11,6 +11,11 @@ import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.TripStatus;
 
+/**
+ * An Trip object accessible to everyone
+ * 
+ *
+ */
 public class TripController extends AbstractController<Trip> {
 
     public TripController(AbstractRepository<Trip> repo) {

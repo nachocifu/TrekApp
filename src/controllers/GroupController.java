@@ -81,7 +81,11 @@ public class GroupController extends AbstractController<Group> {
         this.obj.addGroupTrip(profileController.getObject(), tripController.getObject());
         saveChanges();
     }
-
+    
+    /**
+     * Returns the size of the group
+     * @return
+     */
     public Integer groupSize(){
         return this.obj.groupSize();
     }
@@ -133,6 +137,7 @@ public class GroupController extends AbstractController<Group> {
     	this.validateEnvironment();
         this.validateController(possibleMember);
         this.obj.addMemberRequest(possibleMember.getObject());
+        saveChanges();
     }
     
     /**

@@ -61,9 +61,9 @@ public class Options extends JFrame {
 	 * @param instance 
 	 */
 	public Options(final Application instance, final Session session) {
-		setTitle("TreckApp");
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		panel = new ImagePanel(new ImageIcon("Options.jpg").getImage());
+		panel = new ImagePanel(new ImageIcon("Options.jpg").getImage()); //$NON-NLS-1$
 		panel.setBackground(new Color(25, 25, 112));
 		panel.setEnabled(false);
 		panel.setLayout(null);
@@ -110,7 +110,7 @@ public class Options extends JFrame {
 		
 		final JLabel lblChoice = new JLabel();
 		lblChoice.setHorizontalAlignment(SwingConstants.CENTER);
-		lblChoice.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblChoice.setFont(new Font("Tahoma", Font.PLAIN, 22)); //$NON-NLS-1$
 		lblChoice.setForeground(Color.WHITE);
 		lblChoice.setBounds(300, 58, 238, 29);
 		panel.add(lblChoice);
@@ -132,7 +132,7 @@ public class Options extends JFrame {
 		final JButton btnNewGroup = new JButton();
 		btnNewGroup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Grupo frame = new Grupo(0,null,null,null, instance, session);
+				Grupo frame = new Grupo(0,null,null,null, instance, session,null);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -170,16 +170,16 @@ public class Options extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//language = 1;
-				btnCalif.setText("Calificar integrantes con los que viaje");
-				btnNewGroup.setText("Crear Grupo");
-				btnSignOut.setText("Cerrar Sesi\u00F3n");
-				btnTripSearch.setText("Busqueda de Viaje");
-				lblChoice.setText("Elija la Opci\u00F3n Deseada");
-				btnProfile.setText("Perfil");
-				btnUserSearch.setText("Busqueda de Usuario");
+//				btnCalif.setText("Calificar integrantes con los que viaje");
+//				btnNewGroup.setText("Crear Grupo");
+//				btnSignOut.setText("Cerrar Sesi\u00F3n");
+//				btnTripSearch.setText("Busqueda de Viaje");
+//				lblChoice.setText("Elija la Opci\u00F3n Deseada");
+//				btnProfile.setText("Perfil");
+//				btnUserSearch.setText("Busqueda de Usuario");
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -190,30 +190,30 @@ public class Options extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//language = 2;
-				btnCalif.setText("Rate your fellow travellers");
-				btnNewGroup.setText("Create Group");
-				btnSignOut.setText("Sign Out");
-				btnTripSearch.setText("Trip Search");
-				lblChoice.setText("Choose an Option");
-				btnProfile.setText("Profile");
-				btnUserSearch.setText("User Search");
+//				btnCalif.setText("Rate your fellow travellers");
+//				btnNewGroup.setText("Create Group");
+//				btnSignOut.setText("Sign Out");
+//				btnTripSearch.setText("Trip Search");
+//				lblChoice.setText("Choose an Option");
+//				btnProfile.setText("Profile");
+//				btnUserSearch.setText("User Search");
 			}
 		});
 
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		btnCalif.setText("Calificar integrantes con los que viaje");
-		btnNewGroup.setText("Crear Grupo");
-		btnSignOut.setText("Cerrar Sesi\u00F3n");
-		btnTripSearch.setText("Busqueda de Viaje");
-		lblChoice.setText("Elija la Opci\u00F3n Deseada");
-		btnProfile.setText("Perfil");
-		btnUserSearch.setText("Busqueda de Usuario");
+		btnCalif.setText(Messages.getString("Options.5")); //$NON-NLS-1$
+		btnNewGroup.setText(Messages.getString("Options.6")); //$NON-NLS-1$
+		btnSignOut.setText(Messages.getString("Options.7")); //$NON-NLS-1$
+		btnTripSearch.setText(Messages.getString("Options.8")); //$NON-NLS-1$
+		lblChoice.setText(Messages.getString("Options.9")); //$NON-NLS-1$
+		btnProfile.setText(Messages.getString("Options.10")); //$NON-NLS-1$
+		btnUserSearch.setText(Messages.getString("Options.11")); //$NON-NLS-1$
 	}
 	
 	public void close(){

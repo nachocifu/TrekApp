@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 
@@ -29,6 +30,7 @@ import javax.swing.JButton;
 
 import controllers.Application;
 import controllers.GroupController;
+import controllers.MyTripController;
 import domain.ControllerNotLoadedException;
 import domain.Session;
 import domain.SessionNotActiveException;
@@ -63,8 +65,10 @@ public class TripGroups extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws ControllerNotLoadedException 
+	 * @throws SessionNotActiveException 
 	 */
-	public TripGroups(final Application instance, final Session session) {
+	public TripGroups(final Application instance, final Session session) throws SessionNotActiveException, ControllerNotLoadedException {
 		panel = new ImagePanel(new ImageIcon("TripGroups.jpg").getImage());
 		setTitle("TreckApp");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -90,13 +94,9 @@ public class TripGroups extends JFrame {
 	                return false;               
 	        };
 	    };
-	    
+
 	    /**/
-	    final Collection<GroupController> trips = new ArrayList<GroupController>();
-	    trips = instance.getCurrentProfileController().getGroups();
-	    
-	    
-	 
+	    ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
 	    /**/
 	    
 		table.addMouseListener(new MouseAdapter() {
@@ -107,29 +107,29 @@ public class TripGroups extends JFrame {
 						String admin = null;
 						if(instance != null){
 							try {
-								admin = instance.getMyGroupController().getAdmin().getUserName();
+								admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
 							} catch (SessionNotActiveException e) {
 								e.printStackTrace();
 							} catch (ControllerNotLoadedException e) {
 								e.printStackTrace();
 							}
-							if( trips.get(table.getSelectedRow()) == null ){
+							if( groupArray.get(table.getSelectedRow()) == null ){
 								
 							}else if(session.getUserName().equals(admin) && instance != null){
-								Grupo frame = new Grupo(1,trips.get(table.getSelectedRow()),null, instance, session);
+								Grupo frame = new Grupo(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()));
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
 							}else{
-								Grupo frame = new Grupo(2,trips.get(table.getSelectedRow()),null, instance, session);
+								Grupo frame = new Grupo(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()));
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
 							}
 						}else{
-							Grupo frame = new Grupo(2, null, null, null, null);
+							Grupo frame = new Grupo(2, null, null, null, null, null, null);
 							frame.setVisible(true);
 							frame.pack();
 							frame.setSize(900, 602);
@@ -137,6 +137,10 @@ public class TripGroups extends JFrame {
 						}
 					}
 				}catch(IndexOutOfBoundsException e){
+					e.printStackTrace();
+				} catch (SessionNotActiveException e) {
+					e.printStackTrace();
+				} catch (ControllerNotLoadedException e) {
 					e.printStackTrace();
 				}
 			}
@@ -204,20 +208,23 @@ public class TripGroups extends JFrame {
 		
 		/**/
 		
-		for(int i = 0; i < trips.size(); i++){
-			table.setValueAt(((UIManager) trips).get(i)., i, 0);
-			table.setValueAt(trips.get(i).getHasta(), i, 1);
-			table.setValueAt(trips.get(i).getOrigen(), i, 2);
-			table.setValueAt(trips.get(i).getLlegada(), i, 3);
-			
-		}
 		
-		for(GroupController each : trips){
-			table.setValueAt(((UIManager) trips).get(i)., i, 0);
-			table.setValueAt(instance.each..getHasta(), i, 1);
-			table.setValueAt(trips.get(i).getOrigen(), i, 2);
-			table.setValueAt(trips.get(i).getLlegada(), i, 3);
-		}
+			
+			try {
+				int i = 0;
+				for(GroupController each : groupArray){
+				table.setValueAt(each.getTripController().getStartDate(), i, 0);
+				table.setValueAt(each.getTripController().getEndDate(), i, 1);
+				table.setValueAt(each.getTripController().getOriginCity(), i, 2);
+				table.setValueAt(each.getTripController().getEndCity(), i, 3);
+				i++;
+			}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
+			
 		
 		/**/
 		
