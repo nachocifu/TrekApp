@@ -132,17 +132,8 @@ public class ProfileController extends AbstractController<Profile> {
     protected static HashSet<ProfileController> generateListOfControllers(Collection<Profile> list) throws SessionNotActiveException{
         HashSet<ProfileController> response = new  HashSet<ProfileController>();
         Application app = Application.getInstance();
-        String currentUser = Session.getInstance().getUserName();
-        ProfileController controller;
-
         for(Profile each: list){
-            if(each.getUsrName().equals(currentUser))
-                controller = app.getCurrentProfileController();
-            else
-                controller = app.getProfileController();
-
-            controller.load(each);
-            response.add(controller);
+            response.add(app.getAProfileController(each));
         }
         return response;
     }
