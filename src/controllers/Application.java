@@ -7,7 +7,6 @@ import repository.TripRepository;
 import repository.ProfileRepository;
 import domain.Group;
 import domain.Profile;
-import domain.Session;
 import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
@@ -135,6 +134,12 @@ public class Application{
         application = new Application(pathToDataBase);
     }
 
+    /**
+     * Validates userName and password with the repository
+     * @param userName
+     * @param passWord
+     * @return
+     */
     public boolean validate(String userName, String passWord) {
         return this.userRepo.validateCredentials(userName,passWord);
     }

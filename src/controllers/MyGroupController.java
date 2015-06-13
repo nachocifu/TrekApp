@@ -85,6 +85,7 @@ public class MyGroupController extends GroupController {
     	this.validateEnvironment();
     	this.validateController(newMember);
     	this.obj.acceptMember(newMember.getObject());
+    	saveChanges();
     }
 
     /**
@@ -95,8 +96,9 @@ public class MyGroupController extends GroupController {
      */
     public void deleteGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-         this.validateController(tripController);
+        this.validateController(tripController);
         this.obj.deleteGroupTrip(tripController.getObject());
+        saveChanges();
     }
 
     /**
@@ -110,6 +112,7 @@ public class MyGroupController extends GroupController {
     public void deletePost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, IllegalArgumentException, InvalidPermissionException{
         this.validateEnvironment();
         this.obj.deletePost(msg);
+        saveChanges();
     }
     
     /**
@@ -123,6 +126,7 @@ public class MyGroupController extends GroupController {
     	this.validateEnvironment();
     	this.obj.setFilterAge(age);
     	this.obj.setFilterCity(city);
+    	saveChanges();
     }
     
     /**

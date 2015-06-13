@@ -2,7 +2,6 @@ package controllers;
 
 import domain.ControllerNotLoadedException;
 import domain.InvalidPasswordException;
-import domain.Session;
 import domain.SessionNotActiveException;
 import repository.ProfileRepository;
 
@@ -53,51 +52,60 @@ public class CurrentProfileController extends ProfileController {
         this.validateEnvironment();
         this.validateController(friend);
         this.obj.deleteFriend(friend.getObject());
+        saveChanges();
     }
 
     public void addFriend(ProfileController friend) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(friend);
         this.obj.addFriend(friend.getObject());
+        saveChanges();
     }
 
     public void blockUser(ProfileController user) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(user);
         this.obj.blockUser(user.getObject());
+        saveChanges();
     }
 
     public void unBlockUser(ProfileController user) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(user);
         this.obj.unBlockedUsr(user.getObject());
+        saveChanges();
     }
 
     public void changePass(String oldPass, String newPass) throws InvalidPasswordException {
         this.obj.changePass(oldPass, newPass);
+        saveChanges();
     }
 
     public void joinGroup(GroupController group) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(group);
         this.obj.joinGroup(group.getObject());
+        saveChanges();
     }
 
     public void leaveGroup(GroupController group) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(group);
         this.obj.leaveGroup(group.getObject());
+        saveChanges();
     }
 
     public void joinTrip(TripController trip) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(trip);
         this.obj.joinTrip(trip.getObject());
+        saveChanges();
     }
 
     public void leaveTrip(TripController trip) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(trip);
         this.obj.leaveTrip(trip.getObject());
+        saveChanges();
     }
 }
