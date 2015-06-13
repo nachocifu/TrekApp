@@ -190,28 +190,20 @@ public class Group {
         this.wall.remove(msg);
     }
 
-//    
-//    /**
-//     * @param newCost that will be added to the travel costs
-//     */
-//    public void addCost(Double newCost){
-//        this.costs=this.costs+newCost;
-//    }
-//
-//    /**
-//     * @return costs of the travel group
-//     */
-//    public Double getCosts(){
-//        return this.costs;
-//    }
-//
-//    /**
-//     * @return the costs divided the total amount of members, this way you get the
-//     * cost of each individual member
-//     */
-//    public Double getCostsPerMember(){
-//        return costs/members.size();
-//    }
+    /**
+     * @return costs of the travel group
+     */
+    public Double getCosts(){
+        return this.groupTrip.getEstimateCost();
+    }
+
+    /**
+     * @return the costs divided the total amount of members, this way you get the
+     * cost of each individual member
+     */
+    public Double getCostsPerMember(){
+        return this.groupTrip.getEstimateCost()/members.size();
+    }
 
     /**
      * @return the amount of group members
@@ -246,6 +238,10 @@ public class Group {
 
 	public void setFilterCity(String filter2_ciudad) {
 		this.filterCity = filter2_ciudad;
+	}
+	
+	public Trip getGroupTrip(){
+		return this.groupTrip;
 	}
 	
 	

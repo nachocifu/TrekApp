@@ -46,6 +46,10 @@ public class Trip {
         this.endCity = endCity;
         this.tripStatus = TripStatus.OPEN;
         }
+    
+    public void addNewCost(Double newCostToAdd){
+    	this.estimateCost += newCostToAdd;
+    }
 
     public Date getStartDate() {
         return startDate;

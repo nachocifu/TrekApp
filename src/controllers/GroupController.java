@@ -68,10 +68,10 @@ public class GroupController extends AbstractController<Group> {
 //        return this.obj.getCosts();
 //    }
 //
-//    public Double getCostsPerMember() throws SessionNotActiveException, ControllerNotLoadedException{
-//        this.validateEnvironment();
-//        return this.obj.getCostsPerMember();
-//    }
+    public Double getCostsPerMember() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.obj.getCostsPerMember();
+    }
 
     /**
      * Ads a post to the wall if the profile is a member of the group

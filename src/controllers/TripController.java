@@ -62,7 +62,8 @@ public class TripController extends AbstractController<Trip> {
      * @param list
      * @return response List of controllers
      * @throws SessionNotActiveException
-     */
+     */  
+    //Revisar
     protected static HashSet<TripController> generateListOfControllers(Collection<Trip> list) throws SessionNotActiveException{
         HashSet<TripController> response = new  HashSet<TripController>();
         Application app = Application.getInstance();

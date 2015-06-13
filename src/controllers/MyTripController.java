@@ -10,6 +10,12 @@ import repository.GroupRepository;
 import repository.TripRepository;
 import repository.ProfileRepository;
 
+
+/**
+ * An object that can only be obtainable by the group admin (also the trip admin)
+ * 
+ *
+ */
 public class MyTripController extends TripController {
 
     public MyTripController(TripRepository tripRepo) {
@@ -49,5 +55,10 @@ public class MyTripController extends TripController {
     public void setTripStatus(TripStatus tripStatus) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.setTripStatus(tripStatus);
+    }
+    
+    public void addNewCostToTrip(Double newCost) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	this.addNewCostToTrip(newCost);
     }
 }

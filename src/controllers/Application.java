@@ -45,7 +45,7 @@ public class Application{
     }
 
     /**
-     * Request singeton reference to the Application
+     * Request singleton reference to the Application
      * @return application The Application
      */
     public static Application getInstance(){
@@ -73,9 +73,8 @@ public class Application{
             || surname.trim().isEmpty()
             || brthDay == null
             || password.trim().isEmpty()
-            || city.trim().isEmpty() )
+            || city.trim().isEmpty())
             throw new IllegalArgumentException("ERROR || Error registering user. Check arguments.");
-
         this.userRepo.add( new Profile(username, name, surname, brthDay, sex, password, city, email));
     }
     
@@ -92,7 +91,11 @@ public class Application{
      */
     //Revisar el throwsUserName
     public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, UserNameAlreadyExistsException{
-    	if(groupName.trim().isEmpty() || admin == null || maxGroupSize <= 0 || filterAge <= 0 || filterCity.trim().isEmpty())
+    	if(groupName.trim().isEmpty() 
+    			|| admin == null 
+    			|| maxGroupSize <= 0 
+    			|| filterAge <= 0 
+    			|| filterCity.trim().isEmpty())
                 throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
         Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
     	this.groupRepo.add(newGroup);
@@ -122,7 +125,7 @@ public class Application{
 
     /**
      * Change the Default Data Base.
-     * NOTE: ALL sessions are imediately logged out.
+     * NOTE: ALL sessions are immediately logged out.
      * @param pathToDataBase
      */
     public void changeDataBase(String pathToDataBase){
