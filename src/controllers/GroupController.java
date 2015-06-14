@@ -104,13 +104,13 @@ public class GroupController extends AbstractController<Group> {
         this.validateController(loggedUser);
         this.validateController(member);
     	if(loggedUser.getObject().equals(member.getObject())){
-    		throw new IllegalArgumentException("No puedes mandar una review a ti mismo");
+    		throw new IllegalArgumentException("Cannot send a review to yourself");
     	}
     	else if(!this.obj.getMembers().contains(loggedUser.getObject())){
-    		throw new IllegalArgumentException("No puedes enviar una review porque no perteneces a este grupo");
+    		throw new IllegalArgumentException("Cannot send a review because you did not belong to this group");
     	}
     	else if(!this.obj.getMembers().contains(member.getObject())){
-    		throw new IllegalArgumentException("No puedes enviar una review a esa persona porque no pertenece a este grupo");
+    		throw new IllegalArgumentException("Cannot sent a review to that person because he or she does not belong to this group");
     	}
     	member.addReview(loggedUser.getObject(), msg, rating);
     }
@@ -154,7 +154,7 @@ public class GroupController extends AbstractController<Group> {
         }
         return response;
     }
-
+    
     @Override
     protected AbstractRepository<Group> getRepository() {
         return (GroupRepository) this.repository;

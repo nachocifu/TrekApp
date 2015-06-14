@@ -9,13 +9,21 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ * 
+ * A Group object
+ *
+ */
 @DatabaseTable(tableName = "Group")
 public class Group {
 
-
+	/*Group Attributes*/
+	
+	/**
+	 * The group name
+	 */
     @DatabaseField
     private String groupName;
-
 
     /**
      * 	Final, does not change
@@ -62,6 +70,8 @@ public class Group {
     @DatabaseField
     private Integer maxGroupSize;
 
+    /*Group Constructors*/
+    
     public Group(String groupName, Profile admin, Integer maxGroupSize, Integer filterAge, String filterCity){
         this.groupName=groupName;
         this.admin=admin;
@@ -76,30 +86,50 @@ public class Group {
 
     public Group(){
     }
+    
+    /*Group Methods*/
 
+    /**
+     * @return Returns a Collection with the Group members
+     */
     public Collection<Profile> getMembers(){
         return this.members;
     }
-
+    
+    /**
+     * @return Returns the Group name
+     */
     public String getGroupName(){
         return this.groupName;
     }
 
+    /**
+     * Sets a new Group name but before validates if it is valid
+     * @param groupName
+     */
     public void setGroupName(String groupName){
-        this.groupName=groupName;
+    	if(groupName == null || groupName.trim().isEmpty())
+    		throw new IllegalArgumentException("The new group name is either null or empty");
+        this.groupName = groupName;
     }
 
+    /**
+     * @return Returns the Group administrator
+     */
     public Profile getAdminUser(){
         return this.admin;
     }
 
+    /**
+     * Sets a new Group administrator (only one administrator per Group)
+     * @param admin
+     */
     public void setAdminUser(Profile admin){
-        this.admin=admin;
+        this.admin = admin;
     }
 
     /**
-     * LoggedUser will add a member into the group, this will only be possible if the
-     * loggedUser is the admin of the group
+     * Adds a new member if there is space in the Group
      * @param user to be added to the Group
      * @throws InvalidPermissionException
      */
@@ -111,7 +141,7 @@ public class Group {
     }
     
     /**
-     * Accepts a member of the request list if he hasn�t been rejected
+     * Accepts a member of the request list if he has not been rejected
      * @param newMember
      */
     public void acceptMember(Profile newMember){
@@ -123,7 +153,7 @@ public class Group {
     	}
     }
     
-    //VER COMO ARREGLAR LO DE DATE
+    //VER COMO ARREGLAR LO DE DATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /**
      * Adds a member request to be accepted or not using the filters
      * @param possibleMember
@@ -133,17 +163,23 @@ public class Group {
     	memberRequests.put(possibleMember, RequestStatus.WAITING);
     }
 
-    /**
-     * LoggedUser will delete a member of the group, this will only be possible if the
-     * logged user is the Group admin
-     * @param user that will be deleted
-     * @throws InvalidPermissionException
-     */
-    public void deleteMember(Profile user) throws IllegalArgumentException{
-        if(!members.contains(user))
-            throw new IllegalArgumentException("the user that is trying to be deleted does not belong to the group");
-        this.members.remove(user);
-        this.maxGroupSize -= 1;
+   /**
+    * Permanently deletes a member of this Group, if that member is the admin, a new admin is set, if that member is the last one, the group is deleted.
+    * @param member
+    * @return If that member is yourself and you are the only one in the Group, returns True (useful to delete Group if it is saved).
+    * @throws IllegalArgumentException
+    */
+    public Boolean deleteMember(Profile member) throws IllegalArgumentException{
+        if(!this.members.contains(member)){
+        	throw new IllegalArgumentException("The user that you are trying to delete does not belong to the group");
+        } else if(member.equals(this.admin) || groupSize() == 1){
+        	member.leaveGroup(this);
+        	return true;
+        } else{
+            this.members.remove(member);
+            this.admin = this.members.iterator().next();
+        }
+        return false;
     }
 
     /**
@@ -173,20 +209,23 @@ public class Group {
      * @throws InvalidPermissionException 
      */
     public void addPost(Profile user, Message msg) throws InvalidPermissionException{
-    	if(!this.members.contains(user))
+    	if(!this.members.contains(user)){
     		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
+    	}else if(msg == null || msg.getText().trim().isEmpty()){
+    		throw new IllegalArgumentException("Cannot post because he message is either null or empty");
+    	}
     	this.wall.put(msg, user);
 
     	
     }
 
     /**
-     * Only the group admin or the writer of the message can delete the message
+     * Deletes a post in the Group
      * @param msgId
      */
     public void deletePost(Message msg) throws IllegalArgumentException, InvalidPermissionException{
     	if(!this.wall.containsKey(msg))
-            throw new IllegalArgumentException("the message does not exists");
+    		throw new IllegalArgumentException("The message does not exist");
         this.wall.remove(msg);
     }
 
@@ -228,16 +267,22 @@ public class Group {
 		return filterAge;
 	}
 
-	public void setFilterAge(Integer filter1_edad) {
-		this.filterAge = filter1_edad;
+	public void setFilterAge(Integer filter) {
+		if(filter == null || (filter <= 0 && filter >= 120)){
+			throw new IllegalArgumentException("The max age is not between 1 and 119");
+		}
+		this.filterAge = filter;
 	}
 
 	public String getFilterCity() {
 		return filterCity;
 	}
 
-	public void setFilterCity(String filter2_ciudad) {
-		this.filterCity = filter2_ciudad;
+	public void setFilterCity(String filter) {
+		if(filter == null || filter.trim().isEmpty()){
+			throw new IllegalArgumentException("The city is either null or empty");
+		}
+		this.filterCity = filter;
 	}
 	
 	public Trip getGroupTrip(){

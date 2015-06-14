@@ -151,7 +151,7 @@ public class Application{
      */
     public CurrentProfileController getCurrentProfileController() throws SessionNotActiveException{
     	if(!Session.getInstance().isActive()){
-    		throw new SessionNotActiveException("No hay un usuario loggeado");
+    		throw new SessionNotActiveException("There is no user logged in");
     	}
     	Profile currentProfile = this.userRepo.getById(Session.getInstance().getUserName());
     	return getCurrentProfileController(currentProfile);
