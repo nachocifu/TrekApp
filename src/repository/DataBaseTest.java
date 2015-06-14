@@ -10,6 +10,8 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import controllers.Application;
+import controllers.ProfileController;
 import domain.Group;
 import domain.Profile;
 import domain.Trip;
@@ -38,6 +40,9 @@ public class DataBaseTest {
         repoAdmin.start(Trip.class);
 
         System.out.println("--------END-------");
+
+        Application app = Application.getInstance();
+        //ProfileController user1 = app.get
     }
 
 
