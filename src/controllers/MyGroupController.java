@@ -22,15 +22,14 @@ public class MyGroupController extends GroupController {
      * @param profileController
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException 
      */
-    public void addMember(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void addMember(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(profileController);
-        Profile member = profileController.getObject();
-        if(!member.equals(this.obj.getAdminUser())){
-            this.obj.addMember(member);
-            saveChanges();
-        }
+        this.obj.addMember(profileController.getObject());
+        saveChanges();
+        profileController.saveChanges();
     }
 
     /**
@@ -114,7 +113,7 @@ public class MyGroupController extends GroupController {
     	for (Profile member : this.obj.getMembers()) {
 			member.leaveGroup(this.obj);
 		}
-    	getRepository().delete(this); // Crear delete para group con id integer  	
+    	getRepository().delete(this); // Crear delete para group con id integer
     }
     
     /**

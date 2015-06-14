@@ -7,6 +7,7 @@ import domain.ControllerNotLoadedException;
 import domain.Group;
 import domain.InvalidPermissionException;
 import domain.SessionNotActiveException;
+import domain.TripNotClosedException;
 import repository.AbstractRepository;
 import repository.GroupRepository;
 import domain.Message;
@@ -19,8 +20,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Returns the group name
-     * @return
+     * @return Returns the Group name
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
@@ -30,8 +30,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Returns a Collection of ProfileControllers
-     * @return
+     * @return Returns a Collection of ProfileControllers
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
@@ -41,8 +40,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Returns
-     * @return
+     * @return Returns a ProfileController of the Group admin
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
@@ -52,7 +50,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Ads a post to the wall if the profile is a member of the group
+     * Adds a post to the wall if the profile is a member of the group
      * @param profileController
      * @param msg
      * @throws SessionNotActiveException
@@ -67,7 +65,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Ads a trip to the group if the profile is a member of the group
+     * Adds a trip to the group if the profile is a member of the group
      * @param profileController
      * @param tripController
      * @throws SessionNotActiveException
@@ -83,8 +81,7 @@ public class GroupController extends AbstractController<Group> {
     }
     
     /**
-     * Returns the size of the group
-     * @return
+     * @return Returns the size of the group
      */
     public Integer groupSize(){
         return this.obj.groupSize();
@@ -98,26 +95,17 @@ public class GroupController extends AbstractController<Group> {
      * @param rating
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
+     * @throws TripNotClosedException 
      */
-    public void sendReviewToAMember(CurrentProfileController loggedUser, ProfileController member, String msg, Integer rating) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void sendReviewToAMember(CurrentProfileController loggedUser, ProfileController member, String msg, Integer rating) throws SessionNotActiveException, ControllerNotLoadedException, TripNotClosedException{
     	this.validateEnvironment();
         this.validateController(loggedUser);
         this.validateController(member);
-    	if(loggedUser.getObject().equals(member.getObject())){
-    		throw new IllegalArgumentException("Cannot send a review to yourself");
-    	}
-    	else if(!this.obj.getMembers().contains(loggedUser.getObject())){
-    		throw new IllegalArgumentException("Cannot send a review because you did not belong to this group");
-    	}
-    	else if(!this.obj.getMembers().contains(member.getObject())){
-    		throw new IllegalArgumentException("Cannot sent a review to that person because he or she does not belong to this group");
-    	}
-    	member.addReview(loggedUser.getObject(), msg, rating);
+        this.obj.sendReviewToAMember(loggedUser.getObject(), member.getObject(), msg, rating);
     }
     
     /**
-     * Returns a TripController or a MyTripController depending of the admin access
-     * @return
+     * @return Returns a TripController or a MyTripController depending of the admin access
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
@@ -128,7 +116,7 @@ public class GroupController extends AbstractController<Group> {
     }
     
     /**
-     * Ads a member request to the group
+     * Adds a member request to the group
      * @param possibleMember
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException

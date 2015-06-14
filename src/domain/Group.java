@@ -121,23 +121,51 @@ public class Group {
     }
 
     /**
-     * Sets a new Group administrator (only one administrator per Group)
+     * Sets a new Group administrator that has to belong to the Group (only one administrator per Group)
      * @param admin
      */
-    public void setAdminUser(Profile admin){
-        this.admin = admin;
+    public void setAdminUser(Profile newAdmin){
+    	if(!this.members.contains(newAdmin))
+    		throw new IllegalArgumentException("The new admin does not belong to this group");
+    	this.admin = newAdmin;
+    }
+    
+    /**
+     * Sends a review to a member of the group
+     * @param loggedUser
+     * @param member
+     * @param msg
+     * @param rating
+     * @throws TripNotClosedException
+     */
+    public void sendReviewToAMember(Profile loggedUser, Profile member, String msg, Integer rating) throws TripNotClosedException{
+    	 if(!(this.groupTrip.getTripStatus() == TripStatus.CLOSED)){
+         	throw new TripNotClosedException("Cannot send a review because the Trip is not Closed yet");
+         }else if(loggedUser.equals(member)){
+     		throw new IllegalArgumentException("Cannot send a review to yourself");
+     	}else if(!this.members.contains(loggedUser)){
+     		throw new IllegalArgumentException("Cannot send a review because you did not belong to this group");
+     	}else if(!this.members.contains(member)){
+     		throw new IllegalArgumentException("Cannot sent a review to that user because it does not belong to this group");
+     	}
+     	member.addReview(loggedUser, msg, rating);
     }
 
     /**
-     * Adds a new member if there is space in the Group
+     * Adds a new member if there is space in the Group, if the user does not already belong to the Group and if the user is not the admin
      * @param user to be added to the Group
      * @throws InvalidPermissionException
      */
-    public void addMember(Profile user){
-    	if(this.maxGroupSize > this.groupSize()){
-    		 this.members.add(user);
-    	     user.joinGroup(this);
-    	}
+    public void addMember(Profile newMember) throws InvalidPermissionException{
+        if(newMember.equals(this.admin)){
+        	throw new IllegalArgumentException("Cannot add yourself");
+        }else if(members.contains(newMember)){
+        	throw new IllegalArgumentException("User already in group");
+        }else if (this.maxGroupSize > this.groupSize()){
+        	throw new InvalidPermissionException("No more space to add a user");
+        }
+        this.members.add(newMember);
+        newMember.joinGroup(this);
     }
     
     /**
@@ -149,7 +177,6 @@ public class Group {
     		memberRequests.remove(newMember);
     		members.add(newMember);
     		newMember.joinGroup(this);
-    		this.maxGroupSize += 1;
     	}
     }
     
@@ -183,16 +210,17 @@ public class Group {
     }
 
     /**
-     * Any member of the group can add a Group trip
+     * Any member of the group can add a Group trip (only one trip per Group)
      * @param trip
      * @throws InvalidPermissionException 
      */
     public void addGroupTrip(Profile user, Trip trip) throws InvalidPermissionException{
     	if(!this.members.contains(user))
     		throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
-    	else if(this.groupTrip == null){
-    		this.groupTrip = trip;
+    	else if(!(this.groupTrip == null)){
+    		throw new InvalidPermissionException("Cannot add a trip because there is already one");
     	}
+    	this.groupTrip = trip;
     }
 
     /**
@@ -204,6 +232,7 @@ public class Group {
     }
 
     /**
+     * Any member of the group can post on the wall
      * @param user posting the message on the wall
      * @param msg being posted
      * @throws InvalidPermissionException 
@@ -212,7 +241,7 @@ public class Group {
     	if(!this.members.contains(user)){
     		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
     	}else if(msg == null || msg.getText().trim().isEmpty()){
-    		throw new IllegalArgumentException("Cannot post because he message is either null or empty");
+    		throw new IllegalArgumentException("Cannot post because the message is either null or empty");
     	}
     	this.wall.put(msg, user);
 
