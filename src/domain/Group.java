@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +10,6 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import controllers.ProfileController;
 
 /**
  *
@@ -200,22 +200,22 @@ public class Group {
     	memberRequests.put(rejectedProfile, RequestStatus.REJECTED);
     }
 
-    //VER COMO ARREGLAR LO DE DATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /**
      * Adds a member request to be accepted or not using the filters
      * @param possibleMember
      * @throws InvalidPermissionException
      */
     public void addMemberRequest(Profile possibleMember) throws InvalidPermissionException{
+    	Date filterAgeAsDate = new Date();
+    	filterAgeAsDate.setYear(Calendar.YEAR - filterAge);
+    	
         if(memberRequests.containsKey(possibleMember)){
             throw new IllegalArgumentException("The user already belongs to the users requesting a place in the group");
-        }else if(!(possibleMember.getBirthDay().equals(this.filterAge) && possibleMember.getCity().equals(this.filterCity))){
+        }else if(!(possibleMember.getBirthDay().before(filterAgeAsDate) && possibleMember.getCity().equals(this.filterCity))){
             throw new InvalidPermissionException("The user does not match the requirements for this group");
         }
         memberRequests.put(possibleMember, RequestStatus.WAITING);
     }
-    
-    
 
    /**
     * Permanently deletes a member of this Group, if that member is the admin, a new admin is set, if that member is the last one, the group is deleted.

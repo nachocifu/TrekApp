@@ -67,4 +67,10 @@ public class MyTripController extends TripController {
     	this.addNewCostToTrip(newCost);
     	saveChanges();
     }
+    
+    public void deleteTrip() throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	getRepository().delete(this.obj);
+        this.obj = null;
+    }
 }

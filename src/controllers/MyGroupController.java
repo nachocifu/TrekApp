@@ -41,8 +41,10 @@ public class MyGroupController extends GroupController {
     public void deleteMember(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(profileController);
-        if(this.obj.deleteMember(profileController.getObject()))
-            getRepository().delete(this.getObject());
+        if(this.obj.deleteMember(profileController.getObject())){
+        	getRepository().delete(this.obj);
+        	this.obj = null;
+        }
         profileController.saveChanges();
         saveChanges();
     }
@@ -99,6 +101,7 @@ public class MyGroupController extends GroupController {
         this.validateEnvironment();
         this.validateController(tripController);
         this.obj.deleteGroupTrip(tripController.getObject());
+        ((MyTripController)tripController).deleteTrip();
         saveChanges();
     }
 
@@ -126,7 +129,8 @@ public class MyGroupController extends GroupController {
         for (Profile member : this.obj.getMembers()) {
             member.leaveGroup(this.obj);
         }
-        getRepository().delete(this.getObject());
+        getRepository().delete(this.obj);
+        this.obj = null;
     }
 
     /**

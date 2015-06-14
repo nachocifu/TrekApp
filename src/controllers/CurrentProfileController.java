@@ -94,20 +94,6 @@ public class CurrentProfileController extends ProfileController {
         this.obj.leaveGroup(group.getObject());
         saveChanges();
     }
-
-    public void joinTrip(TripController trip) throws SessionNotActiveException, ControllerNotLoadedException{
-        this.validateEnvironment();
-        this.validateController(trip);
-        this.obj.joinTrip(trip.getObject());
-        saveChanges();
-    }
-
-    public void leaveTrip(TripController trip) throws SessionNotActiveException, ControllerNotLoadedException{
-        this.validateEnvironment();
-        this.validateController(trip);
-        this.obj.leaveTrip(trip.getObject());
-        saveChanges();
-    }
     
     /**
      * Accepts a friend from the friend request list

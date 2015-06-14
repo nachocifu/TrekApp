@@ -22,7 +22,8 @@ import domain.Trip;
 @DatabaseTable(tableName="Profile")
 public class Profile {
 
-
+	/*Profile Attributes*/
+	
     /** the users username in the system */
     @DatabaseField( unique = true)
     private String usrName = null;
@@ -95,6 +96,8 @@ public class Profile {
     @DatabaseField
     private String password = null;
 
+    /*Profile Constructors*/
+    
     /** Empty constructor for ORM persistence*/
     public Profile(){
 
@@ -141,6 +144,8 @@ public class Profile {
         this(usrName, name, surname, null, brthDay, sex, password, city, email);
     }
     
+    /*Profile Methods*/
+    
     /**
      * Accepts a friend of the friend request list if he has not been rejected
      * @param newMember
@@ -182,21 +187,21 @@ public class Profile {
     }
 
     /**
-     * @return the users usrName
+     * @return the user username
      */
     public String getUsrName() {
         return usrName;
     }
 
     /**
-     * @return the users usrId
+     * @return the user usrId
      */
     public Integer getUsrId() {
         return usrId;
     }
 
     /**
-     * @return the users name
+     * @return the user name
      */
     public String getName() {
         return name;
@@ -210,21 +215,21 @@ public class Profile {
     }
 
     /**
-     * @return the users sex
+     * @return the user sex
      */
     public boolean getSex(){
         return this.sex;
     }
 
     /**
-     * @return the users BirthDay
+     * @return the user birthDay
      */
     public Date getBirthDay(){
         return this.brthDay;
     }
 
     /**
-     * @return the users rating
+     * @return the user rating
      */
     public Double getRating(){
         return this.rating;
@@ -234,6 +239,9 @@ public class Profile {
      * @param rating that will be updated on the users profile, should be automatically updated each time a review is added
      */
     public void setRating(Double rating){
+    	if(rating == null){
+    		throw new IllegalArgumentException("The rating is null");
+    	}
         this.rating=rating;
     }
 
@@ -248,6 +256,9 @@ public class Profile {
      * @param city
      */
     public void setCity(String city){
+    	if(rating == null || city.trim().isEmpty()){
+    		throw new IllegalArgumentException("The rating is either null or empty");
+    	}
         this.city=city;
     }
 
@@ -262,6 +273,9 @@ public class Profile {
      * @param email
      */
     public void setEmail(String email){
+    	if(rating == null || city.trim().isEmpty()){
+    		throw new IllegalArgumentException("The e-mail is either null or empty");
+    	}
         this.email=email;
     }
 
@@ -285,8 +299,8 @@ public class Profile {
      * @deprecated ESTO AL FINAL SE USA O LO PODEMOS VOLAR???
      */
     public void checkIn(Double x, Double y){
-        Coordinates coor=new Coordinates(x,y);
-        this.checkIn=coor;
+        Coordinates coor = new Coordinates(x,y);
+        this.checkIn = coor;
     }
 
     public Collection<Profile> getFriends(){
@@ -307,21 +321,6 @@ public class Profile {
 
     public Collection<Group> getGroups(){
         return this.groups;
-    }
-
-
-    /**
-     * @param tripId that will be added to the users trips
-     */
-    public void joinTrip(Trip trip){
-        this.trips.add(trip);
-    }
-
-    /**
-     * @param tripId that will be deleted from the users trips
-     */
-    public void leaveTrip(Trip trip){
-        this.trips.remove(trip);
     }
 
     /**
@@ -357,6 +356,8 @@ public class Profile {
      * @param group of group that the user will be added to
      */
     public void joinGroup(Group group){
+    	if(groups.contains(group))
+    		throw new IllegalArgumentException("The user already belongs to that group");
         this.groups.add(group);
     }
 
@@ -364,6 +365,8 @@ public class Profile {
      * @param group of the group the user is leaving
      */
     public void leaveGroup(Group group){
+    	if(!groups.contains(group))
+    		throw new IllegalArgumentException("The user does not belong to that group");
         this.groups.remove(group);
     }
 
@@ -398,6 +401,8 @@ public class Profile {
      * and will be added to the blocked user
      */
     public void blockUser(Profile blckdUser){
+    	if(blockedUsr.contains(blckdUser))
+    		throw new IllegalArgumentException("The user is already blocked");
         this.friends.remove(blckdUser);
         this.blockedUsr.add(blckdUser);
     }
@@ -406,6 +411,8 @@ public class Profile {
      * @param usrId of the user that should be unblocked
      */
     public void unBlockedUsr(Profile usr){
+    	if(!blockedUsr.contains(usr))
+    		throw new IllegalArgumentException("The user is already unblocked");
         this.blockedUsr.remove(usr);
     }
 
@@ -414,8 +421,10 @@ public class Profile {
      * this will be added to friend's list as well
      */
     public void addFriend(Profile friend){
+    	if(friends.contains(friend))
+    		throw new IllegalArgumentException("The user is already a friend");
         this.friends.add(friend);
-        //friend.addFriend(this);
+        friend.getFriends().add(this);
     }
 
     /**
@@ -423,12 +432,14 @@ public class Profile {
      * this will also be deleted from friend's list
      */
     public void deleteFriend(Profile friend){
+    	if(friends.contains(friend))
+    		throw new IllegalArgumentException("The user is not a friend");
         this.friends.remove(friend);
-        friend.addFriend(this);
+        friend.getFriends().remove(this);
     }
 
     /**
-     * revisar
+     * NO VA
      * @return the age, it compares todays date with the day of birth of the user
      */
     @SuppressWarnings("deprecation")
