@@ -160,7 +160,7 @@ public abstract class AbstractRepository<T> {
      * If it doesn't exist does nothing.
      * @param id
      */
-    public void delete(String id){
+    public void delete(T obj){
 
         ConnectionSource connectionSource = null;
         try{
@@ -173,7 +173,7 @@ public abstract class AbstractRepository<T> {
                 Dao<T, String> dao = DaoManager.createDao(connectionSource, this.reposClass);
 
                 /** check if object exists and remove */
-                dao.deleteById(id);
+                dao.delete(obj);
 
             }
             catch(Exception e){
