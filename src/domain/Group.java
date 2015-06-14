@@ -56,7 +56,7 @@ public class Group {
     private HashMap<Message, Profile> wall;
     
     /**
-     * 0 if he has been rejected and 1 if is waiting for acceptance
+     * REJECTED if he has been rejected and WAITING if is waiting for acceptance
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Profile, RequestStatus> memberRequests;
@@ -250,8 +250,6 @@ public class Group {
     		throw new IllegalArgumentException("Cannot post because the message is either null or empty");
     	}
     	this.wall.put(msg, user);
-
-    	
     }
 
     /**
@@ -286,24 +284,41 @@ public class Group {
         return this.members.size();
     }
 
+    /**
+     * @return Returns the maximum group size
+     */
 	public Integer getMaxGroupSize() {
 		return maxGroupSize;
 	}
-
+	
+	/**
+	 * Sets the maximum group size validating it
+	 * @param maxGroupSize
+	 */
 	public void setMaxGroupSize(Integer maxGroupSize) {
 		if(maxGroupSize == null ||maxGroupSize < 1)
 			throw new IllegalArgumentException("The size is either null or not greater than 0");
 		this.maxGroupSize = maxGroupSize;
 	}
 
+	/**
+	 * @return Returns a HashSet with the requests to enter the Group
+	 */
 	public HashMap<Profile, RequestStatus> getMemberRequests() {
 		return memberRequests;
 	}
 
+	/**
+	 * @return Returns the maximum age required to be member of the Group
+	 */
 	public Integer getFilter1_age() {
 		return filterAge;
 	}
 
+	/**
+	 * Sets the maximum age required to be member of the Group
+	 * @param filter
+	 */
 	public void setFilterAge(Integer filter) {
 		if(filter == null || (filter <= 0 && filter >= 120)){
 			throw new IllegalArgumentException("The max age is not between 1 and 119");
@@ -311,10 +326,17 @@ public class Group {
 		this.filterAge = filter;
 	}
 
+	/**
+	 * @return Returns the city (the city in Profile) required to be a member of the Group
+	 */
 	public String getFilterCity() {
 		return filterCity;
 	}
 
+	/**
+	 * Sets the city required to be a member of the Group
+	 * @param filter
+	 */
 	public void setFilterCity(String filter) {
 		if(filter == null || filter.trim().isEmpty()){
 			throw new IllegalArgumentException("The city is either null or empty");
@@ -322,12 +344,11 @@ public class Group {
 		this.filterCity = filter;
 	}
 	
+	/**
+	 * @return Returns the Trip associated to the Group
+	 */
 	public Trip getGroupTrip(){
 		return this.groupTrip;
 	}
-	
-	
-    
-    
 }
 
