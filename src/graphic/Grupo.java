@@ -58,6 +58,8 @@ public class Grupo extends JFrame {
 	private JTextField tFCap;
 	private JTextField tFAdmin;
 	private JButton btnBack;
+	private JTextField tFFAge;
+	private JTextField tFFCity;
 
 	/**
 	 * Launch the application.
@@ -83,13 +85,13 @@ public class Grupo extends JFrame {
 	// i = 0 creando, i = 1 viendo el propio, i = 2 viendo el de otro
 	public Grupo(final Integer i, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController){
 		
-		Locale currentLocale = new Locale("en","US");
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		Locale currentLocale = new Locale("en","US"); //$NON-NLS-1$ //$NON-NLS-2$
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
 		
-		setTitle("TreckApp");
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 902, 602);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		panel = new ImagePanel(new ImageIcon("Group.jpg").getImage());
+		panel = new ImagePanel(new ImageIcon("Group.jpg").getImage()); //$NON-NLS-1$
 		panel.setBackground(new Color(25, 25, 112));
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		setContentPane(panel);
@@ -97,20 +99,20 @@ public class Grupo extends JFrame {
 		
 		final JLabel lblGroupName = new JLabel();
 		lblGroupName.setForeground(Color.BLACK);
-		lblGroupName.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		lblGroupName.setFont(new Font("Tahoma", Font.PLAIN, 19)); //$NON-NLS-1$
 		lblGroupName.setHorizontalAlignment(SwingConstants.LEFT);
 		lblGroupName.setBounds(200, 58, 173, 34);
 		panel.add(lblGroupName);
 		
 		tFName = new JTextField();
-		tFName.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tFName.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		tFName.setDisabledTextColor(new Color(0, 0, 0));
 		tFName.setBounds(408, 64, 185, 25);
 		panel.add(tFName);
 		tFName.setColumns(10);
 		
 		final JLabel lblCapacity = new JLabel();
-		lblCapacity.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		lblCapacity.setFont(new Font("Tahoma", Font.PLAIN, 19)); //$NON-NLS-1$
 		lblCapacity.setForeground(Color.BLACK);
 		lblCapacity.setBounds(200, 103, 159, 34);
 		panel.add(lblCapacity);
@@ -118,11 +120,39 @@ public class Grupo extends JFrame {
 		tFCap = new JTextField();
 		tFCap.setForeground(Color.BLACK);
 		tFCap.setDisabledTextColor(new Color(0, 0, 0));
-		tFCap.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tFCap.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		tFCap.setHorizontalAlignment(SwingConstants.CENTER);
 		tFCap.setBounds(408, 105, 43, 30);
 		panel.add(tFCap);
 		tFCap.setColumns(10);
+		
+		tFFAge = new JTextField();
+//		tFFAge.setBounds(32, 267, 200, 50);
+//		panel.add(tFFAge);
+//		tFFAge.setColumns(10);
+		
+		tFFCity = new JTextField();
+//		tFFCity.setBounds(11, 337, 200, 50);
+//		panel.add(tFFCity);
+//		tFFCity.setColumns(10);
+		
+		Object[] fields = {
+				messages.getString("Grupo.9"), tFFAge,  //$NON-NLS-1$
+				messages.getString("Grupo.10"), tFFCity //$NON-NLS-1$
+		};
+		
+		JButton btnFilters = new JButton();
+		btnFilters.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int confirm = JOptionPane.showConfirmDialog(null, fields, messages.getString("Grupo.11"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+				while(confirm == JOptionPane.OK_OPTION && (!isNumeric(tFFAge.getText()) && ! tFFAge.getText().isEmpty() && ! tFFCity.getText().isEmpty())){
+					JOptionPane.showMessageDialog(null, messages.getString("Grupo.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					confirm = JOptionPane.showConfirmDialog(null, fields, messages.getString("Grupo.14"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+				}
+			}
+		});	
+		btnFilters.setBounds(430, 423, 145, 23);
+		panel.add(btnFilters);
 		
 		final JButton btnTrip = new JButton();
 		if(i == 0){
@@ -134,7 +164,7 @@ public class Grupo extends JFrame {
 		panel.add(btnTrip);
 		
 		final JLabel lblMembers = new JLabel();
-		lblMembers.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		lblMembers.setFont(new Font("Tahoma", Font.PLAIN, 19)); //$NON-NLS-1$
 		lblMembers.setForeground(Color.BLACK);
 		lblMembers.setHorizontalAlignment(SwingConstants.LEFT);
 		lblMembers.setBounds(200, 208, 203, 34);
@@ -146,7 +176,7 @@ public class Grupo extends JFrame {
 			try {
 				auxMembers = groupController.getMembers();
 				for(ProfileController each : auxMembers){
-					members.addElement(each.getUsername() + " " + each.getSurname());
+					members.addElement(each.getUsername() + " " + each.getSurname()); //$NON-NLS-1$
 				}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
@@ -163,7 +193,7 @@ public class Grupo extends JFrame {
 		JList<String> list = new JList<String>(members);
 		scrollPane.setViewportView(list);
 		list.setForeground(Color.BLACK);
-		list.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		list.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBorder(null);
 		list.setValueIsAdjusting(true);
@@ -178,7 +208,7 @@ public class Grupo extends JFrame {
 			try {
 				requestsTrip = ((MyGroupController)groupController).getMemberRequests();
 				for (ProfileController key : requestsTrip.keySet()) {
-					requests.add(key.getUsername() + " " + key.getSurname());
+					requests.add(key.getUsername() + " " + key.getSurname()); //$NON-NLS-1$
 				}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
@@ -219,13 +249,9 @@ public class Grupo extends JFrame {
 		final JLabel lblNewRequest = new JLabel();
 		lblNewRequest.setVisible(false);
 		lblNewRequest.setForeground(Color.WHITE);
-		lblNewRequest.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNewRequest.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblNewRequest.setBounds(26, 448, 185, 34);
 		panel.add(lblNewRequest);
-		
-		JButton btnFilters = new JButton();
-		btnFilters.setBounds(430, 423, 145, 23);
-		panel.add(btnFilters);
 		
 		final JButton btnDelete = new JButton();
 		btnDelete.addActionListener(new ActionListener() {
@@ -261,12 +287,12 @@ public class Grupo extends JFrame {
 		
 		final JLabel lblAdmin = new JLabel();
 		lblAdmin.setForeground(Color.BLACK);
-		lblAdmin.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		lblAdmin.setFont(new Font("Tahoma", Font.PLAIN, 19)); //$NON-NLS-1$
 		lblAdmin.setBounds(200, 148, 200, 34);
 		panel.add(lblAdmin);
 		
 		tFAdmin = new JTextField();
-		tFAdmin.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tFAdmin.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		tFAdmin.setBounds(408, 152, 185, 25);
 		panel.add(tFAdmin);
 		tFAdmin.setColumns(10);
@@ -303,13 +329,16 @@ public class Grupo extends JFrame {
 				}
 				switch(flag){
 				case 1:
-					int confirm = JOptionPane.showConfirmDialog(null, "ï¿½Desea crear el viaje?", "Confirmar", JOptionPane.YES_NO_OPTION);
+					int confirm = JOptionPane.showConfirmDialog(null, messages.getString("Grupo.22"), messages.getString("Grupo.23"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 					if(confirm == JOptionPane.YES_OPTION){
 
 						try {
 							MyGroupController group;
-							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), 25, "Buenos Aires");
+							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), 25, "Buenos Aires"); //$NON-NLS-1$
 							group.addGroupTrip(group.getAdmin(), myTrip);
+							if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
+								group.setFilters(Integer.parseInt(tFFAge.getText()), tFFCity.getText());
+							}
 						} catch (SessionNotActiveException e) {
 							e.printStackTrace();
 						} catch (ControllerNotLoadedException e) {
@@ -332,13 +361,13 @@ public class Grupo extends JFrame {
 					}
 					break;
 				case 2:
-					JOptionPane.showMessageDialog(null, "No introdujo el nombre del grupo", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, messages.getString("Grupo.25"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					break;
 				case 3:
-					JOptionPane.showMessageDialog(null, "No introdujo la capacidad maxima del viaje planeado", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, messages.getString("Grupo.27"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					break;
 				case 4:
-					JOptionPane.showMessageDialog(null, "No creo ningun viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, messages.getString("Grupo.29"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					break;
 				}
 			}
@@ -353,19 +382,19 @@ public class Grupo extends JFrame {
 			try {
 				tFName.setText(groupController.getGroupName());
 				tFCap.setText(groupController.groupSize().toString());
-				tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname());
+				tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname()); //$NON-NLS-1$
 			} catch (SessionNotActiveException e2) {
 				e2.printStackTrace();
 			} catch (ControllerNotLoadedException e2) {
 				e2.printStackTrace();
 			}
 			btnFilters.setVisible(false);
-			btnTrip.setText("Modificar Viaje");
+			btnTrip.setText(messages.getString("Grupo.32")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = null;
+					Trip frame = null;
 					try {
-						frame = new Viaje(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController);
+						frame = new Trip(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController);
 					} catch (SessionNotActiveException e) {
 						e.printStackTrace();
 					} catch (ControllerNotLoadedException e) {
@@ -377,7 +406,7 @@ public class Grupo extends JFrame {
 					close();
 				}
 			});
-			btnRequestcheck.setText("Ver Solicitudes");
+			btnRequestcheck.setText(messages.getString("Grupo.33")); //$NON-NLS-1$
 			btnDelete.setVisible(true);
 		}else if(i == 2){		
 			tFName.setEnabled(false);
@@ -387,7 +416,7 @@ public class Grupo extends JFrame {
 				try {
 					tFName.setText(groupController.getGroupName());
 					tFCap.setText(groupController.groupSize().toString());
-					tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname());
+					tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname()); //$NON-NLS-1$
 				} catch (SessionNotActiveException e2) {
 					e2.printStackTrace();
 				} catch (ControllerNotLoadedException e2) {
@@ -395,10 +424,10 @@ public class Grupo extends JFrame {
 				}
 			}
 			btnFilters.setVisible(false);
-			btnTrip.setText("Ver Viaje");
+			btnTrip.setText(messages.getString("Grupo.35")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Viaje frame = new Viaje(2,trip, null,null, instance, session,groupController);
+					Trip frame = new Trip(2,trip, null,null, instance, session,groupController);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -406,7 +435,7 @@ public class Grupo extends JFrame {
 				}
 			});
 			btnDelete.setVisible(false);
-			btnRequestcheck.setText("Enviar Solicitud");
+			btnRequestcheck.setText(messages.getString("Grupo.36")); //$NON-NLS-1$
 			btnRequestcheck.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
@@ -429,7 +458,7 @@ public class Grupo extends JFrame {
 			}
 			btnFilters.setVisible(true);
 			btnCreatetrip.setVisible(true);
-			btnTrip.setText("Crear Viaje");
+			btnTrip.setText(messages.getString("Grupo.37")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					ArrayList<String> aux = new ArrayList<String>();
@@ -437,13 +466,13 @@ public class Grupo extends JFrame {
 					aux.add(tFCap.getText());
 					aux.add(tFAdmin.getText());
 					if(myTrip != null){
-						Viaje frame = new Viaje(0,myTrip,null,aux, instance, session, groupController);
+						Trip frame = new Trip(0,myTrip,null,aux, instance, session, groupController);
 						frame.setVisible(true);
 						frame.pack();
 					    frame.setSize(900, 602);
 						close();
 					}
-					Viaje frame = new Viaje(0,null,null,aux, instance, session, groupController);
+					Trip frame = new Trip(0,null,null,aux, instance, session, groupController);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);
@@ -479,7 +508,7 @@ public class Grupo extends JFrame {
 //				}
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -513,26 +542,24 @@ public class Grupo extends JFrame {
 //				}
 			}
 		});
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		btnDelete.setText("Eliminar Grupo");
-		btnCreatetrip.setText("Crear Grupo");
-		btnBack.setText("Volver");
-		lblAdmin.setText("Organizador del Viaje :");
-		btnAccept.setText("Aceptar");
-		lblNewRequest.setText("Solicitudes Nuevas");
-		btnReject.setText("Rechazar");
-		lblMembers.setText("Integrantes del Viaje :");
-		lblGroupName.setText("Nombre del Grupo :");
-		lblCapacity.setText("Cupos Restantes :");
-		btnFilters.setText("Añadir Filtros");
-		
-		
+		btnDelete.setText(messages.getString("Grupo.40")); //$NON-NLS-1$
+		btnCreatetrip.setText(messages.getString("Grupo.41")); //$NON-NLS-1$
+		btnBack.setText(messages.getString("Grupo.42")); //$NON-NLS-1$
+		lblAdmin.setText(messages.getString("Grupo.43")); //$NON-NLS-1$
+		btnAccept.setText(messages.getString("Grupo.44")); //$NON-NLS-1$
+		lblNewRequest.setText(messages.getString("Grupo.45")); //$NON-NLS-1$
+		btnReject.setText(messages.getString("Grupo.46")); //$NON-NLS-1$
+		lblMembers.setText(messages.getString("Grupo.47")); //$NON-NLS-1$
+		lblGroupName.setText(messages.getString("Grupo.48")); //$NON-NLS-1$
+		lblCapacity.setText(messages.getString("Grupo.49")); //$NON-NLS-1$
+		btnFilters.setText(messages.getString("Grupo.50"));	 //$NON-NLS-1$
 		
 	}
 	public void close(){
@@ -540,5 +567,15 @@ public class Grupo extends JFrame {
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
 
+	}
+	
+	public static boolean isNumeric(String str){  
+	    try {  
+	      Double.parseDouble(str);  
+	    }  
+	    catch(NumberFormatException nfe){  
+	      return false;  
+	    }  
+	    return true;  
 	}
 }

@@ -36,7 +36,7 @@ import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
 
 
-public class Viaje extends JFrame {
+public class Trip extends JFrame {
 
 	/**
 	 * 
@@ -60,7 +60,7 @@ public class Viaje extends JFrame {
 			public void run() {
 				try {
 					
-					Viaje frame = new Viaje(1,null,null,null, null, null, null);
+					Trip frame = new Trip(1,null,null,null, null, null, null);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -75,7 +75,7 @@ public class Viaje extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Viaje(final Integer i, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController){
+	public Trip(final Integer i, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController){
 		
 		Locale currentLocale = new Locale("en","US");
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
@@ -447,8 +447,7 @@ public class Viaje extends JFrame {
 			return Locale.UK;
 		}
 	}
-	 public static boolean isNumeric(String str)  
-	  {  
+	public static boolean isNumeric(String str){  
 	    try {  
 	      Double.parseDouble(str);  
 	    }  
@@ -456,7 +455,7 @@ public class Viaje extends JFrame {
 	      return false;  
 	    }  
 	    return true;  
-	  }
+	}
 	 
 	 public void close(){
 
