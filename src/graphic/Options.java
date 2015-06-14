@@ -36,7 +36,7 @@ public class Options extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Options frame = new Options(null, null);
+					Options frame = new Options(null, null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -51,9 +51,14 @@ public class Options extends JFrame {
 	 * Create the frame.
 	 * @param instance 
 	 */
-	public Options(final Application instance, final Session session) {
+	public Options(final Application instance, final Session session, final boolean language) {
 		
-		Locale currentLocale = new Locale("en","US");
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US"); 
+		}else{
+			currentLocale = new Locale("es","AR");
+		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
@@ -67,7 +72,7 @@ public class Options extends JFrame {
 		final JButton btnProfile = new JButton();
 		btnProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, 1 , session);
+				Profile frame = new Profile(instance, 1 , session, language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 620);
@@ -80,7 +85,7 @@ public class Options extends JFrame {
 		final JButton btnUserSearch = new JButton();
 		btnUserSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BuscadorUsuario frame = new BuscadorUsuario(instance,session);
+				BuscadorUsuario frame = new BuscadorUsuario(instance,session, language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 620);
@@ -93,7 +98,7 @@ public class Options extends JFrame {
 		final JButton btnTripSearch = new JButton();
 		btnTripSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BuscadorViaje frame = new BuscadorViaje(instance,session);
+				BuscadorViaje frame = new BuscadorViaje(instance,session, language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 602);
@@ -114,7 +119,7 @@ public class Options extends JFrame {
 		btnSignOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				session.logOut();
-				Connect frame = new Connect();
+				Connect frame = new Connect(language);
 				frame.setVisible(true);
 				frame.pack();
 			    frame.setSize(900, 602);
@@ -127,7 +132,7 @@ public class Options extends JFrame {
 		final JButton btnNewGroup = new JButton();
 		btnNewGroup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Grupo frame = new Grupo(0,null,null,null, instance, session,null);
+				Grupo frame = new Grupo(0,null,null,null, instance, session,null, language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -140,7 +145,7 @@ public class Options extends JFrame {
 		final JButton btnCalif = new JButton();
 		btnCalif.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Calif frame = new Calif(instance, session);
+				Calif frame = new Calif(instance, session, language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -164,14 +169,11 @@ public class Options extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//language = 1;
-//				btnCalif.setText("Calificar integrantes con los que viaje");
-//				btnNewGroup.setText("Crear Grupo");
-//				btnSignOut.setText("Cerrar Sesi\u00F3n");
-//				btnTripSearch.setText("Busqueda de Viaje");
-//				lblChoice.setText("Elija la Opci\u00F3n Deseada");
-//				btnProfile.setText("Perfil");
-//				btnUserSearch.setText("Busqueda de Usuario");
+				Options frame = new Options(instance, session,false);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -184,14 +186,11 @@ public class Options extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//language = 2;
-//				btnCalif.setText("Rate your fellow travellers");
-//				btnNewGroup.setText("Create Group");
-//				btnSignOut.setText("Sign Out");
-//				btnTripSearch.setText("Trip Search");
-//				lblChoice.setText("Choose an Option");
-//				btnProfile.setText("Profile");
-//				btnUserSearch.setText("User Search");
+				Options frame = new Options(instance, session,true);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 

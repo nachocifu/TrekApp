@@ -41,7 +41,7 @@ public class Contacts extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Contacts frame = new Contacts(null, null);
+					Contacts frame = new Contacts(null, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -55,9 +55,17 @@ public class Contacts extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Contacts(final Application instance, final Session session) {
+	public Contacts(final Application instance, final Session session,final boolean language) {
 		
-		Locale currentLocale = new Locale("en","US");
+		final JLabel lblNewRequest = new JLabel();
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US"); 
+			lblNewRequest.setBounds(120, 391, 326, 34);
+		}else{
+			currentLocale = new Locale("es","AR");
+			lblNewRequest.setBounds(30, 391, 326, 34);
+		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		panel = new ImagePanel(new ImageIcon("Contacts.jpg").getImage()); //$NON-NLS-1$
@@ -194,16 +202,14 @@ public class Contacts extends JFrame {
 		btnReject.setBounds(549, 436, 123, 20);
 		panel.add(btnReject);
 		
-		final JLabel lblNewRequest = new JLabel();
 		lblNewRequest.setForeground(Color.WHITE);
 		lblNewRequest.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
-		lblNewRequest.setBounds(22, 390, 326, 34);
 		panel.add(lblNewRequest);
 		
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, 1, session);
+				Profile frame = new Profile(instance, 1, session,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -234,16 +240,11 @@ public class Contacts extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//language = 1;
-//				btnBack.setText("Volver");
-//				lblFriends.setText("Amigos:");
-//				lblBlock.setText("Contactos Bloqueados : ");
-//				lblNewRequest.setText("Solicitudes de Amistad Nuevas");
-//				btnAccept.setText("Aceptar");
-//				btnReject.setText("Rechazar");
-//				btnBlock.setText("Bloquear");
-//				lblContacts.setText("Contactos");
-				lblNewRequest.setBounds(30, 391, 326, 34);
+				Contacts frame = new Contacts(instance, session,false);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -256,17 +257,11 @@ public class Contacts extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//language = 2;
-//				btnBack.setText("Back");
-//				lblFriends.setText("Friends :");
-//				lblBlock.setText("Block Contacts : ");
-//				lblNewRequest.setText("New Friends Requests");
-//				btnAccept.setText("Accept");
-//				btnReject.setText("Reject");
-//				btnBlock.setText("Block");
-//				lblContacts.setText("Contacts");
-				lblNewRequest.setBounds(120, 391, 326, 34);
-
+				Contacts frame = new Contacts(instance, session,true);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();
 			}
 		});
 		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$

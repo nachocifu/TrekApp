@@ -60,7 +60,7 @@ public class Trip extends JFrame {
 			public void run() {
 				try {
 					
-					Trip frame = new Trip(1,null,null,null, null, null, null);
+					Trip frame = new Trip(1,null,null,null, null, null, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -75,9 +75,23 @@ public class Trip extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Trip(final Integer i, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController){
+	public Trip(final Integer choice, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController, final boolean language){
 		
-		Locale currentLocale = new Locale("en","US");
+		final JLabel lblState = new JLabel();
+		final JLabel lblFrom = new JLabel();
+		final JLabel lblTo = new JLabel();
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US");
+			lblState.setBounds(450, 87, 180, 35);
+			lblFrom.setBounds(170, 212, 180, 35);
+			lblTo.setBounds(180, 285, 211, 35);
+		}else{
+			currentLocale = new Locale("es","AR");
+			lblState.setBounds(412, 87, 180, 35);
+			lblFrom.setBounds(26, 212, 180, 35);
+			lblTo.setBounds(26, 267, 211, 35);
+		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage()); //$NON-NLS-1$
@@ -102,7 +116,7 @@ public class Trip extends JFrame {
 		
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(i == 1 || i == 0){					
+				if(choice == 1 || choice == 0){					
 					String lang = null;
 					final Locale locale = getLocale(lang);
 					DatePicker dp = new DatePicker(tFLeaving, locale);
@@ -137,7 +151,7 @@ public class Trip extends JFrame {
 		final JButton button = new JButton();
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(i == 1 || i == 0){
+				if(choice == 1 || choice == 0){
 					String lang = null;
 					final Locale locale = getLocale(lang);
 					dp1 = new DatePicker(tFArriving, locale);
@@ -153,10 +167,8 @@ public class Trip extends JFrame {
 		button.setBounds(36, 123, 121, 28);
 		panel.add(button);
 		
-		final JLabel lblState = new JLabel();
 		lblState.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
 		lblState.setForeground(Color.WHITE);
-		lblState.setBounds(412, 87, 180, 35);
 		panel.add(lblState);
 		
 		tFStatus = new JTextField();
@@ -216,7 +228,7 @@ public class Trip extends JFrame {
 					switch(flag){
 						case 1:
 							MyTripController viaje = null;
-							if(i == 0){
+							if(choice == 0){
 								
 								Date dateL = new Date(year1, month1, day1);
 								Date dateA = new Date(year2, month2, day2);
@@ -231,19 +243,19 @@ public class Trip extends JFrame {
 								} catch (SessionNotActiveException e1) {
 									e1.printStackTrace();
 								}
-								Grupo frame = new Grupo(0,viaje, null ,aux, instance, session, groupController);
+								Grupo frame = new Grupo(0,viaje, null ,aux, instance, session, groupController,language);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
-							}else if(i == 1){
-								Grupo frame = new Grupo(1,viaje,null, null, instance, session, groupController);
+							}else if(choice == 1){
+								Grupo frame = new Grupo(1,viaje,null, null, instance, session, groupController,language);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
-							}else if(i == 2){
-								Grupo frame = new Grupo(2 ,null, trip ,null, instance, session, groupController);
+							}else if(choice == 2){
+								Grupo frame = new Grupo(2 ,null, trip ,null, instance, session, groupController,language);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
@@ -295,10 +307,8 @@ public class Trip extends JFrame {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		
-		final JLabel lblFrom = new JLabel();
 		lblFrom.setForeground(Color.WHITE);
 		lblFrom.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
-		lblFrom.setBounds(26, 212, 180, 35);
 		panel.add(lblFrom);
 		
 		tFFrom = new JTextField();
@@ -306,10 +316,8 @@ public class Trip extends JFrame {
 		panel.add(tFFrom);
 		tFFrom.setColumns(10);
 		
-		final JLabel lblTo = new JLabel();
 		lblTo.setForeground(Color.WHITE);
 		lblTo.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
-		lblTo.setBounds(26, 267, 211, 35);
 		panel.add(lblTo);
 		
 		final JLabel lbltrip = new JLabel();
@@ -340,12 +348,12 @@ public class Trip extends JFrame {
 		panel.add(tFCost);
 		tFCost.setColumns(10);
 		
-		if(i == 0 || i == 1){
+		if(choice == 0 || choice == 1){
 			tFFrom.setEditable(true);
 			tFTo.setEditable(true);
 			tFCost.setEditable(true);
 			textArea.setEditable(true);
-		}else if( i == 2 ){
+		}else if( choice == 2 ){
 			tFFrom.setEditable(false);
 			tFTo.setEditable(false);
 			tFCost.setEditable(false);
@@ -371,22 +379,11 @@ public class Trip extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//language = 1;
-//				lblCost.setText("Costo Aproximado :");
-//				lblTo.setText("Ciudad de Finalizaci\u00F3n");
-//				lblFrom.setText("Ciudad de Origen : ");
-//				lblDescription.setText("Descripcion del Viaje : ");
-//				btnReady.setText("Listo");
-//				lblState.setText("Estado del Viaje : ");
-//				button.setText("Hasta");
-//				btnNewButton.setText("Desde");
-//				lblTrip.setText("Viaje");
-//				lbltrip.setText("del Viaje");
-//				label.setText(":");
-				
-				lblState.setBounds(412, 87, 180, 35);
-				lblFrom.setBounds(26, 212, 180, 35);
-				lblTo.setBounds(26, 267, 211, 35);
+				Trip frame = new Trip(choice,trip,myTrip,aux, instance, session, groupController,false);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();	
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -399,22 +396,11 @@ public class Trip extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//language = 2;
-//				lblCost.setText("Estimated cost :");
-//				lblTo.setText("To :");
-//				lblFrom.setText("From : ");
-//				lblDescription.setText("Trip Description : ");
-//				btnReady.setText("Ready");
-//				lblState.setText("Trip Status : ");
-//				button.setText("Returning on");
-//				btnNewButton.setText("Leaving on");
-//				lblTrip.setText("Trip");
-//				lbltrip.setText("");
-//				label.setText("");
-				
-				lblState.setBounds(450, 87, 180, 35);
-				lblFrom.setBounds(170, 212, 180, 35);
-				lblTo.setBounds(180, 285, 211, 35);
+				Trip frame = new Trip(choice,trip,myTrip,aux, instance, session, groupController,true);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();
 			}
 		});
 		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$

@@ -39,8 +39,7 @@ public class Connect extends JFrame {
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private static JPanel panel;
-	private int language;
-	private Application instance = Application.getInstance() ; 
+	private Application instance = Application.getInstance() ;
 	
 	/**
 	 * Launch the application.
@@ -49,7 +48,7 @@ public class Connect extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Connect frame = new Connect();
+					Connect frame = new Connect(true);
 					frame.setVisible(true);		
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -64,9 +63,14 @@ public class Connect extends JFrame {
 	 * Create the frame.
 	 * @param instance 
 	 */
-	public Connect() {
+	public Connect(final boolean language) {
 		
-		Locale currentLocale = new Locale("en","US");
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US"); 
+		}else{
+			currentLocale = new Locale("es","AR");
+		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		
@@ -107,13 +111,13 @@ public class Connect extends JFrame {
 				String password = String.valueOf(passwordField.getPassword());
 				Session session = Session.getInstance();
 				if(session.logIn(textField.getText(), password) != false ){
-					Options frame = new Options(instance, session);
+					Options frame = new Options(instance, session,language);
 					frame.setVisible(true);
 					frame.setSize(484, 315);
 					close();
 				}
 				else{
-					JOptionPane.showMessageDialog(null, Messages.getString("Connect.4"), Messages.getString("Connect.5"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					JOptionPane.showMessageDialog(null, messages.getString("Connect.4"), messages.getString("Connect.5"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 					
 			}
@@ -124,7 +128,8 @@ public class Connect extends JFrame {
 		final JButton btnNewUser = new JButton();
 		btnNewUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Profile frame = new Profile(instance , 0 , null);
+				
+				Profile frame = new Profile(instance , 0 , null, language);
 				frame.setVisible(true);
 				frame.setSize(900, 620);
 				frame.pack();
@@ -137,11 +142,11 @@ public class Connect extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				language = 1;
-//				btnNewUser.setText("NUEVO USUARIO");
-//				btnConnect.setText("CONECTAR");
-//				lblPass.setText("CONTRASE\u00D1A :");
-//				lblUser.setText("USUARIO :");
+				Connect frame = new Connect(false);
+				frame.setVisible(true);		
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -154,11 +159,11 @@ public class Connect extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				language = 2;
-//				btnNewUser.setText("NEW USER");
-//				btnConnect.setText("CONNECT");
-//				lblPass.setText("PASSWORD :");
-//				lblUser.setText("USER :");
+				Connect frame = new Connect(true);
+				frame.setVisible(true);		
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();
 			}
 		});
 
@@ -168,8 +173,6 @@ public class Connect extends JFrame {
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
-		
-		
 
 		btnNewUser.setText(messages.getString("Connect.6")); //$NON-NLS-1$
 		btnConnect.setText(messages.getString("Connect.7")); //$NON-NLS-1$

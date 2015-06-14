@@ -68,7 +68,7 @@ public class Grupo extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Grupo frame = new Grupo(0,null, null,null,null, null,null);
+					Grupo frame = new Grupo(0,null, null,null,null, null,null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -82,10 +82,16 @@ public class Grupo extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	// i = 0 creando, i = 1 viendo el propio, i = 2 viendo el de otro
-	public Grupo(final Integer i, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController){
+	// choice = 0 creando, choice = 1 viendo el propio, choice = 2 viendo el de otro
+	public Grupo(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController, final boolean language){	
 		
-		Locale currentLocale = new Locale("en","US"); //$NON-NLS-1$ //$NON-NLS-2$
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US");
+		}else{
+			currentLocale = new Locale("es","AR");
+		}
+		
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
@@ -127,14 +133,8 @@ public class Grupo extends JFrame {
 		tFCap.setColumns(10);
 		
 		tFFAge = new JTextField();
-//		tFFAge.setBounds(32, 267, 200, 50);
-//		panel.add(tFFAge);
-//		tFFAge.setColumns(10);
 		
 		tFFCity = new JTextField();
-//		tFFCity.setBounds(11, 337, 200, 50);
-//		panel.add(tFFCity);
-//		tFFCity.setColumns(10);
 		
 		Object[] fields = {
 				messages.getString("Grupo.9"), tFFAge,  //$NON-NLS-1$
@@ -155,7 +155,7 @@ public class Grupo extends JFrame {
 		panel.add(btnFilters);
 		
 		final JButton btnTrip = new JButton();
-		if(i == 0){
+		if(choice == 0){
 			btnTrip.setBounds(430, 386, 145, 23);
 		}else{
 			btnTrip.setBounds(240, 386, 145, 23);
@@ -204,7 +204,7 @@ public class Grupo extends JFrame {
 		requests.setBounds(233, 457, 200, 30);
 		
 		HashMap<ProfileController, RequestStatus> requestsTrip = new HashMap<ProfileController, RequestStatus>();
-		if(instance != null && i == 1){
+		if(instance != null && choice == 1){
 			try {
 				requestsTrip = ((MyGroupController)groupController).getMemberRequests();
 				for (ProfileController key : requestsTrip.keySet()) {
@@ -256,7 +256,7 @@ public class Grupo extends JFrame {
 		final JButton btnDelete = new JButton();
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(instance != null && i == 1){
+				if(instance != null && choice == 1){
 					try {
 						((MyGroupController)groupController).deleteGroup();
 					} catch (SessionNotActiveException e1) {
@@ -274,7 +274,7 @@ public class Grupo extends JFrame {
 		final JButton btnRequestcheck = new JButton();
 		btnRequestcheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(i==1){
+				if(choice == 1){
 					lblNewRequest.setVisible(true);
 					btnAccept.setVisible(true);
 					btnReject.setVisible(true);
@@ -300,7 +300,7 @@ public class Grupo extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Options frame = new Options(instance, session);
+				Options frame = new Options(instance, session,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -353,7 +353,7 @@ public class Grupo extends JFrame {
 							e.printStackTrace();
 						}
 						
-						Options frame = new Options(instance, session);
+						Options frame = new Options(instance, session,language);
 						frame.setVisible(true);
 						frame.pack();
 						frame.setSize(900, 602);
@@ -375,7 +375,7 @@ public class Grupo extends JFrame {
 		btnCreatetrip.setBounds(690, 530, 111, 23);
 		panel.add(btnCreatetrip);
 		
-		if( i == 1){
+		if( choice == 1){
 			tFName.setEnabled(false);
 			tFCap.setEnabled(true);
 			tFAdmin.setEnabled(false);
@@ -394,7 +394,7 @@ public class Grupo extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					Trip frame = null;
 					try {
-						frame = new Trip(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController);
+						frame = new Trip(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController,language);
 					} catch (SessionNotActiveException e) {
 						e.printStackTrace();
 					} catch (ControllerNotLoadedException e) {
@@ -408,7 +408,7 @@ public class Grupo extends JFrame {
 			});
 			btnRequestcheck.setText(messages.getString("Grupo.33")); //$NON-NLS-1$
 			btnDelete.setVisible(true);
-		}else if(i == 2){		
+		}else if(choice == 2){		
 			tFName.setEnabled(false);
 			tFCap.setEnabled(false);
 			tFAdmin.setEnabled(false);
@@ -427,7 +427,7 @@ public class Grupo extends JFrame {
 			btnTrip.setText(messages.getString("Grupo.35")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Trip frame = new Trip(2,trip, null,null, instance, session,groupController);
+					Trip frame = new Trip(2,trip, null,null, instance, session,groupController,language);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -450,7 +450,7 @@ public class Grupo extends JFrame {
 				}
 			});	
 			
-		}else if(i == 0){
+		}else if(choice == 0){
 			if(aux != null){
 				tFName.setText(aux.get(0));
 				tFCap.setText(aux.get(1));
@@ -466,13 +466,13 @@ public class Grupo extends JFrame {
 					aux.add(tFCap.getText());
 					aux.add(tFAdmin.getText());
 					if(myTrip != null){
-						Trip frame = new Trip(0,myTrip,null,aux, instance, session, groupController);
+						Trip frame = new Trip(0,myTrip,null,aux, instance, session, groupController,language);
 						frame.setVisible(true);
 						frame.pack();
 					    frame.setSize(900, 602);
 						close();
 					}
-					Trip frame = new Trip(0,null,null,aux, instance, session, groupController);
+					Trip frame = new Trip(0,null,null,aux, instance, session, groupController, language);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);
@@ -486,26 +486,11 @@ public class Grupo extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//language = 1;
-//				btnDelete.setText("Eliminar Grupo");
-//				btnCreatetrip.setText("Crear Grupo");
-//				btnBack.setText("Volver");
-//				lblAdmin.setText("Organizador del Viaje :");
-//				btnAccept.setText("Aceptar");
-//				lblNewRequest.setText("Solicitudes Nuevas");
-//				btnReject.setText("Rechazar");
-//				lblMembers.setText("Integrantes del Viaje :");
-//				lblGroupName.setText("Nombre del Grupo :");
-//				lblCapacity.setText("Cupos Restantes :");
-//				if(i == 0){
-//					btnTrip.setText("Crear Viaje");
-//				}else if(i == 1){
-//					btnTrip.setText("Modificar Viaje");
-//					btnRequestcheck.setText("Ver Solicitudes");
-//				}else if(i == 2){
-//					btnRequestcheck.setText("Enviar Solicitud");
-//					btnTrip.setText("Ver Viaje");
-//				}
+				Grupo frame = new Grupo(choice,myTrip, trip,aux,instance, session,groupController,false);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -518,28 +503,11 @@ public class Grupo extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//language = 2;
-//				lblGroupName.setText("Group Name :");
-//				lblCapacity.setText("Capacity Left :");
-//				btnDelete.setText("Delete Group");
-//				btnCreatetrip.setText("Create Group");
-//				btnBack.setText("Back");
-//				lblAdmin.setText("User Organizer :");
-//				btnAccept.setText("Accept");
-//				lblNewRequest.setText("New Requests");
-//				btnReject.setText("Reject");
-//				lblMembers.setText("Trip Members :");
-//				
-//				if(i == 0){
-//					btnTrip.setText("Create Trip");
-//					btnRequestcheck.setText("Check Trip Requests");
-//				}else if(i == 1){
-//					btnTrip.setText("Modify Trip");
-//					btnRequestcheck.setText("Check Requests");
-//				}else if(i == 2){
-//					btnRequestcheck.setText("Send Trip Requests");
-//					btnTrip.setText("Check Trip");
-//				}
+				Grupo frame = new Grupo(choice,myTrip, trip,aux,instance, session,groupController,true);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$

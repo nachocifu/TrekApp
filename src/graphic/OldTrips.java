@@ -60,7 +60,7 @@ public class OldTrips extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					OldTrips frame = new OldTrips(null, null);
+					OldTrips frame = new OldTrips(null, null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -74,10 +74,15 @@ public class OldTrips extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OldTrips(final Application instance, final Session session) {
+	public OldTrips(final Application instance, final Session session, final boolean language) {
 		
-		Locale currentLocale = new Locale("en","US");
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle"/*, currentLocale*/); 
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US"); 
+		}else{
+			currentLocale = new Locale("es","AR");
+		}
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 902, 602);
@@ -244,7 +249,7 @@ public class OldTrips extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, 1, session);
+				Profile frame = new Profile(instance, 1, session,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -257,16 +262,11 @@ public class OldTrips extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//language = 1;
-//				lblOldTrips.setText("Viajes Pasados");
-//				lblFrom.setText("Ciudad de Origen : ");
-//				label_1.setText("del Viaje");
-//				lblTo.setText("Ciudad de Finalizaci\u00F3n");
-//				lblDescription.setText("Descripcion del Viaje :");
-//				lblReturningOn.setText("Fecha de Finalizaci\u00F3n :");
-//				lblLeavingOn.setText("Fecha de Comienzo :");
-//				btnBack.setText("Volver");
-//				label_4.setText(":");
+				OldTrips frame = new OldTrips(instance, session,false);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -279,16 +279,11 @@ public class OldTrips extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//language = 2;
-//				lblOldTrips.setText("Old Trips");
-//				lblFrom.setText("From : ");
-//				label_1.setText("");
-//				lblTo.setText("To :");
-//				lblDescription.setText("Trip Description :");
-//				lblReturningOn.setText("Returning on :");
-//				lblLeavingOn.setText("Leaving on :");
-//				btnBack.setText("Back");
-//				label_4.setText("");
+				OldTrips frame = new OldTrips(instance, session,true);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$

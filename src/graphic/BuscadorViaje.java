@@ -62,7 +62,7 @@ public class BuscadorViaje extends JFrame {
 			public void run() {
 				try {
 						
-					BuscadorViaje frame = new BuscadorViaje(null, null);
+					BuscadorViaje frame = new BuscadorViaje(null, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -76,10 +76,23 @@ public class BuscadorViaje extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public BuscadorViaje(final Application instance, final Session session) {
+	public BuscadorViaje(final Application instance, final Session session, final boolean language) {
 		
-		Locale currentLocale = new Locale("en","US");
+		final JLabel lblCityend = new JLabel();
+		final JLabel lblCityOrigin = new JLabel();
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US");
+			lblCityend.setBounds(452, 120, 219, 28);
+			lblCityOrigin.setBounds(452, 56, 168, 28);
+		}else{
+			currentLocale = new Locale("es","AR");
+			lblCityend.setBounds(352, 120, 219, 28);
+			lblCityOrigin.setBounds(352, 56, 168, 28);
+		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
+		
 		
 		panel = new ImagePanel(new ImageIcon("TripSearch.jpg").getImage()); //$NON-NLS-1$
 		setTitle("TreckApp"); //$NON-NLS-1$
@@ -144,11 +157,9 @@ public class BuscadorViaje extends JFrame {
 		});
 		button.setBounds(47, 121, 106, 28);
 		panel.add(button);
-		
-		final JLabel lblCityOrigin = new JLabel();
+
 		lblCityOrigin.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		lblCityOrigin.setForeground(Color.BLACK);
-		lblCityOrigin.setBounds(352, 56, 168, 28);
 		panel.add(lblCityOrigin);
 		
 		textField_2 = new JTextField();
@@ -156,10 +167,8 @@ public class BuscadorViaje extends JFrame {
 		panel.add(textField_2);
 		textField_2.setColumns(10);
 		
-		final JLabel lblCityend = new JLabel();
 		lblCityend.setForeground(Color.BLACK);
 		lblCityend.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
-		lblCityend.setBounds(352, 120, 219, 28);
 		panel.add(lblCityend);
 		
 		textField_3 = new JTextField();
@@ -195,7 +204,7 @@ public class BuscadorViaje extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Options frame = new Options(instance, session);
+				Options frame = new Options(instance, session,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -204,10 +213,7 @@ public class BuscadorViaje extends JFrame {
 		});
 		btnBack.setBounds(765, 538, 93, 23);
 		panel.add(btnBack);
-		
-		//String [] espa�ol = new String[] {"Desde", "Hasta", "Ciudad de Origen", "Ciudad de Finalizacion"};
-		//String [] english = new String[] {"Leaving on", "Returning on", "From","To"};
-		
+
 		table = new JTable(){
 	        /**
 			 * 
@@ -339,17 +345,11 @@ public class BuscadorViaje extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//language = 1;
-//				lblSearch.setText("Buscador");
-//				btnNewButton.setText("Desde");
-//				button.setText("Hasta");
-//				lblCityOrigin.setText("Ciudad de Origen :");
-//				lblCityend.setText("Ciudad de Finalizacion :");
-//				lblSearchDescription.setText("Buscar Descripcion :");
-//				btnNewButton_1.setText("Buscar");
-//				btnBack.setText("Volver");
-				lblCityend.setBounds(352, 120, 219, 28);
-				lblCityOrigin.setBounds(352, 56, 168, 28);
+				BuscadorViaje frame = new BuscadorViaje(instance, session,false);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();	
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -362,17 +362,11 @@ public class BuscadorViaje extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//language = 2;
-//				lblSearch.setText("Searcher");
-//				btnNewButton.setText("Leaving on");
-//				button.setText("Returning on");
-//				lblCityOrigin.setText("From :");
-//				lblCityend.setText("To :");
-//				lblSearchDescription.setText("Search Description :");
-//				btnNewButton_1.setText("Search");
-//				btnBack.setText("Back");
-				lblCityend.setBounds(452, 120, 219, 28);
-				lblCityOrigin.setBounds(452, 56, 168, 28);
+				BuscadorViaje frame = new BuscadorViaje(instance, session,true);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 602);
+			    close();
 			}
 		});
 

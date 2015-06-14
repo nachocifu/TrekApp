@@ -44,7 +44,7 @@ public class Calif extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Calif frame = new Calif(null,null);
+					Calif frame = new Calif(null,null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -58,9 +58,14 @@ public class Calif extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Calif(final Application instance, final Session session) {
+	public Calif(final Application instance, final Session session, final boolean language) {
 		
-		Locale currentLocale = new Locale("en","US");
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US"); 
+		}else{
+			currentLocale = new Locale("es","AR");
+		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
@@ -103,7 +108,7 @@ public class Calif extends JFrame {
 		final JButton btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Options frame = new Options(instance,session);
+				Options frame = new Options(instance,session,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -131,15 +136,11 @@ public class Calif extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//language = 1;
-//				lblCalifMembers.setText("Califica a los integrantes de tu viaje");
-//				btnAccept.setText("Aceptar");
-//				btnBack.setText("Volver");
-//				hola.add("Excellent");
-//				hola.add("Muy Bueno");
-//				hola.add("Regular");
-//				hola.add("Malo");
-//				hola.add("No recomiendo viajar con esta persona");
+				Calif frame = new Calif(instance,session,false);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -152,15 +153,11 @@ public class Calif extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//language = 2;
-//				lblCalifMembers.setText("Rate your fellow travellers");
-//				btnAccept.setText("Accept");
-//				btnBack.setText("Back");
-//				hola.add("Excellent");
-//				hola.add("Very Good");
-//				hola.add("Normal");
-//				hola.add("Bad");
-//				hola.add("Very Bad Trip Companion");
+				Calif frame = new Calif(instance,session,true);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 

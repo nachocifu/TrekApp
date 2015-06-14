@@ -48,7 +48,7 @@ public class TripGroups extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TripGroups frame = new TripGroups(null, null);
+					TripGroups frame = new TripGroups(null, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -64,9 +64,14 @@ public class TripGroups extends JFrame {
 	 * @throws ControllerNotLoadedException 
 	 * @throws SessionNotActiveException 
 	 */
-	public TripGroups(final Application instance, final Session session) throws SessionNotActiveException, ControllerNotLoadedException {
+	public TripGroups(final Application instance, final Session session, final boolean language) throws SessionNotActiveException, ControllerNotLoadedException {
 		
-		Locale currentLocale = new Locale("en","US");
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US"); 
+		}else{
+			currentLocale = new Locale("es","AR");
+		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		panel = new ImagePanel(new ImageIcon("TripGroups.jpg").getImage()); //$NON-NLS-1$
@@ -81,9 +86,6 @@ public class TripGroups extends JFrame {
 		scrollPane_1.setBounds(68, 146, 751, 272);
 		panel.add(scrollPane_1);
 		
-		//String [] spanish = new String[] {"Desde", "Hasta", "Ciudad de Origen", "Ciudad de Finalizacion"};
-		//String [] english = new String[] {"Name of the Group","Leaving on", "Returning on", "From","To"};
-		
 		table = new JTable(){
 	        /**
 			 * 
@@ -94,7 +96,6 @@ public class TripGroups extends JFrame {
 	                return false;               
 	        };
 	    };
-
 	    /**/
 	    if(instance != null){
 	    	ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
@@ -118,20 +119,20 @@ public class TripGroups extends JFrame {
 								if( groupArray.get(table.getSelectedRow()) == null ){
 									
 								}else if(session.getUserName().equals(admin) && instance != null){
-									Grupo frame = new Grupo(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()));
+									Grupo frame = new Grupo(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
 									frame.setVisible(true);
 									frame.pack();
 									frame.setSize(900, 602);
 									close();
 								}else{
-									Grupo frame = new Grupo(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()));
+									Grupo frame = new Grupo(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
 									frame.setVisible(true);
 									frame.pack();
 									frame.setSize(900, 602);
 									close();
 								}
 							}else{
-								Grupo frame = new Grupo(2, null, null, null, null, null, null);
+								Grupo frame = new Grupo(2, null, null, null, null, null, null,true);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
@@ -162,7 +163,6 @@ public class TripGroups extends JFrame {
 			} catch (ControllerNotLoadedException e1) {
 				e1.printStackTrace();
 			}
-			
 	    }
 		table.setEnabled(true);
 		table.setCellSelectionEnabled(false);
@@ -170,7 +170,6 @@ public class TripGroups extends JFrame {
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(20);
 		scrollPane_1.setViewportView(table);
-		table.setLocale(new Locale("es", "AR")); //$NON-NLS-1$ //$NON-NLS-2$
 		table.setGridColor(Color.WHITE);
 		table.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14)); //$NON-NLS-1$
@@ -214,7 +213,7 @@ public class TripGroups extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, 1, session);
+				Profile frame = new Profile(instance, 1, session, language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -225,21 +224,22 @@ public class TripGroups extends JFrame {
 		btnBack.setBounds(726, 518, 93, 23);
 		panel.add(btnBack);
 		
-		/**/
-		
-		
-			
-			
-			
-		
-		/**/
-		
-		/**/
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//language = 1;
-				//lblGroups.setText("Grupos a los que pertenece");
+				TripGroups frame;
+				try {
+					frame = new TripGroups(instance, session,false);
+					frame.setVisible(true);
+				    frame.pack();
+				    frame.setSize(900, 602);
+				    close();
+				} catch (SessionNotActiveException e) {
+					e.printStackTrace();
+				} catch (ControllerNotLoadedException e) {
+					e.printStackTrace();
+				}
+				
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
@@ -252,8 +252,19 @@ public class TripGroups extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//language = 2;
-				//lblGroups.setText("Groups where you belong");
+				TripGroups frame;
+				try {
+					frame = new TripGroups(instance, session,true);
+					frame.setVisible(true);
+				    frame.pack();
+				    frame.setSize(900, 602);
+				    close();
+				} catch (SessionNotActiveException e1) {
+					e1.printStackTrace();
+				} catch (ControllerNotLoadedException e1) {
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$

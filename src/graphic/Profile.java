@@ -65,6 +65,7 @@ public class Profile extends JFrame {
 	private JTextField tFRate;
 	private JLabel lblProfile;
 	private JTextField tFEmail;
+	private JTextField tFCityBirth;
 	
 	/**
 	 * Launch the application.
@@ -73,8 +74,7 @@ public class Profile extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					
-					Profile frame = new Profile(null, 0, null);
+					Profile frame = new Profile(null, 0, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 620);
@@ -89,16 +89,15 @@ public class Profile extends JFrame {
 	/*choice corresponde al porque entra al frame profile. Si choice es 1 entra debido a que ya existe el usuario y el usuario selecciono la opcion de ver su perfil,
 		 si choice es 0 corresponde a la creacion de un usuario nuevo y si choice es 2 un usuario que no es el propio entro a ver el perfil*/
 	
-	public Profile(final Application instance, final Integer choice, final Session session) {
+	public Profile(final Application instance, final Integer choice, final Session session, final boolean language) {
 		
-		
-		if(instance != null ){
-			
+		Locale currentLocale;
+		if(language){
+			currentLocale = new Locale("en","US"); 
+		}else{
+			currentLocale = new Locale("es","AR");
 		}
-		
-		Locale currentLocale = new Locale("en","US");
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
-		
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 	
 		
 		panel = new ImagePanel(new ImageIcon(messages.getString("Profile.0")).getImage()); //$NON-NLS-1$
 		panel.setBackground(Color.BLACK);
@@ -196,6 +195,11 @@ public class Profile extends JFrame {
 		passwordField_1.setBounds(587, 244, 123, 20);
 		panel.add(passwordField_1);
 		
+		tFCityBirth = new JTextField();
+		tFCityBirth.setBounds(250, 305, 123, 20);
+		panel.add(tFCityBirth);
+		tFCityBirth.setColumns(10);
+		
 		final JLabel lblExists = new JLabel();
 		
 		lblExists.setForeground(Color.BLACK);
@@ -251,13 +255,13 @@ public class Profile extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(choice == 1){
-					Options frame = new Options(instance, session);
+					Options frame = new Options(instance, session,language);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
 					close();
 				}else if(choice == 2){
-					BuscadorUsuario frame = new BuscadorUsuario(instance, session);
+					BuscadorUsuario frame = new BuscadorUsuario(instance, session, language);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -312,7 +316,7 @@ public class Profile extends JFrame {
 		final JLabel lblCalif = new JLabel();
 		lblCalif.setForeground(Color.BLACK);
 		lblCalif.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
-		lblCalif.setBounds(559, 302, 123, 20);
+		lblCalif.setBounds(649, 302, 123, 20);
 		panel.add(lblCalif);
 		
 		tFRate = new JTextField();
@@ -324,7 +328,7 @@ public class Profile extends JFrame {
 		tFRate.setEnabled(false);
 		tFRate.setDisabledTextColor(Color.BLACK);
 		tFRate.setColumns(10);
-		tFRate.setBounds(690, 302, 54, 20);
+		tFRate.setBounds(764, 305, 54, 20);
 		panel.add(tFRate);	
 		
 //		list.setModel(new AbstractListModel() {
@@ -340,7 +344,7 @@ public class Profile extends JFrame {
 		final JButton btnPastTrip = new JButton();
 		btnPastTrip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				OldTrips frame = new OldTrips(instance, session);
+				OldTrips frame = new OldTrips(instance, session,language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -396,7 +400,7 @@ public class Profile extends JFrame {
 							flag = 2;
 						}
 						if(flag == 0){
-							Options frame = new Options(instance, session);
+							Options frame = new Options(instance, session,language);
 							frame.setVisible(true);
 							frame.setSize(900, 602);
 							close();
@@ -440,13 +444,13 @@ public class Profile extends JFrame {
 						}
 						if(flag == 0){
 							try {
-								instance.registerUser(tFName.getText(), tFSurName.getText(), tFUserName.getText(), date , sex , passwordField.getText(), "Buenos Aires", tFAge.getText()); //$NON-NLS-1$
+								instance.registerUser(tFName.getText(), tFSurName.getText(), tFUserName.getText(), date , sex , passwordField.getText(), tFCityBirth.getText(), tFAge.getText()); //$NON-NLS-1$
 							} catch (ServerException e) {
 								e.printStackTrace();
 							} catch (UserNameAlreadyExistsException e) {
 								lblExists.setVisible(true);
 							}	
-							Connect frame = new Connect();
+							Connect frame = new Connect(language);
 							frame.setVisible(true);
 							frame.setSize(900, 602);
 							close();
@@ -464,23 +468,19 @@ public class Profile extends JFrame {
 			}
 		});
 		
-		final JLabel lblLanguage = new JLabel();
-		lblLanguage.setForeground(Color.BLACK);
-		lblLanguage.setBackground(Color.BLACK);
-		lblLanguage.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
-		lblLanguage.setBounds(46, 302, 110, 28);
-		panel.add(lblLanguage);
-		
-		Choice choice_1 = new Choice();
-		choice_1.setBounds(162, 302, 123, 22);
-		panel.add(choice_1);
+		final JLabel lblCityBirth = new JLabel();
+		lblCityBirth.setForeground(Color.BLACK);
+		lblCityBirth.setBackground(Color.BLACK);
+		lblCityBirth.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
+		lblCityBirth.setBounds(46, 302, 206, 28);
+		panel.add(lblCityBirth);
 		
 		final JButton btnPresenttrips = new JButton();
 		btnPresenttrips.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				TripGroups frame;
 				try {
-					frame = new TripGroups(instance, session);
+					frame = new TripGroups(instance, session,language);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -503,13 +503,13 @@ public class Profile extends JFrame {
 		lblEmail.setText(messages.getString("Profile.47")); //$NON-NLS-1$
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblEmail.setForeground(Color.BLACK);
-		lblEmail.setBounds(320, 302, 72, 20);
+		lblEmail.setBounds(428, 303, 72, 20);
 		panel.add(lblEmail);
 			
 		tFEmail = new JTextField();
 		tFEmail.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
 		tFEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		tFEmail.setBounds(386, 304, 145, 20);
+		tFEmail.setBounds(494, 305, 145, 20);
 		panel.add(tFEmail);
 		tFEmail.setColumns(10);	
 		
@@ -535,6 +535,7 @@ public class Profile extends JFrame {
 			radioButton.setVisible(false);
 			
 		}else if(choice == 1){
+			tFCityBirth.setEditable(false);
 			tFName.setEditable(false);
 			tFSurName.setEditable(false);
 			tFUserName.setEditable(false);
@@ -543,7 +544,7 @@ public class Profile extends JFrame {
 			btnContacts.setText(messages.getString("Profile.50")); //$NON-NLS-1$
 			btnContacts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Contacts frame = new Contacts(instance, session);
+				Contacts frame = new Contacts(instance, session,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 602);
@@ -551,10 +552,12 @@ public class Profile extends JFrame {
 				}
 			});
 		}else if(choice == 2){
+			tFCityBirth.setEditable(false);
 			tFName.setEditable(false);
 			tFSurName.setEditable(false);
 			tFUserName.setEditable(false);
 			tFAge.setEditable(false);
+			tFEmail.setEditable(false);
 			choice2.setEnabled(false);
 			btnPresenttrips.setVisible(false);
 			btnContacts.setVisible(false);
@@ -572,39 +575,15 @@ public class Profile extends JFrame {
 		}
 		
 		JButton img = new JButton();
-//		img.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				//language = 1;
-//				lblProfile.setText("Perfil");
-//				lblName.setText("Nombre : ");
-//				lblLastName.setText("Apellido :");
-//				lblUser.setText("Usuario :");
-//				lblChangePass.setText("Contrase\u00F1a Nueva");
-//				lblNewPass.setText("Contrase\u00F1a Nueva :");
-//				lblConfirmPass.setText("Confirmar Contrase\u00F1a :");
-//				btnApply.setText("Guardar Cambios");
-//				lblExists.setText("* Ya existe este usuario");
-//				label_11.setText("* Campos Obligatorios");
-//				btn.setText("Volver");
-//				lblAge.setText("Fecha de Nacimiento :");
-//				lblGender.setText("Sexo:");
-//				lblCalif.setText("Calificacion :");
-//				btnPastTrip.setText("Viajes Pasados");
-//				btnPresenttrips.setText("Viajes Planeados");
-//				lblLanguage.setText("Idioma :");
-//				if(choice == 1){
-//					btnContacts.setText("Contactos");
-//					btnApply.setText("Aplicar");
-//				}else if(choice == 2){
-//					btnContacts.setText("Enviar Solicitud de Amistad");
-//				}else if(choice == 0){
-//					btnApply.setText("Crear Usuario");
-//				}
-//				lblCalif.setBounds(559, 302, 123, 20);
-//				lblAge.setBounds(318, 141, 193, 20);
-//				lblConfirmPass.setBounds(371, 244, 206, 20);
-//			}
-//		});
+		img.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Profile frame = new Profile(instance, choice, session, false);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 620);
+			    close();
+			}
+		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
@@ -615,36 +594,11 @@ public class Profile extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				//language = 2;
-//				lblProfile.setText("Profile");
-//				lblName.setText("Name : ");
-//				lblLastName.setText("Last Name :");
-//				lblUser.setText("User :");
-//				lblChangePass.setText("Change Password");
-//				lblNewPass.setText("New Password :");
-//				lblConfirmPass.setText("Confirm Password :");
-//				lblExists.setText("* The user already exists");
-//				label_11.setText("* Mandatory fields");
-//				btn.setText("Cancel");
-//				lblAge.setText("Birth Date :");
-//				lblGender.setText("Sex:");
-//				lblCalif.setText("Rating :");
-//				btnPastTrip.setText("Old Trips");
-//				btnPresenttrips.setText("Planned Trips");
-//				lblLanguage.setText("Language :");
-//				
-//				if(choice == 1){
-//					btnContacts.setText("Contacts");
-//					btnApply.setText("Apply");
-//				}else if(choice == 2){
-//					btnContacts.setText("Send Friend Request");
-//				}else if(choice == 0){
-//					btnApply.setText("Create User");
-//				}
-//				
-//				lblCalif.setBounds(600, 302, 123, 20);
-//				lblAge.setBounds(380, 141, 193, 20);
-//				lblConfirmPass.setBounds(395, 244, 206, 20);
+				Profile frame = new Profile(instance, choice, session, true);
+				frame.setVisible(true);
+			    frame.pack();
+			    frame.setSize(900, 620);
+			    close();
 			}
 		});
 		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
@@ -665,7 +619,7 @@ public class Profile extends JFrame {
 		
 		choice2.add(messages.getString("Profile.57")); //$NON-NLS-1$
 		choice2.add(messages.getString("Profile.58")); //$NON-NLS-1$
-		lblLanguage.setText(messages.getString("Profile.59")); //$NON-NLS-1$
+		lblCityBirth.setText(messages.getString("Profile.59")); //$NON-NLS-1$
 		btnPresenttrips.setText(messages.getString("Profile.60")); //$NON-NLS-1$
 		lblProfile.setText(messages.getString("Profile.61")); //$NON-NLS-1$
 		lblName.setText(messages.getString("Profile.62")); //$NON-NLS-1$
@@ -681,6 +635,7 @@ public class Profile extends JFrame {
 		lblGender.setText(messages.getString("Profile.72")); //$NON-NLS-1$
 		lblCalif.setText(messages.getString("Profile.73")); //$NON-NLS-1$
 		btnPastTrip.setText(messages.getString("Profile.74")); //$NON-NLS-1$
+		
 	}
 	public void close(){
 
