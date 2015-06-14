@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -35,7 +37,7 @@ import controllers.TripController;
 import domain.ControllerNotLoadedException;
 import domain.InvalidPermissionException;
 import domain.RequestStatus;
-import domain.Session;
+import controllers.Session;
 import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
 
@@ -79,7 +81,10 @@ public class Grupo extends JFrame {
 	 * Create the frame.
 	 */
 	// i = 0 creando, i = 1 viendo el propio, i = 2 viendo el de otro
-	public Grupo(final Integer i, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController) {
+	public Grupo(final Integer i, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController){
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		setTitle("TreckApp");
 		setBounds(0, 0, 902, 602);
@@ -218,6 +223,10 @@ public class Grupo extends JFrame {
 		lblNewRequest.setBounds(26, 448, 185, 34);
 		panel.add(lblNewRequest);
 		
+		JButton btnFilters = new JButton();
+		btnFilters.setBounds(430, 423, 145, 23);
+		panel.add(btnFilters);
+		
 		final JButton btnDelete = new JButton();
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -350,6 +359,7 @@ public class Grupo extends JFrame {
 			} catch (ControllerNotLoadedException e2) {
 				e2.printStackTrace();
 			}
+			btnFilters.setVisible(false);
 			btnTrip.setText("Modificar Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -384,6 +394,7 @@ public class Grupo extends JFrame {
 					e2.printStackTrace();
 				}
 			}
+			btnFilters.setVisible(false);
 			btnTrip.setText("Ver Viaje");
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
@@ -404,6 +415,8 @@ public class Grupo extends JFrame {
 						e1.printStackTrace();
 					} catch (ControllerNotLoadedException e1) {
 						e1.printStackTrace();
+					} catch (InvalidPermissionException e1) {
+						e1.printStackTrace();
 					}
 				}
 			});	
@@ -414,6 +427,7 @@ public class Grupo extends JFrame {
 				tFCap.setText(aux.get(1));
 				tFAdmin.setText(aux.get(2));
 			}
+			btnFilters.setVisible(true);
 			btnCreatetrip.setVisible(true);
 			btnTrip.setText("Crear Viaje");
 			btnTrip.addActionListener(new ActionListener() {
@@ -444,25 +458,25 @@ public class Grupo extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//language = 1;
-				btnDelete.setText("Eliminar Grupo");
-				btnCreatetrip.setText("Crear Grupo");
-				btnBack.setText("Volver");
-				lblAdmin.setText("Organizador del Viaje :");
-				btnAccept.setText("Aceptar");
-				lblNewRequest.setText("Solicitudes Nuevas");
-				btnReject.setText("Rechazar");
-				lblMembers.setText("Integrantes del Viaje :");
-				lblGroupName.setText("Nombre del Grupo :");
-				lblCapacity.setText("Cupos Restantes :");
-				if(i == 0){
-					btnTrip.setText("Crear Viaje");
-				}else if(i == 1){
-					btnTrip.setText("Modificar Viaje");
-					btnRequestcheck.setText("Ver Solicitudes");
-				}else if(i == 2){
-					btnRequestcheck.setText("Enviar Solicitud");
-					btnTrip.setText("Ver Viaje");
-				}
+//				btnDelete.setText("Eliminar Grupo");
+//				btnCreatetrip.setText("Crear Grupo");
+//				btnBack.setText("Volver");
+//				lblAdmin.setText("Organizador del Viaje :");
+//				btnAccept.setText("Aceptar");
+//				lblNewRequest.setText("Solicitudes Nuevas");
+//				btnReject.setText("Rechazar");
+//				lblMembers.setText("Integrantes del Viaje :");
+//				lblGroupName.setText("Nombre del Grupo :");
+//				lblCapacity.setText("Cupos Restantes :");
+//				if(i == 0){
+//					btnTrip.setText("Crear Viaje");
+//				}else if(i == 1){
+//					btnTrip.setText("Modificar Viaje");
+//					btnRequestcheck.setText("Ver Solicitudes");
+//				}else if(i == 2){
+//					btnRequestcheck.setText("Enviar Solicitud");
+//					btnTrip.setText("Ver Viaje");
+//				}
 			}
 		});
 		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
@@ -476,27 +490,27 @@ public class Grupo extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//language = 2;
-				lblGroupName.setText("Group Name :");
-				lblCapacity.setText("Capacity Left :");
-				btnDelete.setText("Delete Group");
-				btnCreatetrip.setText("Create Group");
-				btnBack.setText("Back");
-				lblAdmin.setText("User Organizer :");
-				btnAccept.setText("Accept");
-				lblNewRequest.setText("New Requests");
-				btnReject.setText("Reject");
-				lblMembers.setText("Trip Members :");
-				
-				if(i == 0){
-					btnTrip.setText("Create Trip");
-					btnRequestcheck.setText("Check Trip Requests");
-				}else if(i == 1){
-					btnTrip.setText("Modify Trip");
-					btnRequestcheck.setText("Check Requests");
-				}else if(i == 2){
-					btnRequestcheck.setText("Send Trip Requests");
-					btnTrip.setText("Check Trip");
-				}
+//				lblGroupName.setText("Group Name :");
+//				lblCapacity.setText("Capacity Left :");
+//				btnDelete.setText("Delete Group");
+//				btnCreatetrip.setText("Create Group");
+//				btnBack.setText("Back");
+//				lblAdmin.setText("User Organizer :");
+//				btnAccept.setText("Accept");
+//				lblNewRequest.setText("New Requests");
+//				btnReject.setText("Reject");
+//				lblMembers.setText("Trip Members :");
+//				
+//				if(i == 0){
+//					btnTrip.setText("Create Trip");
+//					btnRequestcheck.setText("Check Trip Requests");
+//				}else if(i == 1){
+//					btnTrip.setText("Modify Trip");
+//					btnRequestcheck.setText("Check Requests");
+//				}else if(i == 2){
+//					btnRequestcheck.setText("Send Trip Requests");
+//					btnTrip.setText("Check Trip");
+//				}
 			}
 		});
 		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
@@ -516,6 +530,9 @@ public class Grupo extends JFrame {
 		lblMembers.setText("Integrantes del Viaje :");
 		lblGroupName.setText("Nombre del Grupo :");
 		lblCapacity.setText("Cupos Restantes :");
+		btnFilters.setText("Añadir Filtros");
+		
+		
 		
 	}
 	public void close(){

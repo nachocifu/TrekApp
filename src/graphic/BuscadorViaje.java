@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -22,6 +22,7 @@ import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JTextField;
 import javax.swing.JTable;
@@ -30,7 +31,7 @@ import javax.swing.UIManager;
 import javax.swing.ScrollPaneConstants;
 
 import controllers.Application;
-import domain.Session;
+import controllers.Session;
 
 import java.awt.ComponentOrientation;
 import java.awt.event.MouseAdapter;
@@ -76,8 +77,12 @@ public class BuscadorViaje extends JFrame {
 	 * Create the frame.
 	 */
 	public BuscadorViaje(final Application instance, final Session session) {
-		panel = new ImagePanel(new ImageIcon("TripSearch.jpg").getImage());
-		setTitle("TreckApp");
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
+		panel = new ImagePanel(new ImageIcon("TripSearch.jpg").getImage()); //$NON-NLS-1$
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 903, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setContentPane(panel);
@@ -87,7 +92,7 @@ public class BuscadorViaje extends JFrame {
 		
 		final JLabel lblSearch = new JLabel();
 		lblSearch.setForeground(Color.BLACK);
-		lblSearch.setFont(new Font("Dialog", Font.BOLD, 23));
+		lblSearch.setFont(new Font("Dialog", Font.BOLD, 23)); //$NON-NLS-1$
 		lblSearch.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSearch.setBounds(293, 12, 158, 39);
 		panel.add(lblSearch);
@@ -96,7 +101,7 @@ public class BuscadorViaje extends JFrame {
 		textField.setEnabled(false);
 		textField.setDisabledTextColor(Color.BLACK);
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
 		textField.setBounds(172, 57, 106, 28);
 		panel.add(textField);
 		textField.setColumns(10);
@@ -119,7 +124,7 @@ public class BuscadorViaje extends JFrame {
 		textField_1 = new ObservingTextField();
 		textField_1.setDisabledTextColor(Color.BLACK);
 		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
 		textField_1.setEnabled(false);
 		textField_1.setColumns(10);
 		textField_1.setBounds(172, 121, 106, 28);
@@ -141,7 +146,7 @@ public class BuscadorViaje extends JFrame {
 		panel.add(button);
 		
 		final JLabel lblCityOrigin = new JLabel();
-		lblCityOrigin.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblCityOrigin.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		lblCityOrigin.setForeground(Color.BLACK);
 		lblCityOrigin.setBounds(352, 56, 168, 28);
 		panel.add(lblCityOrigin);
@@ -153,7 +158,7 @@ public class BuscadorViaje extends JFrame {
 		
 		final JLabel lblCityend = new JLabel();
 		lblCityend.setForeground(Color.BLACK);
-		lblCityend.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblCityend.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		lblCityend.setBounds(352, 120, 219, 28);
 		panel.add(lblCityend);
 		
@@ -163,7 +168,7 @@ public class BuscadorViaje extends JFrame {
 		panel.add(textField_3);
 		
 		final JLabel lblSearchDescription = new JLabel();
-		lblSearchDescription.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblSearchDescription.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		lblSearchDescription.setForeground(Color.BLACK);
 		lblSearchDescription.setBounds(83, 169, 175, 28);
 		panel.add(lblSearchDescription);
@@ -175,7 +180,7 @@ public class BuscadorViaje extends JFrame {
 		
 		JTextArea textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
-		textArea.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textArea.setFont(new Font("Tahoma", Font.PLAIN, 13)); //$NON-NLS-1$
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		
@@ -216,22 +221,22 @@ public class BuscadorViaje extends JFrame {
 	    
 	    /**/
 	    
-	    final LinkedList<Viajeback> prueba = new LinkedList<Viajeback>();
-	    Viajeback p1 = new Viajeback("cala", "mu1", "chi", "ta");
-	    Viajeback p2 = new Viajeback("cal", "mu2", "chi", "ta");
-	    Viajeback p3 = new Viajeback("ca", "mu3", "chi", "ta");
-	    Viajeback p4 = new Viajeback("c", "mu4", "chi", "ta");
-	    prueba.add(p1);
-	    prueba.add(p2);
-	    prueba.add(p3);
-	    prueba.add(p4);
+//	    final LinkedList<Viajeback> prueba = new LinkedList<Viajeback>();
+//	    Viajeback p1 = new Viajeback("cala", "mu1", "chi", "ta"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+//	    Viajeback p2 = new Viajeback("cal", "mu2", "chi", "ta"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+//	    Viajeback p3 = new Viajeback("ca", "mu3", "chi", "ta"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+//	    Viajeback p4 = new Viajeback("c", "mu4", "chi", "ta"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+//	    prueba.add(p1);
+//	    prueba.add(p2);
+//	    prueba.add(p3);
+//	    prueba.add(p4);
 	 
 	    /**/
 	    
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				if (arg0.getClickCount() == 2 && prueba.get(table.getSelectedRow()) != null) {
+	//	table.addMouseListener(new MouseAdapter() {
+//			@Override
+		//	public void mouseClicked(MouseEvent arg0) {
+				//if (arg0.getClickCount() == 2 && prueba.get(table.getSelectedRow()) != null) {
 //					if(instance.getCurrentProfileController().){
 //					Grupo frame = new Grupo(1,prueba.get(table.getSelectedRow()),null);
 //					frame.setVisible(true);
@@ -246,25 +251,25 @@ public class BuscadorViaje extends JFrame {
 //					close();
 //				}
 					/* ELIMINAR LO QUE SIGUE DESPUES*/
-					Grupo frame = new Grupo(0,prueba.get(table.getSelectedRow()), null, instance, session);
-					frame.setVisible(true);
-				    frame.pack();
-				    frame.setSize(900, 602);
-				    close();
+					//Grupo frame = new Grupo(0,prueba.get(table.getSelectedRow()), null, instance, session);
+//					frame.setVisible(true);
+//				    frame.pack();
+//				    frame.setSize(900, 602);
+		//		    close();
 				    /*HASTA ACA*/
-				  }
-			}
-		});
+//				  }
+	//		}
+		//});
 		table.setEnabled(true);
 		table.setCellSelectionEnabled(false);
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(20);
 		scrollPane_1.setViewportView(table);
-		table.setLocale(new Locale("es", "AR"));
+		table.setLocale(new Locale("es", "AR")); //$NON-NLS-1$ //$NON-NLS-2$
 		table.setGridColor(Color.WHITE);
 		table.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		table.setFont(new Font("Tahoma", Font.PLAIN, 14)); //$NON-NLS-1$
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setSurrendersFocusOnKeystroke(true);
 		table.setModel(new DefaultTableModel(
@@ -289,21 +294,21 @@ public class BuscadorViaje extends JFrame {
 				{null, null, null, null},
 				{null, null, null, null},
 			},
-			 new String[] {"Desde", "Hasta", "Ciudad de Origen", "Ciudad de Finalizacion"}
+			 new String[] {messages.getString("BuscadorViaje.28"), messages.getString("BuscadorViaje.29"), messages.getString("BuscadorViaje.30"), messages.getString("BuscadorViaje.31")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		));
-		table.setBorder(UIManager.getBorder("ScrollPane.border"));
+		table.setBorder(UIManager.getBorder("ScrollPane.border")); //$NON-NLS-1$
 		table.setForeground(Color.WHITE);
 		table.setBackground(new Color(0, 0, 128));
-		table.setToolTipText("");
+		table.setToolTipText(""); //$NON-NLS-1$
 		
 		/**/
 		
-		for(int i = 0; i < prueba.size(); i++){
-			table.setValueAt(prueba.get(i).getDesde(), i, 0);
-			table.setValueAt(prueba.get(i).getHasta(), i, 1);
-			table.setValueAt(prueba.get(i).getOrigen(), i, 2);
-			table.setValueAt(prueba.get(i).getLlegada(), i, 3);	
-		}
+//		for(int i = 0; i < prueba.size(); i++){
+//			table.setValueAt(prueba.get(i).getDesde(), i, 0);
+//			table.setValueAt(prueba.get(i).getHasta(), i, 1);
+//			table.setValueAt(prueba.get(i).getOrigen(), i, 2);
+//			table.setValueAt(prueba.get(i).getLlegada(), i, 3);	
+//		}
 		
 		/**/
 		
@@ -311,20 +316,20 @@ public class BuscadorViaje extends JFrame {
 		DefaultListModel<String> hola2 = new DefaultListModel<String>();
 		
 		LinkedList<String> hola = new LinkedList<String>();
-		hola.add("a");
-		hola.add("b");
-		hola.add("c");
-		hola.add("d");
-		hola.add("e");
-		hola.add("g");
-		hola.add("f");
-		hola.add("a");
-		hola.add("b");
-		hola.add("c");
-		hola.add("d");
-		hola.add("e");
-		hola.add("g");
-		hola.add("f");
+		hola.add("a"); //$NON-NLS-1$
+		hola.add("b"); //$NON-NLS-1$
+		hola.add("c"); //$NON-NLS-1$
+		hola.add("d"); //$NON-NLS-1$
+		hola.add("e"); //$NON-NLS-1$
+		hola.add("g"); //$NON-NLS-1$
+		hola.add("f"); //$NON-NLS-1$
+		hola.add("a"); //$NON-NLS-1$
+		hola.add("b"); //$NON-NLS-1$
+		hola.add("c"); //$NON-NLS-1$
+		hola.add("d"); //$NON-NLS-1$
+		hola.add("e"); //$NON-NLS-1$
+		hola.add("g"); //$NON-NLS-1$
+		hola.add("f"); //$NON-NLS-1$
 		for(String each : hola){
 			hola2.addElement(each);
 		}
@@ -335,19 +340,19 @@ public class BuscadorViaje extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//language = 1;
-				lblSearch.setText("Buscador");
-				btnNewButton.setText("Desde");
-				button.setText("Hasta");
-				lblCityOrigin.setText("Ciudad de Origen :");
-				lblCityend.setText("Ciudad de Finalizacion :");
-				lblSearchDescription.setText("Buscar Descripcion :");
-				btnNewButton_1.setText("Buscar");
-				btnBack.setText("Volver");
+//				lblSearch.setText("Buscador");
+//				btnNewButton.setText("Desde");
+//				button.setText("Hasta");
+//				lblCityOrigin.setText("Ciudad de Origen :");
+//				lblCityend.setText("Ciudad de Finalizacion :");
+//				lblSearchDescription.setText("Buscar Descripcion :");
+//				btnNewButton_1.setText("Buscar");
+//				btnBack.setText("Volver");
 				lblCityend.setBounds(352, 120, 219, 28);
 				lblCityOrigin.setBounds(352, 56, 168, 28);
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -358,34 +363,34 @@ public class BuscadorViaje extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//language = 2;
-				lblSearch.setText("Searcher");
-				btnNewButton.setText("Leaving on");
-				button.setText("Returning on");
-				lblCityOrigin.setText("From :");
-				lblCityend.setText("To :");
-				lblSearchDescription.setText("Search Description :");
-				btnNewButton_1.setText("Search");
-				btnBack.setText("Back");
+//				lblSearch.setText("Searcher");
+//				btnNewButton.setText("Leaving on");
+//				button.setText("Returning on");
+//				lblCityOrigin.setText("From :");
+//				lblCityend.setText("To :");
+//				lblSearchDescription.setText("Search Description :");
+//				btnNewButton_1.setText("Search");
+//				btnBack.setText("Back");
 				lblCityend.setBounds(452, 120, 219, 28);
 				lblCityOrigin.setBounds(452, 56, 168, 28);
 			}
 		});
 
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		lblSearch.setText("Buscador");
-		btnNewButton.setText("Desde");
-		button.setText("Hasta");
-		lblCityOrigin.setText("Ciudad de Origen :");
-		lblCityend.setText("Ciudad de Finalizacion :");
-		lblSearchDescription.setText("Buscar Descripcion :");
-		btnNewButton_1.setText("Buscar");
-		btnBack.setText("Volver");
+		lblSearch.setText(messages.getString("BuscadorViaje.50")); //$NON-NLS-1$
+		btnNewButton.setText(messages.getString("BuscadorViaje.51")); //$NON-NLS-1$
+		button.setText(messages.getString("BuscadorViaje.52")); //$NON-NLS-1$
+		lblCityOrigin.setText(messages.getString("BuscadorViaje.53")); //$NON-NLS-1$
+		lblCityend.setText(messages.getString("BuscadorViaje.54")); //$NON-NLS-1$
+		lblSearchDescription.setText(messages.getString("BuscadorViaje.55")); //$NON-NLS-1$
+		btnNewButton_1.setText(messages.getString("BuscadorViaje.56")); //$NON-NLS-1$
+		btnBack.setText(messages.getString("BuscadorViaje.57")); //$NON-NLS-1$
 	}
 	
 	private Locale getLocale (String loc){

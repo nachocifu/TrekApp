@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -13,9 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-//import server.Application;
-//import server.Session;
-
 import javax.swing.SwingUtilities;
 
 import java.awt.event.MouseAdapter;
@@ -25,7 +22,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JPasswordField;
 
 import controllers.Application;
-import domain.Session;
+import controllers.Session;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -16,6 +16,7 @@ import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Date;
+import java.util.ResourceBundle;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
@@ -30,7 +31,7 @@ import controllers.GroupController;
 import controllers.MyTripController;
 import controllers.TripController;
 import domain.ControllerNotLoadedException;
-import domain.Session;
+import controllers.Session;
 import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
 
@@ -74,10 +75,14 @@ public class Viaje extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Viaje(final Integer i, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController) {
-		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage());
+	public Viaje(final Integer i, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController){
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
+		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage()); //$NON-NLS-1$
 		setContentPane(panel);
-		setTitle("TreckApp");
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 766, 616);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -90,7 +95,7 @@ public class Viaje extends JFrame {
 		tFLeaving.setEnabled(false);
 		tFLeaving.setDisabledTextColor(Color.BLACK);
 		tFLeaving.setHorizontalAlignment(SwingConstants.CENTER);
-		tFLeaving.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		tFLeaving.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
 		tFLeaving.setBounds(176, 77, 106, 28);
 		panel.add(tFLeaving);
 		tFLeaving.setColumns(10);
@@ -115,7 +120,7 @@ public class Viaje extends JFrame {
 		
 		final JLabel lblTrip = new JLabel();
 		lblTrip.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTrip.setFont(new Font("Tahoma", Font.BOLD, 27));
+		lblTrip.setFont(new Font("Tahoma", Font.BOLD, 27)); //$NON-NLS-1$
 		lblTrip.setForeground(Color.WHITE);
 		lblTrip.setBounds(390, 20, 92, 35);
 		panel.add(lblTrip);
@@ -123,7 +128,7 @@ public class Viaje extends JFrame {
 		tFArriving = new ObservingTextField();
 		tFArriving.setDisabledTextColor(Color.BLACK);
 		tFArriving.setHorizontalAlignment(SwingConstants.CENTER);
-		tFArriving.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		tFArriving.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
 		tFArriving.setEnabled(false);
 		tFArriving.setColumns(10);
 		tFArriving.setBounds(176, 123, 106, 28);
@@ -149,7 +154,7 @@ public class Viaje extends JFrame {
 		panel.add(button);
 		
 		final JLabel lblState = new JLabel();
-		lblState.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblState.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
 		lblState.setForeground(Color.WHITE);
 		lblState.setBounds(412, 87, 180, 35);
 		panel.add(lblState);
@@ -157,7 +162,7 @@ public class Viaje extends JFrame {
 		tFStatus = new JTextField();
 		tFStatus.setDisabledTextColor(Color.BLACK);
 		tFStatus.setEnabled(false);
-		tFStatus.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		tFStatus.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		tFStatus.setBounds(602, 87, 138, 35);
 		panel.add(tFStatus);
 		tFStatus.setColumns(10);
@@ -204,7 +209,7 @@ public class Viaje extends JFrame {
 					}
 					
 				}catch (Exception e1){
-					System.err.println("No introdujo fechas");
+					System.err.println("No introdujo fechas"); //$NON-NLS-1$
 				}
 
 				if(instance != null){
@@ -246,25 +251,25 @@ public class Viaje extends JFrame {
 							}
 							break;
 						case 2:
-							JOptionPane.showMessageDialog(null, "No introdujo una fecha correcta", "ERROR", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, messages.getString("Viaje.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 3:
-							JOptionPane.showMessageDialog(null, "No introdujo una ciudad de origen", "ERROR", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, messages.getString("Viaje.10"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 4:
-							JOptionPane.showMessageDialog(null, "No introdujo una ciudad de finalizacion", "ERROR", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, messages.getString("Viaje.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 5:
-							JOptionPane.showMessageDialog(null, "No introdujo un costo estimado del viaje", "ERROR", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, messages.getString("Viaje.14"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 6: 
-							JOptionPane.showMessageDialog(null, "No introdujo un costo estimado del viaje correcto", "ERROR", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, messages.getString("Viaje.16"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 7:
-							JOptionPane.showMessageDialog(null, "No introdujo una descripcion del viaje que quiere crear", "ERROR", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, messages.getString("Viaje.18"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						default:
-							JOptionPane.showMessageDialog(null, "No introdujo datos obligatorios", "ERROR", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, messages.getString("Viaje.20"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 					}
 				}
@@ -275,7 +280,7 @@ public class Viaje extends JFrame {
 		
 		final JLabel lblDescription = new JLabel();
 		lblDescription.setForeground(Color.WHITE);
-		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblDescription.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
 		lblDescription.setBounds(25, 379, 246, 35);
 		panel.add(lblDescription);
 		
@@ -286,13 +291,13 @@ public class Viaje extends JFrame {
 		
 		textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
-		textArea.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		textArea.setFont(new Font("Tahoma", Font.PLAIN, 13)); //$NON-NLS-1$
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		
 		final JLabel lblFrom = new JLabel();
 		lblFrom.setForeground(Color.WHITE);
-		lblFrom.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblFrom.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
 		lblFrom.setBounds(26, 212, 180, 35);
 		panel.add(lblFrom);
 		
@@ -303,13 +308,13 @@ public class Viaje extends JFrame {
 		
 		final JLabel lblTo = new JLabel();
 		lblTo.setForeground(Color.WHITE);
-		lblTo.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblTo.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
 		lblTo.setBounds(26, 267, 211, 35);
 		panel.add(lblTo);
 		
 		final JLabel lbltrip = new JLabel();
 		lbltrip.setForeground(Color.WHITE);
-		lbltrip.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lbltrip.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
 		lbltrip.setBounds(79, 298, 106, 35);
 		panel.add(lbltrip);
 		
@@ -319,14 +324,14 @@ public class Viaje extends JFrame {
 		tFTo.setColumns(10);
 
 		final JLabel label = new JLabel();
-		label.setFont(new Font("Tahoma", Font.BOLD, 17));
+		label.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
 		label.setForeground(Color.WHITE);
 		label.setBounds(224, 283, 25, 35);
 		panel.add(label);
 		
 		final JLabel lblCost = new JLabel();
 		lblCost.setForeground(Color.WHITE);
-		lblCost.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblCost.setFont(new Font("Tahoma", Font.BOLD, 17)); //$NON-NLS-1$
 		lblCost.setBounds(452, 253, 180, 35);
 		panel.add(lblCost);
 		
@@ -353,7 +358,7 @@ public class Viaje extends JFrame {
 				tFTo.setText(trip.getEndCity());
 				tFLeaving.setText(trip.getStartDate().toString());
 				tFArriving.setText(trip.getStartDate().toString());
-				tFCost.setText(" $ " + trip.getEstimateCost().toString());
+				tFCost.setText(" $ " + trip.getEstimateCost().toString()); //$NON-NLS-1$
 				tFStatus.setText(trip.getTripStatus().getName());
 				textArea.setText(trip.getTripDescription());
 			} catch (SessionNotActiveException e1) {
@@ -367,24 +372,24 @@ public class Viaje extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//language = 1;
-				lblCost.setText("Costo Aproximado :");
-				lblTo.setText("Ciudad de Finalizaci\u00F3n");
-				lblFrom.setText("Ciudad de Origen : ");
-				lblDescription.setText("Descripcion del Viaje : ");
-				btnReady.setText("Listo");
-				lblState.setText("Estado del Viaje : ");
-				button.setText("Hasta");
-				btnNewButton.setText("Desde");
-				lblTrip.setText("Viaje");
-				lbltrip.setText("del Viaje");
-				label.setText(":");
+//				lblCost.setText("Costo Aproximado :");
+//				lblTo.setText("Ciudad de Finalizaci\u00F3n");
+//				lblFrom.setText("Ciudad de Origen : ");
+//				lblDescription.setText("Descripcion del Viaje : ");
+//				btnReady.setText("Listo");
+//				lblState.setText("Estado del Viaje : ");
+//				button.setText("Hasta");
+//				btnNewButton.setText("Desde");
+//				lblTrip.setText("Viaje");
+//				lbltrip.setText("del Viaje");
+//				label.setText(":");
 				
 				lblState.setBounds(412, 87, 180, 35);
 				lblFrom.setBounds(26, 212, 180, 35);
 				lblTo.setBounds(26, 267, 211, 35);
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -395,24 +400,24 @@ public class Viaje extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//language = 2;
-				lblCost.setText("Estimated cost :");
-				lblTo.setText("To :");
-				lblFrom.setText("From : ");
-				lblDescription.setText("Trip Description : ");
-				btnReady.setText("Ready");
-				lblState.setText("Trip Status : ");
-				button.setText("Returning on");
-				btnNewButton.setText("Leaving on");
-				lblTrip.setText("Trip");
-				lbltrip.setText("");
-				label.setText("");
+//				lblCost.setText("Estimated cost :");
+//				lblTo.setText("To :");
+//				lblFrom.setText("From : ");
+//				lblDescription.setText("Trip Description : ");
+//				btnReady.setText("Ready");
+//				lblState.setText("Trip Status : ");
+//				button.setText("Returning on");
+//				btnNewButton.setText("Leaving on");
+//				lblTrip.setText("Trip");
+//				lbltrip.setText("");
+//				label.setText("");
 				
 				lblState.setBounds(450, 87, 180, 35);
 				lblFrom.setBounds(170, 212, 180, 35);
 				lblTo.setBounds(180, 285, 211, 35);
 			}
 		});
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
@@ -420,17 +425,17 @@ public class Viaje extends JFrame {
 		img2.setVisible(true); 
 		
 		
-		lblCost.setText("Costo Aproximado :");
-		lblTo.setText("Ciudad de Finalizaci\u00F3n");
-		lblFrom.setText("Ciudad de Origen : ");
-		lblDescription.setText("Descripcion del Viaje : ");
-		btnReady.setText("Listo");
-		lblState.setText("Estado del Viaje : ");
-		button.setText("Hasta");
-		btnNewButton.setText("Desde");
-		lblTrip.setText("Viaje");
-		lbltrip.setText("del Viaje");
-		label.setText(":");
+		lblCost.setText(messages.getString("Viaje.32")); //$NON-NLS-1$
+		lblTo.setText(messages.getString("Viaje.33")); //$NON-NLS-1$
+		lblFrom.setText(messages.getString("Viaje.34")); //$NON-NLS-1$
+		lblDescription.setText(messages.getString("Viaje.35")); //$NON-NLS-1$
+		btnReady.setText(messages.getString("Viaje.36")); //$NON-NLS-1$
+		lblState.setText(messages.getString("Viaje.37")); //$NON-NLS-1$
+		button.setText(messages.getString("Viaje.38")); //$NON-NLS-1$
+		btnNewButton.setText(messages.getString("Viaje.39")); //$NON-NLS-1$
+		lblTrip.setText(messages.getString("Viaje.40")); //$NON-NLS-1$
+		lbltrip.setText(messages.getString("Viaje.41")); //$NON-NLS-1$
+		label.setText(messages.getString("Viaje.42")); //$NON-NLS-1$
 		
 		
 		

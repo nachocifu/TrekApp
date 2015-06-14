@@ -1,9 +1,7 @@
-package Graphic;
+package graphic;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;
-
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -13,7 +11,6 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 import java.awt.event.WindowEvent;
-
 
 import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
@@ -47,7 +44,7 @@ import javax.swing.text.MaskFormatter;
 import controllers.Application;
 import domain.ControllerNotLoadedException;
 import domain.InvalidPasswordException;
-import domain.Session;
+import controllers.Session;
 import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
 
@@ -99,7 +96,7 @@ public class Profile extends JFrame {
 			
 		}
 		
-		Locale currentLocale = new Locale("es","AR");
+		Locale currentLocale = new Locale("en","US");
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		

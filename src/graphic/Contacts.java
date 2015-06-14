@@ -1,6 +1,5 @@
-package Graphic;
+package graphic;
 
-import java.awt.BorderLayout;
 import java.awt.Choice;
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -10,7 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -21,13 +21,12 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import controllers.Application;
 import controllers.ProfileController;
 import domain.ControllerNotLoadedException;
-import domain.Session;
+import controllers.Session;
 import domain.SessionNotActiveException;
 
 public class Contacts extends JFrame {
@@ -57,40 +56,48 @@ public class Contacts extends JFrame {
 	 * Create the frame.
 	 */
 	public Contacts(final Application instance, final Session session) {
-		panel = new ImagePanel(new ImageIcon("Contacts.jpg").getImage());
-		setTitle("TreckApp");
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
+		panel = new ImagePanel(new ImageIcon("Contacts.jpg").getImage()); //$NON-NLS-1$
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 0, 901, 602);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel.setLayout(null);
 		setContentPane(panel);
-		
-		
-		
+	
 		final DefaultListModel friends = new DefaultListModel();
 		HashSet<ProfileController> auxFriends = new HashSet<>();
-		try {
-			auxFriends = instance.getCurrentProfileController().getFriends();
-			for(ProfileController each : auxFriends){
-				friends.addElement(each.getUsername());
-			}
-		} catch (SessionNotActiveException e1) {
-			e1.printStackTrace();
-		} catch (ControllerNotLoadedException e1) {
-			e1.printStackTrace();
-		}
 		
 		final DefaultListModel block = new DefaultListModel();
 		HashSet<ProfileController> auxBlock = new HashSet<>();
-		try {
-			auxBlock = instance.getCurrentProfileController().getBlockUsers();
-			for(ProfileController each : auxBlock){
-				block.addElement(each.getUsername());
+		
+		if(instance != null){
+	
+			try {
+				auxFriends = instance.getCurrentProfileController().getFriends();
+				for(ProfileController each : auxFriends){
+					friends.addElement(each.getUsername());
+				}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
 			}
-		} catch (SessionNotActiveException e1) {
-			e1.printStackTrace();
-		} catch (ControllerNotLoadedException e1) {
-			e1.printStackTrace();
+			
+			
+			try {
+				auxBlock = instance.getCurrentProfileController().getBlockUsers();
+				for(ProfileController each : auxBlock){
+					block.addElement(each.getUsername());
+				}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -101,7 +108,7 @@ public class Contacts extends JFrame {
 		JList list = new JList(friends);
 		scrollPane.setViewportView(list);
 		list.setForeground(Color.BLACK);
-		list.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		list.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setBorder(null);
 		list.setValueIsAdjusting(true);
@@ -117,25 +124,25 @@ public class Contacts extends JFrame {
 		list_1.setValueIsAdjusting(true);
 		list_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list_1.setForeground(Color.BLACK);
-		list_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		list_1.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
 		list_1.setEnabled(false);
 		list_1.setBorder(null);
 		
 		final JLabel lblFriends = new JLabel();
 		lblFriends.setForeground(Color.BLACK);
-		lblFriends.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblFriends.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblFriends.setBounds(200, 90, 101, 36);
 		panel.add(lblFriends);
 		
 		final JLabel lblBlock = new JLabel();
 		lblBlock.setForeground(Color.BLACK);
-		lblBlock.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblBlock.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblBlock.setBounds(495, 90, 203, 36);
 		panel.add(lblBlock);
 		
 		final JLabel lblContacts = new JLabel();
 		lblContacts.setForeground(Color.BLACK);
-		lblContacts.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblContacts.setFont(new Font("Tahoma", Font.PLAIN, 22)); //$NON-NLS-1$
 		lblContacts.setBounds(348, 28, 145, 36);
 		panel.add(lblContacts);
 		
@@ -189,7 +196,7 @@ public class Contacts extends JFrame {
 		
 		final JLabel lblNewRequest = new JLabel();
 		lblNewRequest.setForeground(Color.WHITE);
-		lblNewRequest.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNewRequest.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblNewRequest.setBounds(22, 390, 326, 34);
 		panel.add(lblNewRequest);
 		
@@ -228,18 +235,18 @@ public class Contacts extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//language = 1;
-				btnBack.setText("Volver");
-				lblFriends.setText("Amigos:");
-				lblBlock.setText("Contactos Bloqueados : ");
-				lblNewRequest.setText("Solicitudes de Amistad Nuevas");
-				btnAccept.setText("Aceptar");
-				btnReject.setText("Rechazar");
-				btnBlock.setText("Bloquear");
-				lblContacts.setText("Contactos");
+//				btnBack.setText("Volver");
+//				lblFriends.setText("Amigos:");
+//				lblBlock.setText("Contactos Bloqueados : ");
+//				lblNewRequest.setText("Solicitudes de Amistad Nuevas");
+//				btnAccept.setText("Aceptar");
+//				btnReject.setText("Rechazar");
+//				btnBlock.setText("Bloquear");
+//				lblContacts.setText("Contactos");
 				lblNewRequest.setBounds(30, 391, 326, 34);
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -250,33 +257,33 @@ public class Contacts extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//language = 2;
-				btnBack.setText("Back");
-				lblFriends.setText("Friends :");
-				lblBlock.setText("Block Contacts : ");
-				lblNewRequest.setText("New Friends Requests");
-				btnAccept.setText("Accept");
-				btnReject.setText("Reject");
-				btnBlock.setText("Block");
-				lblContacts.setText("Contacts");
+//				btnBack.setText("Back");
+//				lblFriends.setText("Friends :");
+//				lblBlock.setText("Block Contacts : ");
+//				lblNewRequest.setText("New Friends Requests");
+//				btnAccept.setText("Accept");
+//				btnReject.setText("Reject");
+//				btnBlock.setText("Block");
+//				lblContacts.setText("Contacts");
 				lblNewRequest.setBounds(120, 391, 326, 34);
 
 			}
 		});
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		btnBack.setText("Volver");
-		lblFriends.setText("Amigos:");
-		lblBlock.setText("Contactos Bloqueados : ");
-		lblNewRequest.setText("Solicitudes de Amistad Nuevas");
-		btnAccept.setText("Aceptar");
-		btnReject.setText("Rechazar");
-		btnBlock.setText("Block");
-		lblContacts.setText("Contactos");
+		btnBack.setText(messages.getString("Contacts.10")); //$NON-NLS-1$
+		lblFriends.setText(messages.getString("Contacts.11")); //$NON-NLS-1$
+		lblBlock.setText(messages.getString("Contacts.12")); //$NON-NLS-1$
+		lblNewRequest.setText(messages.getString("Contacts.13")); //$NON-NLS-1$
+		btnAccept.setText(messages.getString("Contacts.14")); //$NON-NLS-1$
+		btnReject.setText(messages.getString("Contacts.15")); //$NON-NLS-1$
+		btnBlock.setText(messages.getString("Contacts.16")); //$NON-NLS-1$
+		lblContacts.setText(messages.getString("Contacts.17")); //$NON-NLS-1$
 
 	}
 	

@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 
 import java.awt.Color;
@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
@@ -16,17 +15,23 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-import Graphic.ImagePanel;
-import Graphic.Options;
+import graphic.ImagePanel;
+import graphic.Options;
 import controllers.Application;
-import domain.Session;
+import controllers.Session;
 
 public class BuscadorUsuario extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4916155508444281803L;
 	private static JPanel panel;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -54,10 +59,14 @@ public class BuscadorUsuario extends JFrame {
 	 * Create the frame.
 	 */
 	public BuscadorUsuario(final Application instance, final Session session) {
-		setTitle("TreckApp");
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 900, 601);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		panel = new ImagePanel(new ImageIcon("UserSearch.jpg").getImage());
+		panel = new ImagePanel(new ImageIcon("UserSearch.jpg").getImage()); //$NON-NLS-1$
 		panel.setBackground(new Color(25, 25, 112));
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel.setLayout(null);
@@ -65,13 +74,13 @@ public class BuscadorUsuario extends JFrame {
 		
 		final JLabel lblUserSearch = new JLabel();
 		lblUserSearch.setForeground(new Color(240, 248, 255));
-		lblUserSearch.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblUserSearch.setFont(new Font("Tahoma", Font.PLAIN, 20)); //$NON-NLS-1$
 		lblUserSearch.setBounds(308, 85, 193, 47);
 		panel.add(lblUserSearch);
 		
 		final JLabel lblName = new JLabel();
 		lblName.setForeground(new Color(240, 248, 255));
-		lblName.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblName.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		lblName.setBounds(237, 162, 181, 25);
 		panel.add(lblName);
 		
@@ -119,13 +128,13 @@ public class BuscadorUsuario extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//language = 1;
-				lblName.setText("Nombre de Usuario :");
-				btnCheckUser.setText("Buscar Usuario");
-				lblUserSearch.setText("Busqueda de Usuario");
-				btnBack.setText("Volver");
+//				lblName.setText("Nombre de Usuario :");
+//				btnCheckUser.setText("Buscar Usuario");
+//				lblUserSearch.setText("Busqueda de Usuario");
+//				btnBack.setText("Volver");
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -136,24 +145,24 @@ public class BuscadorUsuario extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//language = 2;
-				lblName.setText("User Name :");
-				btnCheckUser.setText("Search");
-				lblUserSearch.setText("Search a User");
-				btnBack.setText("Back");
+//				lblName.setText("User Name :");
+//				btnCheckUser.setText("Search");
+//				lblUserSearch.setText("Search a User");
+//				btnBack.setText("Back");
 			}
 		});
 
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		lblName.setText("Nombre de Usuario :");
-		btnCheckUser.setText("Buscar Usuario");
-		lblUserSearch.setText("Busqueda de Usuario");
-		btnBack.setText("Volver");
+		lblName.setText(messages.getString("BuscadorUsuario.6")); //$NON-NLS-1$
+		btnCheckUser.setText(messages.getString("BuscadorUsuario.7")); //$NON-NLS-1$
+		lblUserSearch.setText(messages.getString("BuscadorUsuario.8")); //$NON-NLS-1$
+		btnBack.setText(messages.getString("BuscadorUsuario.9")); //$NON-NLS-1$
 	}
 	
 	public void close(){

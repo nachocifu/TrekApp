@@ -1,6 +1,5 @@
-package Graphic;
+package graphic;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
@@ -10,10 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -22,7 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
@@ -32,7 +28,7 @@ import controllers.Application;
 import controllers.GroupController;
 import controllers.MyTripController;
 import domain.ControllerNotLoadedException;
-import domain.Session;
+import controllers.Session;
 import domain.SessionNotActiveException;
 
 import java.awt.event.ActionListener;
@@ -69,8 +65,12 @@ public class TripGroups extends JFrame {
 	 * @throws SessionNotActiveException 
 	 */
 	public TripGroups(final Application instance, final Session session) throws SessionNotActiveException, ControllerNotLoadedException {
-		panel = new ImagePanel(new ImageIcon("TripGroups.jpg").getImage());
-		setTitle("TreckApp");
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
+		panel = new ImagePanel(new ImageIcon("TripGroups.jpg").getImage()); //$NON-NLS-1$
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 0, 901, 602);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
@@ -82,7 +82,7 @@ public class TripGroups extends JFrame {
 		panel.add(scrollPane_1);
 		
 		//String [] spanish = new String[] {"Desde", "Hasta", "Ciudad de Origen", "Ciudad de Finalizacion"};
-		String [] english = new String[] {"Name of the Group","Leaving on", "Returning on", "From","To"};
+		//String [] english = new String[] {"Name of the Group","Leaving on", "Returning on", "From","To"};
 		
 		table = new JTable(){
 	        /**
@@ -96,65 +96,84 @@ public class TripGroups extends JFrame {
 	    };
 
 	    /**/
-	    ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
+	    if(instance != null){
+	    	ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
+	    
 	    /**/
 	    
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try{
-					if (arg0.getClickCount() == 2 ) {
-						String admin = null;
-						if(instance != null){
-							try {
-								admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
-							} catch (SessionNotActiveException e) {
-								e.printStackTrace();
-							} catch (ControllerNotLoadedException e) {
-								e.printStackTrace();
-							}
-							if( groupArray.get(table.getSelectedRow()) == null ){
-								
-							}else if(session.getUserName().equals(admin) && instance != null){
-								Grupo frame = new Grupo(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()));
-								frame.setVisible(true);
-								frame.pack();
-								frame.setSize(900, 602);
-								close();
+			table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					try{
+						if (arg0.getClickCount() == 2 ) {
+							String admin = null;
+							if(instance != null){
+								try {
+									admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
+								} catch (SessionNotActiveException e) {
+									e.printStackTrace();
+								} catch (ControllerNotLoadedException e) {
+									e.printStackTrace();
+								}
+								if( groupArray.get(table.getSelectedRow()) == null ){
+									
+								}else if(session.getUserName().equals(admin) && instance != null){
+									Grupo frame = new Grupo(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()));
+									frame.setVisible(true);
+									frame.pack();
+									frame.setSize(900, 602);
+									close();
+								}else{
+									Grupo frame = new Grupo(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()));
+									frame.setVisible(true);
+									frame.pack();
+									frame.setSize(900, 602);
+									close();
+								}
 							}else{
-								Grupo frame = new Grupo(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()));
+								Grupo frame = new Grupo(2, null, null, null, null, null, null);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
 							}
-						}else{
-							Grupo frame = new Grupo(2, null, null, null, null, null, null);
-							frame.setVisible(true);
-							frame.pack();
-							frame.setSize(900, 602);
-							close();
 						}
+					}catch(IndexOutOfBoundsException e){
+						e.printStackTrace();
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
 					}
-				}catch(IndexOutOfBoundsException e){
-					e.printStackTrace();
-				} catch (SessionNotActiveException e) {
-					e.printStackTrace();
-				} catch (ControllerNotLoadedException e) {
-					e.printStackTrace();
 				}
+			});
+			
+			try {
+				int i = 0;
+				for(GroupController each : groupArray){
+				table.setValueAt(each.getTripController().getStartDate(), i, 0);
+				table.setValueAt(each.getTripController().getEndDate(), i, 1);
+				table.setValueAt(each.getTripController().getOriginCity(), i, 2);
+				table.setValueAt(each.getTripController().getEndCity(), i, 3);
+				i++;
 			}
-		});
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
+			
+	    }
 		table.setEnabled(true);
 		table.setCellSelectionEnabled(false);
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(20);
 		scrollPane_1.setViewportView(table);
-		table.setLocale(new Locale("es", "AR"));
+		table.setLocale(new Locale("es", "AR")); //$NON-NLS-1$ //$NON-NLS-2$
 		table.setGridColor(Color.WHITE);
 		table.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		table.setFont(new Font("Tahoma", Font.PLAIN, 14)); //$NON-NLS-1$
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setSurrendersFocusOnKeystroke(true);
 		table.setModel(new DefaultTableModel(
@@ -179,16 +198,16 @@ public class TripGroups extends JFrame {
 				{null, null, null, null, null},
 				{null, null, null, null, null},
 			},
-			english
+			 new String[] {messages.getString("TripGroups.5"),messages.getString("TripGroups.6"), messages.getString("TripGroups.7"), messages.getString("TripGroups.8"),messages.getString("TripGroups.9")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 		));
-		table.setBorder(UIManager.getBorder("ScrollPane.border"));
+		table.setBorder(UIManager.getBorder("ScrollPane.border")); //$NON-NLS-1$
 		table.setForeground(Color.WHITE);
 		table.setBackground(new Color(0, 0, 128));
-		table.setToolTipText("");
+		table.setToolTipText(""); //$NON-NLS-1$
 		
 		lblGroups = new JLabel();
 		lblGroups.setForeground(Color.WHITE);
-		lblGroups.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblGroups.setFont(new Font("Tahoma", Font.PLAIN, 22)); //$NON-NLS-1$
 		lblGroups.setBounds(330, 42, 310, 46);
 		panel.add(lblGroups);
 		
@@ -202,7 +221,7 @@ public class TripGroups extends JFrame {
 			    close();
 			}
 		});
-		btnBack.setText("Volver");
+		btnBack.setText(messages.getString("TripGroups.13")); //$NON-NLS-1$
 		btnBack.setBounds(726, 518, 93, 23);
 		panel.add(btnBack);
 		
@@ -210,20 +229,7 @@ public class TripGroups extends JFrame {
 		
 		
 			
-			try {
-				int i = 0;
-				for(GroupController each : groupArray){
-				table.setValueAt(each.getTripController().getStartDate(), i, 0);
-				table.setValueAt(each.getTripController().getEndDate(), i, 1);
-				table.setValueAt(each.getTripController().getOriginCity(), i, 2);
-				table.setValueAt(each.getTripController().getEndCity(), i, 3);
-				i++;
-			}
-			} catch (SessionNotActiveException e1) {
-				e1.printStackTrace();
-			} catch (ControllerNotLoadedException e1) {
-				e1.printStackTrace();
-			}
+			
 			
 		
 		/**/
@@ -233,10 +239,10 @@ public class TripGroups extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//language = 1;
-				lblGroups.setText("Grupos a los que pertenece");
+				//lblGroups.setText("Grupos a los que pertenece");
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -247,17 +253,17 @@ public class TripGroups extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//language = 2;
-				lblGroups.setText("Groups where you belong");
+				//lblGroups.setText("Groups where you belong");
 			}
 		});
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		lblGroups.setText("Grupos a los que pertenece");
+		lblGroups.setText(messages.getString("TripGroups.16")); //$NON-NLS-1$
 		
 	}
 	

@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -12,23 +12,14 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-//import server.Application;
-//import server.Session;
-
-
-
-
-
-
-
-import javax.swing.SwingUtilities;
-
 import controllers.Application;
-import domain.Session;
+import controllers.Session;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Options extends JFrame {
 
@@ -61,6 +52,10 @@ public class Options extends JFrame {
 	 * @param instance 
 	 */
 	public Options(final Application instance, final Session session) {
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
 		setTitle("TreckApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel = new ImagePanel(new ImageIcon("Options.jpg").getImage()); //$NON-NLS-1$
@@ -207,13 +202,13 @@ public class Options extends JFrame {
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		btnCalif.setText(Messages.getString("Options.5")); //$NON-NLS-1$
-		btnNewGroup.setText(Messages.getString("Options.6")); //$NON-NLS-1$
-		btnSignOut.setText(Messages.getString("Options.7")); //$NON-NLS-1$
-		btnTripSearch.setText(Messages.getString("Options.8")); //$NON-NLS-1$
-		lblChoice.setText(Messages.getString("Options.9")); //$NON-NLS-1$
-		btnProfile.setText(Messages.getString("Options.10")); //$NON-NLS-1$
-		btnUserSearch.setText(Messages.getString("Options.11")); //$NON-NLS-1$
+		btnCalif.setText(messages.getString("Options.5")); //$NON-NLS-1$
+		btnNewGroup.setText(messages.getString("Options.6")); //$NON-NLS-1$
+		btnSignOut.setText(messages.getString("Options.7")); //$NON-NLS-1$
+		btnTripSearch.setText(messages.getString("Options.8")); //$NON-NLS-1$
+		lblChoice.setText(messages.getString("Options.9")); //$NON-NLS-1$
+		btnProfile.setText(messages.getString("Options.10")); //$NON-NLS-1$
+		btnUserSearch.setText(messages.getString("Options.11")); //$NON-NLS-1$
 	}
 	
 	public void close(){

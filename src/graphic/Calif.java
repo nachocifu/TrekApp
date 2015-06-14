@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 import java.awt.Choice;
 import java.awt.Color;
@@ -14,8 +14,9 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 import java.util.LinkedList;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
-import javax.swing.JSpinner;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -26,7 +27,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import controllers.Application;
-import domain.Session;
+import controllers.Session;
 
 public class Calif extends JFrame {
 
@@ -58,10 +59,14 @@ public class Calif extends JFrame {
 	 * Create the frame.
 	 */
 	public Calif(final Application instance, final Session session) {
-		setTitle("TreckApp");
+		
+		Locale currentLocale = new Locale("en","US");
+		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		
+		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 900, 601);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		panel = new ImagePanel(new ImageIcon("Calif.jpg").getImage());
+		panel = new ImagePanel(new ImageIcon("Calif.jpg").getImage()); //$NON-NLS-1$
 		panel.setBackground(new Color(25, 25, 112));
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel.setLayout(null);
@@ -69,11 +74,11 @@ public class Calif extends JFrame {
 		
 		final JLabel lblCalifMembers = new JLabel();
 		lblCalifMembers.setForeground(Color.BLACK);
-		lblCalifMembers.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		lblCalifMembers.setFont(new Font("Tahoma", Font.PLAIN, 19)); //$NON-NLS-1$
 		lblCalifMembers.setBounds(249, 131, 353, 39);
 		panel.add(lblCalifMembers);
 		
-		LinkedList<String> hola = new LinkedList<String>();
+		LinkedList<String> options = new LinkedList<String>();
 		
 		final Choice requests = new Choice();
 		requests.setBackground(Color.WHITE);
@@ -116,7 +121,7 @@ public class Calif extends JFrame {
 					requests.setEnabled(false);
 				}
 				if(list.getSelectedValue() != null){
-					System.out.println(list.getSelectedValue() + " " + requests.getSelectedItem());
+					System.out.println(list.getSelectedValue() + " " + requests.getSelectedItem()); //$NON-NLS-1$
 					profiles.remove(list.getSelectedIndex());//si no se selecciona un objeto tira null pointer exception
 				}
 			}
@@ -127,9 +132,9 @@ public class Calif extends JFrame {
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//language = 1;
-				lblCalifMembers.setText("Califica a los integrantes de tu viaje");
-				btnAccept.setText("Aceptar");
-				btnBack.setText("Volver");
+//				lblCalifMembers.setText("Califica a los integrantes de tu viaje");
+//				btnAccept.setText("Aceptar");
+//				btnBack.setText("Volver");
 //				hola.add("Excellent");
 //				hola.add("Muy Bueno");
 //				hola.add("Regular");
@@ -137,7 +142,7 @@ public class Calif extends JFrame {
 //				hola.add("No recomiendo viajar con esta persona");
 			}
 		});
-		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg"); 
+		ImageIcon imageS = new ImageIcon("SpanishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img);
 		img.setIcon(imageS); 
 		img.setSize(22,18); 
@@ -148,9 +153,9 @@ public class Calif extends JFrame {
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//language = 2;
-				lblCalifMembers.setText("Rate your fellow travellers");
-				btnAccept.setText("Accept");
-				btnBack.setText("Back");
+//				lblCalifMembers.setText("Rate your fellow travellers");
+//				btnAccept.setText("Accept");
+//				btnBack.setText("Back");
 //				hola.add("Excellent");
 //				hola.add("Very Good");
 //				hola.add("Normal");
@@ -159,24 +164,24 @@ public class Calif extends JFrame {
 			}
 		});
 
-		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg"); 
+		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
 		panel.add(img2);
 		img2.setIcon(imageE); 
 		img2.setSize(22,18); 
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		lblCalifMembers.setText("Califica a los integrantes de tu viaje");
-		btnAccept.setText("Aceptar");
-		btnBack.setText("Volver");
-		hola.add("Excelente");
-		hola.add("Muy Bueno");
-		hola.add("Regular");
-		hola.add("Malo");
-		hola.add("No recomiendo viajar con esta persona");
+		lblCalifMembers.setText(messages.getString("Calif.6")); //$NON-NLS-1$
+		btnAccept.setText(messages.getString("Calif.7")); //$NON-NLS-1$
+		btnBack.setText(messages.getString("Calif.8")); //$NON-NLS-1$
+		options.add(messages.getString("Calif.9")); //$NON-NLS-1$
+		options.add(messages.getString("Calif.10")); //$NON-NLS-1$
+		options.add(messages.getString("Calif.11")); //$NON-NLS-1$
+		options.add(messages.getString("Calif.12")); //$NON-NLS-1$
+		options.add(messages.getString("Calif.13")); //$NON-NLS-1$
 		
-		for(int i25 = 0; i25 < hola.size(); i25++){
-			requests.add(hola.get(i25));
+		for(int i = 0; i < options.size(); i++){
+			requests.add(options.get(i));
 		}
 	}
 	
