@@ -38,7 +38,7 @@ public class Group {
     /**
      * HashSet containing the trips of the group Trips
      */
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    @DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
     private Trip groupTrip;
 
     /**
@@ -46,19 +46,19 @@ public class Group {
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Message, Profile> wall;
-    
+
     /**
      * 0 if he has been rejected and 1 if is waiting for acceptance
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Profile, RequestStatus> memberRequests;
-    
+
     @DatabaseField
     private Integer filterAge;
-    
+
     @DatabaseField
     private String filterCity;
-    
+
     @DatabaseField
     private Integer maxGroupSize;
 
@@ -68,7 +68,7 @@ public class Group {
         this.members=new HashSet<Profile>();
         this.wall=new HashMap<Message, Profile>();
         this.memberRequests = new HashMap<Profile, RequestStatus>();
-        this.maxGroupSize = maxGroupSize;   
+        this.maxGroupSize = maxGroupSize;
         this.filterAge = filterAge;
         this.filterCity = filterCity;
         admin.joinGroup(this);
@@ -104,33 +104,33 @@ public class Group {
      * @throws InvalidPermissionException
      */
     public void addMember(Profile user){
-    	if(this.maxGroupSize > this.groupSize()){
-    		 this.members.add(user);
-    	     user.joinGroup(this);
-    	}
+        if(this.maxGroupSize > this.groupSize()){
+             this.members.add(user);
+             user.joinGroup(this);
+        }
     }
-    
+
     /**
      * Accepts a member of the request list if he hasn�t been rejected
      * @param newMember
      */
     public void acceptMember(Profile newMember){
-    	if(memberRequests.containsKey(newMember) && memberRequests.get(newMember) == RequestStatus.WAITING && this.maxGroupSize > this.groupSize()){
-    		memberRequests.remove(newMember);
-    		members.add(newMember);
-    		newMember.joinGroup(this);
-    		this.maxGroupSize += 1;
-    	}
+        if(memberRequests.containsKey(newMember) && memberRequests.get(newMember) == RequestStatus.WAITING && this.maxGroupSize > this.groupSize()){
+            memberRequests.remove(newMember);
+            members.add(newMember);
+            newMember.joinGroup(this);
+            this.maxGroupSize += 1;
+        }
     }
-    
+
     //VER COMO ARREGLAR LO DE DATE
     /**
      * Adds a member request to be accepted or not using the filters
      * @param possibleMember
      */
     public void addMemberRequest(Profile possibleMember){
-    	if(possibleMember.getBirthDay().equals(this.filterAge) && possibleMember.getCity().equals(this.filterCity))
-    	memberRequests.put(possibleMember, RequestStatus.WAITING);
+        if(possibleMember.getBirthDay().equals(this.filterAge) && possibleMember.getCity().equals(this.filterCity))
+        memberRequests.put(possibleMember, RequestStatus.WAITING);
     }
 
     /**
@@ -149,14 +149,14 @@ public class Group {
     /**
      * Any member of the group can add a Group trip
      * @param trip
-     * @throws InvalidPermissionException 
+     * @throws InvalidPermissionException
      */
     public void addGroupTrip(Profile user, Trip trip) throws InvalidPermissionException{
-    	if(!this.members.contains(user))
-    		throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
-    	else if(this.groupTrip == null){
-    		this.groupTrip = trip;
-    	}
+        if(!this.members.contains(user))
+            throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
+        else if(this.groupTrip == null){
+            this.groupTrip = trip;
+        }
     }
 
     /**
@@ -170,14 +170,14 @@ public class Group {
     /**
      * @param user posting the message on the wall
      * @param msg being posted
-     * @throws InvalidPermissionException 
+     * @throws InvalidPermissionException
      */
     public void addPost(Profile user, Message msg) throws InvalidPermissionException{
-    	if(!this.members.contains(user))
-    		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
-    	this.wall.put(msg, user);
+        if(!this.members.contains(user))
+            throw new InvalidPermissionException("Cannot post because user is not a member of this group");
+        this.wall.put(msg, user);
 
-    	
+
     }
 
     /**
@@ -185,7 +185,7 @@ public class Group {
      * @param msgId
      */
     public void deletePost(Message msg) throws IllegalArgumentException, InvalidPermissionException{
-    	if(!this.wall.containsKey(msg))
+        if(!this.wall.containsKey(msg))
             throw new IllegalArgumentException("the message does not exists");
         this.wall.remove(msg);
     }
@@ -212,40 +212,40 @@ public class Group {
         return this.members.size();
     }
 
-	public Integer getMaxGroupSize() {
-		return maxGroupSize;
-	}
+    public Integer getMaxGroupSize() {
+        return maxGroupSize;
+    }
 
-	public void setMaxGroupSize(Integer maxGroupSize) {
-		this.maxGroupSize = maxGroupSize;
-	}
+    public void setMaxGroupSize(Integer maxGroupSize) {
+        this.maxGroupSize = maxGroupSize;
+    }
 
-	public HashMap<Profile, RequestStatus> getMemberRequests() {
-		return memberRequests;
-	}
+    public HashMap<Profile, RequestStatus> getMemberRequests() {
+        return memberRequests;
+    }
 
-	public Integer getFilter1_age() {
-		return filterAge;
-	}
+    public Integer getFilter1_age() {
+        return filterAge;
+    }
 
-	public void setFilterAge(Integer filter1_edad) {
-		this.filterAge = filter1_edad;
-	}
+    public void setFilterAge(Integer filter1_edad) {
+        this.filterAge = filter1_edad;
+    }
 
-	public String getFilterCity() {
-		return filterCity;
-	}
+    public String getFilterCity() {
+        return filterCity;
+    }
 
-	public void setFilterCity(String filter2_ciudad) {
-		this.filterCity = filter2_ciudad;
-	}
-	
-	public Trip getGroupTrip(){
-		return this.groupTrip;
-	}
-	
-	
-    
-    
+    public void setFilterCity(String filter2_ciudad) {
+        this.filterCity = filter2_ciudad;
+    }
+
+    public Trip getGroupTrip(){
+        return this.groupTrip;
+    }
+
+
+
+
 }
 

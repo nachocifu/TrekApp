@@ -96,6 +96,12 @@ public class DataBaseTest {
             pool.add(new Profile("naty", "Natalia", "Navas", new Date(1,1,1994), true, "agua", "Portena", "naty.navas@gmail.com"));
             pool.add(new Profile("kochi", "Daniel", "Kochian", null, false, "agua", "neuquen", "kochis.mail@gmail.com") );
 
+            /**Test operations*/
+            Profile user = pool.get(0);
+            Profile user2 = pool.get(1);
+            user.addFriend(user2);
+
+            System.out.println("addeo bien al amgio");
 
             for(Profile each : pool)
                 dao.createOrUpdate(each);

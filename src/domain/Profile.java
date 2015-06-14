@@ -181,12 +181,12 @@ public class Profile {
      * @return the users rating
      */
     public Double getRating(){
-    	Double rating1 = 0.0;
-    	for (Review review : reviews) {
-			rating1 += review.getRating();
-		}
-    	if(reviews.size() != 0)
-    		rating1 = rating/reviews.size();
+        Double rating1 = 0.0;
+        for (Review review : reviews) {
+            rating1 += review.getRating();
+        }
+        if(reviews.size() != 0)
+            rating1 = rating/reviews.size();
         return rating1;
     }
 
@@ -289,19 +289,19 @@ public class Profile {
      * the users rating will be automatically updated when addReview is invoked
      */
     public void addReview(Profile sender, String msg, Integer rating){
-    	if(msg == null || rating == null)
-    		throw new IllegalArgumentException("No fue completado el mensaje o el rating");
-    	Review rev = new Review(this, sender, msg, rating);
+        if(msg == null || rating == null)
+            throw new IllegalArgumentException("No fue completado el mensaje o el rating");
+        Review rev = new Review(this, sender, msg, rating);
         this.reviews.add(rev);
         updateRating(rating);
-    } 
-    
+    }
+
     /**
      * Update the rating when adding a new review
      * @param rating
      */
     private void updateRating(Integer rating){
-    	Double rat = this.rating;
+        Double rat = this.rating;
         Integer size = this.reviews.size();
         rat += rating;
         rat /= size;
@@ -367,7 +367,7 @@ public class Profile {
      */
     public void addFriend(Profile friend){
         this.friends.add(friend);
-        friend.addFriend(this);
+        //friend.addFriend(this);
     }
 
     /**
