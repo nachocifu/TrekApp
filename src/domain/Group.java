@@ -9,13 +9,21 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+/**
+ *
+ * A Group object
+ *
+ */
 @DatabaseTable(tableName = "Group")
 public class Group {
 
+    /*Group Attributes*/
 
+    /**
+     * The group name
+     */
     @DatabaseField
     private String groupName;
-
 
     /**
      * 	Final, does not change
@@ -38,7 +46,7 @@ public class Group {
     /**
      * HashSet containing the trips of the group Trips
      */
-    @DatabaseField(foreign = true, foreignAutoRefresh = true, foreignAutoCreate = true)
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private Trip groupTrip;
 
     /**
@@ -48,7 +56,7 @@ public class Group {
     private HashMap<Message, Profile> wall;
 
     /**
-     * 0 if he has been rejected and 1 if is waiting for acceptance
+     * REJECTED if he has been rejected and WAITING if is waiting for acceptance
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Profile, RequestStatus> memberRequests;
@@ -61,6 +69,8 @@ public class Group {
 
     @DatabaseField
     private Integer maxGroupSize;
+
+    /*Group Constructors*/
 
     public Group(String groupName, Profile admin, Integer maxGroupSize, Integer filterAge, String filterCity){
         this.groupName=groupName;
@@ -77,86 +87,148 @@ public class Group {
     public Group(){
     }
 
+    /*Group Methods*/
+
+    /**
+     * @return Returns a Collection with the Group members
+     */
     public Collection<Profile> getMembers(){
         return this.members;
     }
 
+    /**
+     * @return Returns the Group name
+     */
     public String getGroupName(){
         return this.groupName;
     }
 
+    /**
+     * Sets a new Group name but before validates if it is valid
+     * @param groupName
+     */
     public void setGroupName(String groupName){
-        this.groupName=groupName;
+        if(groupName == null || groupName.trim().isEmpty())
+            throw new IllegalArgumentException("The new group name is either null or empty");
+        this.groupName = groupName;
     }
 
+    /**
+     * @return Returns the Group administrator
+     */
     public Profile getAdminUser(){
         return this.admin;
     }
 
-    public void setAdminUser(Profile admin){
-        this.admin=admin;
+    /**
+     * Sets a new Group administrator that has to belong to the Group (only one administrator per Group)
+     * @param admin
+     */
+    public void setAdminUser(Profile newAdmin){
+        if(!this.members.contains(newAdmin))
+            throw new IllegalArgumentException("The new admin does not belong to this group");
+        this.admin = newAdmin;
     }
 
     /**
-     * LoggedUser will add a member into the group, this will only be possible if the
-     * loggedUser is the admin of the group
+     * Sends a review to a member of the group
+     * @param loggedUser
+     * @param member
+     * @param msg
+     * @param rating
+     * @throws TripNotClosedException
+     */
+    public void sendReviewToAMember(Profile loggedUser, Profile member, String msg, Integer rating) throws TripNotClosedException{
+        if(!(this.groupTrip.getTripStatus() == TripStatus.CLOSED)){
+             throw new TripNotClosedException("Cannot send a review because the Trip is not Closed yet");
+        }else if(loggedUser.equals(member)){
+             throw new IllegalArgumentException("Cannot send a review to yourself");
+         }else if(!this.members.contains(loggedUser)){
+             throw new IllegalArgumentException("Cannot send a review because you did not belong to this group");
+         }else if(!this.members.contains(member)){
+             throw new IllegalArgumentException("Cannot sent a review to that user because it does not belong to this group");
+         }
+         member.addReview(loggedUser, msg, rating);
+    }
+
+    /**
+     * Adds a new member if there is space in the Group, if the user does not already belong to the Group and if the user is not the admin
      * @param user to be added to the Group
      * @throws InvalidPermissionException
      */
-    public void addMember(Profile user){
-        if(this.maxGroupSize > this.groupSize()){
-             this.members.add(user);
-             user.joinGroup(this);
+    public void addMember(Profile newMember) throws InvalidPermissionException{
+        if(newMember.equals(this.admin)){
+            throw new IllegalArgumentException("Cannot add yourself");
+        }else if(members.contains(newMember)){
+            throw new IllegalArgumentException("User already in group");
+        }else if (this.maxGroupSize > this.groupSize()){
+            throw new InvalidPermissionException("No more space to add a user");
         }
+        this.members.add(newMember);
+        newMember.joinGroup(this);
     }
 
     /**
-     * Accepts a member of the request list if he hasn�t been rejected
+     * Accepts a member of the request list if he has not been rejected
      * @param newMember
      */
     public void acceptMember(Profile newMember){
-        if(memberRequests.containsKey(newMember) && memberRequests.get(newMember) == RequestStatus.WAITING && this.maxGroupSize > this.groupSize()){
-            memberRequests.remove(newMember);
-            members.add(newMember);
-            newMember.joinGroup(this);
-            this.maxGroupSize += 1;
+        if(!memberRequests.containsKey(newMember)){
+            throw new IllegalArgumentException("The user does not belong to the users requesting a place in the group");
+        }else if(!(memberRequests.get(newMember) == RequestStatus.WAITING)){
+            throw new IllegalArgumentException("The user has been rejected and cannot be accespted into the group");
+        }else if(!(this.maxGroupSize > this.groupSize())){
+            throw new IllegalArgumentException("There is no more space to add a new member into the group");
         }
+        memberRequests.remove(newMember);
+        members.add(newMember);
+        newMember.joinGroup(this);
     }
 
-    //VER COMO ARREGLAR LO DE DATE
+    //VER COMO ARREGLAR LO DE DATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /**
      * Adds a member request to be accepted or not using the filters
      * @param possibleMember
+     * @throws InvalidPermissionException
      */
-    public void addMemberRequest(Profile possibleMember){
-        if(possibleMember.getBirthDay().equals(this.filterAge) && possibleMember.getCity().equals(this.filterCity))
+    public void addMemberRequest(Profile possibleMember) throws InvalidPermissionException{
+        if(memberRequests.containsKey(possibleMember)){
+            throw new IllegalArgumentException("The user already belongs to the users requesting a place in the group");
+        }else if(!(possibleMember.getBirthDay().equals(this.filterAge) && possibleMember.getCity().equals(this.filterCity))){
+            throw new InvalidPermissionException("The user does not match the requirements for this group");
+        }
         memberRequests.put(possibleMember, RequestStatus.WAITING);
     }
 
-    /**
-     * LoggedUser will delete a member of the group, this will only be possible if the
-     * logged user is the Group admin
-     * @param user that will be deleted
-     * @throws InvalidPermissionException
-     */
-    public void deleteMember(Profile user) throws IllegalArgumentException{
-        if(!members.contains(user))
-            throw new IllegalArgumentException("the user that is trying to be deleted does not belong to the group");
-        this.members.remove(user);
-        this.maxGroupSize -= 1;
+   /**
+    * Permanently deletes a member of this Group, if that member is the admin, a new admin is set, if that member is the last one, the group is deleted.
+    * @param member
+    * @return If that member is yourself and you are the only one in the Group, returns True (useful to delete Group if it is saved).
+    * @throws IllegalArgumentException
+    */
+    public Boolean deleteMember(Profile member) throws IllegalArgumentException{
+        if(!this.members.contains(member)){
+            throw new IllegalArgumentException("The user that you are trying to delete does not belong to the group");
+        }else if(member.equals(this.admin) || groupSize() == 1){
+            member.leaveGroup(this);
+            return true;
+        }else{
+            this.members.remove(member);
+            this.admin = this.members.iterator().next();
+        }
+        return false;
     }
 
     /**
-     * Any member of the group can add a Group trip
+     * Any member of the group can add a Group trip (only one trip per Group)
      * @param trip
      * @throws InvalidPermissionException
      */
-    public void addGroupTrip(Profile user, Trip trip) throws InvalidPermissionException{
-        if(!this.members.contains(user))
-            throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
-        else if(this.groupTrip == null){
-            this.groupTrip = trip;
+    public void addGroupTrip(Trip trip) throws InvalidPermissionException{
+        if(!(this.groupTrip == null)){
+            throw new InvalidPermissionException("Cannot add a trip because there is already one");
         }
+        this.groupTrip = trip;
     }
 
     /**
@@ -168,25 +240,25 @@ public class Group {
     }
 
     /**
+     * Any member of the group can post on the wall
      * @param user posting the message on the wall
      * @param msg being posted
      * @throws InvalidPermissionException
      */
     public void addPost(Profile user, Message msg) throws InvalidPermissionException{
-        if(!this.members.contains(user))
-            throw new InvalidPermissionException("Cannot post because user is not a member of this group");
+        if(msg == null || msg.getText().trim().isEmpty()){
+            throw new IllegalArgumentException("Cannot post because the message is either null or empty");
+        }
         this.wall.put(msg, user);
-
-
     }
 
     /**
-     * Only the group admin or the writer of the message can delete the message
+     * Deletes a post in the Group
      * @param msgId
      */
     public void deletePost(Message msg) throws IllegalArgumentException, InvalidPermissionException{
         if(!this.wall.containsKey(msg))
-            throw new IllegalArgumentException("the message does not exists");
+            throw new IllegalArgumentException("The message does not exist");
         this.wall.remove(msg);
     }
 
@@ -212,40 +284,70 @@ public class Group {
         return this.members.size();
     }
 
+    /**
+     * @return Returns the maximum group size
+     */
     public Integer getMaxGroupSize() {
         return maxGroupSize;
     }
 
+    /**
+     * Sets the maximum group size validating it
+     * @param maxGroupSize
+     */
     public void setMaxGroupSize(Integer maxGroupSize) {
+        if(maxGroupSize == null ||maxGroupSize < 1)
+            throw new IllegalArgumentException("The size is either null or not greater than 0");
         this.maxGroupSize = maxGroupSize;
     }
 
+    /**
+     * @return Returns a HashSet with the requests to enter the Group
+     */
     public HashMap<Profile, RequestStatus> getMemberRequests() {
         return memberRequests;
     }
 
+    /**
+     * @return Returns the maximum age required to be member of the Group
+     */
     public Integer getFilter1_age() {
         return filterAge;
     }
 
-    public void setFilterAge(Integer filter1_edad) {
-        this.filterAge = filter1_edad;
+    /**
+     * Sets the maximum age required to be member of the Group
+     * @param filter
+     */
+    public void setFilterAge(Integer filter) {
+        if(filter == null || (filter <= 0 && filter >= 120)){
+            throw new IllegalArgumentException("The max age is not between 1 and 119");
+        }
+        this.filterAge = filter;
     }
 
+    /**
+     * @return Returns the city (the city in Profile) required to be a member of the Group
+     */
     public String getFilterCity() {
         return filterCity;
     }
 
-    public void setFilterCity(String filter2_ciudad) {
-        this.filterCity = filter2_ciudad;
+    /**
+     * Sets the city required to be a member of the Group
+     * @param filter
+     */
+    public void setFilterCity(String filter) {
+        if(filter == null || filter.trim().isEmpty()){
+            throw new IllegalArgumentException("The city is either null or empty");
+        }
+        this.filterCity = filter;
     }
 
+    /**
+     * @return Returns the Trip associated to the Group
+     */
     public Trip getGroupTrip(){
         return this.groupTrip;
     }
-
-
-
-
 }
-

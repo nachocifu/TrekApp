@@ -7,7 +7,6 @@ import repository.TripRepository;
 import repository.ProfileRepository;
 import domain.Group;
 import domain.Profile;
-import domain.Session;
 import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
@@ -54,7 +53,7 @@ public class Application{
     }
 
     /**
-     * Registers a new user in the system. If username exists throws exception.
+     * Registers a new user into the system. If username exists throws exception.
      * @param username
      * @param name
      * @param surname
@@ -135,6 +134,12 @@ public class Application{
         application = new Application(pathToDataBase);
     }
 
+    /**
+     * Validates userName and password with the repository
+     * @param userName
+     * @param passWord
+     * @return
+     */
     public boolean validate(String userName, String passWord) {
         return this.userRepo.validateCredentials(userName,passWord);
     }
@@ -146,20 +151,20 @@ public class Application{
      */
     public CurrentProfileController getCurrentProfileController() throws SessionNotActiveException{
     	if(!Session.getInstance().isActive()){
-    		throw new SessionNotActiveException("No hay un usuario loggeado");
+    		throw new SessionNotActiveException("There is no user logged in");
     	}
     	Profile currentProfile = this.userRepo.getById(Session.getInstance().getUserName());
     	return getCurrentProfileController(currentProfile);
     }
     
     /**
-     * Returns a trip Controller depending on the admin access
+     * Returns a trip Controller depending on the admin access, only for Controllers use inside this package
      * @param trip
      * @param groupAdmin
      * @return
      * @throws SessionNotActiveException
      */
-    public TripController getATripController(Trip trip, Profile groupAdmin) throws SessionNotActiveException{
+    protected TripController getATripController(Trip trip, Profile groupAdmin) throws SessionNotActiveException{
     	if (groupAdmin != null && groupAdmin.getUsrName().equals(Session.getInstance().getUserName())) {
 		    return getMyTripController(trip);
 		} else {
@@ -192,12 +197,12 @@ public class Application{
 	}
     
     /**
-     * Returns a profile Controller depending on the admin access
+     * Returns a profile Controller depending on the admin access, only for Controllers use inside this package
      * @param profile
      * @return
      * @throws SessionNotActiveException
      */
-    public ProfileController getAProfileController(Profile profile) throws SessionNotActiveException {
+    protected ProfileController getAProfileController(Profile profile) throws SessionNotActiveException {
 		if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
 		    return getCurrentProfileController(profile);
 		} else {
@@ -230,12 +235,12 @@ public class Application{
 	}
 	
 	/**
-	 * Returns a group Controller depending on the admin access
+	 * Returns a group Controller depending on the admin access, only for Controllers use inside this package
 	 * @param group
 	 * @return
 	 * @throws SessionNotActiveException
 	 */
-	public GroupController getAGroupController(Group group) throws SessionNotActiveException{
+	protected GroupController getAGroupController(Group group) throws SessionNotActiveException{
 		if (group.getAdminUser().getUsrName().equals(Session.getInstance().getUserName())) {
 		    return getMyGroupController(group);
 		} else {

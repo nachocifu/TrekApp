@@ -22,14 +22,14 @@ public class MyGroupController extends GroupController {
      * @param profileController
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException 
      */
-    public void addMember(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void addMember(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
-        Profile member = profileController.getObject();
-        if(!member.equals(this.obj.getAdminUser())){
-            this.obj.addMember(member);
-            saveChanges();
-        }
+        this.validateController(profileController);
+        this.obj.addMember(profileController.getObject());
+        saveChanges();
+        profileController.saveChanges();
     }
 
     /**
@@ -41,21 +41,10 @@ public class MyGroupController extends GroupController {
     public void deleteMember(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(profileController);
-        Profile member = profileController.getObject();
-        if(!member.equals(this.obj.getAdminUser())){
-            this.obj.deleteMember(member);
-            Profile newAdmin = this.obj.getMembers().iterator().next();
-            if(newAdmin != null){
-                this.obj.setAdminUser(newAdmin);
-                profileController.getObject().leaveGroup(this.obj);
-            }
-            else{
-            	deleteGroup();
-            }
-        }
-        else{
-            this.obj.deleteMember(member);
-        }
+        if(this.obj.deleteMember(profileController.getObject()))
+        	getRepository().delete(this); // Crear delete para group con id integer
+        profileController.saveChanges();
+        saveChanges();
     }
     
     /**
@@ -69,8 +58,7 @@ public class MyGroupController extends GroupController {
     	HashMap<ProfileController, RequestStatus> newMap = new HashMap<>();
     	Application app = Application.getInstance();
     	for (Profile profile : this.obj.getMemberRequests().keySet()) {
-    		ProfileController controller = app.getAProfileController(profile);
-			newMap.put(controller, this.obj.getMemberRequests().get(profile));
+			newMap.put(app.getAProfileController(profile), this.obj.getMemberRequests().get(profile));
 		}
     	return newMap;
     }
@@ -85,6 +73,7 @@ public class MyGroupController extends GroupController {
     	this.validateEnvironment();
     	this.validateController(newMember);
     	this.obj.acceptMember(newMember.getObject());
+    	saveChanges();
     }
 
     /**
@@ -95,21 +84,9 @@ public class MyGroupController extends GroupController {
      */
     public void deleteGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-         this.validateController(tripController);
+        this.validateController(tripController);
         this.obj.deleteGroupTrip(tripController.getObject());
-    }
-
-    /**
-     * Deletes a post from the group
-     * @param msg
-     * @throws SessionNotActiveException
-     * @throws ControllerNotLoadedException
-     * @throws IllegalArgumentException
-     * @throws InvalidPermissionException
-     */
-    public void deletePost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, IllegalArgumentException, InvalidPermissionException{
-        this.validateEnvironment();
-        this.obj.deletePost(msg);
+        saveChanges();
     }
     
     /**
@@ -123,6 +100,7 @@ public class MyGroupController extends GroupController {
     	this.validateEnvironment();
     	this.obj.setFilterAge(age);
     	this.obj.setFilterCity(city);
+    	saveChanges();
     }
     
     /**
@@ -135,7 +113,33 @@ public class MyGroupController extends GroupController {
     	for (Profile member : this.obj.getMembers()) {
 			member.leaveGroup(this.obj);
 		}
-    	
+    	getRepository().delete(this); // Crear delete para group con id integer
+    }
+    
+    /**
+     * Deletes a post from the group
+     * @param msg
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     * @throws IllegalArgumentException
+     * @throws InvalidPermissionException
+     */
+    public void deletePost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, IllegalArgumentException, InvalidPermissionException{
+        this.validateEnvironment();
+        this.obj.deletePost(msg);
+        saveChanges();
+    }
+
+    
+    /**
+     * Changes the group name
+     * @param newName
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public void changeGroupName(String newName) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	this.obj.setGroupName(newName);
     }
 
 

@@ -9,7 +9,6 @@ import repository.ProfileRepository;
 import domain.ControllerNotLoadedException;
 import domain.Profile;
 import domain.Review;
-import domain.Session;
 import domain.SessionNotActiveException;
 
 public class ProfileController extends AbstractController<Profile> {

@@ -2,7 +2,6 @@ package controllers;
 
 import repository.AbstractRepository;
 import domain.ControllerNotLoadedException;
-import domain.Session;
 import domain.SessionNotActiveException;
 
 public abstract class AbstractController<T> {

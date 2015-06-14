@@ -181,13 +181,7 @@ public class Profile {
      * @return the users rating
      */
     public Double getRating(){
-        Double rating1 = 0.0;
-        for (Review review : reviews) {
-            rating1 += review.getRating();
-        }
-        if(reviews.size() != 0)
-            rating1 = rating/reviews.size();
-        return rating1;
+        return this.rating;
     }
 
     /**
@@ -289,8 +283,13 @@ public class Profile {
      * the users rating will be automatically updated when addReview is invoked
      */
     public void addReview(Profile sender, String msg, Integer rating){
-        if(msg == null || rating == null)
-            throw new IllegalArgumentException("No fue completado el mensaje o el rating");
+        if(msg == null || msg.trim().isEmpty()){
+            throw new IllegalArgumentException("The msg is either null or empty");
+        }else if(rating == null
+                || rating < 0
+                || rating > 5){
+            throw new IllegalArgumentException("The rating is either null or not between 0 and 5");
+        }
         Review rev = new Review(this, sender, msg, rating);
         this.reviews.add(rev);
         updateRating(rating);
@@ -341,8 +340,11 @@ public class Profile {
      */
     public void changePass(String oldPass, String newPass) throws InvalidPasswordException{
         if(!this.password.equals(oldPass))
-            throw new InvalidPasswordException("Password is not valid");
-        this.password=newPass;
+            throw new InvalidPasswordException("The old password does not match");
+        if(newPass == null || newPass.trim().isEmpty()){
+            throw new InvalidPasswordException("The new password is either null or empty");
+        }
+        this.password = newPass;
     }
 
     /**

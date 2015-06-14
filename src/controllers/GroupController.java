@@ -7,6 +7,7 @@ import domain.ControllerNotLoadedException;
 import domain.Group;
 import domain.InvalidPermissionException;
 import domain.SessionNotActiveException;
+import domain.TripNotClosedException;
 import repository.AbstractRepository;
 import repository.GroupRepository;
 import domain.Message;
@@ -19,8 +20,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Returns the group name
-     * @return
+     * @return Returns the Group name
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
@@ -30,8 +30,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Returns a Collection of ProfileControllers
-     * @return
+     * @return Returns a Collection of ProfileControllers
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
@@ -41,8 +40,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Returns
-     * @return
+     * @return Returns a ProfileController of the Group admin
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
@@ -52,7 +50,7 @@ public class GroupController extends AbstractController<Group> {
     }
 
     /**
-     * Ads a post to the wall if the profile is a member of the group
+     * Adds a post to the wall if the profile is a member of the group
      * @param profileController
      * @param msg
      * @throws SessionNotActiveException
@@ -62,12 +60,14 @@ public class GroupController extends AbstractController<Group> {
     public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(profileController);
+        if(!this.obj.getMembers().contains(profileController.getObject()))
+    		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
         this.obj.addPost(profileController.getObject(), msg);
         saveChanges();
     }
 
     /**
-     * Ads a trip to the group if the profile is a member of the group
+     * Adds a trip to the group if the profile is a member of the group
      * @param profileController
      * @param tripController
      * @throws SessionNotActiveException
@@ -78,13 +78,14 @@ public class GroupController extends AbstractController<Group> {
         this.validateEnvironment();
         this.validateController(tripController);
         this.validateController(profileController);
-        this.obj.addGroupTrip(profileController.getObject(), tripController.getObject());
+        if(!this.obj.getMembers().contains(profileController.getObject()))
+    		throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
+        this.obj.addGroupTrip(tripController.getObject());
         saveChanges();
     }
     
     /**
-     * Returns the size of the group
-     * @return
+     * @return Returns the size of the group
      */
     public Integer groupSize(){
         return this.obj.groupSize();
@@ -98,26 +99,17 @@ public class GroupController extends AbstractController<Group> {
      * @param rating
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
+     * @throws TripNotClosedException 
      */
-    public void sendReviewToAMember(CurrentProfileController loggedUser, ProfileController member, String msg, Integer rating) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void sendReviewToAMember(CurrentProfileController loggedUser, ProfileController member, String msg, Integer rating) throws SessionNotActiveException, ControllerNotLoadedException, TripNotClosedException{
     	this.validateEnvironment();
         this.validateController(loggedUser);
         this.validateController(member);
-    	if(loggedUser.getObject().equals(member.getObject())){
-    		throw new IllegalArgumentException("No puedes mandar una review a ti mismo");
-    	}
-    	else if(!this.obj.getMembers().contains(loggedUser.getObject())){
-    		throw new IllegalArgumentException("No puedes enviar una review porque no perteneces a este grupo");
-    	}
-    	else if(!this.obj.getMembers().contains(member.getObject())){
-    		throw new IllegalArgumentException("No puedes enviar una review a esa persona porque no pertenece a este grupo");
-    	}
-    	member.addReview(loggedUser.getObject(), msg, rating);
+        this.obj.sendReviewToAMember(loggedUser.getObject(), member.getObject(), msg, rating);
     }
     
     /**
-     * Returns a TripController or a MyTripController depending of the admin access
-     * @return
+     * @return Returns a TripController or a MyTripController depending of the admin access
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
@@ -128,12 +120,13 @@ public class GroupController extends AbstractController<Group> {
     }
     
     /**
-     * Ads a member request to the group
+     * Adds a member request to the group
      * @param possibleMember
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException 
      */
-    public void sendMemberRequest(ProfileController possibleMember) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void sendMemberRequest(ProfileController possibleMember) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
     	this.validateEnvironment();
         this.validateController(possibleMember);
         this.obj.addMemberRequest(possibleMember.getObject());
@@ -154,7 +147,7 @@ public class GroupController extends AbstractController<Group> {
         }
         return response;
     }
-
+    
     @Override
     protected AbstractRepository<Group> getRepository() {
         return (GroupRepository) this.repository;
