@@ -139,9 +139,9 @@ public class Group {
      * @throws TripNotClosedException
      */
     public void sendReviewToAMember(Profile loggedUser, Profile member, String msg, Integer rating) throws TripNotClosedException{
-    	 if(!(this.groupTrip.getTripStatus() == TripStatus.CLOSED)){
+    	if(!(this.groupTrip.getTripStatus() == TripStatus.CLOSED)){
          	throw new TripNotClosedException("Cannot send a review because the Trip is not Closed yet");
-         }else if(loggedUser.equals(member)){
+        }else if(loggedUser.equals(member)){
      		throw new IllegalArgumentException("Cannot send a review to yourself");
      	}else if(!this.members.contains(loggedUser)){
      		throw new IllegalArgumentException("Cannot send a review because you did not belong to this group");
@@ -173,20 +173,30 @@ public class Group {
      * @param newMember
      */
     public void acceptMember(Profile newMember){
-    	if(memberRequests.containsKey(newMember) && memberRequests.get(newMember) == RequestStatus.WAITING && this.maxGroupSize > this.groupSize()){
-    		memberRequests.remove(newMember);
-    		members.add(newMember);
-    		newMember.joinGroup(this);
+    	if(!memberRequests.containsKey(newMember)){
+    		throw new IllegalArgumentException("The user does not belong to the users requesting a place in the group");
+    	}else if(!(memberRequests.get(newMember) == RequestStatus.WAITING)){
+    		throw new IllegalArgumentException("The user has been rejected and cannot be accespted into the group");
+    	}else if(!(this.maxGroupSize > this.groupSize())){
+    		throw new IllegalArgumentException("There is no more space to add a new member into the group");	
     	}
+		memberRequests.remove(newMember);
+		members.add(newMember);
+		newMember.joinGroup(this);
     }
     
     //VER COMO ARREGLAR LO DE DATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /**
      * Adds a member request to be accepted or not using the filters
      * @param possibleMember
+     * @throws InvalidPermissionException 
      */
-    public void addMemberRequest(Profile possibleMember){
-    	if(possibleMember.getBirthDay().equals(this.filterAge) && possibleMember.getCity().equals(this.filterCity))
+    public void addMemberRequest(Profile possibleMember) throws InvalidPermissionException{
+    	if(memberRequests.containsKey(possibleMember)){
+    		throw new IllegalArgumentException("The user already belongs to the users requesting a place in the group");
+    	}else if(!(possibleMember.getBirthDay().equals(this.filterAge) && possibleMember.getCity().equals(this.filterCity))){
+    		throw new InvalidPermissionException("The user does not match the requirements for this group");
+    	}
     	memberRequests.put(possibleMember, RequestStatus.WAITING);
     }
 
@@ -199,10 +209,10 @@ public class Group {
     public Boolean deleteMember(Profile member) throws IllegalArgumentException{
         if(!this.members.contains(member)){
         	throw new IllegalArgumentException("The user that you are trying to delete does not belong to the group");
-        } else if(member.equals(this.admin) || groupSize() == 1){
+        }else if(member.equals(this.admin) || groupSize() == 1){
         	member.leaveGroup(this);
         	return true;
-        } else{
+        }else{
             this.members.remove(member);
             this.admin = this.members.iterator().next();
         }
@@ -214,10 +224,8 @@ public class Group {
      * @param trip
      * @throws InvalidPermissionException 
      */
-    public void addGroupTrip(Profile user, Trip trip) throws InvalidPermissionException{
-    	if(!this.members.contains(user))
-    		throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
-    	else if(!(this.groupTrip == null)){
+    public void addGroupTrip(Trip trip) throws InvalidPermissionException{
+    	if(!(this.groupTrip == null)){
     		throw new InvalidPermissionException("Cannot add a trip because there is already one");
     	}
     	this.groupTrip = trip;
@@ -238,9 +246,7 @@ public class Group {
      * @throws InvalidPermissionException 
      */
     public void addPost(Profile user, Message msg) throws InvalidPermissionException{
-    	if(!this.members.contains(user)){
-    		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
-    	}else if(msg == null || msg.getText().trim().isEmpty()){
+    	if(msg == null || msg.getText().trim().isEmpty()){
     		throw new IllegalArgumentException("Cannot post because the message is either null or empty");
     	}
     	this.wall.put(msg, user);
@@ -285,6 +291,8 @@ public class Group {
 	}
 
 	public void setMaxGroupSize(Integer maxGroupSize) {
+		if(maxGroupSize == null ||maxGroupSize < 1)
+			throw new IllegalArgumentException("The size is either null or not greater than 0");
 		this.maxGroupSize = maxGroupSize;
 	}
 

@@ -60,6 +60,8 @@ public class GroupController extends AbstractController<Group> {
     public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(profileController);
+        if(!this.obj.getMembers().contains(profileController.getObject()))
+    		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
         this.obj.addPost(profileController.getObject(), msg);
         saveChanges();
     }
@@ -76,7 +78,9 @@ public class GroupController extends AbstractController<Group> {
         this.validateEnvironment();
         this.validateController(tripController);
         this.validateController(profileController);
-        this.obj.addGroupTrip(profileController.getObject(), tripController.getObject());
+        if(!this.obj.getMembers().contains(profileController.getObject()))
+    		throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
+        this.obj.addGroupTrip(tripController.getObject());
         saveChanges();
     }
     
@@ -120,8 +124,9 @@ public class GroupController extends AbstractController<Group> {
      * @param possibleMember
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException 
      */
-    public void sendMemberRequest(ProfileController possibleMember) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void sendMemberRequest(ProfileController possibleMember) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
     	this.validateEnvironment();
         this.validateController(possibleMember);
         this.obj.addMemberRequest(possibleMember.getObject());
