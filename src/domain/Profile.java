@@ -2,6 +2,7 @@ package domain;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import com.j256.ormlite.field.DataType;
@@ -84,6 +85,12 @@ public class Profile {
     /**the groups the user belongs to*/
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashSet<Group> groups;
+    
+    /**
+     * REJECTED if he has been rejected and WAITING if is waiting for acceptance
+     */
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    private HashMap<Profile, RequestStatus> friendRequests;
 
     @DatabaseField
     private String password = null;
@@ -115,11 +122,11 @@ public class Profile {
         this.trips = new HashSet<Trip>();
         this.reviews = new HashSet<Review>();
         this.groups = new HashSet<Group>();
+        this.friendRequests = new HashMap<Profile, RequestStatus>();
         this.password = password;
         this.city = city;
         this.email = email;
     }
-
 
     /**
      * @param usrName
@@ -133,7 +140,46 @@ public class Profile {
     public Profile(String usrName, String name, String surname, Date brthDay, boolean sex, String password, String city, String email){
         this(usrName, name, surname, null, brthDay, sex, password, city, email);
     }
-
+    
+    /**
+     * Accepts a friend of the friend request list if he has not been rejected
+     * @param newMember
+     */
+    public void acceptFriend(Profile newFriend){
+		if (!friendRequests.containsKey(newFriend)){
+            throw new IllegalArgumentException("The user does not belong to the users requesting a to be friends with this profile");
+        }else if(!(friendRequests.get(newFriend) == RequestStatus.WAITING)){
+            throw new IllegalArgumentException("The user has been rejected and cannot be accespted as a friend");
+        }
+        friendRequests.remove(newFriend);
+        friends.add(newFriend);
+        newFriend.getFriends().add(this);
+    }
+    
+    /**
+     * Adds a friend request to be accepted or not
+     * @param possibleMember
+     * @throws InvalidPermissionException
+     */
+    public void addFriendRequest(Profile possibleFriend) throws InvalidPermissionException{
+        if(friendRequests.containsKey(possibleFriend)){
+            throw new IllegalArgumentException("The user already belongs to the users requesting to be friends with this profile");
+        }
+        friendRequests.put(possibleFriend, RequestStatus.WAITING);
+    }
+    
+    /**
+     * Rejects a member of the request list
+     * @param rejectedProfile
+     */
+    public void rejectAFriendRequest(Profile rejectedProfile){
+    	if(!friendRequests.containsKey(rejectedProfile)){
+            throw new IllegalArgumentException("The user does not belong to the users requesting to be friends with this profile");
+    	}else if(!(friendRequests.get(rejectedProfile) == RequestStatus.REJECTED)){
+            throw new IllegalArgumentException("The user has already been rejected");
+    	}
+    	friendRequests.put(rejectedProfile, RequestStatus.REJECTED);
+    }
 
     /**
      * @return the users usrName

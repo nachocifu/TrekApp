@@ -62,6 +62,19 @@ public class MyGroupController extends GroupController {
         }
         return newMap;
     }
+    
+    /**
+     * Rejects a member request
+     * @param profileController
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public void rejectAMemberRequest(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	this.validateController(profileController);
+    	this.obj.rejectAMemberRequest(profileController.getObject());
+    	saveChanges();  	
+    }
 
     /**
      * Accepts a member from the requestMember list
@@ -140,6 +153,7 @@ public class MyGroupController extends GroupController {
     public void changeGroupName(String newName) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.obj.setGroupName(newName);
+        saveChanges();
     }
 
 

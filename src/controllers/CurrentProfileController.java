@@ -108,4 +108,31 @@ public class CurrentProfileController extends ProfileController {
         this.obj.leaveTrip(trip.getObject());
         saveChanges();
     }
+    
+    /**
+     * Accepts a friend from the friend request list
+     * @param newMember
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public void acceptFriend(ProfileController newFriend) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        this.validateController(newFriend);
+        this.obj.acceptFriend(newFriend.getObject());
+        saveChanges();
+        newFriend.saveChanges();
+    }
+    
+    /**
+     * Rejects a friend request
+     * @param profileController
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public void rejectAFriendRequest(ProfileController profileRejected) throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	this.validateController(profileRejected);
+    	this.obj.rejectAFriendRequest(profileRejected.getObject());
+    	saveChanges();  	
+    }
 }

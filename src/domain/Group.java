@@ -9,6 +9,8 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import controllers.ProfileController;
+
 /**
  *
  * A Group object
@@ -184,6 +186,19 @@ public class Group {
         members.add(newMember);
         newMember.joinGroup(this);
     }
+    
+    /**
+     * Rejects a member of the request list
+     * @param rejectedProfile
+     */
+    public void rejectAMemberRequest(Profile rejectedProfile){
+    	if(!memberRequests.containsKey(rejectedProfile)){
+            throw new IllegalArgumentException("The user does not belong to the users requesting a place in the group");
+    	}else if(!(memberRequests.get(rejectedProfile) == RequestStatus.REJECTED)){
+            throw new IllegalArgumentException("The user has already been rejected");
+    	}
+    	memberRequests.put(rejectedProfile, RequestStatus.REJECTED);
+    }
 
     //VER COMO ARREGLAR LO DE DATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /**
@@ -199,6 +214,8 @@ public class Group {
         }
         memberRequests.put(possibleMember, RequestStatus.WAITING);
     }
+    
+    
 
    /**
     * Permanently deletes a member of this Group, if that member is the admin, a new admin is set, if that member is the last one, the group is deleted.
