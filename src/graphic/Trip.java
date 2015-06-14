@@ -161,7 +161,6 @@ public class Trip extends JFrame {
 				}else{
 					button.setEnabled(false);
 				}
-				
 			}
 		});
 		button.setBounds(36, 123, 121, 28);
@@ -243,19 +242,19 @@ public class Trip extends JFrame {
 								} catch (SessionNotActiveException e1) {
 									e1.printStackTrace();
 								}
-								Grupo frame = new Grupo(0,viaje, null ,aux, instance, session, groupController,language);
+								Group frame = new Group(0,viaje, null ,aux, instance, session, groupController,language);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
 							}else if(choice == 1){
-								Grupo frame = new Grupo(1,viaje,null, null, instance, session, groupController,language);
+								Group frame = new Group(1,viaje,null, null, instance, session, groupController,language);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
 							}else if(choice == 2){
-								Grupo frame = new Grupo(2 ,null, trip ,null, instance, session, groupController,language);
+								Group frame = new Group(2 ,null, trip ,null, instance, session, groupController,language);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
@@ -263,25 +262,25 @@ public class Trip extends JFrame {
 							}
 							break;
 						case 2:
-							JOptionPane.showMessageDialog(null, messages.getString("Viaje.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Trip.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 3:
-							JOptionPane.showMessageDialog(null, messages.getString("Viaje.10"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Trip.10"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 4:
-							JOptionPane.showMessageDialog(null, messages.getString("Viaje.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Trip.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 5:
-							JOptionPane.showMessageDialog(null, messages.getString("Viaje.14"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Trip.14"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 6: 
-							JOptionPane.showMessageDialog(null, messages.getString("Viaje.16"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Trip.16"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						case 7:
-							JOptionPane.showMessageDialog(null, messages.getString("Viaje.18"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Trip.18"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 						default:
-							JOptionPane.showMessageDialog(null, messages.getString("Viaje.20"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							JOptionPane.showMessageDialog(null, messages.getString("Trip.20"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							break;
 					}
 				}
@@ -411,17 +410,17 @@ public class Trip extends JFrame {
 		img2.setVisible(true); 
 		
 		
-		lblCost.setText(messages.getString("Viaje.32")); //$NON-NLS-1$
-		lblTo.setText(messages.getString("Viaje.33")); //$NON-NLS-1$
-		lblFrom.setText(messages.getString("Viaje.34")); //$NON-NLS-1$
-		lblDescription.setText(messages.getString("Viaje.35")); //$NON-NLS-1$
-		btnReady.setText(messages.getString("Viaje.36")); //$NON-NLS-1$
-		lblState.setText(messages.getString("Viaje.37")); //$NON-NLS-1$
-		button.setText(messages.getString("Viaje.38")); //$NON-NLS-1$
-		btnNewButton.setText(messages.getString("Viaje.39")); //$NON-NLS-1$
-		lblTrip.setText(messages.getString("Viaje.40")); //$NON-NLS-1$
-		lbltrip.setText(messages.getString("Viaje.41")); //$NON-NLS-1$
-		label.setText(messages.getString("Viaje.42")); //$NON-NLS-1$
+		lblCost.setText(messages.getString("Trip.32")); //$NON-NLS-1$
+		lblTo.setText(messages.getString("Trip.33")); //$NON-NLS-1$
+		lblFrom.setText(messages.getString("Trip.34")); //$NON-NLS-1$
+		lblDescription.setText(messages.getString("Trip.35")); //$NON-NLS-1$
+		btnReady.setText(messages.getString("Trip.36")); //$NON-NLS-1$
+		lblState.setText(messages.getString("Trip.37")); //$NON-NLS-1$
+		button.setText(messages.getString("Trip.38")); //$NON-NLS-1$
+		btnNewButton.setText(messages.getString("Trip.39")); //$NON-NLS-1$
+		lblTrip.setText(messages.getString("Trip.40")); //$NON-NLS-1$
+		lbltrip.setText(messages.getString("Trip.41")); //$NON-NLS-1$
+		label.setText(messages.getString("Trip.42")); //$NON-NLS-1$
 		
 		
 		

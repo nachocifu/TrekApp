@@ -63,7 +63,6 @@ public class Profile extends JFrame {
 	private JPasswordField passwordField_1;
 	private JFormattedTextField tFAge;
 	private JTextField tFRate;
-	private JLabel lblProfile;
 	private JTextField tFEmail;
 	private JTextField tFCityBirth;
 	
@@ -74,7 +73,7 @@ public class Profile extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Profile frame = new Profile(null, 0, null,true);
+					Profile frame = new Profile(null, 2, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 620);
@@ -91,11 +90,17 @@ public class Profile extends JFrame {
 	
 	public Profile(final Application instance, final Integer choice, final Session session, final boolean language) {
 		
+		final JLabel label_12 = new JLabel("*"); 
+		final JLabel lblCityBirth = new JLabel();
 		Locale currentLocale;
 		if(language){
-			currentLocale = new Locale("en","US"); 
+			currentLocale = new Locale("en","US");
+			lblCityBirth.setBounds(100, 302, 206, 28);
+			label_12.setBounds(85, 304, 15, 22);
 		}else{
 			currentLocale = new Locale("es","AR");
+			lblCityBirth.setBounds(46, 302, 206, 28);
+			label_12.setBounds(29, 304, 15, 22);
 		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 	
 		
@@ -109,7 +114,7 @@ public class Profile extends JFrame {
 		setContentPane(panel);
 
 		
-		lblProfile = new JLabel();
+		final JLabel lblProfile = new JLabel();
 		lblProfile.setFont(new Font("Tahoma", Font.BOLD, 24)); //$NON-NLS-1$
 		lblProfile.setForeground(Color.BLACK);
 		lblProfile.setBounds(361, 20, 134, 49);
@@ -159,7 +164,6 @@ public class Profile extends JFrame {
 		tFName.setColumns(10);
 		tFName.setBounds(254, 95, 123, 20);
 		panel.add(tFName);
-
 		
 		tFSurName = new JTextField();
 		tFSurName.setDisabledTextColor(Color.BLACK);
@@ -183,7 +187,7 @@ public class Profile extends JFrame {
 		btnApply.setBounds(663, 544, 134, 23);
 		panel.add(btnApply);
 		
-		final JRadioButton radioButton = new JRadioButton(""); //$NON-NLS-1$
+		final JRadioButton radioButton = new JRadioButton(); //$NON-NLS-1$
 		radioButton.setBounds(284, 197, 21, 23);
 		panel.add(radioButton);
 		
@@ -208,40 +212,38 @@ public class Profile extends JFrame {
 		panel.add(lblExists);
 		lblExists.setVisible(false);
 		
-		JLabel label_6 = new JLabel("*"); //$NON-NLS-1$
+		final JLabel label_6 = new JLabel("*"); //$NON-NLS-1$
 		label_6.setVisible(false);
 		label_6.setForeground(Color.BLACK);
 		label_6.setBounds(62, 142, 15, 22);
 		panel.add(label_6);
 		
-		JLabel label_7 = new JLabel("*"); //$NON-NLS-1$
+		final JLabel label_7 = new JLabel("*"); //$NON-NLS-1$
 		label_7.setVisible(false);
 		label_7.setForeground(Color.BLACK);
 		label_7.setBounds(131, 95, 15, 22);
 		panel.add(label_7);
 		
-		JLabel label_8 = new JLabel("*"); //$NON-NLS-1$
+		final JLabel label_8 = new JLabel("*"); //$NON-NLS-1$
 		label_8.setVisible(false);
 		label_8.setForeground(Color.BLACK);
 		label_8.setBounds(430, 95, 15, 22);
 		panel.add(label_8);
 		
-		JLabel label_9 = new JLabel("*"); //$NON-NLS-1$
+		final JLabel label_9 = new JLabel("*"); //$NON-NLS-1$
 		label_9.setVisible(false);
 		label_9.setForeground(Color.BLACK);
 		label_9.setBounds(266, 199, 15, 22);
 		panel.add(label_9);
 		
-		JLabel label_10 = new JLabel("*"); //$NON-NLS-1$
+		final JLabel label_10 = new JLabel("*"); //$NON-NLS-1$
 		label_10.setVisible(false);
 		label_10.setForeground(Color.BLACK);
 		label_10.setBounds(310, 304, 15, 22);
 		panel.add(label_10);
 		
-		JLabel label_12 = new JLabel("*"); //$NON-NLS-1$
 		label_12.setVisible(false);
 		label_12.setForeground(Color.BLACK);
-		label_12.setBounds(29, 304, 15, 22);
 		panel.add(label_12);
 		
 		final JLabel label_11 = new JLabel();
@@ -261,13 +263,12 @@ public class Profile extends JFrame {
 					frame.setSize(900, 602);
 					close();
 				}else if(choice == 2){
-					BuscadorUsuario frame = new BuscadorUsuario(instance, session, language);
+					UserSearch frame = new UserSearch(instance, session, language);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
 					close();
 				}
-				
 			}
 		});
 		btn.setBounds(80, 544, 134, 23);
@@ -279,7 +280,7 @@ public class Profile extends JFrame {
 		lblAge.setBounds(318, 141, 193, 20);
 		panel.add(lblAge);
 		
-		JLabel label_2 = new JLabel("*"); //$NON-NLS-1$
+		final JLabel label_2 = new JLabel("*"); //$NON-NLS-1$
 		label_2.setForeground(Color.BLACK);
 		label_2.setBounds(310, 141, 15, 28);
 		panel.add(label_2);
@@ -291,7 +292,7 @@ public class Profile extends JFrame {
 		lblGender.setBounds(648, 142, 54, 22);
 		panel.add(lblGender);
 		
-		JLabel label_4 = new JLabel("*"); //$NON-NLS-1$
+		final JLabel label_4 = new JLabel("*"); //$NON-NLS-1$
 		label_4.setForeground(Color.BLACK);
 		label_4.setBounds(640, 141, 15, 28);
 		panel.add(label_4);
@@ -301,7 +302,7 @@ public class Profile extends JFrame {
 		choice2.setBounds(712, 143, 85, 20);
 		panel.add(choice2);
 		
-		tFAge = new JFormattedTextField(/*format*/);
+		tFAge = new JFormattedTextField();
 		try {
 			MaskFormatter dateMask = new MaskFormatter("##/##/####"); 
             dateMask.install(tFAge);
@@ -330,16 +331,6 @@ public class Profile extends JFrame {
 		tFRate.setColumns(10);
 		tFRate.setBounds(764, 305, 54, 20);
 		panel.add(tFRate);	
-		
-//		list.setModel(new AbstractListModel() {
-//			String[] values = new String[] {"hola\t", "hola"};
-//			public int getSize() {
-//				return values.length;
-//			}
-//			public Object getElementAt(int index) {
-//				return values[index];
-//			}
-//		});
 		
 		final JButton btnPastTrip = new JButton();
 		btnPastTrip.addActionListener(new ActionListener() {
@@ -468,11 +459,9 @@ public class Profile extends JFrame {
 			}
 		});
 		
-		final JLabel lblCityBirth = new JLabel();
 		lblCityBirth.setForeground(Color.BLACK);
 		lblCityBirth.setBackground(Color.BLACK);
 		lblCityBirth.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
-		lblCityBirth.setBounds(46, 302, 206, 28);
 		panel.add(lblCityBirth);
 		
 		final JButton btnPresenttrips = new JButton();
@@ -499,7 +488,7 @@ public class Profile extends JFrame {
 		btnContacts.setBounds(297, 474, 193, 23);
 		panel.add(btnContacts);
 		
-		JLabel lblEmail = new JLabel();
+		final JLabel lblEmail = new JLabel();
 		lblEmail.setText(messages.getString("Profile.47")); //$NON-NLS-1$
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblEmail.setForeground(Color.BLACK);
@@ -560,18 +549,25 @@ public class Profile extends JFrame {
 			tFEmail.setEditable(false);
 			choice2.setEnabled(false);
 			btnPresenttrips.setVisible(false);
-			btnContacts.setVisible(false);
 			lblChangePass.setVisible(false);
 			lblConfirmPass.setVisible(false);
 			lblNewPass.setVisible(false);
 			passwordField.setVisible(false);
 			passwordField_1.setVisible(false);
 			radioButton.setVisible(false);
+			btnContacts.setVisible(true);
 			btnContacts.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					//mandar solicitud
 				}
 			});
+			lblUser.setBounds(70, 200, 108, 20);
+			tFUserName.setBounds(148, 200, 123, 20);
+			lblAge.setBounds(318, 200, 193, 20);
+			tFAge.setBounds(505, 200, 97, 20);
+			lblGender.setBounds(648, 200, 54, 22);
+			choice2.setBounds(712, 200, 85, 20);
+			btnPastTrip.setBounds(297, 400, 193, 23);
 		}
 		
 		JButton img = new JButton();

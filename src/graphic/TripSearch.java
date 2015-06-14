@@ -34,10 +34,8 @@ import controllers.Application;
 import controllers.Session;
 
 import java.awt.ComponentOrientation;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-public class BuscadorViaje extends JFrame {
+public class TripSearch extends JFrame {
 
 	/**
 	 * 
@@ -62,7 +60,7 @@ public class BuscadorViaje extends JFrame {
 			public void run() {
 				try {
 						
-					BuscadorViaje frame = new BuscadorViaje(null, null,true);
+					TripSearch frame = new TripSearch(null, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -76,8 +74,7 @@ public class BuscadorViaje extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public BuscadorViaje(final Application instance, final Session session, final boolean language) {
-		
+	public TripSearch(final Application instance, final Session session, final boolean language) {	
 		final JLabel lblCityend = new JLabel();
 		final JLabel lblCityOrigin = new JLabel();
 		Locale currentLocale;
@@ -91,9 +88,7 @@ public class BuscadorViaje extends JFrame {
 			lblCityOrigin.setBounds(352, 56, 168, 28);
 		}
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
-		
-		
-		
+
 		panel = new ImagePanel(new ImageIcon("TripSearch.jpg").getImage()); //$NON-NLS-1$
 		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 903, 600);
@@ -300,7 +295,7 @@ public class BuscadorViaje extends JFrame {
 				{null, null, null, null},
 				{null, null, null, null},
 			},
-			 new String[] {messages.getString("BuscadorViaje.28"), messages.getString("BuscadorViaje.29"), messages.getString("BuscadorViaje.30"), messages.getString("BuscadorViaje.31")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+			 new String[] {messages.getString("TripSearch.28"), messages.getString("TripSearch.29"), messages.getString("TripSearch.30"), messages.getString("TripSearch.31")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		));
 		table.setBorder(UIManager.getBorder("ScrollPane.border")); //$NON-NLS-1$
 		table.setForeground(Color.WHITE);
@@ -345,7 +340,7 @@ public class BuscadorViaje extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				BuscadorViaje frame = new BuscadorViaje(instance, session,false);
+				TripSearch frame = new TripSearch(instance, session,false);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 602);
@@ -362,7 +357,7 @@ public class BuscadorViaje extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BuscadorViaje frame = new BuscadorViaje(instance, session,true);
+				TripSearch frame = new TripSearch(instance, session,true);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 602);
@@ -377,14 +372,14 @@ public class BuscadorViaje extends JFrame {
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		lblSearch.setText(messages.getString("BuscadorViaje.50")); //$NON-NLS-1$
-		btnNewButton.setText(messages.getString("BuscadorViaje.51")); //$NON-NLS-1$
-		button.setText(messages.getString("BuscadorViaje.52")); //$NON-NLS-1$
-		lblCityOrigin.setText(messages.getString("BuscadorViaje.53")); //$NON-NLS-1$
-		lblCityend.setText(messages.getString("BuscadorViaje.54")); //$NON-NLS-1$
-		lblSearchDescription.setText(messages.getString("BuscadorViaje.55")); //$NON-NLS-1$
-		btnNewButton_1.setText(messages.getString("BuscadorViaje.56")); //$NON-NLS-1$
-		btnBack.setText(messages.getString("BuscadorViaje.57")); //$NON-NLS-1$
+		lblSearch.setText(messages.getString("TripSearch.50")); //$NON-NLS-1$
+		btnNewButton.setText(messages.getString("TripSearch.51")); //$NON-NLS-1$
+		button.setText(messages.getString("TripSearch.52")); //$NON-NLS-1$
+		lblCityOrigin.setText(messages.getString("TripSearch.53")); //$NON-NLS-1$
+		lblCityend.setText(messages.getString("TripSearch.54")); //$NON-NLS-1$
+		lblSearchDescription.setText(messages.getString("TripSearch.55")); //$NON-NLS-1$
+		btnNewButton_1.setText(messages.getString("TripSearch.56")); //$NON-NLS-1$
+		btnBack.setText(messages.getString("TripSearch.57")); //$NON-NLS-1$
 	}
 	
 	private Locale getLocale (String loc){

@@ -85,7 +85,7 @@ public class Options extends JFrame {
 		final JButton btnUserSearch = new JButton();
 		btnUserSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BuscadorUsuario frame = new BuscadorUsuario(instance,session, language);
+				UserSearch frame = new UserSearch(instance,session, language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 620);
@@ -98,7 +98,7 @@ public class Options extends JFrame {
 		final JButton btnTripSearch = new JButton();
 		btnTripSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BuscadorViaje frame = new BuscadorViaje(instance,session, language);
+				TripSearch frame = new TripSearch(instance,session, language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 602);
@@ -118,12 +118,14 @@ public class Options extends JFrame {
 		final JButton btnSignOut = new JButton();
 		btnSignOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				session.logOut();
-				Connect frame = new Connect(language);
-				frame.setVisible(true);
-				frame.pack();
-			    frame.setSize(900, 602);
-				close();
+				if(instance != null){
+					session.logOut();
+					Connect frame = new Connect(language);
+					frame.setVisible(true);
+					frame.pack();
+				    frame.setSize(900, 602);
+					close();
+				}
 			}
 		});
 		btnSignOut.setBounds(361, 367, 131, 29);
@@ -132,7 +134,7 @@ public class Options extends JFrame {
 		final JButton btnNewGroup = new JButton();
 		btnNewGroup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Grupo frame = new Grupo(0,null,null,null, instance, session,null, language);
+				Group frame = new Group(0,null,null,null, instance, session,null, language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -156,7 +158,7 @@ public class Options extends JFrame {
 		panel.add(btnCalif);
 		
 		/**/
-		
+		//z significa que existe usuarios a quien califica para q aparezca el boton btnCalif
 		int z = 0;
 		if(z == 0){
 			btnCalif.setVisible(false);

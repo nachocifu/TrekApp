@@ -26,7 +26,7 @@ import graphic.Options;
 import controllers.Application;
 import controllers.Session;
 
-public class BuscadorUsuario extends JFrame {
+public class UserSearch extends JFrame {
 
 	/**
 	 * 
@@ -44,7 +44,7 @@ public class BuscadorUsuario extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BuscadorUsuario frame = new BuscadorUsuario(null, null,true);
+					UserSearch frame = new UserSearch(null, null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -58,7 +58,7 @@ public class BuscadorUsuario extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public BuscadorUsuario(final Application instance, final Session session, final boolean language) {
+	public UserSearch(final Application instance, final Session session, final boolean language) {
 		
 		Locale currentLocale;
 		if(language){
@@ -109,7 +109,7 @@ public class BuscadorUsuario extends JFrame {
 //				    frame.setSize(900, 620);
 //					close();
 //				}else{
-//					JOptionPane.showMessageDialog(new BuscadorUsuario(instance,session), "No existe el usurio que esta buscando", "ERROR", JOptionPane.ERROR_MESSAGE);
+//					JOptionPane.showMessageDialog(new UserSearch(instance,session), "No existe el usurio que esta buscando", "ERROR", JOptionPane.ERROR_MESSAGE);
 //				}
 			}
 		});
@@ -132,7 +132,7 @@ public class BuscadorUsuario extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				BuscadorUsuario frame = new BuscadorUsuario(instance, session,false);
+				UserSearch frame = new UserSearch(instance, session,false);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -149,7 +149,7 @@ public class BuscadorUsuario extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BuscadorUsuario frame = new BuscadorUsuario(instance, session,true);
+				UserSearch frame = new UserSearch(instance, session,true);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -164,10 +164,10 @@ public class BuscadorUsuario extends JFrame {
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		lblName.setText(messages.getString("BuscadorUsuario.6")); //$NON-NLS-1$
-		btnCheckUser.setText(messages.getString("BuscadorUsuario.7")); //$NON-NLS-1$
-		lblUserSearch.setText(messages.getString("BuscadorUsuario.8")); //$NON-NLS-1$
-		btnBack.setText(messages.getString("BuscadorUsuario.9")); //$NON-NLS-1$
+		lblName.setText(messages.getString("UserSearch.6")); //$NON-NLS-1$
+		btnCheckUser.setText(messages.getString("UserSearch.7")); //$NON-NLS-1$
+		lblUserSearch.setText(messages.getString("UserSearch.8")); //$NON-NLS-1$
+		btnBack.setText(messages.getString("UserSearch.9")); //$NON-NLS-1$
 	}
 	
 	public void close(){

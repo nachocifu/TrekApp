@@ -96,11 +96,9 @@ public class TripGroups extends JFrame {
 	                return false;               
 	        };
 	    };
-	    /**/
+
 	    if(instance != null){
 	    	ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
-	    
-	    /**/
 	    
 			table.addMouseListener(new MouseAdapter() {
 				@Override
@@ -119,24 +117,18 @@ public class TripGroups extends JFrame {
 								if( groupArray.get(table.getSelectedRow()) == null ){
 									
 								}else if(session.getUserName().equals(admin) && instance != null){
-									Grupo frame = new Grupo(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
+									Group frame = new Group(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
 									frame.setVisible(true);
 									frame.pack();
 									frame.setSize(900, 602);
 									close();
 								}else{
-									Grupo frame = new Grupo(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
+									Group frame = new Group(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
 									frame.setVisible(true);
 									frame.pack();
 									frame.setSize(900, 602);
 									close();
 								}
-							}else{
-								Grupo frame = new Grupo(2, null, null, null, null, null, null,true);
-								frame.setVisible(true);
-								frame.pack();
-								frame.setSize(900, 602);
-								close();
 							}
 						}
 					}catch(IndexOutOfBoundsException e){

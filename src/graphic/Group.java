@@ -47,7 +47,7 @@ import java.awt.event.WindowEvent;
 import java.awt.Choice;
 
 
-public class Grupo extends JFrame {
+public class Group extends JFrame {
 
 	/**
 	 * 
@@ -68,7 +68,7 @@ public class Grupo extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Grupo frame = new Grupo(0,null, null,null,null, null,null,true);
+					Group frame = new Group(0,null, null,null,null, null,null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -83,13 +83,13 @@ public class Grupo extends JFrame {
 	 * Create the frame.
 	 */
 	// choice = 0 creando, choice = 1 viendo el propio, choice = 2 viendo el de otro
-	public Grupo(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController, final boolean language){	
+	public Group(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController, final boolean language){	
 		
 		Locale currentLocale;
 		if(language){
-			currentLocale = new Locale("en","US");
+			currentLocale = new Locale("en","US"); //$NON-NLS-1$ //$NON-NLS-2$
 		}else{
-			currentLocale = new Locale("es","AR");
+			currentLocale = new Locale("es","AR"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
@@ -137,17 +137,19 @@ public class Grupo extends JFrame {
 		tFFCity = new JTextField();
 		
 		Object[] fields = {
-				messages.getString("Grupo.9"), tFFAge,  //$NON-NLS-1$
-				messages.getString("Grupo.10"), tFFCity //$NON-NLS-1$
+				messages.getString("Group.9"), tFFAge,  //$NON-NLS-1$
+				messages.getString("Group.10"), tFFCity //$NON-NLS-1$
 		};
+		
+		Object[] options = {messages.getString("Group.0"),messages.getString("Group.1")}; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		JButton btnFilters = new JButton();
 		btnFilters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int confirm = JOptionPane.showConfirmDialog(null, fields, messages.getString("Grupo.11"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+				int confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
 				while(confirm == JOptionPane.OK_OPTION && (!isNumeric(tFFAge.getText()) && ! tFFAge.getText().isEmpty() && ! tFFCity.getText().isEmpty())){
-					JOptionPane.showMessageDialog(null, messages.getString("Grupo.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-					confirm = JOptionPane.showConfirmDialog(null, fields, messages.getString("Grupo.14"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+					JOptionPane.showMessageDialog(null, messages.getString("Group.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					confirm = JOptionPane.showConfirmDialog(null, fields, messages.getString("Group.14"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
 				}
 			}
 		});	
@@ -329,12 +331,12 @@ public class Grupo extends JFrame {
 				}
 				switch(flag){
 				case 1:
-					int confirm = JOptionPane.showConfirmDialog(null, messages.getString("Grupo.22"), messages.getString("Grupo.23"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+					int confirm = JOptionPane.showConfirmDialog(null, messages.getString("Group.22"), messages.getString("Group.23"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
 					if(confirm == JOptionPane.YES_OPTION){
 
 						try {
 							MyGroupController group;
-							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), 25, "Buenos Aires"); //$NON-NLS-1$
+							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
 							group.addGroupTrip(group.getAdmin(), myTrip);
 							if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
 								group.setFilters(Integer.parseInt(tFFAge.getText()), tFFCity.getText());
@@ -361,13 +363,13 @@ public class Grupo extends JFrame {
 					}
 					break;
 				case 2:
-					JOptionPane.showMessageDialog(null, messages.getString("Grupo.25"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					JOptionPane.showMessageDialog(null, messages.getString("Group.25"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					break;
 				case 3:
-					JOptionPane.showMessageDialog(null, messages.getString("Grupo.27"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					JOptionPane.showMessageDialog(null, messages.getString("Group.27"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					break;
 				case 4:
-					JOptionPane.showMessageDialog(null, messages.getString("Grupo.29"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					JOptionPane.showMessageDialog(null, messages.getString("Group.29"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					break;
 				}
 			}
@@ -389,7 +391,7 @@ public class Grupo extends JFrame {
 				e2.printStackTrace();
 			}
 			btnFilters.setVisible(false);
-			btnTrip.setText(messages.getString("Grupo.32")); //$NON-NLS-1$
+			btnTrip.setText(messages.getString("Group.32")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					Trip frame = null;
@@ -406,7 +408,7 @@ public class Grupo extends JFrame {
 					close();
 				}
 			});
-			btnRequestcheck.setText(messages.getString("Grupo.33")); //$NON-NLS-1$
+			btnRequestcheck.setText(messages.getString("Group.33")); //$NON-NLS-1$
 			btnDelete.setVisible(true);
 		}else if(choice == 2){		
 			tFName.setEnabled(false);
@@ -424,7 +426,7 @@ public class Grupo extends JFrame {
 				}
 			}
 			btnFilters.setVisible(false);
-			btnTrip.setText(messages.getString("Grupo.35")); //$NON-NLS-1$
+			btnTrip.setText(messages.getString("Group.35")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					Trip frame = new Trip(2,trip, null,null, instance, session,groupController,language);
@@ -435,7 +437,7 @@ public class Grupo extends JFrame {
 				}
 			});
 			btnDelete.setVisible(false);
-			btnRequestcheck.setText(messages.getString("Grupo.36")); //$NON-NLS-1$
+			btnRequestcheck.setText(messages.getString("Group.36")); //$NON-NLS-1$
 			btnRequestcheck.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
@@ -458,7 +460,7 @@ public class Grupo extends JFrame {
 			}
 			btnFilters.setVisible(true);
 			btnCreatetrip.setVisible(true);
-			btnTrip.setText(messages.getString("Grupo.37")); //$NON-NLS-1$
+			btnTrip.setText(messages.getString("Group.37")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					ArrayList<String> aux = new ArrayList<String>();
@@ -486,7 +488,7 @@ public class Grupo extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Grupo frame = new Grupo(choice,myTrip, trip,aux,instance, session,groupController,false);
+				Group frame = new Group(choice,myTrip, trip,aux,instance, session,groupController,false);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -503,7 +505,7 @@ public class Grupo extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Grupo frame = new Grupo(choice,myTrip, trip,aux,instance, session,groupController,true);
+				Group frame = new Group(choice,myTrip, trip,aux,instance, session,groupController,true);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -517,17 +519,17 @@ public class Grupo extends JFrame {
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		btnDelete.setText(messages.getString("Grupo.40")); //$NON-NLS-1$
-		btnCreatetrip.setText(messages.getString("Grupo.41")); //$NON-NLS-1$
-		btnBack.setText(messages.getString("Grupo.42")); //$NON-NLS-1$
-		lblAdmin.setText(messages.getString("Grupo.43")); //$NON-NLS-1$
-		btnAccept.setText(messages.getString("Grupo.44")); //$NON-NLS-1$
-		lblNewRequest.setText(messages.getString("Grupo.45")); //$NON-NLS-1$
-		btnReject.setText(messages.getString("Grupo.46")); //$NON-NLS-1$
-		lblMembers.setText(messages.getString("Grupo.47")); //$NON-NLS-1$
-		lblGroupName.setText(messages.getString("Grupo.48")); //$NON-NLS-1$
-		lblCapacity.setText(messages.getString("Grupo.49")); //$NON-NLS-1$
-		btnFilters.setText(messages.getString("Grupo.50"));	 //$NON-NLS-1$
+		btnDelete.setText(messages.getString("Group.40")); //$NON-NLS-1$
+		btnCreatetrip.setText(messages.getString("Group.41")); //$NON-NLS-1$
+		btnBack.setText(messages.getString("Group.42")); //$NON-NLS-1$
+		lblAdmin.setText(messages.getString("Group.43")); //$NON-NLS-1$
+		btnAccept.setText(messages.getString("Group.44")); //$NON-NLS-1$
+		lblNewRequest.setText(messages.getString("Group.45")); //$NON-NLS-1$
+		btnReject.setText(messages.getString("Group.46")); //$NON-NLS-1$
+		lblMembers.setText(messages.getString("Group.47")); //$NON-NLS-1$
+		lblGroupName.setText(messages.getString("Group.48")); //$NON-NLS-1$
+		lblCapacity.setText(messages.getString("Group.49")); //$NON-NLS-1$
+		btnFilters.setText(messages.getString("Group.50"));	 //$NON-NLS-1$
 		
 	}
 	public void close(){
