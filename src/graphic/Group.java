@@ -69,7 +69,7 @@ public class Group extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Group frame = new Group(0,null, null,null,null, null,null,true);
+					Group frame = new Group(1,null, null,null,null, null,null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -328,7 +328,7 @@ public class Group extends JFrame {
 			    close();
 			}
 		});
-		btnBack.setBounds(26, 530, 93, 23);
+		btnBack.setBounds(26, 530, 150, 23);
 		panel.add(btnBack);
 
 		final JButton btnCreatetrip = new JButton();
@@ -393,21 +393,23 @@ public class Group extends JFrame {
 				}
 			}
 		});
-		btnCreatetrip.setBounds(690, 530, 111, 23);
+		btnCreatetrip.setBounds(651, 530, 150, 23);
 		panel.add(btnCreatetrip);
 		
 		if( choice == 1){
 			tFName.setEnabled(false);
 			tFCap.setEnabled(true);
 			tFAdmin.setEnabled(false);
-			try {
-				tFName.setText(groupController.getGroupName());
-				tFCap.setText(groupController.groupSize().toString());
-				tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname()); //$NON-NLS-1$
-			} catch (SessionNotActiveException e2) {
-				e2.printStackTrace();
-			} catch (ControllerNotLoadedException e2) {
-				e2.printStackTrace();
+			if(instance != null){
+				try {
+					tFName.setText(groupController.getGroupName());
+					tFCap.setText(groupController.groupSize().toString());
+					tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname()); //$NON-NLS-1$
+				} catch (SessionNotActiveException e2) {
+					e2.printStackTrace();
+				} catch (ControllerNotLoadedException e2) {
+					e2.printStackTrace();
+				}
 			}
 			btnFilters.setVisible(false);
 			btnTrip.setText(messages.getString("Group.32")); //$NON-NLS-1$
@@ -427,6 +429,26 @@ public class Group extends JFrame {
 					close();
 				}
 			});
+			btnCreatetrip.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						((MyGroupController)groupController).changeCapacity(Integer.parseInt(tFCap.getText()));
+						((MyGroupController)groupController).changeGroupName(tFCap.getText());
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
+					}
+					Options frame = new Options(instance, session,true);
+					frame.setVisible(true);
+					frame.pack();
+					frame.setSize(900, 602);
+					close();
+				}
+			});
+				
 			btnRequestcheck.setText(messages.getString("Group.33")); //$NON-NLS-1$
 			btnDelete.setVisible(true);
 		}else if(choice == 2){		
@@ -538,8 +560,12 @@ public class Group extends JFrame {
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
+		if( choice == 1){
+			btnCreatetrip.setText(messages.getString("Group.2")); //$NON-NLS-1$
+		}else if(choice == 0){
+			btnCreatetrip.setText(messages.getString("Group.41")); //$NON-NLS-1$
+		}
 		btnDelete.setText(messages.getString("Group.40")); //$NON-NLS-1$
-		btnCreatetrip.setText(messages.getString("Group.41")); //$NON-NLS-1$
 		btnBack.setText(messages.getString("Group.42")); //$NON-NLS-1$
 		lblAdmin.setText(messages.getString("Group.43")); //$NON-NLS-1$
 		btnAccept.setText(messages.getString("Group.44")); //$NON-NLS-1$
