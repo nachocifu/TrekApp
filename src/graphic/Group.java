@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -224,7 +225,16 @@ public class Group extends JFrame {
 		final JButton btnAccept = new JButton();
 		btnAccept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				members.addElement(requests.getSelectedItem());
+				try {
+					members.addElement(requests.getSelectedItem());
+					((MyGroupController)groupController).addMember(getKey(requestsTrip.keySet(),requests.getSelectedIndex()));
+				} catch (SessionNotActiveException e) {
+					e.printStackTrace();
+				} catch (ControllerNotLoadedException e) {
+					e.printStackTrace();
+				} catch (InvalidPermissionException e) {
+					e.printStackTrace();
+				}
 				requests.remove(requests.getSelectedItem());
 				if((requests.getItemCount()) < 1){
 					btnReject.setEnabled(false);
@@ -547,5 +557,14 @@ public class Group extends JFrame {
 	      return false;  
 	    }  
 	    return true;  
+	}
+	
+	private ProfileController getKey(Set<ProfileController> keys, Integer value){
+	    for(ProfileController each : keys){
+	        if(value == 0){
+	            return each; 
+	        }
+	    }
+	    return null;
 	}
 }
