@@ -69,7 +69,7 @@ public class Group extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Group frame = new Group(1,null, null,null,null, null,null,true);
+					Group frame = new Group(0,null, null,null,null, null,null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -136,7 +136,6 @@ public class Group extends JFrame {
 		tFFAge = new JTextField();
 		
 		tFFCity = new JTextField();
-		
 		Object[] fields = {
 				messages.getString("Group.9"), tFFAge,  //$NON-NLS-1$
 				messages.getString("Group.10"), tFFCity //$NON-NLS-1$
@@ -148,12 +147,14 @@ public class Group extends JFrame {
 		btnFilters.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
-				while(confirm == JOptionPane.OK_OPTION && (!isNumeric(tFFAge.getText()) && ! tFFAge.getText().isEmpty() && ! tFFCity.getText().isEmpty())){
-					JOptionPane.showMessageDialog(null, messages.getString("Group.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-					confirm = JOptionPane.showConfirmDialog(null, fields, messages.getString("Group.14"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+				if(confirm == JOptionPane.OK_OPTION){
+					while( (!isIntNumeric(tFFAge.getText()) && !tFFAge.getText().isEmpty())){
+						JOptionPane.showMessageDialog(null, messages.getString("Group.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+						confirm = JOptionPane.showConfirmDialog(null, fields, messages.getString("Group.14"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+					}
 				}
 			}
-		});	
+		});	// si esnum y no esta vacio 
 		btnFilters.setBounds(430, 423, 145, 23);
 		panel.add(btnFilters);
 		
@@ -211,7 +212,7 @@ public class Group extends JFrame {
 			try {
 				requestsTrip = ((MyGroupController)groupController).getMemberRequests();
 				for (ProfileController key : requestsTrip.keySet()) {
-					requests.add(key.getUsername() + " " + key.getSurname() + " - " + key.getUserName()); //$NON-NLS-1$
+					requests.add(key.getUsername() + " " + key.getSurname() + " - " + key.getUserName()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
@@ -423,50 +424,63 @@ public class Group extends JFrame {
 			btnTrip.setText(messages.getString("Group.32")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Trip frame = null;
-					try {
-						frame = new Trip(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController,language);
-					} catch (SessionNotActiveException e) {
-						e.printStackTrace();
-					} catch (ControllerNotLoadedException e) {
-						e.printStackTrace();
-					}
-					frame.setVisible(true);
-					frame.pack();
-				    frame.setSize(900, 602);
-					close();
+					if(instance != null){
+						Trip frame = null;
+						try {
+							frame = new Trip(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController,language);
+						} catch (SessionNotActiveException e) {
+							e.printStackTrace();
+						} catch (ControllerNotLoadedException e) {
+							e.printStackTrace();
+						}
+						frame.setVisible(true);
+						frame.pack();
+					    frame.setSize(900, 602);
+						close();
+					}	
 				}
 			});
 			btnCreatetrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					try {
-						((MyGroupController)groupController).changeGroupName(tFCap.getText());
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
-					} catch (SessionNotActiveException e) {
-						e.printStackTrace();
-					} catch (ControllerNotLoadedException e) {
-						e.printStackTrace();
+					if(instance != null){
+						try {
+							((MyGroupController)groupController).changeGroupName(tFCap.getText());
+						} catch (NumberFormatException e) {
+							e.printStackTrace();
+						} catch (SessionNotActiveException e) {
+							e.printStackTrace();
+						} catch (ControllerNotLoadedException e) {
+							e.printStackTrace();
+						}
+						
+						Options frame = new Options(instance, session,true);
+						frame.setVisible(true);
+						frame.pack();
+						frame.setSize(900, 602);
+						close();
 					}
-					Options frame = new Options(instance, session,true);
-					frame.setVisible(true);
-					frame.pack();
-					frame.setSize(900, 602);
-					close();
+					
+					
 				}
 			});
 			
 			btnLeaveGroup.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					try {
-						instance.getCurrentProfileController().leaveGroup(groupController);
-						((MyGroupController)groupController).deleteMember(instance.getCurrentProfileController());
-					} catch (SessionNotActiveException e) {
-						e.printStackTrace();
-					} catch (ControllerNotLoadedException e) {
-						e.printStackTrace();
+					if(instance != null){
+						try {
+							if(instance.getCurrentProfileController().getUserName().equals(groupController.getAdmin().getUserName())){
+								((MyGroupController)groupController).deleteMember(instance.getCurrentProfileController());
+							}else{
+								instance.getCurrentProfileController().leaveGroup(groupController);
+							}
+						} catch (SessionNotActiveException e) {
+							e.printStackTrace();
+						} catch (ControllerNotLoadedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
+					
 			});
 				
 			btnRequestcheck.setText(messages.getString("Group.33")); //$NON-NLS-1$
@@ -620,7 +634,7 @@ public class Group extends JFrame {
 		lblGroupName.setText(messages.getString("Group.48")); //$NON-NLS-1$
 		lblCapacity.setText(messages.getString("Group.49")); //$NON-NLS-1$
 		btnFilters.setText(messages.getString("Group.50"));	 //$NON-NLS-1$
-		
+		btnLeaveGroup.setText(messages.getString("Group.3")); //$NON-NLS-1$
 		
 		
 	}
@@ -634,6 +648,16 @@ public class Group extends JFrame {
 	public static boolean isNumeric(String str){  
 	    try {  
 	      Double.parseDouble(str);  
+	    }  
+	    catch(NumberFormatException nfe){  
+	      return false;  
+	    }  
+	    return true;  
+	}
+	
+	public static boolean isIntNumeric(String str){  
+	    try {  
+	      Integer.parseInt(str);  
 	    }  
 	    catch(NumberFormatException nfe){  
 	      return false;  
