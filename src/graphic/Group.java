@@ -499,6 +499,16 @@ public class Group extends JFrame {
 				tFCap.setText(aux.get(1));
 				tFAdmin.setText(aux.get(2));
 			}
+			tFAdmin.setEditable(false);
+			if(instance != null){
+				try {
+					tFAdmin.setText(instance.getCurrentProfileController().getUserName());
+				} catch (SessionNotActiveException e1) {
+					e1.printStackTrace();
+				} catch (ControllerNotLoadedException e1) {
+					e1.printStackTrace();
+				}
+			}
 			btnFilters.setVisible(true);
 			btnCreatetrip.setVisible(true);
 			btnTrip.setText(messages.getString("Group.37")); //$NON-NLS-1$
