@@ -223,11 +223,13 @@ public class Group extends JFrame {
 		
 		final JButton btnReject = new JButton();
 		final JButton btnAccept = new JButton();
+		
+		final HashMap<ProfileController, RequestStatus> requestsTripaux = requestsTrip;
 		btnAccept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					members.addElement(requests.getSelectedItem());
-					((MyGroupController)groupController).addMember(getKey(requestsTrip.keySet(),requests.getSelectedIndex()));
+					((MyGroupController)groupController).addMember(getKey(requestsTripaux.keySet(),requests.getSelectedIndex()));
 				} catch (SessionNotActiveException e) {
 					e.printStackTrace();
 				} catch (ControllerNotLoadedException e) {
@@ -247,6 +249,13 @@ public class Group extends JFrame {
 		panel.add(btnAccept);
 		btnReject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					((MyGroupController)groupController).rejectAMemberRequest(getKey(requestsTripaux.keySet(),requests.getSelectedIndex()));
+				} catch (SessionNotActiveException e1) {
+					e1.printStackTrace();
+				} catch (ControllerNotLoadedException e1) {
+					e1.printStackTrace();
+				}
 				requests.remove(requests.getSelectedItem());
 				if((requests.getItemCount()) < 1){
 					btnReject.setEnabled(false);

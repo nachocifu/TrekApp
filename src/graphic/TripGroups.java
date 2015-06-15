@@ -86,6 +86,7 @@ public class TripGroups extends JFrame {
 		scrollPane_1.setBounds(68, 146, 751, 272);
 		panel.add(scrollPane_1);
 		
+		//DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(){
 	        /**
 			 * 
@@ -156,6 +157,7 @@ public class TripGroups extends JFrame {
 				e1.printStackTrace();
 			}
 	    }
+	    
 		table.setEnabled(true);
 		table.setCellSelectionEnabled(false);
 		table.setColumnSelectionAllowed(false);

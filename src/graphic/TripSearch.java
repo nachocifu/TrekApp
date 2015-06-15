@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -266,7 +267,7 @@ public class TripSearch extends JFrame {
 		table.setColumnSelectionAllowed(false);
 		table.setRowSelectionAllowed(true);
 		table.setRowHeight(20);
-		scrollPane_1.setViewportView(table);
+		
 		table.setLocale(new Locale("es", "AR")); //$NON-NLS-1$ //$NON-NLS-2$
 		table.setGridColor(Color.WHITE);
 		table.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -301,7 +302,7 @@ public class TripSearch extends JFrame {
 		table.setForeground(Color.WHITE);
 		table.setBackground(new Color(0, 0, 128));
 		table.setToolTipText(""); //$NON-NLS-1$
-		
+		scrollPane_1.setViewportView(table);
 		/**/
 		
 //		for(int i = 0; i < prueba.size(); i++){
