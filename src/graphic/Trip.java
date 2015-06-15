@@ -75,7 +75,7 @@ public class Trip extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Trip(final Integer choice, final TripController trip, final MyTripController myTrip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController, final boolean language){
+	public Trip(final Integer choice, final TripController trip, final MyTripController myTrip, final ArrayList<String> auxText, final Application instance, final Session session, final GroupController groupController, final boolean language){
 		
 		final JLabel lblState = new JLabel();
 		final JLabel lblFrom = new JLabel();
@@ -226,11 +226,11 @@ public class Trip extends JFrame {
 				if(instance != null){
 					switch(flag){
 						case 1:
-							MyTripController viaje = null;
+							Date dateL = new Date(year1, month1, day1);
+							Date dateA = new Date(year2, month2, day2);
 							if(choice == 0){
+								MyTripController viaje = null;
 								
-								Date dateL = new Date(year1, month1, day1);
-								Date dateA = new Date(year2, month2, day2);
 								try {
 									viaje = instance.registerTrip(dateL, dateA, Double.parseDouble(tFCost.getText()), textArea.getText(), tFTo.getText(), tFFrom.getText());
 								} catch (ServerException e1) {
@@ -242,13 +242,25 @@ public class Trip extends JFrame {
 								} catch (SessionNotActiveException e1) {
 									e1.printStackTrace();
 								}
-								Group frame = new Group(0,viaje, null ,aux, instance, session, groupController,language);
+								Group frame = new Group(0,viaje, null ,auxText, instance, session, groupController,language);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
 								close();
 							}else if(choice == 1){
-								Group frame = new Group(1,viaje,null, null, instance, session, groupController,language);
+								try {
+									myTrip.setEndCity(tFTo.getText());
+									myTrip.setOriginCity(tFFrom.getText());
+									myTrip.setStartDate(dateL);
+									myTrip.setEndDate(dateA);
+									myTrip.setEstimateCost(Double.parseDouble(tFCost.getText()));
+									myTrip.setTripDescription(textArea.getText());
+								} catch (SessionNotActiveException e1) {
+									e1.printStackTrace();
+								} catch (ControllerNotLoadedException e1) {
+									e1.printStackTrace();
+								}
+								Group frame = new Group(1,myTrip,null, null, instance, session, groupController,language);
 								frame.setVisible(true);
 								frame.pack();
 								frame.setSize(900, 602);
@@ -378,7 +390,7 @@ public class Trip extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Trip frame = new Trip(choice,trip,myTrip,aux, instance, session, groupController,false);
+				Trip frame = new Trip(choice,trip,myTrip,auxText, instance, session, groupController,false);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 602);
@@ -395,7 +407,7 @@ public class Trip extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Trip frame = new Trip(choice,trip,myTrip,aux, instance, session, groupController,true);
+				Trip frame = new Trip(choice,trip,myTrip,auxText, instance, session, groupController,true);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 602);

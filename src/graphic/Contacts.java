@@ -154,7 +154,7 @@ public class Contacts extends JFrame {
 		lblContacts.setBounds(348, 28, 145, 36);
 		panel.add(lblContacts);
 		
-		//instance.getCurrentProfileController().requestsfriends
+		//instance.getCurrentProfileController().
 		
 		
 		final Choice requests = new Choice();

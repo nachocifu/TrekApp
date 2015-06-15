@@ -84,7 +84,7 @@ public class Group extends JFrame {
 	 * Create the frame.
 	 */
 	// choice = 0 creando, choice = 1 viendo el propio, choice = 2 viendo el de otro
-	public Group(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> aux, final Application instance, final Session session, final GroupController groupController, final boolean language){	
+	public Group(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> auxText, final Application instance, final Session session, final GroupController groupController, final boolean language){	
 		
 		Locale currentLocale;
 		if(language){
@@ -211,7 +211,7 @@ public class Group extends JFrame {
 			try {
 				requestsTrip = ((MyGroupController)groupController).getMemberRequests();
 				for (ProfileController key : requestsTrip.keySet()) {
-					requests.add(key.getUsername() + " " + key.getSurname()); //$NON-NLS-1$
+					requests.add(key.getUsername() + " " + key.getSurname() + " - " + key.getUserName()); //$NON-NLS-1$
 				}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
@@ -224,12 +224,14 @@ public class Group extends JFrame {
 		final JButton btnReject = new JButton();
 		final JButton btnAccept = new JButton();
 		
-		final HashMap<ProfileController, RequestStatus> requestsTripaux = requestsTrip;
+		HashMap<ProfileController, RequestStatus> requestsTripaux = requestsTrip;
 		btnAccept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
+					ProfileController profile = getKey(requestsTripaux.keySet(),requests.getSelectedIndex());
 					members.addElement(requests.getSelectedItem());
-					((MyGroupController)groupController).addMember(getKey(requestsTripaux.keySet(),requests.getSelectedIndex()));
+					((MyGroupController)groupController).addMember(profile);
+					requestsTripaux.remove(profile);
 				} catch (SessionNotActiveException e) {
 					e.printStackTrace();
 				} catch (ControllerNotLoadedException e) {
@@ -250,7 +252,9 @@ public class Group extends JFrame {
 		btnReject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					((MyGroupController)groupController).rejectAMemberRequest(getKey(requestsTripaux.keySet(),requests.getSelectedIndex()));
+					ProfileController profile = getKey(requestsTripaux.keySet(),requests.getSelectedIndex());
+					((MyGroupController)groupController).rejectAMemberRequest(profile);
+					requestsTripaux.remove(profile);
 				} catch (SessionNotActiveException e1) {
 					e1.printStackTrace();
 				} catch (ControllerNotLoadedException e1) {
@@ -396,6 +400,10 @@ public class Group extends JFrame {
 		btnCreatetrip.setBounds(651, 530, 150, 23);
 		panel.add(btnCreatetrip);
 		
+		JButton btnLeaveGroup = new JButton();
+		btnLeaveGroup.setBounds(637, 260, 145, 23);
+		panel.add(btnLeaveGroup);
+		
 		if( choice == 1){
 			tFName.setEnabled(false);
 			tFCap.setEnabled(true);
@@ -404,7 +412,7 @@ public class Group extends JFrame {
 				try {
 					tFName.setText(groupController.getGroupName());
 					tFCap.setText(groupController.groupSize().toString());
-					tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname()); //$NON-NLS-1$
+					tFAdmin.setText(groupController.getAdmin().getUserName()); //$NON-NLS-1$
 				} catch (SessionNotActiveException e2) {
 					e2.printStackTrace();
 				} catch (ControllerNotLoadedException e2) {
@@ -432,7 +440,6 @@ public class Group extends JFrame {
 			btnCreatetrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					try {
-						((MyGroupController)groupController).changeCapacity(Integer.parseInt(tFCap.getText()));
 						((MyGroupController)groupController).changeGroupName(tFCap.getText());
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
@@ -448,6 +455,19 @@ public class Group extends JFrame {
 					close();
 				}
 			});
+			
+			btnLeaveGroup.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						instance.getCurrentProfileController().leaveGroup(groupController);
+						((MyGroupController)groupController).deleteMember(instance.getCurrentProfileController());
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
+					}
+				}
+			});
 				
 			btnRequestcheck.setText(messages.getString("Group.33")); //$NON-NLS-1$
 			btnDelete.setVisible(true);
@@ -459,7 +479,7 @@ public class Group extends JFrame {
 				try {
 					tFName.setText(groupController.getGroupName());
 					tFCap.setText(groupController.groupSize().toString());
-					tFAdmin.setText(groupController.getAdmin().getUsername() + " " + groupController.getAdmin().getSurname()); //$NON-NLS-1$
+					tFAdmin.setText(groupController.getAdmin().getUserName()); //$NON-NLS-1$
 				} catch (SessionNotActiveException e2) {
 					e2.printStackTrace();
 				} catch (ControllerNotLoadedException e2) {
@@ -480,24 +500,38 @@ public class Group extends JFrame {
 			btnDelete.setVisible(false);
 			btnRequestcheck.setText(messages.getString("Group.36")); //$NON-NLS-1$
 			btnRequestcheck.addActionListener(new ActionListener() {
+			
 				public void actionPerformed(ActionEvent e) {
 					try {
-						groupController.sendMemberRequest(instance.getCurrentProfileController());
+						if(requestsTripaux.containsKey(instance.getCurrentProfileController())){
+							btnRequestcheck.setText((requestsTripaux.get(instance.getCurrentProfileController()).toString()));
+							btnRequestcheck.setEnabled(false);
+						}else{	
+							try {
+								groupController.sendMemberRequest(instance.getCurrentProfileController());
+							} catch (SessionNotActiveException e1) {
+								e1.printStackTrace();
+							} catch (ControllerNotLoadedException e1) {
+								e1.printStackTrace();
+							} catch (InvalidPermissionException e1) {
+								e1.printStackTrace();
+							}
+						}
 					} catch (SessionNotActiveException e1) {
 						e1.printStackTrace();
-					} catch (ControllerNotLoadedException e1) {
-						e1.printStackTrace();
-					} catch (InvalidPermissionException e1) {
-						e1.printStackTrace();
 					}
+				
 				}
 			});	
 			
+			
+			
+			
 		}else if(choice == 0){
-			if(aux != null){
-				tFName.setText(aux.get(0));
-				tFCap.setText(aux.get(1));
-				tFAdmin.setText(aux.get(2));
+			if(auxText != null){
+				tFName.setText(auxText.get(0));
+				tFCap.setText(auxText.get(1));
+				tFAdmin.setText(auxText.get(2));
 			}
 			tFAdmin.setEditable(false);
 			if(instance != null){
@@ -509,6 +543,7 @@ public class Group extends JFrame {
 					e1.printStackTrace();
 				}
 			}
+			btnLeaveGroup.setVisible(false);
 			btnFilters.setVisible(true);
 			btnCreatetrip.setVisible(true);
 			btnTrip.setText(messages.getString("Group.37")); //$NON-NLS-1$
@@ -539,7 +574,7 @@ public class Group extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Group frame = new Group(choice,myTrip, trip,aux,instance, session,groupController,false);
+				Group frame = new Group(choice,myTrip, trip,auxText,instance, session,groupController,false);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -556,7 +591,7 @@ public class Group extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Group frame = new Group(choice,myTrip, trip,aux,instance, session,groupController,true);
+				Group frame = new Group(choice,myTrip, trip,auxText,instance, session,groupController,true);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -585,6 +620,8 @@ public class Group extends JFrame {
 		lblGroupName.setText(messages.getString("Group.48")); //$NON-NLS-1$
 		lblCapacity.setText(messages.getString("Group.49")); //$NON-NLS-1$
 		btnFilters.setText(messages.getString("Group.50"));	 //$NON-NLS-1$
+		
+		
 		
 	}
 	public void close(){

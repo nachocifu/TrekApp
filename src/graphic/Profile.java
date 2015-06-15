@@ -558,7 +558,7 @@ public class Profile extends JFrame {
 			btnContacts.setVisible(true);
 			btnContacts.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					//mandar solicitud
+					//instance.getCurrentProfileController().sendMemberRequest(instance.);
 				}
 			});
 			lblUser.setBounds(70, 200, 108, 20);
