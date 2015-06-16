@@ -48,6 +48,12 @@ public class CurrentProfileController extends ProfileController {
         return this.load();
     }
 
+    /**
+     * Deletes a friends from the users friends list
+     * @param friend to be removed
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public void deleteFriend(ProfileController friend) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(friend);
@@ -55,6 +61,12 @@ public class CurrentProfileController extends ProfileController {
         saveChanges();
     }
 
+    /**
+     * Adds a friend to the users friends list
+     * @param friend to be added to the list
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public void addFriend(ProfileController friend) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(friend);
@@ -62,6 +74,12 @@ public class CurrentProfileController extends ProfileController {
         saveChanges();
     }
 
+    /**
+     * Adds a user to this's blocked users list
+     * @param user to be blocked
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public void blockUser(ProfileController user) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(user);
@@ -69,6 +87,12 @@ public class CurrentProfileController extends ProfileController {
         saveChanges();
     }
 
+    /**
+     * Removes a user from this's blocked list
+     * @param user to be unblocked
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public void unBlockUser(ProfileController user) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(user);
@@ -81,6 +105,11 @@ public class CurrentProfileController extends ProfileController {
         saveChanges();
     }
 
+    /**
+     * @param group to be joined by user
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public void joinGroup(GroupController group) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(group);
@@ -88,6 +117,11 @@ public class CurrentProfileController extends ProfileController {
         saveChanges();
     }
 
+    /**
+     * @param group to be left by the user
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public void leaveGroup(GroupController group) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(group);
