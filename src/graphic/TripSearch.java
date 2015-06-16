@@ -19,7 +19,10 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -32,7 +35,11 @@ import javax.swing.UIManager;
 import javax.swing.ScrollPaneConstants;
 
 import controllers.Application;
+import controllers.GroupController;
+import controllers.MyTripController;
 import controllers.Session;
+import domain.ControllerNotLoadedException;
+import domain.SessionNotActiveException;
 
 import java.awt.ComponentOrientation;
 
@@ -210,7 +217,8 @@ public class TripSearch extends JFrame {
 		btnBack.setBounds(765, 538, 93, 23);
 		panel.add(btnBack);
 
-		table = new JTable(){
+		DefaultTableModel model = new DefaultTableModel();
+		table = new JTable(model){
 	        /**
 			 * 
 			 */
@@ -220,48 +228,68 @@ public class TripSearch extends JFrame {
 	                return false;               
 	        };
 	    };
+
+	    if(instance != null){
+	    	ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());// lo que devuelva el buscador de trips
 	    
-	    /**/
-	    
-//	    final LinkedList<Viajeback> prueba = new LinkedList<Viajeback>();
-//	    Viajeback p1 = new Viajeback("cala", "mu1", "chi", "ta"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-//	    Viajeback p2 = new Viajeback("cal", "mu2", "chi", "ta"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-//	    Viajeback p3 = new Viajeback("ca", "mu3", "chi", "ta"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-//	    Viajeback p4 = new Viajeback("c", "mu4", "chi", "ta"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-//	    prueba.add(p1);
-//	    prueba.add(p2);
-//	    prueba.add(p3);
-//	    prueba.add(p4);
-	 
-	    /**/
-	    
-	//	table.addMouseListener(new MouseAdapter() {
-//			@Override
-		//	public void mouseClicked(MouseEvent arg0) {
-				//if (arg0.getClickCount() == 2 && prueba.get(table.getSelectedRow()) != null) {
-//					if(instance.getCurrentProfileController().){
-//					Grupo frame = new Grupo(1,prueba.get(table.getSelectedRow()),null);
-//					frame.setVisible(true);
-//					frame.pack();
-//					frame.setSize(900, 602);
-//					close();
-//				}else{
-//					Grupo frame = new Grupo(2,prueba.get(table.getSelectedRow()),null);
-//					frame.setVisible(true);
-//					frame.pack();
-//					frame.setSize(900, 602);
-//					close();
-//				}
-					/* ELIMINAR LO QUE SIGUE DESPUES*/
-					//Grupo frame = new Grupo(0,prueba.get(table.getSelectedRow()), null, instance, session);
-//					frame.setVisible(true);
-//				    frame.pack();
-//				    frame.setSize(900, 602);
-		//		    close();
-				    /*HASTA ACA*/
-//				  }
-	//		}
-		//});
+			table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					try{
+						if (arg0.getClickCount() == 2 ) {
+							String admin = null;
+							if(instance != null){
+								try {
+									admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
+								} catch (SessionNotActiveException e) {
+									e.printStackTrace();
+								} catch (ControllerNotLoadedException e) {
+									e.printStackTrace();
+								}
+								if( groupArray.get(table.getSelectedRow()) == null ){
+									
+								}else if(session.getUserName().equals(admin) && instance != null){
+									Group frame = new Group(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
+									frame.setVisible(true);
+									frame.pack();
+									frame.setSize(900, 602);
+									close();
+								}else{
+									Group frame = new Group(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
+									frame.setVisible(true);
+									frame.pack();
+									frame.setSize(900, 602);
+									close();
+								}
+							}
+						}
+					}catch(IndexOutOfBoundsException e){
+						e.printStackTrace();
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			
+			try {
+				int i = 0;
+				for(GroupController each : groupArray){
+					model.addRow(new Object[] { null, null,null,null,null});
+					model.setValueAt(each.getTripController().getStartDate(), i, 0);
+					model.setValueAt(each.getTripController().getEndDate(), i, 1);
+					model.setValueAt(each.getTripController().getOriginCity(), i, 2);
+					model.setValueAt(each.getTripController().getEndCity(), i, 3);
+					i++;
+			}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
+	    }
+	    table.getTableHeader().setReorderingAllowed(false);
 		table.setEnabled(true);
 		table.setCellSelectionEnabled(false);
 		table.setColumnSelectionAllowed(false);
@@ -274,69 +302,40 @@ public class TripSearch extends JFrame {
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14)); //$NON-NLS-1$
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setSurrendersFocusOnKeystroke(true);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-			},
-			 new String[] {messages.getString("TripSearch.28"), messages.getString("TripSearch.29"), messages.getString("TripSearch.30"), messages.getString("TripSearch.31")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		));
+//		table.setModel(new DefaultTableModel(
+//			new Object[][] {
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//				{null, null, null, null},
+//			},
+//			 new String[] {messages.getString("TripSearch.28"), messages.getString("TripSearch.29"), messages.getString("TripSearch.30"), messages.getString("TripSearch.31")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+//		));
 		table.setBorder(UIManager.getBorder("ScrollPane.border")); //$NON-NLS-1$
 		table.setForeground(Color.WHITE);
 		table.setBackground(new Color(0, 0, 128));
 		table.setToolTipText(""); //$NON-NLS-1$
 		scrollPane_1.setViewportView(table);
-		/**/
 		
-//		for(int i = 0; i < prueba.size(); i++){
-//			table.setValueAt(prueba.get(i).getDesde(), i, 0);
-//			table.setValueAt(prueba.get(i).getHasta(), i, 1);
-//			table.setValueAt(prueba.get(i).getOrigen(), i, 2);
-//			table.setValueAt(prueba.get(i).getLlegada(), i, 3);	
-//		}
-		
-		/**/
-		
-		/**/
-		DefaultListModel<String> hola2 = new DefaultListModel<String>();
-		
-		LinkedList<String> hola = new LinkedList<String>();
-		hola.add("a"); //$NON-NLS-1$
-		hola.add("b"); //$NON-NLS-1$
-		hola.add("c"); //$NON-NLS-1$
-		hola.add("d"); //$NON-NLS-1$
-		hola.add("e"); //$NON-NLS-1$
-		hola.add("g"); //$NON-NLS-1$
-		hola.add("f"); //$NON-NLS-1$
-		hola.add("a"); //$NON-NLS-1$
-		hola.add("b"); //$NON-NLS-1$
-		hola.add("c"); //$NON-NLS-1$
-		hola.add("d"); //$NON-NLS-1$
-		hola.add("e"); //$NON-NLS-1$
-		hola.add("g"); //$NON-NLS-1$
-		hola.add("f"); //$NON-NLS-1$
-		for(String each : hola){
-			hola2.addElement(each);
-		}
-		
-		/**/
+		model.addColumn(messages.getString("TripSearch.28"));
+	    model.addColumn(messages.getString("TripSearch.29"));
+	    model.addColumn( messages.getString("TripSearch.30"));
+	    model.addColumn(messages.getString("TripSearch.31"));
 		
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {

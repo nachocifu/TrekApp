@@ -86,8 +86,8 @@ public class TripGroups extends JFrame {
 		scrollPane_1.setBounds(68, 146, 751, 272);
 		panel.add(scrollPane_1);
 		
-		//DefaultTableModel model = new DefaultTableModel();
-		table = new JTable(){
+		DefaultTableModel model = new DefaultTableModel();
+		table = new JTable(model){
 	        /**
 			 * 
 			 */
@@ -145,11 +145,13 @@ public class TripGroups extends JFrame {
 			try {
 				int i = 0;
 				for(GroupController each : groupArray){
-				table.setValueAt(each.getTripController().getStartDate(), i, 0);
-				table.setValueAt(each.getTripController().getEndDate(), i, 1);
-				table.setValueAt(each.getTripController().getOriginCity(), i, 2);
-				table.setValueAt(each.getTripController().getEndCity(), i, 3);
-				i++;
+					model.addRow(new Object[] { null, null,null,null,null});
+					model.setValueAt(each.getGroupName(), i, 0);
+					model.setValueAt(each.getTripController().getStartDate(), i, 1);
+					model.setValueAt(each.getTripController().getEndDate(), i, 2);
+					model.setValueAt(each.getTripController().getOriginCity(), i, 3);
+					model.setValueAt(each.getTripController().getEndCity(), i, 4);
+					i++;
 			}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
@@ -157,7 +159,7 @@ public class TripGroups extends JFrame {
 				e1.printStackTrace();
 			}
 	    }
-	    
+	    table.getTableHeader().setReorderingAllowed(false);
 		table.setEnabled(true);
 		table.setCellSelectionEnabled(false);
 		table.setColumnSelectionAllowed(false);
@@ -169,30 +171,36 @@ public class TripGroups extends JFrame {
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14)); //$NON-NLS-1$
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setSurrendersFocusOnKeystroke(true);
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
-			 new String[] {messages.getString("TripGroups.5"),messages.getString("TripGroups.6"), messages.getString("TripGroups.7"), messages.getString("TripGroups.8"),messages.getString("TripGroups.9")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-		));
+//		table.setModel(new DefaultTableModel(
+//			new Object[][] {
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//				{null, null, null, null, null},
+//			},
+//			 new String[] {messages.getString("TripGroups.5"),messages.getString("TripGroups.6"), messages.getString("TripGroups.7"), messages.getString("TripGroups.8"),messages.getString("TripGroups.9")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+//		));
+		model.addColumn(messages.getString("TripGroups.5"));
+	    model.addColumn(messages.getString("TripGroups.6"));
+	    model.addColumn( messages.getString("TripGroups.7"));
+	    model.addColumn(messages.getString("TripGroups.8"));
+	    model.addColumn(messages.getString("TripGroups.9"));
+	    
 		table.setBorder(UIManager.getBorder("ScrollPane.border")); //$NON-NLS-1$
 		table.setForeground(Color.WHITE);
 		table.setBackground(new Color(0, 0, 128));

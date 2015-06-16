@@ -174,6 +174,7 @@ public class Contacts extends JFrame {
 				if(!friends.contains(requests.getSelectedItem())){
 					friends.addElement(requests.getSelectedItem());
 					requests.remove(requests.getSelectedItem());
+					instance.getCurrentProfileController().acceptFriend();
 				}else{
 					requests.remove(requests.getSelectedItem());
 				}
@@ -192,6 +193,7 @@ public class Contacts extends JFrame {
 		btnReject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				requests.remove(requests.getSelectedItem());
+				instance.getCurrentProfileController().rejectAFriendRequest(profileRejected);
 				if((requests.getItemCount()) < 1){
 					btnReject.setEnabled(false);
 					btnAccept.setEnabled(false);
@@ -224,6 +226,7 @@ public class Contacts extends JFrame {
 				if(!block.contains(requests.getSelectedItem())){
 					block.addElement(requests.getSelectedItem());
 					requests.remove(requests.getSelectedItem());
+					instance.getCurrentProfileController().blockUser(user);
 				}else{
 					requests.remove(requests.getSelectedItem());
 				}
