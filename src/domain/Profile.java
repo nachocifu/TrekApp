@@ -65,7 +65,7 @@ public class Profile {
      *the user will be able to checkIn in a specific location, it will save the last
      *location where the user checked-in
      */
-    private Coordinates checkIn;
+    private Coordinates checkIn = null;
 
     /**the users friends*/
     @DatabaseField(dataType = DataType.SERIALIZABLE)

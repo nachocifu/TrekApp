@@ -1,5 +1,6 @@
 package domain;
 
+@SuppressWarnings("serial")
 public class TripNotClosedException extends Exception{
 	public TripNotClosedException(String msg)
 	{

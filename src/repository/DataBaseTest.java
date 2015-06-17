@@ -11,7 +11,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import controllers.Application;
-import controllers.ProfileController;
 import domain.Group;
 import domain.Profile;
 import domain.Trip;
@@ -97,14 +96,17 @@ public class DataBaseTest {
             Dao<Profile, String> dao = DaoManager.createDao(connectionSource, type);
 
             /**Populate*/
-            pool.add(new Profile("nacho", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "mail"));
-            pool.add(new Profile("naty", "Natalia", "Navas", new Date(1,1,1994), true, "agua", "Portena", "naty.navas@gmail.com"));
+            Profile p = new Profile("nacho", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com");
+            pool.add(p);
+            Profile p2 = new Profile("nacho", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com");
+            pool.add(p2);
             pool.add(new Profile("kochi", "Daniel", "Kochian", null, false, "agua", "neuquen", "kochis.mail@gmail.com") );
 
             /**Test operations*/
             Profile user = pool.get(0);
             Profile user2 = pool.get(1);
-            user.addFriend(user2);
+            user2.sendFriendRequest(user);
+            user.acceptFriend(user2);
 
             System.out.println("addeo bien al amgio");
 

@@ -1,6 +1,6 @@
 package domain;
 
-//me conviene tener un paquete con exceptions ? 
+@SuppressWarnings("serial")
 public class InvalidPasswordException extends Exception {
 	
 	public InvalidPasswordException(String msg)

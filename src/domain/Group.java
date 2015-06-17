@@ -205,7 +205,8 @@ public class Group {
      * @param possibleMember
      * @throws InvalidPermissionException
      */
-    public void addMemberRequest(Profile possibleMember) throws InvalidPermissionException{
+    @SuppressWarnings("deprecation")
+	public void addMemberRequest(Profile possibleMember) throws InvalidPermissionException{
     	Date filterAgeAsDate = new Date();
     	filterAgeAsDate.setYear(Calendar.YEAR - filterAge);
     	
