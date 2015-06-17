@@ -45,18 +45,6 @@ public class ProfileController extends AbstractController<Profile> {
         else
             return false;
     }
-    
-    /**
-     * This method is called from the method sendReviewToAMember in GroupController
-     * @param rec
-     * @param send
-     * @param msg
-     * @param rating
-     */
-    protected void addReview(Profile sender, String msg, Integer rating){
-    	this.obj.addReview(sender, msg, rating);
-    	saveChanges();
-    }
 
    public String getUsername() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();

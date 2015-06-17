@@ -15,26 +15,28 @@ public class Coordinates {
 	@DatabaseField (generatedId=true)
 	private Integer id;
 	
+	public Coordinates(){
+	}
+	
 	public Coordinates(double x, double y){
 		this.x=x;
 		this.y=y;
 	}
 	
-	public Coordinates(){
+	public double getDistanceBetweenCoordinates(Coordinates coor1, Coordinates coor2){
+		return Math.sqrt((coor2.getX() - coor1.getX()) + (coor2.getY() - coor1.getY()));
+	}
+	
+	public void updateCoordinates(Double x, Double y){
+		this.x = x;
+		this.y = y;
 	}
 	
 	public Double getX(){
 		return this.x;
 	}
 	
-	public void setX(Double x){
-		this.x=x;
-	}
-	
 	public Double getY(){
 		return this.y;
-	}
-	public void setY(Double y){
-		this.y=y;
 	}
 }

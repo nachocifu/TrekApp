@@ -8,6 +8,7 @@ import domain.Group;
 import domain.InvalidPermissionException;
 import domain.SessionNotActiveException;
 import domain.TripNotClosedException;
+import domain.TripStatus;
 import repository.AbstractRepository;
 import repository.GroupRepository;
 import domain.Message;
@@ -17,6 +18,16 @@ public class GroupController extends AbstractController<Group> {
 
     public GroupController(GroupRepository groupRepo) {
         super(groupRepo);
+    }
+    
+    /**
+     * @return Returns the status of the group trip
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public TripStatus getTripStatus() throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	return this.obj.getGroupTrip().getTripStatus(); 	
     }
 
     /**
@@ -57,7 +68,7 @@ public class GroupController extends AbstractController<Group> {
      * @throws ControllerNotLoadedException
      * @throws InvalidPermissionException
      */
-    public void addPost(ProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
+    public void addPost(CurrentProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(profileController);
         if(!this.obj.getMembers().contains(profileController.getObject()))
@@ -74,7 +85,7 @@ public class GroupController extends AbstractController<Group> {
      * @throws ControllerNotLoadedException
      * @throws InvalidPermissionException
      */
-    public void addGroupTrip(ProfileController profileController, TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
+    public void addGroupTrip(CurrentProfileController profileController, TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(tripController);
         this.validateController(profileController);
@@ -90,7 +101,7 @@ public class GroupController extends AbstractController<Group> {
     public Integer groupSize(){
         return this.obj.groupSize();
     }
-
+    
     /**
      * Validates who is sending the review and if that "member" is a member of the group
      * @param loggedUser
@@ -106,6 +117,7 @@ public class GroupController extends AbstractController<Group> {
         this.validateController(loggedUser);
         this.validateController(member);
         this.obj.sendReviewToAMember(loggedUser.getObject(), member.getObject(), msg, rating);
+        member.saveChanges();
     }
     
     /**
@@ -126,7 +138,7 @@ public class GroupController extends AbstractController<Group> {
      * @throws ControllerNotLoadedException
      * @throws InvalidPermissionException 
      */
-    public void sendMemberRequest(ProfileController possibleMember) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
+    public void sendMemberRequest(CurrentProfileController possibleMember) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
     	this.validateEnvironment();
         this.validateController(possibleMember);
         this.obj.addMemberRequest(possibleMember.getObject());

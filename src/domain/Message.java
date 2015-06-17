@@ -23,6 +23,7 @@ public class Message {
 	public Message(String text){
 		this.text = text;
 	}
+	
 
 	/**
 	 * @return the text
