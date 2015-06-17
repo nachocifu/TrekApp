@@ -7,7 +7,6 @@ package domain;
 
 public class Review {
 
-		// private enum Rating {veryBad, bad, regular, good, veryGood, excellent};
 		private Integer rating;
 		private Profile profileTarget;
 		private Profile profileOrigin;
@@ -40,7 +39,7 @@ public class Review {
 			if(rating >= 0 && rating <= 5){
 				this.rating = rating;
 			}else{
-				throw new IllegalArgumentException("Ingrese un rating entre 0 y 5");
+				throw new IllegalArgumentException("The rating must be a number between 0 and 5");
 			}
 		}
 		

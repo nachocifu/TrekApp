@@ -1,7 +1,13 @@
 package controllers;
 
+import java.util.Collection;
+import java.util.HashMap;
+
 import domain.ControllerNotLoadedException;
 import domain.InvalidPasswordException;
+import domain.InvalidPermissionException;
+import domain.Profile;
+import domain.RequestStatus;
 import domain.SessionNotActiveException;
 import repository.ProfileRepository;
 
@@ -60,17 +66,49 @@ public class CurrentProfileController extends ProfileController {
         this.obj.deleteFriend(friend.getObject());
         saveChanges();
     }
-
+    
     /**
-     * Adds a friend to the users friends list
-     * @param friend to be added to the list
+     * Adds a friend request to the profile
+     * @param possibleMember
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException 
      */
-    public void addFriend(ProfileController friend) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void sendMemberRequest(ProfileController possibleFriend) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
+    	this.validateEnvironment();
+        this.validateController(possibleFriend);
+        this.obj.addFriendRequest(possibleFriend.getObject());
+        saveChanges();
+    }
+    
+
+    /**
+     * Adds a friend to the users friends list 
+     * @param friend username to be added to the list
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException 
+     */
+    public void sendFriendRequest(String possibleFriend) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
-        this.validateController(friend);
-        this.obj.addFriend(friend.getObject());
+        Profile friend = this.getRepository().getById(possibleFriend);
+        friend.addFriendRequest(this.obj);
+        this.getRepository().update(friend); //Saves Changes into repo
+        saveChanges();
+    }
+    
+    /**
+     * Adds a friend to the users friends list 
+     * @param friend controller to be added to the list
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     * @throws InvalidPermissionException 
+     */
+    public void sendFriendRequest(ProfileController possibleFriend) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
+        this.validateEnvironment();
+        this.validateController(possibleFriend);
+        possibleFriend.getObject().addFriendRequest(this.obj);
+        possibleFriend.saveChanges();
         saveChanges();
     }
 
@@ -154,5 +192,21 @@ public class CurrentProfileController extends ProfileController {
     	this.validateController(profileRejected);
     	this.obj.rejectAFriendRequest(profileRejected.getObject());
     	saveChanges();  	
+    }
+    
+    /**
+     * @return Returns a Map with profile controllers and each of their status
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public HashMap<ProfileController, RequestStatus> getFriendRequests() throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	HashMap<ProfileController, RequestStatus> newMap = new HashMap<>();
+        Application app = Application.getInstance();
+        HashMap<Profile, RequestStatus> friendRequests = this.obj.getFriendRequests();
+        for (Profile profile : friendRequests.keySet()) {
+            newMap.put(app.getAProfileController(profile), friendRequests.get(profile));
+        }
+        return newMap;
     }
 }

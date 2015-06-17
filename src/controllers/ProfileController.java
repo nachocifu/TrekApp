@@ -7,7 +7,6 @@ import java.util.HashSet;
 import repository.AbstractRepository;
 import repository.ProfileRepository;
 import domain.ControllerNotLoadedException;
-import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.Review;
 import domain.SessionNotActiveException;
@@ -54,7 +53,7 @@ public class ProfileController extends AbstractController<Profile> {
      * @param msg
      * @param rating
      */
-    public void addReview(Profile sender, String msg, Integer rating){
+    protected void addReview(Profile sender, String msg, Integer rating){
     	this.obj.addReview(sender, msg, rating);
     	saveChanges();
     }
@@ -122,20 +121,6 @@ public class ProfileController extends AbstractController<Profile> {
     public Collection<Review> getReviews() throws SessionNotActiveException, ControllerNotLoadedException{
     	this.validateEnvironment();
     	return this.obj.getReviews();
-    }
-    
-    /**
-     * Adds a friend request to the profile
-     * @param possibleMember
-     * @throws SessionNotActiveException
-     * @throws ControllerNotLoadedException
-     * @throws InvalidPermissionException 
-     */
-    public void sendMemberRequest(ProfileController possibleFriend) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
-    	this.validateEnvironment();
-        this.validateController(possibleFriend);
-        this.obj.addFriendRequest(possibleFriend.getObject());
-        saveChanges();
     }
 
     /**

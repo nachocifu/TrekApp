@@ -174,6 +174,15 @@ public class Profile {
     }
     
     /**
+     * Adds a friend request to be accepted or not
+     * @param possibleMember
+     * @throws InvalidPermissionException
+     */
+    public void sendFriendRequest(Profile possibleFriend) throws InvalidPermissionException{
+        possibleFriend.addFriendRequest(this);
+    }
+    
+    /**
      * Rejects a member of the request list
      * @param rejectedProfile
      */
@@ -417,17 +426,6 @@ public class Profile {
     }
 
     /**
-     * @param friend that will be added to the users friend list,
-     * this will be added to friend's list as well
-     */
-    public void addFriend(Profile friend){
-    	if(friends.contains(friend))
-    		throw new IllegalArgumentException("The user is already a friend");
-        this.friends.add(friend);
-        friend.getFriends().add(this);
-    }
-
-    /**
      * @param friend that will be removed from the users friend list
      * this will also be deleted from friend's list
      */
@@ -436,6 +434,13 @@ public class Profile {
     		throw new IllegalArgumentException("The user is not a friend");
         this.friends.remove(friend);
         friend.getFriends().remove(this);
+    }
+    
+    /**
+     * @return user friend requests
+     */
+    public HashMap<Profile, RequestStatus>getFriendRequests(){
+    	return this.friendRequests;	
     }
 
     /**
