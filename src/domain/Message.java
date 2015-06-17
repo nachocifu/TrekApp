@@ -24,7 +24,18 @@ public class Message {
 		this.text = text;
 	}
 	
-
+	public void uperCaseMessage(){
+		this.text = this.text.toUpperCase();
+	}
+	
+	public void lowerCaseMessage(){
+		this.text = this.text.toLowerCase();
+	}
+	
+	public boolean containsWordInsideMessage(String word){
+		return this.text.contains(word);
+	}
+	
 	/**
 	 * @return the text
 	 */

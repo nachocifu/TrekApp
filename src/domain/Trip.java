@@ -47,6 +47,10 @@ public class Trip {
         this.tripStatus = TripStatus.OPEN;
         }
     
+    public int getTripDurationInDays(){
+    	return (int)( (this.endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    }
+    
     public void addNewCost(Double newCostToAdd){
     	this.estimateCost += newCostToAdd;
     }

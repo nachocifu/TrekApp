@@ -23,8 +23,13 @@ public class Coordinates {
 		this.y=y;
 	}
 	
-	public double getDistanceBetweenCoordinates(Coordinates coor1, Coordinates coor2){
-		return Math.sqrt((coor2.getX() - coor1.getX()) + (coor2.getY() - coor1.getY()));
+	/**
+	 * @param coor1
+	 * @param coor2
+	 * @return Returns the linear distance between this coordinate and another
+	 */
+	public double getDistanceBetweenOtherCoordinate(Coordinates coor2){
+		return Math.sqrt((coor2.getX() - this.x) + (coor2.getY() - this.y));
 	}
 	
 	public void updateCoordinates(Double x, Double y){
