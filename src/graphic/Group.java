@@ -207,7 +207,7 @@ public class Group extends JFrame {
 		requests.setVisible(false);
 		requests.setBounds(233, 457, 200, 30);
 		
-		HashMap<ProfileController, RequestStatus> requestsTrip = new HashMap<ProfileController, RequestStatus>();
+		HashMap<ProfileController, RequestStatus> requestsTrip = null;
 		if(instance != null && choice == 1){
 			try {
 				requestsTrip = ((MyGroupController)groupController).getMemberRequests();
@@ -296,6 +296,28 @@ public class Group extends JFrame {
 		btnDelete.setBounds(397, 386, 145, 23);
 		panel.add(btnDelete);
 		
+		final JButton btnCalif = new JButton();
+		btnCalif.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Calif frame = new Calif(instance, session, language);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
+			}
+		});
+		btnCalif.setBounds(69, 301, 250, 29);
+		panel.add(btnCalif);
+		
+		/**/
+		//z significa que existe usuarios a quien califica para q aparezca el boton btnCalif
+//		int z = 1;
+//		if(z == 0){
+//			btnCalif.setVisible(false);
+//		}else{
+//			btnCalif.setVisible(true);
+//		}
+		/**/
 		
 		final JButton btnRequestcheck = new JButton();
 		btnRequestcheck.addActionListener(new ActionListener() {
@@ -361,7 +383,7 @@ public class Group extends JFrame {
 						try {
 							MyGroupController group;
 							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
-							group.addGroupTrip(group.getAdmin(), myTrip);
+							group.addGroupTrip(instance.getCurrentProfileController(), myTrip);
 							if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
 								group.setFilters(Integer.parseInt(tFFAge.getText()), tFFCity.getText());
 							}
@@ -624,6 +646,8 @@ public class Group extends JFrame {
 		}else if(choice == 0){
 			btnCreatetrip.setText(messages.getString("Group.41")); //$NON-NLS-1$
 		}
+		
+		btnCalif.setText(messages.getString("Group.5")); //$NON-NLS-1$
 		btnDelete.setText(messages.getString("Group.40")); //$NON-NLS-1$
 		btnBack.setText(messages.getString("Group.42")); //$NON-NLS-1$
 		lblAdmin.setText(messages.getString("Group.43")); //$NON-NLS-1$
@@ -634,8 +658,7 @@ public class Group extends JFrame {
 		lblGroupName.setText(messages.getString("Group.48")); //$NON-NLS-1$
 		lblCapacity.setText(messages.getString("Group.49")); //$NON-NLS-1$
 		btnFilters.setText(messages.getString("Group.50"));	 //$NON-NLS-1$
-		btnLeaveGroup.setText(messages.getString("Group.3")); //$NON-NLS-1$
-		
+		btnLeaveGroup.setText(messages.getString("Group.3")); //$NON-NLS-1$	
 		
 	}
 	public void close(){

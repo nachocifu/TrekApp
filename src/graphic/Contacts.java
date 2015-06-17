@@ -8,9 +8,11 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -26,6 +28,7 @@ import javax.swing.border.LineBorder;
 import controllers.Application;
 import controllers.ProfileController;
 import domain.ControllerNotLoadedException;
+import domain.RequestStatus;
 import controllers.Session;
 import domain.SessionNotActiveException;
 
@@ -154,17 +157,32 @@ public class Contacts extends JFrame {
 		lblContacts.setBounds(348, 28, 145, 36);
 		panel.add(lblContacts);
 		
-		//instance.getCurrentProfileController().
 		
-		
+		HashMap<ProfileController, RequestStatus> requestsFriend = null;
+		try {
+			requestsFriend =  instance.getCurrentProfileController().getFriendRequests();
+		} catch (SessionNotActiveException e1) {
+			e1.printStackTrace();
+		} catch (ControllerNotLoadedException e1) {
+			e1.printStackTrace();
+		}
+		HashMap<ProfileController, RequestStatus> requestsFriendaux = requestsFriend;
+				
 		final Choice requests = new Choice();
 		requests.setBounds(377, 405, 200, 30);
-//		for(int i25 = 0; i25 < hola.size(); i25++){
-//			requests.add(hola.get(i25));
-//		}
-		panel.add(requests);
-		/**/
+		Integer size = requestsFriendaux.size();
 		
+			try {
+				for (ProfileController possibleFriend : requestsFriendaux.keySet()) {
+					requests.add(possibleFriend.getUserName());
+				}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
+		
+		panel.add(requests);		
 		
 		final JButton btnReject = new JButton();
 		final JButton btnAccept = new JButton();
@@ -174,7 +192,13 @@ public class Contacts extends JFrame {
 				if(!friends.contains(requests.getSelectedItem())){
 					friends.addElement(requests.getSelectedItem());
 					requests.remove(requests.getSelectedItem());
-					instance.getCurrentProfileController().acceptFriend();
+					try {
+						instance.getCurrentProfileController().acceptFriend(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
+					}
 				}else{
 					requests.remove(requests.getSelectedItem());
 				}
@@ -193,7 +217,13 @@ public class Contacts extends JFrame {
 		btnReject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				requests.remove(requests.getSelectedItem());
-				instance.getCurrentProfileController().rejectAFriendRequest(profileRejected);
+				try {
+					instance.getCurrentProfileController().rejectAFriendRequest(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+				} catch (SessionNotActiveException e1) {
+					e1.printStackTrace();
+				} catch (ControllerNotLoadedException e1) {
+					e1.printStackTrace();
+				}
 				if((requests.getItemCount()) < 1){
 					btnReject.setEnabled(false);
 					btnAccept.setEnabled(false);
@@ -226,7 +256,13 @@ public class Contacts extends JFrame {
 				if(!block.contains(requests.getSelectedItem())){
 					block.addElement(requests.getSelectedItem());
 					requests.remove(requests.getSelectedItem());
-					instance.getCurrentProfileController().blockUser(user);
+					try {
+						instance.getCurrentProfileController().blockUser(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
+					}
 				}else{
 					requests.remove(requests.getSelectedItem());
 				}
@@ -288,5 +324,14 @@ public class Contacts extends JFrame {
 	public void close(){
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
+	}
+	
+	private ProfileController getKey(Set<ProfileController> keys, Integer value){
+	    for(ProfileController each : keys){
+	        if(value == 0){
+	            return each; 
+	        }
+	    }
+	    return null;
 	}
 }

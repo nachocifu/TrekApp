@@ -142,31 +142,7 @@ public class Options extends JFrame {
 			}
 		});
 		btnNewGroup.setBounds(227, 242, 131, 29);
-		panel.add(btnNewGroup);
-		
-		final JButton btnCalif = new JButton();
-		btnCalif.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Calif frame = new Calif(instance, session, language);
-				frame.setVisible(true);
-				frame.pack();
-				frame.setSize(900, 602);
-				close();
-			}
-		});
-		btnCalif.setBounds(300, 312, 250, 29);
-		panel.add(btnCalif);
-		
-		/**/
-		//z significa que existe usuarios a quien califica para q aparezca el boton btnCalif
-		int z = 0;
-		if(z == 0){
-			btnCalif.setVisible(false);
-		}else{
-			btnCalif.setVisible(true);
-		}
-		/**/
-		
+		panel.add(btnNewGroup);		
 		
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
@@ -203,7 +179,7 @@ public class Options extends JFrame {
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
-		btnCalif.setText(messages.getString("Options.5")); //$NON-NLS-1$
+		
 		btnNewGroup.setText(messages.getString("Options.6")); //$NON-NLS-1$
 		btnSignOut.setText(messages.getString("Options.7")); //$NON-NLS-1$
 		btnTripSearch.setText(messages.getString("Options.8")); //$NON-NLS-1$
