@@ -21,7 +21,6 @@ import domain.Trip;
  *
  * NO EJECUTAR YA QUE PISA LA BASE DE DATOS
  *
- * @author nacho
  */
 public class DataBaseTest {
     private String databaseUrl = "jdbc:sqlite:DataBase";
