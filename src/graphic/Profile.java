@@ -1,5 +1,13 @@
 package graphic;
 
+import graphic.Connect;
+import graphic.Contacts;
+import graphic.ImagePanel;
+import graphic.OldTrips;
+import graphic.Options;
+import graphic.TripGroups;
+import graphic.UserSearch;
+
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
@@ -82,7 +90,7 @@ public class Profile extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Profile frame = new Profile(null, 2, null,true);
+					Profile frame = new Profile(null, 1, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 620);
@@ -354,7 +362,7 @@ public class Profile extends JFrame {
 				close();
 			}
 		});
-		btnPastTrip.setBounds(297, 374, 193, 23);
+		btnPastTrip.setBounds(297, 410, 193, 23);
 		panel.add(btnPastTrip);
 		
 		if(session != null){
@@ -494,16 +502,16 @@ public class Profile extends JFrame {
 				}
 			}
 		});
-		btnPresenttrips.setBounds(297, 424, 193, 23);
+		btnPresenttrips.setBounds(297, 450, 193, 23);
 		panel.add(btnPresenttrips);
 		
 		final JButton btnContacts = new JButton();
-		btnContacts.setBounds(297, 474, 193, 23);
+		btnContacts.setBounds(297, 490, 193, 23);
 		panel.add(btnContacts);
 		
 		final JLabel lblNumbertrips = new JLabel(); 
 		lblNumbertrips.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
-		lblNumbertrips.setBounds(517, 345, 193, 20);
+		lblNumbertrips.setBounds(200, 345, 220, 20);
 		lblNumbertrips.setForeground(Color.BLACK);
 		panel.add(lblNumbertrips);
 		
@@ -513,7 +521,7 @@ public class Profile extends JFrame {
 		tFTripNum.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
 		tFTripNum.setForeground(Color.BLACK);
 		tFTripNum.setEditable(false);
-		tFTripNum.setBounds(712, 345, 163, 20);
+		tFTripNum.setBounds(420, 345, 163, 20);
 		panel.add(tFTripNum);
 		tFTripNum.setColumns(10);
 		
@@ -531,6 +539,7 @@ public class Profile extends JFrame {
 		tFEmail.setColumns(10);	
 		
 		tFFUserName = new JTextField();
+		
 		Object[] fields = {
 				"Escribir nombre de Usuario", tFFUserName,  //$NON-NLS-1$
 		};
@@ -557,6 +566,8 @@ public class Profile extends JFrame {
 			lblCalif.setVisible(false);
 			tFRate.show(false);
 			radioButton.setVisible(false);
+			lblNumbertrips.setVisible(false);
+			tFTripNum.setVisible(false);
 			
 		}else if(choice == 1){
 			tFCityBirth.setEditable(false);
@@ -606,7 +617,7 @@ public class Profile extends JFrame {
 							confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
 						}
 						try {
-							//if(instance.getCurrentProfileController().)session.
+							//if(instance.getCurrentProfileController().)session. && instance != null
 								instance.getCurrentProfileController().sendFriendRequest(tFFUserName.getText());
 						} catch (SessionNotActiveException e1) {
 							e1.printStackTrace();
