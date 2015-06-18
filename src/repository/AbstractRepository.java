@@ -196,4 +196,6 @@ public abstract class AbstractRepository<T> {
      */
     public abstract List<T> searchBy(String searchTxt, Profile currentUser);
 
+
+
 }

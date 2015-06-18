@@ -24,8 +24,8 @@ import domain.Trip;
 @DatabaseTable(tableName="Profile")
 public class Profile {
 
-	/*Profile Attributes*/
-	
+    /*Profile Attributes*/
+
     /** the users username in the system */
     @DatabaseField( unique = true)
     private String usrName = null;
@@ -62,7 +62,7 @@ public class Profile {
     /**the users email*/
     @DatabaseField
     private String email = null;
-    
+
     /**
      *the user will be able to checkIn in a specific location, it will save the last
      *location where the user checked-in
@@ -88,18 +88,17 @@ public class Profile {
     /**the groups the user belongs to*/
     @ForeignCollectionField
     private HashSet<Group> groups;
-    
+
     /**
      * REJECTED if he has been rejected and WAITING if is waiting for acceptance
      */
-    @ForeignCollectionField
     private HashMap<Profile, RequestStatus> friendRequests;
 
     @DatabaseField
     private String password = null;
 
     /*Profile Constructors*/
-    
+
     /** Empty constructor for ORM persistence*/
     public Profile(){
 
@@ -145,15 +144,15 @@ public class Profile {
     public Profile(String usrName, String name, String surname, Date brthDay, boolean sex, String password, String city, String email){
         this(usrName, name, surname, null, brthDay, sex, password, city, email);
     }
-    
+
     /*Profile Methods*/
-    
+
     /**
      * Accepts a friend of the friend request list if he has not been rejected
      * @param newMember
      */
     public void acceptFriend(Profile newFriend){
-		if (!friendRequests.containsKey(newFriend)){
+        if (!friendRequests.containsKey(newFriend)){
             throw new IllegalArgumentException("The user does not belong to the users requesting a to be friends with this profile");
         }else if(!(friendRequests.get(newFriend) == RequestStatus.WAITING)){
             throw new IllegalArgumentException("The user has been rejected and cannot be accespted as a friend");
@@ -162,7 +161,7 @@ public class Profile {
         friends.add(newFriend);
         newFriend.getFriends().add(this);
     }
-    
+
     /**
      * Adds a friend request to be accepted or not
      * @param possibleMember
@@ -172,11 +171,11 @@ public class Profile {
         if(friendRequests.containsKey(possibleFriend)){
             throw new IllegalArgumentException("The user already belongs to the users requesting to be friends with this profile");
         }else if(blockedUsr.contains(possibleFriend)){
-        	throw new IllegalArgumentException("The user is blocked and cannot send a friend request");
+            throw new IllegalArgumentException("The user is blocked and cannot send a friend request");
         }
         friendRequests.put(possibleFriend, RequestStatus.WAITING);
     }
-    
+
     /**
      * Adds a friend request to be accepted or not
      * @param possibleMember
@@ -185,18 +184,18 @@ public class Profile {
     public void sendFriendRequest(Profile possibleFriend) throws InvalidPermissionException{
         possibleFriend.addFriendRequest(this);
     }
-    
+
     /**
      * Rejects a member of the request list
      * @param rejectedProfile
      */
     public void rejectAFriendRequest(Profile rejectedProfile){
-    	if(!friendRequests.containsKey(rejectedProfile)){
+        if(!friendRequests.containsKey(rejectedProfile)){
             throw new IllegalArgumentException("The user does not belong to the users requesting to be friends with this profile");
-    	}else if(!(friendRequests.get(rejectedProfile) == RequestStatus.REJECTED)){
+        }else if(!(friendRequests.get(rejectedProfile) == RequestStatus.REJECTED)){
             throw new IllegalArgumentException("The user has already been rejected");
-    	}
-    	friendRequests.put(rejectedProfile, RequestStatus.REJECTED);
+        }
+        friendRequests.put(rejectedProfile, RequestStatus.REJECTED);
     }
 
     /**
@@ -252,9 +251,9 @@ public class Profile {
      * @param rating that will be updated on the users profile, should be automatically updated each time a review is added
      */
     public void setRating(Double rating){
-    	if(rating == null){
-    		throw new IllegalArgumentException("The rating is null");
-    	}
+        if(rating == null){
+            throw new IllegalArgumentException("The rating is null");
+        }
         this.rating=rating;
     }
 
@@ -269,9 +268,9 @@ public class Profile {
      * @param city
      */
     public void setCity(String city){
-    	if(rating == null || city.trim().isEmpty()){
-    		throw new IllegalArgumentException("The rating is either null or empty");
-    	}
+        if(rating == null || city.trim().isEmpty()){
+            throw new IllegalArgumentException("The rating is either null or empty");
+        }
         this.city=city;
     }
 
@@ -286,9 +285,9 @@ public class Profile {
      * @param email
      */
     public void setEmail(String email){
-    	if(rating == null || city.trim().isEmpty()){
-    		throw new IllegalArgumentException("The e-mail is either null or empty");
-    	}
+        if(rating == null || city.trim().isEmpty()){
+            throw new IllegalArgumentException("The e-mail is either null or empty");
+        }
         this.email=email;
     }
 
@@ -369,8 +368,8 @@ public class Profile {
      * @param group of group that the user will be added to
      */
     public void joinGroup(Group group){
-    	if(groups.contains(group))
-    		throw new IllegalArgumentException("The user already belongs to that group");
+        if(groups.contains(group))
+            throw new IllegalArgumentException("The user already belongs to that group");
         this.groups.add(group);
     }
 
@@ -378,8 +377,8 @@ public class Profile {
      * @param group of the group the user is leaving
      */
     public void leaveGroup(Group group){
-    	if(!groups.contains(group))
-    		throw new IllegalArgumentException("The user does not belong to that group");
+        if(!groups.contains(group))
+            throw new IllegalArgumentException("The user does not belong to that group");
         this.groups.remove(group);
     }
 
@@ -414,8 +413,8 @@ public class Profile {
      * and will be added to the blocked user
      */
     public void blockUser(Profile blckdUser){
-    	if(blockedUsr.contains(blckdUser))
-    		throw new IllegalArgumentException("The user is already blocked");
+        if(blockedUsr.contains(blckdUser))
+            throw new IllegalArgumentException("The user is already blocked");
         this.friends.remove(blckdUser);
         this.blockedUsr.add(blckdUser);
     }
@@ -424,8 +423,8 @@ public class Profile {
      * @param usrId of the user that should be unblocked
      */
     public void unBlockedUsr(Profile usr){
-    	if(!blockedUsr.contains(usr))
-    		throw new IllegalArgumentException("The user is already unblocked");
+        if(!blockedUsr.contains(usr))
+            throw new IllegalArgumentException("The user is already unblocked");
         this.blockedUsr.remove(usr);
     }
 
@@ -434,17 +433,17 @@ public class Profile {
      * this will also be deleted from friend's list
      */
     public void deleteFriend(Profile friend){
-    	if(friends.contains(friend))
-    		throw new IllegalArgumentException("The user is not a friend");
+        if(friends.contains(friend))
+            throw new IllegalArgumentException("The user is not a friend");
         this.friends.remove(friend);
         friend.getFriends().remove(this);
     }
-    
+
     /**
      * @return user friend requests
      */
     public HashMap<Profile, RequestStatus>getFriendRequests(){
-    	return this.friendRequests;	
+        return this.friendRequests;
     }
 
     /**
