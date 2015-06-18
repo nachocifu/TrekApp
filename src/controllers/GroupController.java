@@ -21,7 +21,12 @@ public class GroupController extends AbstractController<Group> {
         super(groupRepo);
     }
     
-    public HashSet<ProfileController> getMissingMembersToReview() throws SessionNotActiveException, ControllerNotLoadedException{
+    /**
+     * @return a Collection with the Members that are not reviewed
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public Collection<ProfileController> getMissingMembersToReview() throws SessionNotActiveException, ControllerNotLoadedException{
     	this.validateEnvironment();
     	return ProfileController.generateListOfControllers(this.obj.getMissingReviewsToMakeByAMember(Application.getInstance().getCurrentProfileController().getObject())); 	
     }

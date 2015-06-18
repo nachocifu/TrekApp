@@ -20,18 +20,31 @@ public class Message {
 	public Message(){
 	}
 	
+	/**
+	 * @param text contained in the message being instanced
+	 */
 	public Message(String text){
 		this.text = text;
 	}
 	
+	/**
+	 * Converts the message to upercase
+	 */
 	public void uperCaseMessage(){
 		this.text = this.text.toUpperCase();
 	}
 	
+	/**
+	 * converts the message to lowerCase
+	 */
 	public void lowerCaseMessage(){
 		this.text = this.text.toLowerCase();
 	}
 	
+	/**
+	 * @param word to be checked
+	 * @return boolean value indicating if the word is contained in the message
+	 */
 	public boolean containsWordInsideMessage(String word){
 		return this.text.contains(word);
 	}

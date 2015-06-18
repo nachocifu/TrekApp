@@ -90,14 +90,17 @@ public class Session {
         return this.userName;
     }
 
+    /**
+     * 
+     * @return boolean value indication if there is a current session taking place
+     */
     public Boolean isActive() {
         return isActive;
     }
 
     /*
-     * NUNCA  SE DEVUELVE LA CONTRASENA  Y SOLO MANDA POR PARAMETROS A LA HORA DE VALIDAR PQ
-     * EL FACTORY ES STATIC, NO SE PUEDE TRUCHAR. EN CUALQUIER OTRA CIRCUNSTANCIA BUSCAR ALTERNATIVAS
-     * PASSWORD NO TIENE QUE SALIR NUNCA DE SESSION Y MUCHO MENOS DEL FACOTORY.
+     * The password is never returned, it is only sent in the parameters when validation is taking place
+     * because the class application (factory) is static. Password should never leave session or from application
      */
 
 }

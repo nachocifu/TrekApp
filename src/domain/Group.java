@@ -160,10 +160,18 @@ public class Group {
          missingReviewsToMake.get(loggedUser).remove(member);
     }
 
+    /**
+     * 
+     * @return a hashmap, the key is the Profile of the user who still has to make a review and the value
+     * is a HashSet containing the Profiles of the users the user has still not reviewed
+     */
     public HashMap<Profile, HashSet<Profile>> getMissingReviewsToMake() {
 		return missingReviewsToMake;
 	}
     
+    /**
+     * 
+     */
     public void updateMissingReviews(){
     	for (Profile member : members) {
     		HashSet<Profile> membersToReview = new HashSet<Profile>(members);
@@ -174,9 +182,10 @@ public class Group {
     
     /**
      * @param member
-     * @return Returns the missing members to give a review
+     * @return A HashSet containing the Profiles that members is yet to review
+     * @throws IllegalArgumentException when the member is not part of the group
      */
-    public HashSet<Profile> getMissingReviewsToMakeByAMember(Profile member) {
+    public HashSet<Profile> getMissingReviewsToMakeByAMember(Profile member){
     	if(!members.contains(member)){
     		throw new IllegalArgumentException("Cannot get the missing reviews because you do not belong to this group");
     	}

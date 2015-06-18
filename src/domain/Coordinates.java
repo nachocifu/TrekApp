@@ -3,6 +3,10 @@ package domain;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+
+/**
+ * Class with two values representing the x and y coordinates
+ */
 @DatabaseTable(tableName = "Coordinates")
 public class Coordinates {
 	
@@ -32,15 +36,25 @@ public class Coordinates {
 		return Math.sqrt((coor2.getX() - this.x) + (coor2.getY() - this.y));
 	}
 	
+	/**
+	 * @param new x value
+	 * @param new y value
+	 */
 	public void updateCoordinates(Double x, Double y){
 		this.x = x;
 		this.y = y;
 	}
 	
+	/**
+	 * @return x value
+	 */
 	public Double getX(){
 		return this.x;
 	}
 	
+	/**
+	 * @return y value
+	 */
 	public Double getY(){
 		return this.y;
 	}

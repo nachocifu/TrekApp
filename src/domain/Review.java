@@ -12,11 +12,23 @@ public class Review {
 		private Profile profileOrigin;
 		private String comment;
 		
+		/**
+		 * New review only containig who created the review and who its destined for, 
+		 * in other word, an empty review(it doesnt contain a rating or a comment)
+		 * @param profile_orgin
+		 * @param profileTarget
+		 */
 		public Review(Profile profile_orgin, Profile profileTarget) {
 			this.profileOrigin = profile_orgin;
 			this.profileTarget = profileTarget;
 		}
 		
+		/**
+		 * @param rec reciever of the review, profile that is being reviewed
+		 * @param send sender of the review, profile that is making the review
+		 * @param msg description contained in the review, the senders opinion on the reciever
+		 * @param rat rating, whole number from 0 to 5 representing the overall opinion on the reciever
+		 */
 		public Review(Profile rec, Profile send, String msg, Integer rat){
 			setRating(rat);
 			this.profileTarget = rec;
@@ -33,7 +45,7 @@ public class Review {
 		
 		/**
 		 * @param rating
-		 * @throws IllegalArgumentException
+		 * @throws IllegalArgumentException when the rating being set is not a value between 0 and 5
 		 */
 		private void setRating(Integer rating) throws IllegalArgumentException {
 			if(rating >= 0 && rating <= 5){
