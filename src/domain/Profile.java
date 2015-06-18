@@ -433,35 +433,31 @@ public class Profile {
         return this.friendRequests;
     }
 
-    <<<<<<< HEAD
-    
-
     public void setFriends(HashSet<Profile> friends) {
-		this.friends = friends;
-	}
+        this.friends = friends;
+    }
 
-	public void setBlockedUsr(HashSet<Profile> blockedUsr) {
-		this.blockedUsr = blockedUsr;
-	}
+    public void setBlockedUsr(HashSet<Profile> blockedUsr) {
+        this.blockedUsr = blockedUsr;
+    }
 
-	public void setTrips(HashSet<Trip> trips) {
-		this.trips = trips;
-	}
+    public void setTrips(HashSet<Trip> trips) {
+        this.trips = trips;
+    }
 
-	public void setReviews(HashSet<Review> reviews) {
-		this.reviews = reviews;
-	}
+    public void setReviews(HashSet<Review> reviews) {
+        this.reviews = reviews;
+    }
 
-	public void setGroups(HashSet<Group> groups) {
-		this.groups = groups;
-	}
+    public void setGroups(HashSet<Group> groups) {
+        this.groups = groups;
+    }
 
-	public void setFriendRequests(HashMap<Profile, RequestStatus> friendRequests) {
-		this.friendRequests = friendRequests;
-	}
-=======
+    public void setFriendRequests(HashMap<Profile, RequestStatus> friendRequests) {
+        this.friendRequests = friendRequests;
+    }
 
-	public int hashCode() {
+    public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((brthDay == null) ? 0 : brthDay.hashCode());
