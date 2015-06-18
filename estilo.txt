@@ -1,0 +1,49 @@
+
+/**
+* nombre de la clase proposito y si es necesario descripcion
+*/
+public class Person{
+enter
+	private String name;
+	.
+	.
+	.
+enter
+	/**
+	*@params name the name of the person
+	*@params age the age of the person
+	*/
+	public void Person(String name, Integer age){
+		this.name = name;
+	}
+enter
+	/**
+	*no es el caso, pero aca va lo que hace el metodo cuando es largo o dificil, puede no ir nada
+	*@return age return the age of the person	
+	*/
+	public Integer getAge(){
+		return this.age;
+	}
+enter
+	/**
+	*este metodo no hace nada, es solo para mostar un for y un if
+	*/
+	public void method(){
+		Boolean naty_entrega = true;
+		for(int i = 0; i < 10; i++){
+			logica
+		}  
+		if(naty_entrega){
+			logica
+		}
+		else{
+			logic
+		}
+	}
+>>>>>>> eeb1fdc05ac91ee99c7d0f0e2ff9fc1167f684d8
+}
+
+
+siempre van primero las variables, dsps constructores, dsps getters y setter, y dsps el resto de los metodos
+hashcode e equals al final. en equals nunca usar caso == de instancia
+	
