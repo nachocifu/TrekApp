@@ -9,7 +9,7 @@ package repository;
  */
 public enum Relationship {
 
-     REJECTED("rejected"), PENDING("pending"), FRIEND("friend"), BLOCKED("blocked");
+     REJECTED("rejected"), WAINTING("waiting"), FRIEND("friend"), BLOCKED("blocked");
 
      private String status;
 
@@ -21,11 +21,11 @@ public enum Relationship {
               return status;
      }
 
-     public static Relationship fromInteger(Integer i){
+     public static Relationship fromString(String i){
             if(i.equals(Relationship.REJECTED.getStatus()))
                 return Relationship.REJECTED;
-            if(i.equals(Relationship.PENDING.getStatus()))
-                return Relationship.PENDING;
+            if(i.equals(Relationship.WAINTING.getStatus()))
+                return Relationship.WAINTING;
             if(i.equals(Relationship.FRIEND.getStatus()))
                 return Relationship.FRIEND;
             return null;

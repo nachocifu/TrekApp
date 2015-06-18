@@ -14,7 +14,7 @@ public enum RequestStatus {
               return status;
      }
 
-     public static RequestStatus fromInteger(Integer i){
+     public static RequestStatus fromString(String i){
             if(i.equals(RequestStatus.REJECTED.getStatus()))
                 return RequestStatus.REJECTED;
             if(i.equals(RequestStatus.WAITING.getStatus()))

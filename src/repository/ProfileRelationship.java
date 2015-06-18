@@ -12,7 +12,7 @@ import domain.Profile;
  * @author nacho
  *
  */
-@DatabaseTable
+@DatabaseTable( tableName = "profilesRelations")
 class ProfileRelationship {
 
     @DatabaseField
