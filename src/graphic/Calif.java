@@ -107,7 +107,7 @@ public class Calif extends JFrame {
 		ArrayList<ProfileController> profile = null;
 		if(instance != null){
 			try {
-				profile = new ArrayList<>(groupController.getMembers());
+				profile = new ArrayList<>(groupController.getMissingMembersToReview());
 				for(ProfileController each : profile){
 					if(! each.getUserName().equals(instance.getCurrentProfileController().getUserName())){
 						profiles.addElement(each.getUserName());

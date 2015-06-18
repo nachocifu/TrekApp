@@ -347,7 +347,7 @@ public class Profile extends JFrame {
 		final JButton btnPastTrip = new JButton();
 		btnPastTrip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				OldTrips frame = new OldTrips(instance, session,language);
+				OldTrips frame = new OldTrips(instance, session, choice, language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -365,6 +365,7 @@ public class Profile extends JFrame {
 				tFAge.setText(instance.getCurrentProfileController().getBirthday().toString());
 				tFEmail.setText(instance.getCurrentProfileController().getMail());
 				tFRate.setText(getReview(instance.getCurrentProfileController().getRating()));
+				tFTripNum.setText(	((Integer) instance.getCurrentProfileController().getTrips().size()).toString());
 			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 			
 			}
@@ -575,6 +576,7 @@ public class Profile extends JFrame {
 				}
 			});
 		}else if(choice == 2){
+			btnApply.setVisible(false);
 			tFCityBirth.setEditable(false);
 			tFName.setEditable(false);
 			tFSurName.setEditable(false);
@@ -604,7 +606,8 @@ public class Profile extends JFrame {
 							confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
 						}
 						try {
-							instance.getCurrentProfileController().sendFriendRequest(tFFUserName.getText());
+							//if(instance.getCurrentProfileController().)session.
+								instance.getCurrentProfileController().sendFriendRequest(tFFUserName.getText());
 						} catch (SessionNotActiveException e1) {
 							e1.printStackTrace();
 						} catch (ControllerNotLoadedException e1) {

@@ -60,7 +60,7 @@ public class OldTrips extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					OldTrips frame = new OldTrips(null, null,true);
+					OldTrips frame = new OldTrips(null, null, 1 ,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -74,7 +74,7 @@ public class OldTrips extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public OldTrips(final Application instance, final Session session, final boolean language) {
+	public OldTrips(final Application instance, final Session session, final Integer choice, final boolean language) {
 		
 		Locale currentLocale;
 		if(language){
@@ -249,7 +249,7 @@ public class OldTrips extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, 1, session,language);
+				Profile frame = new Profile(instance, choice, session,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -262,7 +262,7 @@ public class OldTrips extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				OldTrips frame = new OldTrips(instance, session,false);
+				OldTrips frame = new OldTrips(instance, session, choice,false);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -279,7 +279,7 @@ public class OldTrips extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OldTrips frame = new OldTrips(instance, session,true);
+				OldTrips frame = new OldTrips(instance, session, choice,true);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
