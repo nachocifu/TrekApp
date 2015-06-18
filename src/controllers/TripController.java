@@ -22,36 +22,78 @@ public class TripController extends AbstractController<Trip> {
         super(repo);
     }
 
+    /**
+     * 
+     * @return date when the trip starts
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Date getStartDate() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getStartDate();
     }
 
+    /**
+     * 
+     * @return the date when the trip begins
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Date getEndDate() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getEndDate();
     }
 
+    /**
+     * 
+     * @return the estimated cost of the trip
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Double getEstimateCost() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getEstimateCost();
     }
 
+    /**
+     * 
+     * @return the trips description
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public String getTripDescription() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getTripDescription();
     }
 
+    /**
+     * 
+     * @return the city where the trip starts
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public String getOriginCity() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getOriginCity();
     }
 
+    /**
+     * 
+     * @return the city where the finishes
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public String getEndCity() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getEndCity();
     }
 
+    /**
+     * 
+     * @return the trips current status
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public TripStatus getTripStatus() throws SessionNotActiveException, ControllerNotLoadedException {
         this.validateEnvironment();
         return this.obj.getTripStatus();

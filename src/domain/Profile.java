@@ -309,7 +309,7 @@ public class Profile {
     /**
      * @param x coordinate from the users location
      * @param y coordinate from the users location
-     * @deprecated ESTO AL FINAL SE USA O LO PODEMOS VOLAR???
+     * @deprecated
      */
     public void checkIn(Double x, Double y){
         Coordinates coor = new Coordinates(x,y);
@@ -383,16 +383,6 @@ public class Profile {
         this.groups.remove(group);
     }
 
-    /**
-     * @return a boolean value indicating if the password is correct, this way the password remains private and is never
-     * shared with a different object
-     * @deprecated REALMENTE NECESITAMOS ESTO? DEJEMOSLO POR LAS DUDAS
-     */
-    public boolean cmpPassword(String pass){
-        if(this.password.equals(pass))
-            return true;
-        return false;
-    }
 
     /**
      * @param oldPass used to validate
@@ -448,7 +438,7 @@ public class Profile {
     }
 
     /**
-     * NO VA
+     * @deprecated
      * @return the age, it compares todays date with the day of birth of the user
      */
     @SuppressWarnings("deprecation")

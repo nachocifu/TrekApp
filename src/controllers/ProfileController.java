@@ -46,66 +46,142 @@ public class ProfileController extends AbstractController<Profile> {
             return false;
     }
 
+    /**
+     * 
+     * @return a string containing the profiles username
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
    public String getUsername() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getUsrName();
     }
 
+   /**
+    * @return a string containing the users name
+    * @throws SessionNotActiveException
+    * @throws ControllerNotLoadedException
+    */
     public String getUserName() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getName();
     }
 
+    /**
+     * @return a string with the users surname
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public String getSurname() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getSurname();
     }
 
+    /**
+     * 
+     * @return a boolean reperesenting the profiles sex, true being female and false male
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Boolean getSex() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getSex();
     }
 
+    /**
+     * 
+     * @return a date with the profiles birthday
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Date getBirthday() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getBirthDay();
     }
 
+    /**
+     * 
+     * @return the profiles average rating
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Double getRating() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getRating();
     }
 
+    /**
+     * 
+     * @return the city where the profile is from
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public String getCity() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.getCity();
     }
 
+    /**
+     * 
+     * @return the profiles email
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public String getMail() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return this.obj.getEmail();
     }
 
-    public HashSet<ProfileController> getFriends() throws SessionNotActiveException, ControllerNotLoadedException{
+    /**
+     * 
+     * @return a Collection containing ProfileController's, which would be the profiles friends ProfileControllers
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public Collection<ProfileController> getFriends() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return ProfileController.generateListOfControllers(obj.getFriends());
     }
     
-    public HashSet<ProfileController> getBlockUsers() throws SessionNotActiveException, ControllerNotLoadedException{
+    /**
+     * 
+     * @return a Collection containing ProfileController's, which would be the profiles blocked users ProfileControllers
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public Collection<ProfileController> getBlockUsers() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return ProfileController.generateListOfControllers(obj.getBlockedUsrs());
     }
 
+    /**
+     * 
+     * @returna Collection containing GroupController's, which would be the profile's groups GroupControllers
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Collection<GroupController> getGroups() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return GroupController.generateListOfControllers(obj.getGroups());
     }
 
+    /**
+     * 
+     * @return a Collection containing TripController's, which would be the profiles trips TripControllers
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Collection<TripController> getTrips() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         return TripController.generateListOfControllers(obj.getTrips());
     }
     
+    /**
+     * 
+     * @return a Collection containting the profiles reviews
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
     public Collection<Review> getReviews() throws SessionNotActiveException, ControllerNotLoadedException{
     	this.validateEnvironment();
     	return this.obj.getReviews();
