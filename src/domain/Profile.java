@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import domain.Coordinates;
@@ -60,7 +62,7 @@ public class Profile {
     /**the users email*/
     @DatabaseField
     private String email = null;
-
+    
     /**
      *the user will be able to checkIn in a specific location, it will save the last
      *location where the user checked-in
@@ -68,29 +70,29 @@ public class Profile {
     private Coordinates checkIn = null;
 
     /**the users friends*/
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashSet<Profile> friends;
+    @ForeignCollectionField
+    private Collection<Profile> friends;
 
     /**the users blocked users*/
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashSet<Profile> blockedUsr;
+    @ForeignCollectionField
+    private Collection<Profile> blockedUsr;
 
     /**the users past trips*/
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashSet<Trip> trips;
+    @ForeignCollectionField
+    private Collection<Trip> trips;
 
     /**the users reviews*/
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashSet<Review> reviews;
+    @ForeignCollectionField
+    private Collection<Review> reviews;
 
     /**the groups the user belongs to*/
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
-    private HashSet<Group> groups;
+    @ForeignCollectionField
+    private Collection<Group> groups;
     
     /**
      * REJECTED if he has been rejected and WAITING if is waiting for acceptance
      */
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    @ForeignCollectionField
     private HashMap<Profile, RequestStatus> friendRequests;
 
     @DatabaseField

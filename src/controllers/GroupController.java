@@ -1,12 +1,12 @@
 package controllers;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import domain.ControllerNotLoadedException;
 import domain.Group;
 import domain.InvalidPermissionException;
+import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.TripNotClosedException;
 import domain.TripStatus;
@@ -21,8 +21,12 @@ public class GroupController extends AbstractController<Group> {
         super(groupRepo);
     }
     
+    public HashSet<ProfileController> getMissingMembersToReview() throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	return ProfileController.generateListOfControllers(this.obj.getMissingReviewsToMakeByAMember(Application.getInstance().getCurrentProfileController().getObject())); 	
+    }
+    
     /**
-     * 
      * @return
      * @throws ControllerNotLoadedException 
      * @throws SessionNotActiveException 
@@ -80,12 +84,13 @@ public class GroupController extends AbstractController<Group> {
      * @throws ControllerNotLoadedException
      * @throws InvalidPermissionException
      */
-    public void addPost(CurrentProfileController profileController, Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
+    public void addPost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
-        this.validateController(profileController);
-        if(!this.obj.getMembers().contains(profileController.getObject()))
+        Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
+        if(!this.obj.getMembers().contains(loggedUser)){
     		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
-        this.obj.addPost(profileController.getObject(), msg);
+        }
+        this.obj.addPost(loggedUser, msg);
         saveChanges();
     }
 
@@ -97,12 +102,13 @@ public class GroupController extends AbstractController<Group> {
      * @throws ControllerNotLoadedException
      * @throws InvalidPermissionException
      */
-    public void addGroupTrip(CurrentProfileController profileController, TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
+    public void addGroupTrip(TripController tripController) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
         this.validateController(tripController);
-        this.validateController(profileController);
-        if(!this.obj.getMembers().contains(profileController.getObject()))
-    		throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
+        Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
+        if(!this.obj.getMembers().contains(loggedUser)){
+        	throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
+        }
         this.obj.addGroupTrip(tripController.getObject());
         saveChanges();
     }
@@ -124,11 +130,11 @@ public class GroupController extends AbstractController<Group> {
      * @throws ControllerNotLoadedException
      * @throws TripNotClosedException 
      */
-    public void sendReviewToAMember(CurrentProfileController loggedUser, ProfileController member, String msg, Integer rating) throws SessionNotActiveException, ControllerNotLoadedException, TripNotClosedException{
+    public void sendReviewToAMember(ProfileController member, String msg, Integer rating) throws SessionNotActiveException, ControllerNotLoadedException, TripNotClosedException{
     	this.validateEnvironment();
-        this.validateController(loggedUser);
         this.validateController(member);
-        this.obj.sendReviewToAMember(loggedUser.getObject(), member.getObject(), msg, rating);
+        Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
+        this.obj.sendReviewToAMember(loggedUser, member.getObject(), msg, rating);
         member.saveChanges();
     }
     
@@ -150,10 +156,10 @@ public class GroupController extends AbstractController<Group> {
      * @throws ControllerNotLoadedException
      * @throws InvalidPermissionException 
      */
-    public void sendMemberRequest(CurrentProfileController possibleMember) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
+    public void sendMemberRequest() throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
     	this.validateEnvironment();
-        this.validateController(possibleMember);
-        this.obj.addMemberRequest(possibleMember.getObject());
+    	Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
+        this.obj.addMemberRequest(loggedUser);
         saveChanges();
     }
     

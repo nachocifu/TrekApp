@@ -1,11 +1,13 @@
 package controllers;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 import domain.ControllerNotLoadedException;
+import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.TripStatus;
-
 import repository.TripRepository;
 
 
@@ -56,9 +58,18 @@ public class MyTripController extends TripController {
         saveChanges();
     }
 
-    public void setTripStatus(TripStatus tripStatus) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void setTripStatus(MyGroupController tripGroupController, TripStatus newTripStatus) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.setTripStatus(tripStatus);
+        this.validateController(tripGroupController);
+        if(newTripStatus == TripStatus.CLOSED && this.obj.getTripStatus() != TripStatus.CLOSED){
+        	tripGroupController.getObject().updateMissingReviews();
+        	Collection<Profile> groupMembers = tripGroupController.getObject().getMembers();
+        	for (Profile profile : groupMembers) {
+				profile.getTrips().add(this.obj);
+			}
+        	tripGroupController.saveChanges();
+        }
+        this.obj.setTripStatus(newTripStatus);
         saveChanges();
     }
     

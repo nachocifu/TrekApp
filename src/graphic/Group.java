@@ -385,7 +385,7 @@ public class Group extends JFrame {
 						try {
 							MyGroupController group;
 							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
-							group.addGroupTrip(instance.getCurrentProfileController(), myTrip);
+							group.addGroupTrip(myTrip);
 							if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
 								group.setFilters(Integer.parseInt(tFFAge.getText()), tFFCity.getText());
 							}
@@ -546,7 +546,7 @@ public class Group extends JFrame {
 							btnRequestcheck.setEnabled(false);
 						}else{	
 							try {
-								groupController.sendMemberRequest(instance.getCurrentProfileController());
+								groupController.sendMemberRequest();
 							} catch (SessionNotActiveException e1) {
 								e1.printStackTrace();
 							} catch (ControllerNotLoadedException e1) {

@@ -146,7 +146,7 @@ public class Calif extends JFrame {
 				}
 				if(list.getSelectedValue() != null){
 					try {
-						groupController.sendReviewToAMember(instance.getCurrentProfileController(), profileAux.get(allOptions.getSelectedIndex()), null, allOptions.getSelectedIndex());
+						groupController.sendReviewToAMember(profileAux.get(allOptions.getSelectedIndex()), null, allOptions.getSelectedIndex());
 					} catch (SessionNotActiveException e1) {
 						e1.printStackTrace();
 					} catch (ControllerNotLoadedException e1) {

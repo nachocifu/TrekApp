@@ -112,6 +112,11 @@ public class Trip {
     }
 
     public void setTripStatus(TripStatus tripStatus) {
+    	if(this.tripStatus == TripStatus.CLOSED && ((tripStatus == TripStatus.OPEN) || (tripStatus == TripStatus.IN_PROGRESS))){
+    		throw new IllegalArgumentException("Cannot set the status to Open or In Progress because the Trip is already closed");
+    	} else if((tripStatus == TripStatus.IN_PROGRESS) && this.tripStatus == TripStatus.OPEN){
+    		throw new IllegalArgumentException("Cannot set the status to Open when the Trip is In Progress");
+    	}
         this.tripStatus = tripStatus;
     }
 

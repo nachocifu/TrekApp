@@ -1,6 +1,5 @@
 package controllers;
 
-import java.util.Collection;
 import java.util.HashMap;
 
 import domain.ControllerNotLoadedException;

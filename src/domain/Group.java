@@ -157,12 +157,25 @@ public class Group {
         	 throw new IllegalArgumentException("That member already received a review from this user");
          }
          member.addReview(loggedUser, msg, rating);
+         missingReviewsToMake.get(loggedUser).remove(member);
     }
 
     public HashMap<Profile, HashSet<Profile>> getMissingReviewsToMake() {
 		return missingReviewsToMake;
 	}
     
+    public void updateMissingReviews(){
+    	for (Profile member : members) {
+    		HashSet<Profile> membersToReview = new HashSet<Profile>(members);
+    		membersToReview.remove(member);
+    		this.missingReviewsToMake.put(member, membersToReview);
+		}
+    }
+    
+    /**
+     * @param member
+     * @return Returns the missing members to give a review
+     */
     public HashSet<Profile> getMissingReviewsToMakeByAMember(Profile member) {
     	if(!members.contains(member)){
     		throw new IllegalArgumentException("Cannot get the missing reviews because you do not belong to this group");
