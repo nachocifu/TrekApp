@@ -5,10 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.j256.ormlite.dao.ForeignCollection;
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import domain.Coordinates;
@@ -70,23 +67,23 @@ public class Profile {
     private Coordinates checkIn = null;
 
     /**the users friends*/
-    @ForeignCollectionField
+
     private HashSet<Profile> friends;
 
     /**the users blocked users*/
-    @ForeignCollectionField
+
     private HashSet<Profile> blockedUsr;
 
     /**the users past trips*/
-    @ForeignCollectionField
+
     private HashSet<Trip> trips;
 
     /**the users reviews*/
-    @ForeignCollectionField
+
     private HashSet<Review> reviews;
 
     /**the groups the user belongs to*/
-    @ForeignCollectionField
+
     private HashSet<Group> groups;
 
     /**

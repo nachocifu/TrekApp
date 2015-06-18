@@ -34,9 +34,9 @@ public class DataBaseTest {
         System.out.println("Starting tables");
         repoAdmin.start(Profile.class);
         repoAdmin.populateUsers();
-        repoAdmin.start(Group.class);
+        //repoAdmin.start(Group.class);
         //repoAdmin.populateGroups();
-        repoAdmin.start(Trip.class);
+        //repoAdmin.start(Trip.class);
 
         System.out.println("--------END-------");
 

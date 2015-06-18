@@ -318,8 +318,8 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 GenericRawResults<ProfileRelationship> rawResponse = dao.queryRaw(query, mapper);
                 List<ProfileRelationship> response = rawResponse.getResults();
 
-                Collection<Profile> friends = new HashSet<Profile>();
-                Collection<Profile> blockedUsers = new HashSet<Profile>();
+                HashSet<Profile> friends = new HashSet<Profile>();
+                HashSet<Profile> blockedUsers = new HashSet<Profile>();
                 HashMap<Profile, RequestStatus> friendRequests = new HashMap<Profile, RequestStatus>();
                 for(ProfileRelationship relation: response){
                     switch (Relationship.fromString(relation.getRelation())) {
