@@ -1,20 +1,29 @@
 package repository;
 
 
+import java.rmi.ServerException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
+
+import javax.management.openmbean.KeyAlreadyExistsException;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.dao.RawRowMapper;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.PreparedUpdate;
 import com.j256.ormlite.support.ConnectionSource;
 
+import controllers.Application;
 import domain.Profile;
+import domain.RequestStatus;
+import domain.UserNameAlreadyExistsException;
 
 public class ProfileRepository extends AbstractRepository<Profile> {
 
@@ -216,4 +225,68 @@ public class ProfileRepository extends AbstractRepository<Profile> {
         }
         return response;
     }
+
+    protected void persistCollections(Profile obj){
+
+    }
+
+    public Integer update(Profile obj){
+        this.persistProfilesInside(obj, 1);
+        return super.update(obj);
+    }
+
+    private void persistProfilesInside(Profile profile, Integer depth){
+
+        /** If max depth is reached,  */
+        if(depth <= 0)
+            return;
+
+        ConnectionSource connectionSource = null;
+            try{
+                Class.forName("org.sqlite.JDBC");
+
+                /** Generate Collection to persist */
+                Collection<ProfileRelationship> relationsList = new HashSet<ProfileRelationship>();
+
+                for( Profile each: profile.getFriends())
+                    relationsList.add( new ProfileRelationship(profile, each, Relationship.FRIEND));
+                for( Profile each: profile.getBlockedUsrs())
+                    relationsList.add( new ProfileRelationship(profile, each, Relationship.BLOCKED));
+
+                for( Entry<Profile, RequestStatus> each: profile.getFriendRequests().entrySet()){
+                    Relationship relation;
+                    if( each.getValue().equals(RequestStatus.REJECTED))
+                        relation = Relationship.REJECTED;
+                    else
+                        relation = Relationship.PENDING;
+
+                    relationsList.add( new ProfileRelationship(profile, each.getKey(), relation));
+                }
+
+                /** create a connection source to our database */
+                connectionSource = new JdbcConnectionSource(Application.getInstance().getDatabase());
+
+                /** instantiate the dao */
+                Dao<ProfileRelationship, String> dao = DaoManager.createDao(connectionSource, ProfileRelationship.class);
+
+                /** persist friends */
+
+                for( ProfileRelationship each: relationsList){
+                    dao.update(each);
+                }
+            }
+            catch(Exception e){
+                System.err.println("[ERROR] || " + e.getMessage());
+            }
+            finally{
+                /** close the connection source */
+                try {
+                    connectionSource.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            persistProfilesInside(profile, depth-1);
+        }
 }

@@ -19,6 +19,10 @@ public class Application{
     /* Default database to be used if non selected.*/
     private String DEFAULT_DATABASE = "DataBase";
 
+    /* Default database to be used if non selected.*/
+    private String currentDatabase;
+
+
     /* Store references to all repository's*/
     private ProfileRepository userRepo;
     private GroupRepository groupRepo;
@@ -30,11 +34,11 @@ public class Application{
      * @param pathToDataBase Path to dataBase from  ./src/
      */
     private Application(String pathToDataBase){
-        String pathString = pathToDataBase.trim();
-        if(pathString.isEmpty())
-            pathString = this.DEFAULT_DATABASE;
+        this.currentDatabase = pathToDataBase.trim();
+        if(this.currentDatabase.isEmpty())
+            this.currentDatabase = this.DEFAULT_DATABASE;
 
-        pathString = "jdbc:sqlite:" + pathString;
+        this.currentDatabase = "jdbc:sqlite:" + this.currentDatabase;
 
         /* Start all Databases */
         userRepo = new ProfileRepository(pathToDataBase, Profile.class);
@@ -136,7 +140,7 @@ public class Application{
 
     /**
      * Validates userName and password with the repository
-     * @param userName 
+     * @param userName
      * @param passWord
      * @return boolean value informing if the password is valid
      */
@@ -270,6 +274,10 @@ public class Application{
         GroupController newController = new GroupController(groupRepo);
         newController.load(group);
         return newController;
+    }
+
+    public String getDatabase() {
+        return this.currentDatabase;
     }
 }
 
