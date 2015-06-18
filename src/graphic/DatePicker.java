@@ -43,6 +43,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 
+/**
+ * 
+ * 
+ *
+ */
 public class DatePicker extends Observable implements Runnable, WindowFocusListener {
     protected static Font plain = new Font("Arial", Font.PLAIN, 10);
     protected static Font bold = new Font("Arial", Font.BOLD, 10);
@@ -606,10 +611,5 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
     public void setCloseOnSelect(boolean closeOnSelect) {
         this.closeOnSelect = closeOnSelect;
     }
-
-//    public static void main(String[] argv) {
-//        DatePicker dp = new DatePicker(null);
-//        dp.start(null);
-//    }
 
 }

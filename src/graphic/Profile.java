@@ -64,10 +64,6 @@ import domain.UserNameAlreadyExistsException;
 
 public class Profile extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7008575209671670763L;
 	private static JPanel panel;
 	private JTextField tFName;
 	private JTextField tFSurName;
@@ -104,7 +100,13 @@ public class Profile extends JFrame {
 	
 	/*choice corresponde al porque entra al frame profile. Si choice es 1 entra debido a que ya existe el usuario y el usuario selecciono la opcion de ver su perfil,
 		 si choice es 0 corresponde a la creacion de un usuario nuevo y si choice es 2 un usuario que no es el propio entro a ver el perfil*/
-	
+	/**
+	 * Create the Frame
+	 * @param instance
+	 * @param choice
+	 * @param session
+	 * @param language
+	 */
 	public Profile(final Application instance, final Integer choice, final Session session, final boolean language) {
 		
 		final JLabel label_12 = new JLabel("*");  //$NON-NLS-1$
@@ -488,18 +490,11 @@ public class Profile extends JFrame {
 		final JButton btnPresenttrips = new JButton();
 		btnPresenttrips.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TripGroups frame;
-				try {
-					frame = new TripGroups(instance, session,language);
-					frame.setVisible(true);
-				    frame.pack();
-				    frame.setSize(900, 602);
-				    close();
-				} catch (SessionNotActiveException e) {
-					e.printStackTrace();
-				} catch (ControllerNotLoadedException e) {
-					e.printStackTrace();
-				}
+				TripGroups frame = new TripGroups(instance, session,language);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 			}
 		});
 		btnPresenttrips.setBounds(297, 450, 193, 23);
@@ -720,6 +715,11 @@ public class Profile extends JFrame {
 
 	}
 	
+	/**
+	 * 
+	 * @param rate
+	 * @return review
+	 */
 	public String getReview (Double rate){
 		if(rate >= 0.0 && rate < 0.9999){
 			return messages.getString("Profile.16"); //$NON-NLS-1$
@@ -737,9 +737,8 @@ public class Profile extends JFrame {
 	
 	/**
 	* Validate hex with regular expression
-	* 
-	* @param hex
-	*            hex for validation
+	*  @param hex
+	*  hex for validation
 	* @return true valid hex, false invalid hex
 	*/
 	public static boolean validate(final String hex) {

@@ -28,13 +28,8 @@ import controllers.Session;
 
 public class UserSearch extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4916155508444281803L;
 	private static JPanel panel;
 	private JTextField textField;
-	private JTextField textField_1;
 	private JButton btnBack;
 
 	/**
@@ -56,7 +51,10 @@ public class UserSearch extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the Frame
+	 * @param instance
+	 * @param session
+	 * @param language
 	 */
 	public UserSearch(final Application instance, final Session session, final boolean language) {
 		
@@ -170,6 +168,9 @@ public class UserSearch extends JFrame {
 		btnBack.setText(messages.getString("UserSearch.9")); //$NON-NLS-1$
 	}
 	
+	/**
+	 * Closes a frame after an event
+	 */
 	public void close(){
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);

@@ -60,11 +60,12 @@ public class TripGroups extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
-	 * @throws ControllerNotLoadedException 
-	 * @throws SessionNotActiveException 
+	 * Create the Frame
+	 * @param instance
+	 * @param session
+	 * @param language
 	 */
-	public TripGroups(final Application instance, final Session session, final boolean language) throws SessionNotActiveException, ControllerNotLoadedException {
+	public TripGroups(final Application instance, final Session session, final boolean language){
 		
 		Locale currentLocale;
 		if(language){
@@ -99,8 +100,15 @@ public class TripGroups extends JFrame {
 	    };
 
 	    if(instance != null){
-	    	final ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
-	    
+	    	ArrayList<GroupController> groupArray = null;
+			try {
+				groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
+			} catch (SessionNotActiveException e2) {
+				e2.printStackTrace();
+			} catch (ControllerNotLoadedException e2) {
+				e2.printStackTrace();
+			}
+			final ArrayList<GroupController> groupArrayaux = groupArray;
 			table.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
@@ -109,22 +117,22 @@ public class TripGroups extends JFrame {
 							String admin = null;
 							if(instance != null){
 								try {
-									admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
+									admin = groupArrayaux.get(table.getSelectedRow()).getAdmin().getUserName();
 								} catch (SessionNotActiveException e) {
 									e.printStackTrace();
 								} catch (ControllerNotLoadedException e) {
 									e.printStackTrace();
 								}
-								if( groupArray.get(table.getSelectedRow()) == null ){
+								if( groupArrayaux.get(table.getSelectedRow()) == null ){
 									
 								}else if(session.getUserName().equals(admin) && instance != null){
-									Group frame = new Group(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
+									Group frame = new Group(1, (MyTripController)groupArrayaux.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArrayaux.get(table.getSelectedRow()), language);
 									frame.setVisible(true);
 									frame.pack();
 									frame.setSize(900, 602);
 									close();
 								}else{
-									Group frame = new Group(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
+									Group frame = new Group(2, null, groupArrayaux.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArrayaux.get(table.getSelectedRow()),language);
 									frame.setVisible(true);
 									frame.pack();
 									frame.setSize(900, 602);
@@ -206,18 +214,11 @@ public class TripGroups extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TripGroups frame;
-				try {
-					frame = new TripGroups(instance, session,false);
-					frame.setVisible(true);
-				    frame.pack();
-				    frame.setSize(900, 602);
-				    close();
-				} catch (SessionNotActiveException e) {
-					e.printStackTrace();
-				} catch (ControllerNotLoadedException e) {
-					e.printStackTrace();
-				}
+				TripGroups frame = new TripGroups(instance, session,false);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 				
 			}
 		});
@@ -231,18 +232,11 @@ public class TripGroups extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TripGroups frame;
-				try {
-					frame = new TripGroups(instance, session,true);
-					frame.setVisible(true);
-				    frame.pack();
-				    frame.setSize(900, 602);
-				    close();
-				} catch (SessionNotActiveException e1) {
-					e1.printStackTrace();
-				} catch (ControllerNotLoadedException e1) {
-					e1.printStackTrace();
-				}
+				TripGroups frame = new TripGroups(instance, session,true);
+				frame.setVisible(true);
+				frame.pack();
+				frame.setSize(900, 602);
+				close();
 				
 			}
 		});
@@ -257,8 +251,10 @@ public class TripGroups extends JFrame {
 		
 	}
 	
+	/**
+	 * Close a frame after an event
+	 */
 	public void close(){
-
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
 	}

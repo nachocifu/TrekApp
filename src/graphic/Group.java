@@ -50,10 +50,6 @@ import java.awt.Choice;
 
 public class Group extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8667069963378135326L;
 	private static JPanel panel;
 	private JTextField tFName;
 	private JTextField tFCap;
@@ -81,7 +77,15 @@ public class Group extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the Frame
+	 * @param choice
+	 * @param myTrip
+	 * @param trip
+	 * @param auxText
+	 * @param instance
+	 * @param session
+	 * @param groupController
+	 * @param language
 	 */
 	// choice = 0 creando, choice = 1 viendo el propio, choice = 2 viendo el de otro
 	public Group(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> auxText, final Application instance, final Session session, final GroupController groupController, final boolean language){	
@@ -663,13 +667,20 @@ public class Group extends JFrame {
 		btnLeaveGroup.setText(messages.getString("Group.3")); //$NON-NLS-1$	
 		
 	}
+	
+	/**
+	 * Closes a frame after an event
+	 */
 	public void close(){
-
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
-
 	}
 	
+	/**
+	 * Checks if the string is a number
+	 * @param str
+	 * @return true str is number, false str is not a number
+	 */
 	public static boolean isNumeric(String str){  
 	    try {  
 	      Double.parseDouble(str);  
@@ -680,6 +691,11 @@ public class Group extends JFrame {
 	    return true;  
 	}
 	
+	/**
+	 * Checks if the str is a Integer
+	 * @param str
+	 * @return true str is Integer, false str is not a Integer
+	 */
 	public static boolean isIntNumeric(String str){  
 	    try {  
 	      Integer.parseInt(str);  
@@ -690,6 +706,12 @@ public class Group extends JFrame {
 	    return true;  
 	}
 	
+	/**
+	 * Searchs the user selected
+	 * @param keys
+	 * @param value
+	 * @return the ProfileController selected
+	 */
 	private ProfileController getKey(Set<ProfileController> keys, Integer value){
 	    for(ProfileController each : keys){
 	        if(value == 0){

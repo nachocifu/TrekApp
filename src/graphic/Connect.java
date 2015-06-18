@@ -32,10 +32,6 @@ import java.util.ResourceBundle;
 
 public class Connect extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JPasswordField passwordField;
 	private static JPanel panel;
@@ -61,7 +57,7 @@ public class Connect extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @param instance 
+	 * @param language
 	 */
 	public Connect(final boolean language) {
 		
@@ -179,10 +175,11 @@ public class Connect extends JFrame {
 
 	}
 	
+	/**
+	 * Closes a frame after an event
+	 */
 	public void close(){
-
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
-
-		}
+	}
 }

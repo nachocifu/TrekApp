@@ -42,10 +42,6 @@ import domain.SessionNotActiveException;
 
 public class OldTrips extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7478825638896727278L;
 	private static JPanel panel;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -72,7 +68,11 @@ public class OldTrips extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the Frame
+	 * @param instance
+	 * @param session
+	 * @param choice
+	 * @param language
 	 */
 	public OldTrips(final Application instance, final Session session, final Integer choice, final boolean language) {
 		
@@ -304,8 +304,10 @@ public class OldTrips extends JFrame {
 		label_4.setText(messages.getString("OldTrips.30")); //$NON-NLS-1$
 	}
 	
+	/**
+	 * Closes a frame after an event
+	 */
 	public void close(){
-
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
 	}

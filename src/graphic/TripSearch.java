@@ -45,10 +45,6 @@ import java.awt.ComponentOrientation;
 
 public class TripSearch extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2218902648122240426L;
 	private DatePicker dp1;
 	private DatePicker dp;
 	private ObservingTextField textField;
@@ -80,8 +76,12 @@ public class TripSearch extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the Frame
+	 * @param instance
+	 * @param session
+	 * @param language
 	 */
+	 
 	public TripSearch(final Application instance, final Session session, final boolean language) {	
 		final JLabel lblCityend = new JLabel();
 		final JLabel lblCityOrigin = new JLabel();
@@ -358,6 +358,11 @@ public class TripSearch extends JFrame {
 		btnBack.setText(messages.getString("TripSearch.57")); //$NON-NLS-1$
 	}
 	
+	/**
+	 * To give a format to the calendar depending in the locale
+	 * @param loc
+	 * @return Locale
+	 */
 	private Locale getLocale (String loc){
 		if(loc != null && loc.length() > 0){
 			return new Locale(loc);
@@ -365,10 +370,12 @@ public class TripSearch extends JFrame {
 			return Locale.UK;
 		}
 	}
+	
+	/**
+	 * Closes a frame after an event
+	 */
 	public void close(){
-
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
-
 	}
 }

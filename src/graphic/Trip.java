@@ -38,10 +38,6 @@ import domain.UserNameAlreadyExistsException;
 
 public class Trip extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8548069016778574983L;
 	private static JPanel panel;
 	private ObservingTextField tFLeaving;
 	private ObservingTextField tFArriving;
@@ -73,7 +69,15 @@ public class Trip extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the Frame
+	 * @param choice
+	 * @param trip
+	 * @param myTrip
+	 * @param auxText
+	 * @param instance
+	 * @param session
+	 * @param groupController
+	 * @param language
 	 */
 	public Trip(final Integer choice, final TripController trip, final MyTripController myTrip, final ArrayList<String> auxText, final Application instance, final Session session, final GroupController groupController, final boolean language){
 		
@@ -437,6 +441,12 @@ public class Trip extends JFrame {
 		
 		
 	}
+	
+	/**
+	 * To give a format to the calendar depending in the locale
+	 * @param loc
+	 * @return Locale
+	 */
 	private Locale getLocale (String loc){
 		if(loc != null && loc.length() > 0){
 			return new Locale(loc);
@@ -444,6 +454,11 @@ public class Trip extends JFrame {
 			return Locale.UK;
 		}
 	}
+	/**
+	 * Checks if the string is a number
+	 * @param str
+	 * @return true str is number, false str is not a number
+	 */
 	public static boolean isNumeric(String str){  
 	    try {  
 	      Double.parseDouble(str);  
@@ -454,11 +469,12 @@ public class Trip extends JFrame {
 	    return true;  
 	}
 	 
+	/**
+	 * Close a frame after an event
+	 */
 	 public void close(){
-
-			WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
-			Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
-
-			}
+		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
+	}
 }
 

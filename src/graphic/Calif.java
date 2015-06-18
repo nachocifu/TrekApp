@@ -38,10 +38,6 @@ import domain.TripNotClosedException;
 
 public class Calif extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6292082986974427278L;
 	private JPanel panel;
 
 	/**
@@ -209,6 +205,9 @@ public class Calif extends JFrame {
 		}
 	}
 	
+	/**
+	 * Closes a frame after an event
+	 */
 	public void close(){
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);

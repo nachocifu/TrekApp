@@ -56,7 +56,10 @@ public class Contacts extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the Frame
+	 * @param instance
+	 * @param session
+	 * @param language
 	 */
 	public Contacts(final Application instance, final Session session,final boolean language) {
 		
@@ -324,12 +327,20 @@ public class Contacts extends JFrame {
 		lblContacts.setText(messages.getString("Contacts.17")); //$NON-NLS-1$
 
 	}
-	
+	/**
+	 * Closes a frame after an event
+	 */
 	public void close(){
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
 	}
 	
+	/**
+	 * Searchs the user selected
+	 * @param keys
+	 * @param value
+	 * @return the ProfileController selected
+	 */
 	private ProfileController getKey(Set<ProfileController> keys, Integer value){
 	    for(ProfileController each : keys){
 	        if(value == 0){

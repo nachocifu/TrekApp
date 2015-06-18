@@ -23,10 +23,6 @@ import java.util.ResourceBundle;
 
 public class Options extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private static JPanel panel;
 
 	/**
@@ -48,8 +44,10 @@ public class Options extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
-	 * @param instance 
+	 * Create the Frame
+	 * @param instance
+	 * @param session
+	 * @param language
 	 */
 	public Options(final Application instance, final Session session, final boolean language) {
 		
@@ -188,10 +186,11 @@ public class Options extends JFrame {
 		btnUserSearch.setText(messages.getString("Options.11")); //$NON-NLS-1$
 	}
 	
+	/**
+	 * Closes a frame after an event
+	 */
 	public void close(){
-
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
-
-		}
+	}
 }
