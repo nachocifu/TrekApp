@@ -136,9 +136,9 @@ public class Application{
 
     /**
      * Validates userName and password with the repository
-     * @param userName
+     * @param userName 
      * @param passWord
-     * @return
+     * @return boolean value informing if the password is valid
      */
     protected boolean validate(String userName, String passWord) {
         return this.userRepo.validateCredentials(userName,passWord);
