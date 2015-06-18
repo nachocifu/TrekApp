@@ -150,11 +150,11 @@ public class Group extends JFrame {
 				if(confirm == JOptionPane.OK_OPTION){
 					while( (!isIntNumeric(tFFAge.getText()) && !tFFAge.getText().isEmpty())){
 						JOptionPane.showMessageDialog(null, messages.getString("Group.12"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-						confirm = JOptionPane.showConfirmDialog(null, fields, messages.getString("Group.14"), JOptionPane.OK_CANCEL_OPTION); //$NON-NLS-1$
+						confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
 					}
 				}
 			}
-		});	// si esnum y no esta vacio 
+		});
 		btnFilters.setBounds(430, 423, 145, 23);
 		panel.add(btnFilters);
 		
@@ -299,25 +299,27 @@ public class Group extends JFrame {
 		final JButton btnCalif = new JButton();
 		btnCalif.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Calif frame = new Calif(instance, session, language);
+				Calif frame = new Calif(instance, session, groupController, language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
 				close();
 			}
 		});
-		btnCalif.setBounds(69, 301, 250, 29);
+		btnCalif.setBounds(69, 257, 250, 23);
+		btnCalif.setVisible(false);
 		panel.add(btnCalif);
 		
-		/**/
-		//z significa que existe usuarios a quien califica para q aparezca el boton btnCalif
-//		int z = 1;
-//		if(z == 0){
-//			btnCalif.setVisible(false);
-//		}else{
-//			btnCalif.setVisible(true);
-//		}
-		/**/
+		try {
+			if(groupController.getTripStatus().equals("CLOSED")){
+				btnCalif.setVisible(true);
+			}
+		} catch (SessionNotActiveException e3) {
+			e3.printStackTrace();
+		} catch (ControllerNotLoadedException e3) {
+			e3.printStackTrace();
+		}
+
 		
 		final JButton btnRequestcheck = new JButton();
 		btnRequestcheck.addActionListener(new ActionListener() {

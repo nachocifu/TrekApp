@@ -40,10 +40,16 @@ public class Group {
     private Profile admin;
 
     /**
-     * HashSet containing the users of the groups members
+     * HashSet containing the users of the group
      */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashSet<Profile> members;
+    
+    /**
+     * HashMap, the key contains a member of the group and the value the members left to review
+     */
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    private HashMap<Profile, HashSet<Profile>> missingReviewsToMake;
 
     /**
      * HashSet containing the trips of the group Trips
@@ -143,17 +149,28 @@ public class Group {
     public void sendReviewToAMember(Profile loggedUser, Profile member, String msg, Integer rating) throws TripNotClosedException{
         if(!(this.groupTrip.getTripStatus() == TripStatus.CLOSED)){
              throw new TripNotClosedException("Cannot send a review because the Trip is not Closed yet");
-        }else if(loggedUser.equals(member)){
-             throw new IllegalArgumentException("Cannot send a review to yourself");
-         }else if(!this.members.contains(loggedUser)){
+        }else if(!this.members.contains(loggedUser)){
              throw new IllegalArgumentException("Cannot send a review because you did not belong to this group");
          }else if(!this.members.contains(member)){
              throw new IllegalArgumentException("Cannot sent a review to that user because it does not belong to this group");
+         }else if(this.missingReviewsToMake.get(loggedUser).contains(member)){
+        	 throw new IllegalArgumentException("That member already received a review from this user");
          }
          member.addReview(loggedUser, msg, rating);
     }
 
-    /**
+    public HashMap<Profile, HashSet<Profile>> getMissingReviewsToMake() {
+		return missingReviewsToMake;
+	}
+    
+    public HashSet<Profile> getMissingReviewsToMakeByAMember(Profile member) {
+    	if(!members.contains(member)){
+    		throw new IllegalArgumentException("Cannot get the missing reviews because you do not belong to this group");
+    	}
+		return missingReviewsToMake.get(member);
+	}
+
+	/**
      * Adds a new member if there is space in the Group, if the user does not already belong to the Group and if the user is not the admin
      * @param user to be added to the Group
      * @throws InvalidPermissionException

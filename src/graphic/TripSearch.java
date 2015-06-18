@@ -302,30 +302,6 @@ public class TripSearch extends JFrame {
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14)); //$NON-NLS-1$
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setSurrendersFocusOnKeystroke(true);
-//		table.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//				{null, null, null, null},
-//			},
-//			 new String[] {messages.getString("TripSearch.28"), messages.getString("TripSearch.29"), messages.getString("TripSearch.30"), messages.getString("TripSearch.31")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-//		));
 		table.setBorder(UIManager.getBorder("ScrollPane.border")); //$NON-NLS-1$
 		table.setForeground(Color.WHITE);
 		table.setBackground(new Color(0, 0, 128));

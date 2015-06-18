@@ -115,8 +115,7 @@ public class Connect extends JFrame {
 					frame.setVisible(true);
 					frame.setSize(484, 315);
 					close();
-				}
-				else{
+				}else{
 					JOptionPane.showMessageDialog(null, messages.getString("Connect.4"), messages.getString("Connect.5"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 					

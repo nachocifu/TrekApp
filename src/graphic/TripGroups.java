@@ -171,30 +171,7 @@ public class TripGroups extends JFrame {
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14)); //$NON-NLS-1$
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setSurrendersFocusOnKeystroke(true);
-//		table.setModel(new DefaultTableModel(
-//			new Object[][] {
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//				{null, null, null, null, null},
-//			},
-//			 new String[] {messages.getString("TripGroups.5"),messages.getString("TripGroups.6"), messages.getString("TripGroups.7"), messages.getString("TripGroups.8"),messages.getString("TripGroups.9")} //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-//		));
+
 		model.addColumn(messages.getString("TripGroups.5"));
 	    model.addColumn(messages.getString("TripGroups.6"));
 	    model.addColumn( messages.getString("TripGroups.7"));

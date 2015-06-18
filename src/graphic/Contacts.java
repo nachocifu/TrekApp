@@ -157,20 +157,23 @@ public class Contacts extends JFrame {
 		lblContacts.setBounds(348, 28, 145, 36);
 		panel.add(lblContacts);
 		
+			
+		HashMap<ProfileController, RequestStatus> requestsFriend = new HashMap<ProfileController, RequestStatus>();
 		
-		HashMap<ProfileController, RequestStatus> requestsFriend = null;
-		try {
-			requestsFriend =  instance.getCurrentProfileController().getFriendRequests();
-		} catch (SessionNotActiveException e1) {
-			e1.printStackTrace();
-		} catch (ControllerNotLoadedException e1) {
-			e1.printStackTrace();
-		}
+			try {
+				if(instance != null){
+					requestsFriend =  instance.getCurrentProfileController().getFriendRequests();
+				}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
 		HashMap<ProfileController, RequestStatus> requestsFriendaux = requestsFriend;
 				
 		final Choice requests = new Choice();
 		requests.setBounds(377, 405, 200, 30);
-		Integer size = requestsFriendaux.size();
+		int size = requestsFriendaux.size();
 		
 			try {
 				for (ProfileController possibleFriend : requestsFriendaux.keySet()) {
@@ -273,6 +276,7 @@ public class Contacts extends JFrame {
 				}		
 			}
 		});
+		
 		btnBlock.setBounds(416, 436, 123, 20);
 		panel.add(btnBlock);
 		

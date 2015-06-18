@@ -169,6 +169,8 @@ public class Profile {
     public void addFriendRequest(Profile possibleFriend) throws InvalidPermissionException{
         if(friendRequests.containsKey(possibleFriend)){
             throw new IllegalArgumentException("The user already belongs to the users requesting to be friends with this profile");
+        }else if(blockedUsr.contains(possibleFriend)){
+        	throw new IllegalArgumentException("The user is blocked and cannot send a friend request");
         }
         friendRequests.put(possibleFriend, RequestStatus.WAITING);
     }

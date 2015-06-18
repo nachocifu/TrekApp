@@ -2,6 +2,7 @@ package graphic;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -37,6 +38,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
@@ -44,9 +47,12 @@ import javax.swing.text.MaskFormatter;
 import controllers.Application;
 import domain.ControllerNotLoadedException;
 import domain.InvalidPasswordException;
+import domain.InvalidPermissionException;
 import controllers.Session;
 import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
+
+
 
 public class Profile extends JFrame {
 
@@ -65,6 +71,9 @@ public class Profile extends JFrame {
 	private JTextField tFRate;
 	private JTextField tFEmail;
 	private JTextField tFCityBirth;
+	private JTextField tFTripNum;
+	private ResourceBundle messages;
+	private JTextField tFFUserName;
 	
 	/**
 	 * Launch the application.
@@ -90,24 +99,24 @@ public class Profile extends JFrame {
 	
 	public Profile(final Application instance, final Integer choice, final Session session, final boolean language) {
 		
-		final JLabel label_12 = new JLabel("*"); 
+		final JLabel label_12 = new JLabel("*");  //$NON-NLS-1$
 		final JLabel lblCityBirth = new JLabel();
 		Locale currentLocale;
 		if(language){
-			currentLocale = new Locale("en","US");
+			currentLocale = new Locale("en","US"); //$NON-NLS-1$ //$NON-NLS-2$
 			lblCityBirth.setBounds(100, 302, 206, 28);
 			label_12.setBounds(85, 304, 15, 22);
 		}else{
-			currentLocale = new Locale("es","AR");
+			currentLocale = new Locale("es","AR"); //$NON-NLS-1$ //$NON-NLS-2$
 			lblCityBirth.setBounds(46, 302, 206, 28);
 			label_12.setBounds(29, 304, 15, 22);
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 	
+		messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 	 //$NON-NLS-1$
 		
 		panel = new ImagePanel(new ImageIcon(messages.getString("Profile.0")).getImage()); //$NON-NLS-1$
 		panel.setBackground(Color.BLACK);
 		setTitle(messages.getString("Profile.1")); //$NON-NLS-1$
-		setBounds(0, 0, 826, 616);
+		setBounds(0, 0, 901, 616);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel.setLayout(null);
@@ -192,14 +201,17 @@ public class Profile extends JFrame {
 		panel.add(radioButton);
 		
 		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
 		passwordField.setBounds(214, 244, 123, 20);
 		panel.add(passwordField);
 		
 		passwordField_1 = new JPasswordField();
+		passwordField_1.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
 		passwordField_1.setBounds(587, 244, 123, 20);
 		panel.add(passwordField_1);
 		
 		tFCityBirth = new JTextField();
+		tFCityBirth.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
 		tFCityBirth.setBounds(250, 305, 123, 20);
 		panel.add(tFCityBirth);
 		tFCityBirth.setColumns(10);
@@ -304,7 +316,7 @@ public class Profile extends JFrame {
 		
 		tFAge = new JFormattedTextField();
 		try {
-			MaskFormatter dateMask = new MaskFormatter("##/##/####"); 
+			MaskFormatter dateMask = new MaskFormatter("##/##/####");  //$NON-NLS-1$
             dateMask.install(tFAge);
         }catch (ParseException ex) {
         }
@@ -329,7 +341,7 @@ public class Profile extends JFrame {
 		tFRate.setEnabled(false);
 		tFRate.setDisabledTextColor(Color.BLACK);
 		tFRate.setColumns(10);
-		tFRate.setBounds(764, 305, 54, 20);
+		tFRate.setBounds(764, 305, 111, 20);
 		panel.add(tFRate);	
 		
 		final JButton btnPastTrip = new JButton();
@@ -352,7 +364,7 @@ public class Profile extends JFrame {
 				tFSurName.setText(instance.getCurrentProfileController().getSurname());
 				tFAge.setText(instance.getCurrentProfileController().getBirthday().toString());
 				tFEmail.setText(instance.getCurrentProfileController().getMail());
-				tFRate.setText(instance.getCurrentProfileController().getRating().toString());
+				tFRate.setText(getReview(instance.getCurrentProfileController().getRating()));
 			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 			
 			}
@@ -387,7 +399,7 @@ public class Profile extends JFrame {
 								flag = 1;
 							}
 						}
-						if(tFEmail.getText().isEmpty() || !EmailValidator.validate(tFEmail.getText().trim())){
+						if(tFEmail.getText().isEmpty() || !validate(tFEmail.getText().trim())){
 							flag = 2;
 						}
 						if(flag == 0){
@@ -408,7 +420,7 @@ public class Profile extends JFrame {
 						
 						if(tFName.getText().isEmpty() || tFSurName.getText().isEmpty() || tFUserName.getText().isEmpty() || tFAge.getText().isEmpty() || tFEmail.getText().isEmpty()){
 							flag = 3;
-						}else if(!EmailValidator.validate(tFEmail.getText().trim())){
+						}else if(!validate(tFEmail.getText().trim())){
 							flag = 2;
 						}else if(!passwordField.getText().equals(passwordField_1.getText()) || passwordField.getText().isEmpty() ){
 							flag = 1;
@@ -425,9 +437,9 @@ public class Profile extends JFrame {
 						int month = Integer.parseInt(tFAge.getText().substring(3, 5));
 						int year = Integer.parseInt(tFAge.getText().substring(6, 10));
 						Date date = null;
-						String inputDate = new String(year + "-" + month + "-" + day); 
+						String inputDate = new String(year + "-" + month + "-" + day);  //$NON-NLS-1$ //$NON-NLS-2$
 						try {
-						    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
+						    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  //$NON-NLS-1$
 						    formatter.setLenient(false);
 						    date = formatter.parse(inputDate);
 						} catch (ParseException e) { 
@@ -488,8 +500,23 @@ public class Profile extends JFrame {
 		btnContacts.setBounds(297, 474, 193, 23);
 		panel.add(btnContacts);
 		
+		final JLabel lblNumbertrips = new JLabel(); 
+		lblNumbertrips.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
+		lblNumbertrips.setBounds(517, 345, 193, 20);
+		lblNumbertrips.setForeground(Color.BLACK);
+		panel.add(lblNumbertrips);
+		
+		tFTripNum = new JTextField();
+		tFTripNum.setHorizontalAlignment(SwingConstants.CENTER);
+		tFTripNum.setDisabledTextColor(Color.BLACK);
+		tFTripNum.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
+		tFTripNum.setForeground(Color.BLACK);
+		tFTripNum.setEditable(false);
+		tFTripNum.setBounds(712, 345, 163, 20);
+		panel.add(tFTripNum);
+		tFTripNum.setColumns(10);
+		
 		final JLabel lblEmail = new JLabel();
-		lblEmail.setText(messages.getString("Profile.47")); //$NON-NLS-1$
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblEmail.setForeground(Color.BLACK);
 		lblEmail.setBounds(428, 303, 72, 20);
@@ -501,6 +528,13 @@ public class Profile extends JFrame {
 		tFEmail.setBounds(494, 305, 145, 20);
 		panel.add(tFEmail);
 		tFEmail.setColumns(10);	
+		
+		tFFUserName = new JTextField();
+		Object[] fields = {
+				"Escribir nombre de Usuario", tFFUserName,  //$NON-NLS-1$
+		};
+		
+		Object[] options = {"Añadir Usuario","Cancelar"}; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		if(choice == 0){
 			btnContacts.setVisible(false);
@@ -558,7 +592,38 @@ public class Profile extends JFrame {
 			btnContacts.setVisible(true);
 			btnContacts.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					//instance.getCurrentProfileController().sendMemberRequest(instance.);
+
+
+					
+					
+					
+					int confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
+					if(confirm == JOptionPane.OK_OPTION){
+						while( !tFFUserName.getText().isEmpty() ){
+							JOptionPane.showMessageDialog(null, "No existe el usuario que quiere agregar", "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+							confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
+						}
+						try {
+							instance.getCurrentProfileController().sendFriendRequest(tFFUserName.getText());
+						} catch (SessionNotActiveException e1) {
+							e1.printStackTrace();
+						} catch (ControllerNotLoadedException e1) {
+							e1.printStackTrace();
+						} catch (InvalidPermissionException e1) {
+							e1.printStackTrace();
+						}/*catch (NO EXISTE EL USUARIO e1) {
+							JOptionPane.showMessageDialog(null, "No existe el usuario que quiere agregar", "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+						}*/
+						JOptionPane.showMessageDialog(null, "Se mando de manera exitosa la solicitud", "Felicitaciones", JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+					
+					
+					
+					
+					
+					
+					
+					
 				}
 			});
 			lblUser.setBounds(70, 200, 108, 20);
@@ -613,6 +678,7 @@ public class Profile extends JFrame {
 			btnApply.setText(messages.getString("Profile.56")); //$NON-NLS-1$
 		}
 		
+		lblEmail.setText(messages.getString("Profile.47")); //$NON-NLS-1$
 		choice2.add(messages.getString("Profile.57")); //$NON-NLS-1$
 		choice2.add(messages.getString("Profile.58")); //$NON-NLS-1$
 		lblCityBirth.setText(messages.getString("Profile.59")); //$NON-NLS-1$
@@ -631,12 +697,42 @@ public class Profile extends JFrame {
 		lblGender.setText(messages.getString("Profile.72")); //$NON-NLS-1$
 		lblCalif.setText(messages.getString("Profile.73")); //$NON-NLS-1$
 		btnPastTrip.setText(messages.getString("Profile.74")); //$NON-NLS-1$
-		
+		lblNumbertrips.setText(messages.getString("Profile.15")); //$NON-NLS-1$
 	}
 	public void close(){
 
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
 
+	}
+	
+	public String getReview (Double rate){
+		if(rate >= 0.0 && rate < 0.9999){
+			return messages.getString("Profile.16"); //$NON-NLS-1$
+		}else if(rate >= 1.0000 && rate < 1.9999){
+			return messages.getString("Profile.17"); //$NON-NLS-1$
+		}else if(rate >= 2.0000 && rate < 2.9999){
+			return messages.getString("Profile.18"); //$NON-NLS-1$
+		}else if(rate >= 3.0000 && rate < 3.9999){
+			return messages.getString("Profile.19"); //$NON-NLS-1$
+		}else if(rate >= 4.0000 && rate < 4.9999){
+			return messages.getString("Profile.20"); //$NON-NLS-1$
 		}
+		return messages.getString("Profile.21"); //$NON-NLS-1$
+	}
+	
+	/**
+	* Validate hex with regular expression
+	* 
+	* @param hex
+	*            hex for validation
+	* @return true valid hex, false invalid hex
+	*/
+	public static boolean validate(final String hex) {
+		final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(hex);
+		return matcher.matches();
+	}
 }

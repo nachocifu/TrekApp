@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import domain.ControllerNotLoadedException;
@@ -18,6 +19,17 @@ public class GroupController extends AbstractController<Group> {
 
     public GroupController(GroupRepository groupRepo) {
         super(groupRepo);
+    }
+    
+    /**
+     * 
+     * @return
+     * @throws ControllerNotLoadedException 
+     * @throws SessionNotActiveException 
+     */
+    public HashSet<ProfileController> getMyMissingReviews() throws SessionNotActiveException, ControllerNotLoadedException{
+    	this.validateEnvironment();
+    	return ProfileController.generateListOfControllers(this.obj.getMissingReviewsToMakeByAMember(Application.getInstance().getCurrentProfileController().getObject()));
     }
     
     /**

@@ -13,6 +13,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -27,7 +29,12 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import controllers.Application;
+import controllers.GroupController;
+import controllers.ProfileController;
 import controllers.Session;
+import domain.ControllerNotLoadedException;
+import domain.SessionNotActiveException;
+import domain.TripNotClosedException;
 
 public class Calif extends JFrame {
 
@@ -44,7 +51,7 @@ public class Calif extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Calif frame = new Calif(null,null,true);
+					Calif frame = new Calif(null,null,null,true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -58,7 +65,7 @@ public class Calif extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Calif(final Application instance, final Session session, final boolean language) {
+	public Calif(final Application instance, final Session session, final GroupController groupController ,final boolean language) {
 		
 		Locale currentLocale;
 		if(language){
@@ -85,10 +92,10 @@ public class Calif extends JFrame {
 		
 		LinkedList<String> options = new LinkedList<String>();
 		
-		final Choice requests = new Choice();
-		requests.setBackground(Color.WHITE);
-		requests.setBounds(370, 226, 255, 20);
-		panel.add(requests);
+		final Choice allOptions = new Choice();
+		allOptions.setBackground(Color.WHITE);
+		allOptions.setBounds(370, 226, 255, 20);
+		panel.add(allOptions);
 				
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(145, 181, 190, 120);
@@ -96,12 +103,24 @@ public class Calif extends JFrame {
 		
 		final DefaultListModel profiles = new DefaultListModel();
 		
-		LinkedList<String> profileCol = new LinkedList<String>();
-		//profileCol = instance.getGroupController().
-		for(String each : profileCol){
-			profiles.addElement(each);
+		
+		ArrayList<ProfileController> profile = null;
+		if(instance != null){
+			try {
+				profile = new ArrayList<>(groupController.getMembers());
+				for(ProfileController each : profile){
+					if(! each.getUserName().equals(instance.getCurrentProfileController().getUserName())){
+						profiles.addElement(each.getUserName());
+					}
+				}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
 		}
 		
+		ArrayList<ProfileController> profileAux = profile;
 		final JList list = new JList(profiles);
 		scrollPane.setViewportView(list);
 		
@@ -123,11 +142,19 @@ public class Calif extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(list.getModel().getSize() == 1){
 					btnAccept.setEnabled(false);
-					requests.setEnabled(false);
+					allOptions.setEnabled(false);
 				}
 				if(list.getSelectedValue() != null){
-					System.out.println(list.getSelectedValue() + " " + requests.getSelectedItem()); //$NON-NLS-1$
-					profiles.remove(list.getSelectedIndex());//si no se selecciona un objeto tira null pointer exception
+					try {
+						groupController.sendReviewToAMember(instance.getCurrentProfileController(), profileAux.get(allOptions.getSelectedIndex()), null, allOptions.getSelectedIndex());
+					} catch (SessionNotActiveException e1) {
+						e1.printStackTrace();
+					} catch (ControllerNotLoadedException e1) {
+						e1.printStackTrace();
+					} catch (TripNotClosedException e1) {
+						e1.printStackTrace();
+					}
+					profiles.remove(list.getSelectedIndex());
 				}
 			}
 		});
@@ -136,7 +163,7 @@ public class Calif extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Calif frame = new Calif(instance,session,false);
+				Calif frame = new Calif(instance,session, groupController,false);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -153,7 +180,7 @@ public class Calif extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Calif frame = new Calif(instance,session,true);
+				Calif frame = new Calif(instance,session, groupController,true);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -178,7 +205,7 @@ public class Calif extends JFrame {
 		options.add(messages.getString("Calif.13")); //$NON-NLS-1$
 		
 		for(int i = 0; i < options.size(); i++){
-			requests.add(options.get(i));
+			allOptions.add(options.get(i));
 		}
 	}
 	
