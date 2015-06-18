@@ -43,6 +43,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
      */
     public List<Profile> searchBy(String searchTxt, Profile currentUser){
         ConnectionSource connectionSource = null;
+        List<Profile> list = new ArrayList<Profile>();
         List<Profile> response = new ArrayList<Profile>();
 
         try{
@@ -69,7 +70,9 @@ public class ProfileRepository extends AbstractRepository<Profile> {
 
                 RawRowMapper<Profile> mapper = dao.getRawRowMapper();
                 GenericRawResults<Profile> rawResponse = dao.queryRaw(query, mapper);
-                response = rawResponse.getResults();
+                list = rawResponse.getResults();
+                for(Profile each:list)
+                    response.add(this.loadProfilesInside(each, 2));
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());
@@ -166,6 +169,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 GenericRawResults<Profile> rawResponse = dao. queryRaw(query, mapper);
 
                 response = rawResponse.getFirstResult();
+                response = this.loadProfilesInside(response, 2);
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());
@@ -212,6 +216,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 GenericRawResults<Profile> rawResponse = dao. queryRaw(query, mapper);
 
                 response = rawResponse.getFirstResult();
+                response = this.loadProfilesInside(response, 2);
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());
@@ -347,7 +352,5 @@ public class ProfileRepository extends AbstractRepository<Profile> {
         }
         return profile;
     }
-
-
 
 }
