@@ -99,7 +99,7 @@ public class TripGroups extends JFrame {
 	    };
 
 	    if(instance != null){
-	    	ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
+	    	final ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
 	    
 			table.addMouseListener(new MouseAdapter() {
 				@Override

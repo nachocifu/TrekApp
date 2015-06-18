@@ -92,7 +92,7 @@ public class Trip extends JFrame {
 			lblFrom.setBounds(26, 212, 180, 35);
 			lblTo.setBounds(26, 267, 211, 35);
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage()); //$NON-NLS-1$
 		setContentPane(panel);

@@ -169,7 +169,7 @@ public class Contacts extends JFrame {
 			} catch (ControllerNotLoadedException e1) {
 				e1.printStackTrace();
 			}
-		HashMap<ProfileController, RequestStatus> requestsFriendaux = requestsFriend;
+		final HashMap<ProfileController, RequestStatus> requestsFriendaux = requestsFriend;
 				
 		final Choice requests = new Choice();
 		requests.setBounds(377, 405, 200, 30);

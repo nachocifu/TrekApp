@@ -93,7 +93,7 @@ public class Group extends JFrame {
 			currentLocale = new Locale("es","AR"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 902, 602);
@@ -136,12 +136,12 @@ public class Group extends JFrame {
 		tFFAge = new JTextField();
 		
 		tFFCity = new JTextField();
-		Object[] fields = {
+		final Object[] fields = {
 				messages.getString("Group.9"), tFFAge,  //$NON-NLS-1$
 				messages.getString("Group.10"), tFFCity //$NON-NLS-1$
 		};
 		
-		Object[] options = {messages.getString("Group.0"),messages.getString("Group.1")}; //$NON-NLS-1$ //$NON-NLS-2$
+		final Object[] options = {messages.getString("Group.0"),messages.getString("Group.1")}; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		JButton btnFilters = new JButton();
 		btnFilters.addActionListener(new ActionListener() {
@@ -225,7 +225,7 @@ public class Group extends JFrame {
 		final JButton btnReject = new JButton();
 		final JButton btnAccept = new JButton();
 		
-		HashMap<ProfileController, RequestStatus> requestsTripaux = requestsTrip;
+		final HashMap<ProfileController, RequestStatus> requestsTripaux = requestsTrip;
 		btnAccept.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {

@@ -230,7 +230,7 @@ public class TripSearch extends JFrame {
 	    };
 
 	    if(instance != null){
-	    	ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());// lo que devuelva el buscador de trips
+	    	final ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());// lo que devuelva el buscador de trips
 	    
 			table.addMouseListener(new MouseAdapter() {
 				@Override

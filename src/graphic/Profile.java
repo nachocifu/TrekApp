@@ -318,7 +318,7 @@ public class Profile extends JFrame {
 		panel.add(label_4);
 		label_4.setVisible(false);
 		
-		Choice choice2 = new Choice();
+		final Choice choice2 = new Choice();
 		choice2.setBounds(712, 143, 85, 20);
 		panel.add(choice2);
 		
@@ -540,11 +540,11 @@ public class Profile extends JFrame {
 		
 		tFFUserName = new JTextField();
 		
-		Object[] fields = {
+		final Object[] fields = {
 				"Escribir nombre de Usuario", tFFUserName,  //$NON-NLS-1$
 		};
 		
-		Object[] options = {"Añadir Usuario","Cancelar"}; //$NON-NLS-1$ //$NON-NLS-2$
+		final Object[] options = {"Aï¿½adir Usuario","Cancelar"}; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		if(choice == 0){
 			btnContacts.setVisible(false);

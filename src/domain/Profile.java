@@ -71,23 +71,23 @@ public class Profile {
 
     /**the users friends*/
     @ForeignCollectionField
-    private Collection<Profile> friends;
+    private HashSet<Profile> friends;
 
     /**the users blocked users*/
     @ForeignCollectionField
-    private Collection<Profile> blockedUsr;
+    private HashSet<Profile> blockedUsr;
 
     /**the users past trips*/
     @ForeignCollectionField
-    private Collection<Trip> trips;
+    private HashSet<Trip> trips;
 
     /**the users reviews*/
     @ForeignCollectionField
-    private Collection<Review> reviews;
+    private HashSet<Review> reviews;
 
     /**the groups the user belongs to*/
     @ForeignCollectionField
-    private Collection<Group> groups;
+    private HashSet<Group> groups;
     
     /**
      * REJECTED if he has been rejected and WAITING if is waiting for acceptance

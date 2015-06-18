@@ -71,7 +71,7 @@ public class Connect extends JFrame {
 		}else{
 			currentLocale = new Locale("es","AR");
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		
 		panel = new ImagePanel(new ImageIcon("Connect.jpg").getImage()); //$NON-NLS-1$

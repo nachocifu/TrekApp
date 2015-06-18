@@ -120,7 +120,7 @@ public class Calif extends JFrame {
 			}
 		}
 		
-		ArrayList<ProfileController> profileAux = profile;
+		final ArrayList<ProfileController> profileAux = profile;
 		final JList list = new JList(profiles);
 		scrollPane.setViewportView(list);
 		
