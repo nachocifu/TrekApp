@@ -433,24 +433,35 @@ public class Profile {
         return this.friendRequests;
     }
 
-    /**
-     * @deprecated
-     * @return the age, it compares todays date with the day of birth of the user
-     */
-    @SuppressWarnings("deprecation")
-    public int getAge(){
-        Date dt = new Date();
-        Date aux= this.getBirthDay();
-        if(dt.getMonth() < aux.getMonth())
-            return dt.getYear()-aux.getYear();
-        if(dt.getMonth() > aux.getMonth())
-            return dt.getYear()-aux.getYear() +1;
-        if(dt.getDay() < dt.getDay())
-            return dt.getYear() - aux.getYear();
-        return dt.getYear() - aux.getYear() +1;
-    }
+    <<<<<<< HEAD
+    
 
-    public int hashCode() {
+    public void setFriends(HashSet<Profile> friends) {
+		this.friends = friends;
+	}
+
+	public void setBlockedUsr(HashSet<Profile> blockedUsr) {
+		this.blockedUsr = blockedUsr;
+	}
+
+	public void setTrips(HashSet<Trip> trips) {
+		this.trips = trips;
+	}
+
+	public void setReviews(HashSet<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+	public void setGroups(HashSet<Group> groups) {
+		this.groups = groups;
+	}
+
+	public void setFriendRequests(HashMap<Profile, RequestStatus> friendRequests) {
+		this.friendRequests = friendRequests;
+	}
+=======
+
+	public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((brthDay == null) ? 0 : brthDay.hashCode());
