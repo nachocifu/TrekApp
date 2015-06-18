@@ -6,8 +6,6 @@ import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * A Chat, collection of messages 
- * @author nacho
- *
  */
 @DatabaseTable(tableName = "Chats")
 public class Chat {

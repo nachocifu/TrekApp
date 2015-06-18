@@ -38,6 +38,11 @@ public abstract class AbstractController<T> {
             throw new ControllerNotLoadedException("ERROR || Cannot operate on unloaded controller.");
     }
 
+    /**
+     * @param controller that is validated
+     * @throws IllegalArgumentException when the controller is null
+     * @throws IllegalArgumentException when the controller is not loaded
+     */
     protected void validateController(AbstractController<?> controller){
         if(controller == null)
             throw new IllegalArgumentException("ERROR || Illegal parameter.");
@@ -61,10 +66,17 @@ public abstract class AbstractController<T> {
 
     }
 
+    /**
+     * 
+     * @return object
+     */
     protected T getObject(){
         return this.obj;
     }
 
+    /**
+     * update the repository
+     */
     protected void saveChanges(){
         this.repository.update(this.obj);
     }

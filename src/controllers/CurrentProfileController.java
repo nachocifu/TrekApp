@@ -137,6 +137,11 @@ public class CurrentProfileController extends ProfileController {
         saveChanges();
     }
 
+    /**
+     * @param oldPass used to validate if the user is able to change the password
+     * @param newPass to be set if the oldPass is a valid one
+     * @throws InvalidPasswordException when the oldPass is not a valid one
+     */
     public void changePass(String oldPass, String newPass) throws InvalidPasswordException {
         this.obj.changePass(oldPass, newPass);
         saveChanges();

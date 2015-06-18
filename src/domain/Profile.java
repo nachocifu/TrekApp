@@ -308,7 +308,7 @@ public class Profile {
     /**
      * @param x coordinate from the users location
      * @param y coordinate from the users location
-     * @deprecated ESTO AL FINAL SE USA O LO PODEMOS VOLAR???
+     * @deprecated
      */
     public void checkIn(Double x, Double y){
         Coordinates coor = new Coordinates(x,y);
@@ -382,16 +382,6 @@ public class Profile {
         this.groups.remove(group);
     }
 
-    /**
-     * @return a boolean value indicating if the password is correct, this way the password remains private and is never
-     * shared with a different object
-     * @deprecated REALMENTE NECESITAMOS ESTO? DEJEMOSLO POR LAS DUDAS
-     */
-    public boolean cmpPassword(String pass){
-        if(this.password.equals(pass))
-            return true;
-        return false;
-    }
 
     /**
      * @param oldPass used to validate
@@ -446,31 +436,7 @@ public class Profile {
         return this.friendRequests;
     }
 
-   
 
-    public void setFriends(HashSet<Profile> friends) {
-		this.friends = friends;
-	}
-
-	public void setBlockedUsr(HashSet<Profile> blockedUsr) {
-		this.blockedUsr = blockedUsr;
-	}
-
-	public void setTrips(HashSet<Trip> trips) {
-		this.trips = trips;
-	}
-
-	public void setReviews(HashSet<Review> reviews) {
-		this.reviews = reviews;
-	}
-
-	public void setGroups(HashSet<Group> groups) {
-		this.groups = groups;
-	}
-
-	public void setFriendRequests(HashMap<Profile, RequestStatus> friendRequests) {
-		this.friendRequests = friendRequests;
-	}
 
 	public int hashCode() {
         final int prime = 31;

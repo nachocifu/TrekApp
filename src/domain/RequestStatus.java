@@ -1,6 +1,10 @@
 package domain;
 
+/**
+ * class containing the status of a request, used for friend requests, join group requests, etc.
+ */
 public enum RequestStatus {
+
 
      REJECTED("rejected"), WAITING("waiting");
 
@@ -21,4 +25,5 @@ public enum RequestStatus {
                 return RequestStatus.WAITING;
             return null;
         }
+
 }
