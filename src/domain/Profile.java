@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -45,7 +46,7 @@ public class Profile {
     private  boolean sex = false;
 
     /** the users brthDay */
-    @DatabaseField
+    @DatabaseField(dataType = DataType.DATE_STRING, format = "dd-MM-yyyy")
     private Date brthDay = null;
 
     /** the users average rating*/
@@ -420,7 +421,7 @@ public class Profile {
      * this will also be deleted from friend's list
      */
     public void deleteFriend(Profile friend){
-        if(friends.contains(friend))
+        if(!friends.contains(friend))
             throw new IllegalArgumentException("The user is not a friend");
         this.friends.remove(friend);
         friend.getFriends().remove(this);
