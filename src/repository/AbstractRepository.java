@@ -134,7 +134,7 @@ public abstract class AbstractRepository<T> {
                 Dao<T, String> dao = DaoManager.createDao(connectionSource, this.reposClass);
 
                 /** check if object exists and update */
-                dao.create(obj);
+                dao.createOrUpdate(obj);
 
             }
             catch(Exception e){

@@ -42,31 +42,26 @@ public class Group {
     /**
      * HashSet containing the users of the group
      */
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashSet<Profile> members;
-    
+
     /**
      * HashMap, the key contains a member of the group and the value the members left to review
      */
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Profile, HashSet<Profile>> missingReviewsToMake;
 
     /**
      * HashSet containing the trips of the group Trips
      */
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private Trip groupTrip;
 
     /**
      *key: msgId, value:usrId of user that posted the message
      */
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Message, Profile> wall;
 
     /**
      * REJECTED if he has been rejected and WAITING if is waiting for acceptance
      */
-    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private HashMap<Profile, RequestStatus> memberRequests;
 
     @DatabaseField
@@ -154,45 +149,45 @@ public class Group {
          }else if(!this.members.contains(member)){
              throw new IllegalArgumentException("Cannot sent a review to that user because it does not belong to this group");
          }else if(this.missingReviewsToMake.get(loggedUser).contains(member)){
-        	 throw new IllegalArgumentException("That member already received a review from this user");
+             throw new IllegalArgumentException("That member already received a review from this user");
          }
          member.addReview(loggedUser, msg, rating);
          missingReviewsToMake.get(loggedUser).remove(member);
     }
 
     /**
-     * 
+     *
      * @return a hashmap, the key is the Profile of the user who still has to make a review and the value
      * is a HashSet containing the Profiles of the users the user has still not reviewed
      */
     public HashMap<Profile, HashSet<Profile>> getMissingReviewsToMake() {
-		return missingReviewsToMake;
-	}
-    
+        return missingReviewsToMake;
+    }
+
     /**
-     * 
+     *
      */
     public void updateMissingReviews(){
-    	for (Profile member : members) {
-    		HashSet<Profile> membersToReview = new HashSet<Profile>(members);
-    		membersToReview.remove(member);
-    		this.missingReviewsToMake.put(member, membersToReview);
-		}
+        for (Profile member : members) {
+            HashSet<Profile> membersToReview = new HashSet<Profile>(members);
+            membersToReview.remove(member);
+            this.missingReviewsToMake.put(member, membersToReview);
+        }
     }
-    
+
     /**
      * @param member
      * @return A HashSet containing the Profiles that members is yet to review
      * @throws IllegalArgumentException when the member is not part of the group
      */
     public HashSet<Profile> getMissingReviewsToMakeByAMember(Profile member){
-    	if(!members.contains(member)){
-    		throw new IllegalArgumentException("Cannot get the missing reviews because you do not belong to this group");
-    	}
-		return missingReviewsToMake.get(member);
-	}
+        if(!members.contains(member)){
+            throw new IllegalArgumentException("Cannot get the missing reviews because you do not belong to this group");
+        }
+        return missingReviewsToMake.get(member);
+    }
 
-	/**
+    /**
      * Adds a new member if there is space in the Group, if the user does not already belong to the Group and if the user is not the admin
      * @param user to be added to the Group
      * @throws InvalidPermissionException
@@ -225,18 +220,18 @@ public class Group {
         members.add(newMember);
         newMember.joinGroup(this);
     }
-    
+
     /**
      * Rejects a member of the request list
      * @param rejectedProfile
      */
     public void rejectAMemberRequest(Profile rejectedProfile){
-    	if(!memberRequests.containsKey(rejectedProfile)){
+        if(!memberRequests.containsKey(rejectedProfile)){
             throw new IllegalArgumentException("The user does not belong to the users requesting a place in the group");
-    	}else if(!(memberRequests.get(rejectedProfile) == RequestStatus.REJECTED)){
+        }else if(!(memberRequests.get(rejectedProfile) == RequestStatus.REJECTED)){
             throw new IllegalArgumentException("The user has already been rejected");
-    	}
-    	memberRequests.put(rejectedProfile, RequestStatus.REJECTED);
+        }
+        memberRequests.put(rejectedProfile, RequestStatus.REJECTED);
     }
 
     /**
@@ -245,10 +240,10 @@ public class Group {
      * @throws InvalidPermissionException
      */
     @SuppressWarnings("deprecation")
-	public void addMemberRequest(Profile possibleMember) throws InvalidPermissionException{
-    	Date filterAgeAsDate = new Date();
-    	filterAgeAsDate.setYear(Calendar.YEAR - filterAge);
-    	
+    public void addMemberRequest(Profile possibleMember) throws InvalidPermissionException{
+        Date filterAgeAsDate = new Date();
+        filterAgeAsDate.setYear(Calendar.YEAR - filterAge);
+
         if(memberRequests.containsKey(possibleMember)){
             throw new IllegalArgumentException("The user already belongs to the users requesting a place in the group");
         }else if(!(possibleMember.getBirthDay().before(filterAgeAsDate) && possibleMember.getCity().equals(this.filterCity))){

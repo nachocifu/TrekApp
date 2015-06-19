@@ -22,6 +22,7 @@ import com.j256.ormlite.stmt.PreparedUpdate;
 import com.j256.ormlite.support.ConnectionSource;
 
 import controllers.Application;
+import domain.Coordinates;
 import domain.Profile;
 import domain.RequestStatus;
 import domain.UserNameAlreadyExistsException;
@@ -233,11 +234,12 @@ public class ProfileRepository extends AbstractRepository<Profile> {
     }
 
     public Integer update(Profile obj, Integer eagerLevel){
-        this.persistProfilesInside(obj, eagerLevel);
-        return super.update(obj);
+        super.update(obj);
+        this.persistObjectsInside(obj, eagerLevel);
+        return null;
     }
 
-    private void persistProfilesInside(Profile profile, Integer depth){
+    private void persistObjectsInside(Profile profile, Integer depth){
 
         /** If max depth is reached,  */
         if(depth <= 0)
@@ -276,6 +278,12 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 for( ProfileRelationship each: relationsList){
                     dao.update(each);
                 }
+
+                /** Persist Coordinates */
+                connectionSource = new JdbcConnectionSource(Application.getInstance().getDatabase());
+                Dao<Coordinates, String> daoCoordinates = DaoManager.createDao(connectionSource, Coordinates.class);
+                daoCoordinates.update(profile.getCheckIn());
+
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());
@@ -289,7 +297,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 }
             }
 
-            persistProfilesInside(profile, depth-1);
+            persistObjectsInside(profile, depth-1);
         }
 
     private Profile loadProfilesInside(Profile profile, Integer depth){
