@@ -46,29 +46,31 @@ public class DataBaseTest {
         repoAdmin.operateWithUsers();
         System.out.println("--------END-------");
 
-        Application app = Application.getInstance();
+        //Application app = Application.getInstance();
     }
 
 
     private void operateWithUsers() throws ServerException, UserNameAlreadyExistsException, InvalidPermissionException {
         ProfileRepository userRepo = new ProfileRepository("DataBase", Profile.class);
 
-        /**Operate*/
+        /** Operate */
         System.out.println("get by id user1");
-        Profile user1 = userRepo.getById(1);
+        Profile user1 = userRepo.getById(1,2);
         System.out.println("get by id user2");
-        Profile user2 = userRepo.getById(2);
+        Profile user2 = userRepo.getById(2,2);
         System.out.println("update user2");
-        //userRepo.update(user2);
+        userRepo.update(user2);
         HashSet<Profile> lista = new HashSet<Profile>();
         lista.add(user2);
         user1.setFriends(lista);
-        //user1.addFriendRequest(user2);
+        user1.addFriendRequest(user2);
         System.out.println("update user1");
-        userRepo.update(user1,7);
-        System.out.println(user1.getName() +" "+user1.getUsrName()+ " " + user1.getFriends());
-        //user1 = userRepo.getById(1);
-        //System.out.println("user1 friends:" + user1.getFriendRequests().toString());
+        userRepo.update(user1,2);
+        //System.out.println(user1.getName() +" "+user1.getUsrName()+ " " + user1.getFriends());
+        user1 = userRepo.getById(1,2);
+        System.out.println("print users inside " + user1.getUsrName());
+        for(Profile each: user1.getFriends())
+        	System.out.println(each.getUsrName() + "lista" + each.getFriends().isEmpty());
     }
 
     private void populateGroups() {
@@ -117,8 +119,11 @@ public class DataBaseTest {
 
             pool.add(new Profile("kochi", "Daniel", "Kochian", new Date(7, 5, 1994) , false, "agua", "neuquen", "kochis.mail@gmail.com") );
 
-            for(Profile each : pool)
-                userRepo.add(each);
+            for(Profile each : pool){
+            	System.out.println();
+                System.out.println("Add user: " + each.getUsrName());
+            	userRepo.add(each);
+            }
             System.out.println("asldfasdlkfasdf");
     }
 

@@ -194,12 +194,12 @@ public class ProfileRepository extends AbstractRepository<Profile> {
      */
     public Profile getById(Integer userId, Integer depth){
        Profile obj = super.getById(userId);
-       return this.loadProfilesInside(obj, depth-1);
+       return this.loadProfilesInside(obj, depth);
     }
 
     public Integer update(Profile obj, Integer depth){
         super.update(obj);
-        this.persistObjectsInside(obj, depth-1);
+        this.persistObjectsInside(obj, depth);
         return null;
     }
 
@@ -209,10 +209,9 @@ public class ProfileRepository extends AbstractRepository<Profile> {
         if(depth <= 0 ||
                 profile.getFriendRequests() == null ||
                 profile.getFriends() == null ||
-                profile.getBlockedUsrs() == null ||
-                profile.getFriendRequests() == null)
+                profile.getBlockedUsrs() == null)
             return;
-System.out.println("persito objetos dentro de " + profile.getUsrName());
+        System.out.println("persito objetos dentro de " + profile.getUsrName());
         ConnectionSource connectionSource = null;
             try{
                 Class.forName("org.sqlite.JDBC");
@@ -267,7 +266,6 @@ System.out.println("persito objetos dentro de " + profile.getUsrName());
                 }
             }
 
-            persistObjectsInside(profile, depth-1);
         }
 
     private Profile loadProfilesInside(Profile profile, Integer depth){
@@ -297,24 +295,27 @@ System.out.println("persito objetos dentro de " + profile.getUsrName());
                 RawRowMapper<ProfileRelationship> mapper = dao.getRawRowMapper();
                 GenericRawResults<ProfileRelationship> rawResponse = dao.queryRaw(query, mapper);
                 List<ProfileRelationship> response = rawResponse.getResults();
-                System.err.println("response levanto:  " + response.size());
+
+                System.err.println("response levanto perfiles dentro de :  " + response.size());
                 HashSet<Profile> friends = new HashSet<Profile>();
                 HashSet<Profile> blockedUsers = new HashSet<Profile>();
                 HashMap<Profile, RequestStatus> friendRequests = new HashMap<Profile, RequestStatus>();
+
                 for(ProfileRelationship relation: response){
                     switch (Relationship.fromString(relation.getRelation())) {
                     case FRIEND:
-                        friends.add(this.getById(relation.getThisUser(), depth-1));
+                        friends.add(this.getById(relation.getOtherUser(), depth-1));
                         break;
                     case BLOCKED:
-                        blockedUsers.add(this.getById(relation.getThisUser(), depth-1));
+                        blockedUsers.add(this.getById(relation.getOtherUser(), depth-1));
                         break;
                     case REJECTED:
                     case WAINTING:
-                        friendRequests.put(this.getById(relation.getThisUser(), depth-1),RequestStatus.fromString(relation.getRelation()));
+                        friendRequests.put(this.getById(relation.getOtherUser(), depth-1),RequestStatus.fromString(relation.getRelation()));
                         break;
                     }
                 }
+                System.out.println("cargo listas en user:: " + profile.getUsrName());
                 profile.setFriends(friends);
                 profile.setBlockedUsr(blockedUsers);
                 profile.setFriendRequests(friendRequests);
