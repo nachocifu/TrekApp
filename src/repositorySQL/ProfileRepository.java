@@ -280,8 +280,10 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 //Persist Reviews
                 /** instantiate the dao */
                 Dao<ReviewRelationship, String> daoReview = DaoManager.createDao(connectionSource, ReviewRelationship.class);
+                Dao<Review, String> daoRvw = DaoManager.createDao(connectionSource, Review.class);
 
                 for( Review each: profile.getReviews()){
+                	daoRvw.createOrUpdate(each);
                 	daoReview.createOrUpdate(new ReviewRelationship(each));
                     this.update(each.getprofileOrigin(), depth-1);
                     this.update(each.getprofileTarget(), depth-1);
@@ -321,7 +323,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
 
                 //Get Profiles
                 /** instantiate the dao */
-                Dao<ProfileRelationship, ?> dao = DaoManager.createDao(connectionSource, ProfileRelationship.class);
+                Dao<ProfileRelationship, ?> daoProfiles = DaoManager.createDao(connectionSource, ProfileRelationship.class);
 
                 /** Build native query */
                 StringBuffer qryBuilder = new StringBuffer();
@@ -332,8 +334,8 @@ public class ProfileRepository extends AbstractRepository<Profile> {
 
                 String query = qryBuilder.toString();
 
-                RawRowMapper<ProfileRelationship> mapper = dao.getRawRowMapper();
-                GenericRawResults<ProfileRelationship> rawResponse = dao.queryRaw(query, mapper);
+                RawRowMapper<ProfileRelationship> mapper = daoProfiles.getRawRowMapper();
+                GenericRawResults<ProfileRelationship> rawResponse = daoProfiles.queryRaw(query, mapper);
                 List<ProfileRelationship> response = rawResponse.getResults();
 
                 HashSet<Profile> friends = new HashSet<Profile>();
@@ -373,7 +375,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 query = qryBuilder.toString();
 
                 RawRowMapper<GroupProfileRelationship> mapperGroup = daoGroups.getRawRowMapper();
-                GenericRawResults<GroupProfileRelationship> rawResponseGroup = dao.queryRaw(query, mapperGroup);
+                GenericRawResults<GroupProfileRelationship> rawResponseGroup = daoGroups.queryRaw(query, mapperGroup);
                 List<GroupProfileRelationship> responseGroups = rawResponseGroup.getResults();
 
                 GroupRepository groupRepo = new GroupRepository(this.pathToDataBase, Group.class);
@@ -383,6 +385,64 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 	groups.add(groupRepo.getById(each.getGroup(), depth-1));
                 }
                 profile.setGroups(groups);
+
+                //Get Trips
+                /** instantiate the dao */
+                Dao<TripProfileRelationship, ?> daoTrips = DaoManager.createDao(connectionSource, TripProfileRelationship.class);
+
+                /** Build native query */
+                qryBuilder = new StringBuffer();
+                qryBuilder.append("SELECT rel.* ");
+                qryBuilder.append("FROM TripProfileRelationship rel ");
+                qryBuilder.append("WHERE ");
+                qryBuilder.append( "rel.user = " + profile.getUsrId());
+
+                query = qryBuilder.toString();
+
+                RawRowMapper<TripProfileRelationship> mapperTrip = daoTrips.getRawRowMapper();
+                GenericRawResults<TripProfileRelationship> rawResponseTrip = daoTrips.queryRaw(query, mapperTrip);
+                List<TripProfileRelationship> responseTrips = rawResponseTrip.getResults();
+
+                TripRepository tripRepo = new TripRepository(this.pathToDataBase, Trip.class);
+                HashSet<Trip> trips = new HashSet<Trip>();
+
+                for(TripProfileRelationship each: responseTrips){
+                	trips.add(tripRepo.getById(each.getTrip(), depth-1));
+                }
+                profile.setTrips(trips);
+
+              //Get Reviews
+                /** instantiate the dao */
+                Dao<ReviewRelationship, ?> daoReviews = DaoManager.createDao(connectionSource, ReviewRelationship.class);
+
+                Dao<Review, String> daoRvw = DaoManager.createDao(connectionSource, Review.class);
+
+                /** Build native query */
+                qryBuilder = new StringBuffer();
+                qryBuilder.append("SELECT rel.* ");
+                qryBuilder.append("FROM ReviewRelationship rel ");
+                qryBuilder.append("WHERE ");
+                qryBuilder.append( "rel.to = " + profile.getUsrId());
+
+                query = qryBuilder.toString();
+
+                RawRowMapper<ReviewRelationship> mapperReviews = daoReviews.getRawRowMapper();
+                GenericRawResults<ReviewRelationship> rawResponseReview = daoTrips.queryRaw(query, mapperReviews);
+                List<ReviewRelationship> responseReview = rawResponseReview.getResults();
+
+                HashSet<Review> reviews = new HashSet<Review>();
+                Review aux;
+                for(ReviewRelationship each: responseReview){
+                	aux = daoRvw.queryForId(each.getReviewId().toString());
+                	aux.setProfileOrigin(this.getById(each.getFrom(),2));
+                	aux.setProfileTarget(this.getById(each.getTo(),2));
+                	reviews.add(aux);
+                }
+                profile.setReviews(reviews);
+
+              //Get Coordinates
+                Dao<Coordinates, String> daoCoordinates = DaoManager.createDao(connectionSource, Coordinates.class);
+                profile.checkIn(daoCoordinates.queryForId(profile.getUsrId().toString()));
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());

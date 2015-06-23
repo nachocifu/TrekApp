@@ -338,11 +338,11 @@ public class Profile {
      */
     public void addReview(Profile sender, String msg, Integer rating){
         if(msg == null || msg.trim().isEmpty()){
-            throw new IllegalArgumentException("The msg is either null or empty");
+            throw new IllegalArgumentException("ERROR || The msg is either null or empty");
         }else if(rating == null
                 || rating < 0
                 || rating > 5){
-            throw new IllegalArgumentException("The rating is either null or not between 0 and 5");
+            throw new IllegalArgumentException("ERROR || The rating is either null or not between 0 and 5");
         }
         Review rev = new Review(this, sender, msg, rating);
         this.reviews.add(rev);

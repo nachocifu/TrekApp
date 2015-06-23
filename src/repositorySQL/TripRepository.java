@@ -91,7 +91,9 @@ public class TripRepository extends AbstractRepository<Trip> {
      */
     public Trip getById(Integer tripId, Integer depth){
        Trip obj = super.getById(tripId);
-       return this.loadObjectsInside(obj, depth);
+       System.err.println("En este momento se deberian levantar los objetos y colocar adentro del trip con id: " + tripId);
+       //obj = this.loadObjectsInside(obj, depth);
+       return obj;
     }
 
     /**
@@ -101,7 +103,8 @@ public class TripRepository extends AbstractRepository<Trip> {
      */
     public void update(Trip obj, Integer depth){
         super.update(obj);
-        this.persistObjectsInside(obj, depth);
+        System.err.println("En este momento se deberian persistir los objetos adentro del trip con id: " + obj.getId());
+        //this.persistObjectsInside(obj, depth);
     }
 
 }

@@ -96,4 +96,20 @@ public class Review {
 		public Integer getId() {
 			return id;
 		}
+
+		public Profile getProfileTarget() {
+			return profileTarget;
+		}
+
+		public void setProfileTarget(Profile profileTarget) {
+			this.profileTarget = profileTarget;
+		}
+
+		public Profile getProfileOrigin() {
+			return profileOrigin;
+		}
+
+		public void setProfileOrigin(Profile profileOrigin) {
+			this.profileOrigin = profileOrigin;
+		}
 }

@@ -17,7 +17,7 @@ import domain.Review;
 @DatabaseTable
 class ReviewRelationship {
 
-    @DatabaseField( generatedId = true )
+    @DatabaseField( id = true )
     private Integer reviewId;
 
     @DatabaseField
