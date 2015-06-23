@@ -21,13 +21,15 @@ import domain.UserNameAlreadyExistsException;
 
 /**
  *
- * To be extended by all repositorys.
+ * To be extended by all repositories.
  * Operates between the data base and the services.
  * Provides file access to the services logic.
  * @author nacho
  *
  */
 public abstract class AbstractRepository<T> {
+	
+	
 
     /** path to the folder containing all the binary files */
     protected final String databaseUrl;
