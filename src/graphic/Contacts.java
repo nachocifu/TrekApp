@@ -91,7 +91,7 @@ public class Contacts extends JFrame {
 		if(instance != null){
 	
 			try {
-				auxFriends = instance.getCurrentProfileController().getFriends();
+				auxFriends = (HashSet<ProfileController>) instance.getCurrentProfileController().getFriends();
 				for(ProfileController each : auxFriends){
 					friends.addElement(each.getUsername());
 				}
@@ -103,7 +103,7 @@ public class Contacts extends JFrame {
 			
 			
 			try {
-				auxBlock = instance.getCurrentProfileController().getBlockUsers();
+				auxBlock = (HashSet<ProfileController>) instance.getCurrentProfileController().getBlockUsers();
 				for(ProfileController each : auxBlock){
 					block.addElement(each.getUsername());
 				}

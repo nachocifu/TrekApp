@@ -69,7 +69,7 @@ public class DataBaseTest {
         System.out.println(user1.getName() +" "+user1.getUsrName()+ " " + user1.getFriends());
         //user1 = userRepo.getById(1);
         //System.out.println("user1 friends:" + user1.getFriendRequests().toString());
-        userRepo.validateCredentials("naco", "agua");
+        System.out.println("Validate method ProfileRepo::ValidateCredentials: " + userRepo.validateCredentials("nacho", "agua"));
     }
 
     private void populateGroups() {
