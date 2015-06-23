@@ -15,12 +15,9 @@ import domain.UserNameAlreadyExistsException;
 
 public class ProfileRepository extends AbstractRepository<Profile> {
 
-    /** the class of the objects this repository handles */
-    private final Class<Profile> profileClass = null;
 
     public ProfileRepository(String pathToDataBase,Class reposClass) {
-        super(pathToDataBase, reposClass);
-        // TODO Auto-generated constructor stub
+       
     }
 
     /**
@@ -29,50 +26,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
      * @return response list of Profiles
      */
     public List<Profile> searchBy(String searchTxt, Profile currentUser){
-        ConnectionSource connectionSource = null;
-        List<Profile> list = new ArrayList<Profile>();
-        List<Profile> response = new ArrayList<Profile>();
-
-        try{
-            try{
-                Class.forName("org.sqlite.JDBC");
-                /** create a connection source to our database */
-                connectionSource = new JdbcConnectionSource(this.databaseUrl);
-
-                /** instantiate the dao */
-                Dao<Profile, String> dao = DaoManager.createDao(connectionSource, Profile.class);
-
-                /** Build native query */
-                StringBuffer qryBuilder = new StringBuffer();
-                qryBuilder.append("SELECT prf.* ");
-                qryBuilder.append("FROM Profile prf ");
-                qryBuilder.append("WHERE ");
-                qryBuilder.append( "prf.usrName LIKE '%" + searchTxt + "%' ");
-                qryBuilder.append("OR prf.email LIKE '%" + searchTxt + "%' ");
-                qryBuilder.append("OR prf.city LIKE '%" + searchTxt + "%' ");
-                qryBuilder.append("OR prf.name LIKE '%" + searchTxt + "%' ");
-                qryBuilder.append("OR prf.surname LIKE '%"+ searchTxt + "%' ");
-
-                String query = qryBuilder.toString();
-
-                RawRowMapper<Profile> mapper = dao.getRawRowMapper();
-                GenericRawResults<Profile> rawResponse = dao.queryRaw(query, mapper);
-                list = rawResponse.getResults();
-                for(Profile each:list)
-                    response.add(this.loadProfilesInside(each, 2));
-            }
-            catch(Exception e){
-                System.err.println("[ERROR] || " + e.getMessage());
-            }
-            finally{
-                /** close the connection source */
-                connectionSource.close();
-            }
-        }
-        catch(SQLException e){
-            System.err.println("[ERROR] || " + e.getMessage());
-        }
-        return response;
+      
     }
 
     /**

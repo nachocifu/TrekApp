@@ -1,13 +1,7 @@
 package repository;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
-import domain.Profile;
-import domain.QueryFilters;
 import domain.UserNameAlreadyExistsException;
 
 /**
@@ -28,69 +22,31 @@ public abstract class AbstractRepository<T>{
     	this.repository = new HashSet<T>();
     }
 
-
-    /**
-     * Updates the object. If failure, return number.
-     * @param obj
-     * @return
-     */
-    public Integer update(T obj){
-        Integer response = null;
-        
-    }
-
     /**
      * Adds the object. Returns if it succeedes.
      * @param obj to save on system
      * @return status if success is true or false
      * @throws UserNameAlreadyExistsException
-     * @throws ServerException
      */
-    public void add(T obj) throws UserNameAlreadyExistsException{
-        
+    public boolean add(T obj) throws UserNameAlreadyExistsException{
+        if(!this.repository.contains(obj)){
+        	this.repository.add(obj);
+        	return true;
+        }
+        return false;
     }
-
+    
     /**
      * Removes the object referenced by id.
      * If it doesn't exist does nothing.
      * @param id
      */
-    public void delete(T obj){
-
-        ConnectionSource connectionSource = null;
-        try{
-            try{
-                Class.forName("org.sqlite.JDBC");
-                /** create a connection source to our database */
-                connectionSource = new JdbcConnectionSource(this.databaseUrl);
-
-                /** instantiate the dao */
-                Dao<T, String> dao = DaoManager.createDao(connectionSource, this.reposClass);
-
-                /** check if object exists and remove */
-                dao.delete(obj);
-
-            }
-            catch(Exception e){
-                System.err.println("[ERROR] || " + e.getMessage());
-            }
-            finally{
-                /** close the connection source */
-                connectionSource.close();
-            }
+    public boolean delete(T obj){
+    	if(!this.repository.contains(obj)){
+        	return false;
         }
-        catch(SQLException e){
-            System.err.println("[ERROR] || " + e.getMessage());
-        }
+    	this.repository.remove(obj);
+        return true;
     }
-
-    /**
-     * Search  the T objects for the search text.
-     * @param searchTxt
-     * @return response The list of objects that match the text in someway.
-     */
-    public abstract List<T> searchBy(String searchTxt, Profile currentUser);
-
-
 
 }
