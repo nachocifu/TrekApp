@@ -10,8 +10,8 @@ import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.TripNotClosedException;
 import domain.TripStatus;
-import repositoryMem.AbstractRepository;
-import repositoryMem.GroupRepository;
+import repositorySQL.AbstractRepository;
+import repositorySQL.GroupRepository;
 import domain.Message;
 
 
@@ -20,35 +20,35 @@ public class GroupController extends AbstractController<Group> {
     public GroupController(GroupRepository groupRepo) {
         super(groupRepo);
     }
-    
+
     /**
      * @return a Collection with the Members that are not reviewed
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
     public Collection<ProfileController> getMissingMembersToReview() throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	return ProfileController.generateListOfControllers(this.obj.getMissingReviewsToMakeByAMember(Application.getInstance().getCurrentProfileController().getObject())); 	
+        this.validateEnvironment();
+        return ProfileController.generateListOfControllers(this.obj.getMissingReviewsToMakeByAMember(Application.getInstance().getCurrentProfileController().getObject()));
     }
-    
+
     /**
      * @return
-     * @throws ControllerNotLoadedException 
-     * @throws SessionNotActiveException 
+     * @throws ControllerNotLoadedException
+     * @throws SessionNotActiveException
      */
     public HashSet<ProfileController> getMyMissingReviews() throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	return ProfileController.generateListOfControllers(this.obj.getMissingReviewsToMakeByAMember(Application.getInstance().getCurrentProfileController().getObject()));
+        this.validateEnvironment();
+        return ProfileController.generateListOfControllers(this.obj.getMissingReviewsToMakeByAMember(Application.getInstance().getCurrentProfileController().getObject()));
     }
-    
+
     /**
      * @return Returns the status of the group trip
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
     public TripStatus getTripStatus() throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	return this.obj.getGroupTrip().getTripStatus(); 	
+        this.validateEnvironment();
+        return this.obj.getGroupTrip().getTripStatus();
     }
 
     /**
@@ -93,7 +93,7 @@ public class GroupController extends AbstractController<Group> {
         this.validateEnvironment();
         Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
         if(!this.obj.getMembers().contains(loggedUser)){
-    		throw new InvalidPermissionException("Cannot post because user is not a member of this group");
+            throw new InvalidPermissionException("Cannot post because user is not a member of this group");
         }
         this.obj.addPost(loggedUser, msg);
         saveChanges();
@@ -112,19 +112,19 @@ public class GroupController extends AbstractController<Group> {
         this.validateController(tripController);
         Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
         if(!this.obj.getMembers().contains(loggedUser)){
-        	throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
+            throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
         }
         this.obj.addGroupTrip(tripController.getObject());
         saveChanges();
     }
-    
+
     /**
      * @return Returns the size of the group
      */
     public Integer groupSize(){
         return this.obj.groupSize();
     }
-    
+
     /**
      * Validates who is sending the review and if that "member" is a member of the group
      * @param loggedUser
@@ -133,41 +133,41 @@ public class GroupController extends AbstractController<Group> {
      * @param rating
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
-     * @throws TripNotClosedException 
+     * @throws TripNotClosedException
      */
     public void sendReviewToAMember(ProfileController member, String msg, Integer rating) throws SessionNotActiveException, ControllerNotLoadedException, TripNotClosedException{
-    	this.validateEnvironment();
+        this.validateEnvironment();
         this.validateController(member);
         Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
         this.obj.sendReviewToAMember(loggedUser, member.getObject(), msg, rating);
         member.saveChanges();
     }
-    
+
     /**
      * @return Returns a TripController or a MyTripController depending of the admin access
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
     public TripController getTripController() throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	Application app = Application.getInstance();
-    	return app.getATripController(this.obj.getGroupTrip(), this.obj.getAdminUser());
+        this.validateEnvironment();
+        Application app = Application.getInstance();
+        return app.getATripController(this.obj.getGroupTrip(), this.obj.getAdminUser());
     }
-    
+
     /**
      * Adds a member request to the group
      * @param possibleMember
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
-     * @throws InvalidPermissionException 
+     * @throws InvalidPermissionException
      */
     public void sendMemberRequest() throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
-    	this.validateEnvironment();
-    	Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
+        this.validateEnvironment();
+        Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
         this.obj.addMemberRequest(loggedUser);
         saveChanges();
     }
-    
+
     /**
      * Generate list of controllers from list of T objects
      * @param list
@@ -182,7 +182,7 @@ public class GroupController extends AbstractController<Group> {
         }
         return response;
     }
-    
+
     @Override
     protected AbstractRepository<Group> getRepository() {
         return (GroupRepository) this.repository;

@@ -35,10 +35,13 @@ public abstract class AbstractRepository<T> {
     /** the class of the objects this repository handles */
     private final Class<T> reposClass;
 
+	protected String pathToDataBase;
+
 
     public AbstractRepository(final String pathToDataBase, final Class<T> reposClass){
         this.databaseUrl = ("jdbc:sqlite:" + pathToDataBase);
         this.reposClass = reposClass;
+        this.pathToDataBase = pathToDataBase;
     }
 
     /**
@@ -73,9 +76,9 @@ public abstract class AbstractRepository<T> {
         catch(SQLException e){
             System.err.println("[ERROR] || " + e.getMessage());
         }
-        finally{
+
             return response;
-        }
+
     }
 
     /**

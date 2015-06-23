@@ -3,17 +3,17 @@ package controllers;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-
 import domain.ControllerNotLoadedException;
 import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.TripStatus;
-import repositoryMem.TripRepository;
+import repositorySQL.TripRepository;
+
 
 
 /**
  * An object that can only be obtainable by the group admin (also the trip admin)
- * 
+ *
  *
  */
 public class MyTripController extends TripController {
@@ -34,7 +34,7 @@ public class MyTripController extends TripController {
     }
 
     /**
-     * 
+     *
      * @param date date set for the trip to end
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -57,7 +57,7 @@ public class MyTripController extends TripController {
     }
 
     /**
-     * 
+     *
      * @param description that will be set as the trips description
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -69,7 +69,7 @@ public class MyTripController extends TripController {
     }
 
     /**
-     * 
+     *
      * @param city that will be set as the origin city
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -81,7 +81,7 @@ public class MyTripController extends TripController {
     }
 
     /**
-     * 
+     *
      * @param city that will be set as the ending city
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -102,37 +102,37 @@ public class MyTripController extends TripController {
         this.validateEnvironment();
         this.validateController(tripGroupController);
         if(newTripStatus == TripStatus.CLOSED && this.obj.getTripStatus() != TripStatus.CLOSED){
-        	tripGroupController.getObject().updateMissingReviews();
-        	Collection<Profile> groupMembers = tripGroupController.getObject().getMembers();
-        	for (Profile profile : groupMembers) {
-				profile.getTrips().add(this.obj);
-			}
-        	tripGroupController.saveChanges();
+            tripGroupController.getObject().updateMissingReviews();
+            Collection<Profile> groupMembers = tripGroupController.getObject().getMembers();
+            for (Profile profile : groupMembers) {
+                profile.getTrips().add(this.obj);
+            }
+            tripGroupController.saveChanges();
         }
         this.obj.setTripStatus(newTripStatus);
         saveChanges();
     }
-    
+
     /**
-     * 
+     *
      * @param newCost that will be added to the trips total cost
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
     public void addNewCostToTrip(Double newCost) throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	this.addNewCostToTrip(newCost);
-    	saveChanges();
+        this.validateEnvironment();
+        this.addNewCostToTrip(newCost);
+        saveChanges();
     }
-    
+
     /**
      * deletes the trip
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
     public void deleteTrip() throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	getRepository().delete(this.obj);
+        this.validateEnvironment();
+        getRepository().delete(this.obj);
         this.obj = null;
     }
 }

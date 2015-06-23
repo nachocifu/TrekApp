@@ -1,4 +1,4 @@
-package graphic;
+package Graphic;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;

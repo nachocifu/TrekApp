@@ -3,9 +3,10 @@ package controllers;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-
 import repositoryMem.AbstractRepository;
 import repositoryMem.TripRepository;
+import repositorySQL.AbstractRepository;
+import repositorySQL.TripRepository;
 import domain.ControllerNotLoadedException;
 import domain.SessionNotActiveException;
 import domain.Trip;
@@ -13,7 +14,7 @@ import domain.TripStatus;
 
 /**
  * An Trip object accessible to everyone
- * 
+ *
  *
  */
 public class TripController extends AbstractController<Trip> {
@@ -23,7 +24,7 @@ public class TripController extends AbstractController<Trip> {
     }
 
     /**
-     * 
+     *
      * @return date when the trip starts
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -34,7 +35,7 @@ public class TripController extends AbstractController<Trip> {
     }
 
     /**
-     * 
+     *
      * @return the date when the trip begins
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -45,7 +46,7 @@ public class TripController extends AbstractController<Trip> {
     }
 
     /**
-     * 
+     *
      * @return the estimated cost of the trip
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -56,7 +57,7 @@ public class TripController extends AbstractController<Trip> {
     }
 
     /**
-     * 
+     *
      * @return the trips description
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -67,7 +68,7 @@ public class TripController extends AbstractController<Trip> {
     }
 
     /**
-     * 
+     *
      * @return the city where the trip starts
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -78,7 +79,7 @@ public class TripController extends AbstractController<Trip> {
     }
 
     /**
-     * 
+     *
      * @return the city where the finishes
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -89,7 +90,7 @@ public class TripController extends AbstractController<Trip> {
     }
 
     /**
-     * 
+     *
      * @return the trips current status
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -104,7 +105,7 @@ public class TripController extends AbstractController<Trip> {
      * @param list
      * @return response List of controllers
      * @throws SessionNotActiveException
-     */  
+     */
     protected static HashSet<TripController> generateListOfControllers(Collection<Trip> list) throws SessionNotActiveException {
         HashSet<TripController> response = new  HashSet<TripController>();
         Application app = Application.getInstance();

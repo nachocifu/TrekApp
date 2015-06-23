@@ -3,9 +3,8 @@ package controllers;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
-
-import repositoryMem.AbstractRepository;
-import repositoryMem.ProfileRepository;
+import repositorySQL.AbstractRepository;
+import repositorySQL.ProfileRepository;
 import domain.ControllerNotLoadedException;
 import domain.Profile;
 import domain.Review;
@@ -47,7 +46,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @return a string containing the profiles username
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -78,7 +77,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @return a boolean reperesenting the profiles sex, true being female and false male
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -89,7 +88,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @return a date with the profiles birthday
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -100,7 +99,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @return the profiles average rating
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -111,7 +110,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @return the city where the profile is from
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -122,7 +121,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @return the profiles email
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -133,7 +132,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @return a Collection containing ProfileController's, which would be the profiles friends ProfileControllers
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -142,9 +141,9 @@ public class ProfileController extends AbstractController<Profile> {
         this.validateEnvironment();
         return ProfileController.generateListOfControllers(obj.getFriends());
     }
-    
+
     /**
-     * 
+     *
      * @return a Collection containing ProfileController's, which would be the profiles blocked users ProfileControllers
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -155,7 +154,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @returna Collection containing GroupController's, which would be the profile's groups GroupControllers
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -166,7 +165,7 @@ public class ProfileController extends AbstractController<Profile> {
     }
 
     /**
-     * 
+     *
      * @return a Collection containing TripController's, which would be the profiles trips TripControllers
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
@@ -175,16 +174,16 @@ public class ProfileController extends AbstractController<Profile> {
         this.validateEnvironment();
         return TripController.generateListOfControllers(obj.getTrips());
     }
-    
+
     /**
-     * 
+     *
      * @return a Collection containting the profiles reviews
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
     public Collection<Review> getReviews() throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	return this.obj.getReviews();
+        this.validateEnvironment();
+        return this.obj.getReviews();
     }
 
     /**

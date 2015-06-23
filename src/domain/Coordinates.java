@@ -9,24 +9,26 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "Coordinates")
 public class Coordinates {
-	
+
 	@DatabaseField
 	private double x;
-	
+
 	@DatabaseField
 	private double y;
-	
-	@DatabaseField (generatedId=true)
+
+	@DatabaseField (id = true)
 	private Integer id;
-	
+
+
 	public Coordinates(){
 	}
-	
-	public Coordinates(double x, double y){
-		this.x=x;
-		this.y=y;
+
+	public Coordinates(Profile profile ,double x, double y){
+		this.x = x;
+		this.y = y;
+		this.id = profile.getUsrId();
 	}
-	
+
 	/**
 	 * @param coor1
 	 * @param coor2
@@ -35,7 +37,7 @@ public class Coordinates {
 	public double getDistanceBetweenOtherCoordinate(Coordinates coor2){
 		return Math.sqrt((coor2.getX() - this.x) + (coor2.getY() - this.y));
 	}
-	
+
 	/**
 	 * @param new x value
 	 * @param new y value
@@ -44,14 +46,14 @@ public class Coordinates {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
 	 * @return x value
 	 */
 	public Double getX(){
 		return this.x;
 	}
-	
+
 	/**
 	 * @return y value
 	 */

@@ -65,7 +65,7 @@ public class Profile {
      *the user will be able to checkIn in a specific location, it will save the last
      *location where the user checked-in
      */
-    private Coordinates checkIn = null;
+    private Coordinates coordinates;
 
     /**the users friends*/
 
@@ -118,7 +118,7 @@ public class Profile {
         this.surname = surname;
         this.brthDay = brthDay;
         this.sex = sex;
-        this.checkIn = null;
+        this.coordinates=null;
         this.friends= new HashSet<Profile>();
         this.blockedUsr= new HashSet<Profile>();
         this.trips = new HashSet<Trip>();
@@ -140,13 +140,13 @@ public class Profile {
      * @param sex
      */
     public Profile(String usrName, String name, String surname, Date brthDay, boolean sex, String password, String city, String email){
-    	this.usrName = usrName;
+        this.usrName = usrName;
         this.usrId = null;
         this.name = name;
         this.surname = surname;
         this.brthDay = brthDay;
         this.sex = sex;
-        this.checkIn = null;
+        this.coordinates = null;
         this.friends= new HashSet<Profile>();
         this.blockedUsr= new HashSet<Profile>();
         this.trips = new HashSet<Trip>();
@@ -307,25 +307,24 @@ public class Profile {
     /**
      * @return the last location where the user has checked in
      */
-    public Coordinates getCheckIn(){
-        return this.checkIn;
+    public Coordinates getCoordinates(){
+        return this.coordinates;
     }
 
     /**
      * @param location where the user has checked-in
      */
     public void checkIn(Coordinates location){
-        this.checkIn=location;
+        this.coordinates = location;
     }
 
     /**
      * @param x coordinate from the users location
      * @param y coordinate from the users location
-     * @deprecated
+     *
      */
     public void checkIn(Double x, Double y){
-        Coordinates coor = new Coordinates(x,y);
-        this.checkIn = coor;
+        this.coordinates = new Coordinates(this, x,y);
     }
 
     public Collection<Profile> getFriends(){
@@ -354,11 +353,11 @@ public class Profile {
      */
     public void addReview(Profile sender, String msg, Integer rating){
         if(msg == null || msg.trim().isEmpty()){
-            throw new IllegalArgumentException("The msg is either null or empty");
+            throw new IllegalArgumentException("ERROR || The msg is either null or empty");
         }else if(rating == null
                 || rating < 0
                 || rating > 5){
-            throw new IllegalArgumentException("The rating is either null or not between 0 and 5");
+            throw new IllegalArgumentException("ERROR || The rating is either null or not between 0 and 5");
         }
         Review rev = new Review(this, sender, msg, rating);
         this.reviews.add(rev);
@@ -382,7 +381,7 @@ public class Profile {
      */
     public void joinGroup(Group group){
         if(groups.contains(group))
-            throw new IllegalArgumentException("The user already belongs to that group");
+            throw new IllegalArgumentException("ERROR || The user already belongs to that group");
         this.groups.add(group);
     }
 
@@ -430,12 +429,12 @@ public class Profile {
             throw new IllegalArgumentException("The user is already unblocked");
         this.blockedUsr.remove(usr);
     }
-    
+
     public boolean comparePass(String password){
-    	if(this.password.trim().equals(password.trim())){
-    		return true;
-    	}
-    	return false;
+        if(this.password.trim().equals(password.trim())){
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -1,6 +1,7 @@
 package controllers;
 
-import repositoryMem.AbstractRepository;
+import repositorySQL.AbstractRepository;
+
 import domain.ControllerNotLoadedException;
 import domain.SessionNotActiveException;
 
@@ -67,7 +68,7 @@ public abstract class AbstractController<T> {
     }
 
     /**
-     * 
+     *
      * @return object
      */
     protected T getObject(){

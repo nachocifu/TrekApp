@@ -18,9 +18,11 @@ public class ApplicationTest {
 	@Test(expected=UserNameAlreadyExistsException.class)
 	public void testUserNameAlreadyExists() throws ServerException, UserNameAlreadyExistsException {
 		Application apl = Application.getInstance(); 
-		apl.registerUser("username", "name", "surname", new Date(1993,12,18), true, "123456", "Buenos Aires", "email@itba.edu.ar" ); 
-		apl.registerUser("username", "name", "surname", new Date(1993,12,18), true, "123456", "Buenos Aires", "email@itba.edu.ar" );
+		apl.registerUser("username3", "name", "surname", new Date(1993,12,18), true, "123456", "Buenos Aires", "email@itba.edu.ar" ); 
+		apl.registerUser("username4", "name", "surname", new Date(1993,12,18), true, "123456", "Buenos Aires", "email@itba.edu.ar" );
 	}
+	
+	
 	/*
 	/*@SuppressWarnings("deprecation")
 	@Test

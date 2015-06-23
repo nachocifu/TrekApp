@@ -7,7 +7,7 @@ import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.RequestStatus;
 import domain.SessionNotActiveException;
-import repositoryMem.GroupRepository;
+import repositorySQL.GroupRepository;
 import domain.Message;
 
 public class MyGroupController extends GroupController {
@@ -42,8 +42,8 @@ public class MyGroupController extends GroupController {
         this.validateEnvironment();
         this.validateController(profileController);
         if(this.obj.deleteMember(profileController.getObject())){
-        	getRepository().delete(this.obj);
-        	this.obj = null;
+            getRepository().delete(this.obj);
+            this.obj = null;
         }
         profileController.saveChanges();
         saveChanges();
@@ -64,7 +64,7 @@ public class MyGroupController extends GroupController {
         }
         return newMap;
     }
-    
+
     /**
      * Rejects a member request
      * @param profileController
@@ -72,10 +72,10 @@ public class MyGroupController extends GroupController {
      * @throws ControllerNotLoadedException
      */
     public void rejectAMemberRequest(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	this.validateController(profileController);
-    	this.obj.rejectAMemberRequest(profileController.getObject());
-    	saveChanges();  	
+        this.validateEnvironment();
+        this.validateController(profileController);
+        this.obj.rejectAMemberRequest(profileController.getObject());
+        saveChanges();
     }
 
     /**

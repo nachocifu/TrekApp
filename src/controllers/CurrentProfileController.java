@@ -8,7 +8,8 @@ import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.RequestStatus;
 import domain.SessionNotActiveException;
-import repositoryMem.ProfileRepository;
+import repositorySQL.ProfileRepository;
+
 
 public class CurrentProfileController extends ProfileController {
 
@@ -65,28 +66,28 @@ public class CurrentProfileController extends ProfileController {
         this.obj.deleteFriend(friend.getObject());
         saveChanges();
     }
-    
+
     /**
      * Adds a friend request to the profile
      * @param possibleMember
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
-     * @throws InvalidPermissionException 
+     * @throws InvalidPermissionException
      */
     public void sendMemberRequest(ProfileController possibleFriend) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
-    	this.validateEnvironment();
+        this.validateEnvironment();
         this.validateController(possibleFriend);
         this.obj.addFriendRequest(possibleFriend.getObject());
         saveChanges();
     }
-    
+
 
     /**
-     * Adds a friend to the users friends list 
+     * Adds a friend to the users friends list
      * @param friend username to be added to the list
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
-     * @throws InvalidPermissionException 
+     * @throws InvalidPermissionException
      */
     public void sendFriendRequest(String possibleFriend) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
@@ -95,13 +96,13 @@ public class CurrentProfileController extends ProfileController {
         this.getRepository().update(friend); //Saves Changes into repo
         saveChanges();
     }
-    
+
     /**
-     * Adds a friend to the users friends list 
+     * Adds a friend to the users friends list
      * @param friend controller to be added to the list
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
-     * @throws InvalidPermissionException 
+     * @throws InvalidPermissionException
      */
     public void sendFriendRequest(ProfileController possibleFriend) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
         this.validateEnvironment();
@@ -170,7 +171,7 @@ public class CurrentProfileController extends ProfileController {
         this.obj.leaveGroup(group.getObject());
         saveChanges();
     }
-    
+
     /**
      * Accepts a friend from the friend request list
      * @param newMember
@@ -184,7 +185,7 @@ public class CurrentProfileController extends ProfileController {
         saveChanges();
         newFriend.saveChanges();
     }
-    
+
     /**
      * Rejects a friend request
      * @param profileController
@@ -192,20 +193,20 @@ public class CurrentProfileController extends ProfileController {
      * @throws ControllerNotLoadedException
      */
     public void rejectAFriendRequest(ProfileController profileRejected) throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	this.validateController(profileRejected);
-    	this.obj.rejectAFriendRequest(profileRejected.getObject());
-    	saveChanges();  	
+        this.validateEnvironment();
+        this.validateController(profileRejected);
+        this.obj.rejectAFriendRequest(profileRejected.getObject());
+        saveChanges();
     }
-    
+
     /**
      * @return Returns a Map with profile controllers and each of their status
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
     public HashMap<ProfileController, RequestStatus> getFriendRequests() throws SessionNotActiveException, ControllerNotLoadedException{
-    	this.validateEnvironment();
-    	HashMap<ProfileController, RequestStatus> newMap = new HashMap<>();
+        this.validateEnvironment();
+        HashMap<ProfileController, RequestStatus> newMap = new HashMap<>();
         Application app = Application.getInstance();
         HashMap<Profile, RequestStatus> friendRequests = this.obj.getFriendRequests();
         for (Profile profile : friendRequests.keySet()) {

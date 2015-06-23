@@ -17,6 +17,7 @@ import domain.Coordinates;
 import domain.Group;
 import domain.InvalidPermissionException;
 import domain.Profile;
+import domain.Review;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
 
@@ -32,6 +33,7 @@ public class DataBaseTest {
 
 
     public static void main(String[] args) throws Exception {
+
         System.err.println("### Local Database TEST ###");
         System.out.println("starting database admin");
         DataBaseTest repoAdmin = new DataBaseTest();
@@ -41,11 +43,22 @@ public class DataBaseTest {
         repoAdmin.start(Trip.class);
         repoAdmin.start(ProfileRelationship.class);
         repoAdmin.start(Coordinates.class);
+        repoAdmin.start(TripProfileRelationship.class);
+        repoAdmin.start(Review.class);
+        repoAdmin.start(ReviewRelationship.class);
+        repoAdmin.start(GroupProfileRelationship.class);
 
+
+        System.err.println("#########POPULATE USERS");
         repoAdmin.populateUsers();
+        System.err.println("#########OPERATE WITH USERS");
         repoAdmin.operateWithUsers();
-        System.out.println("--------END-------");
+        System.err.println("#########POPULATE GROUPS");
+        //repoAdmin.populateGroups();
+        System.err.println("#########OPERATE WITH GROUPS");
 
+        System.err.println("--------END-------");
+        System.err.println(repoAdmin.getClass().getCanonicalName());
         //Application app = Application.getInstance();
     }
 
@@ -53,56 +66,47 @@ public class DataBaseTest {
     private void operateWithUsers() throws ServerException, UserNameAlreadyExistsException, InvalidPermissionException {
         ProfileRepository userRepo = new ProfileRepository("DataBase", Profile.class);
 
-        /** Operate */
+        /**Operate*/
         System.out.println("get by id user1");
-        Profile user1 = userRepo.getById(1,2);
+        Profile user1 = userRepo.getById("nacho");
         System.out.println("get by id user2");
-        Profile user2 = userRepo.getById(2,2);
+        Profile user2 = userRepo.getById(2);
         System.out.println("update user2");
-        userRepo.update(user2);
+        //userRepo.update(user2);
         HashSet<Profile> lista = new HashSet<Profile>();
         lista.add(user2);
         user1.setFriends(lista);
-        user1.addFriendRequest(user2);
+        //user1.addFriendRequest(user2);
         System.out.println("update user1");
-        userRepo.update(user1,2);
-        //System.out.println(user1.getName() +" "+user1.getUsrName()+ " " + user1.getFriends());
-        user1 = userRepo.getById(1,2);
-        System.out.println("print users inside " + user1.getUsrName());
-        for(Profile each: user1.getFriends())
-        	System.out.println(each.getUsrName() + "lista" + each.getFriends().isEmpty());
+        userRepo.update(user1,7);
+        System.out.println(user1.getName() +" "+user1.getUsrName()+ " " + user1.getFriends());
+        //user1 = userRepo.getById(1);
+        //System.out.println("user1 friends:" + user1.getFriendRequests().toString());
+        System.out.println("Validate method ProfileRepo::ValidateCredentials: " + userRepo.validateCredentials("nacho", "agua"));
     }
 
-    private void populateGroups() {
+    private void populateGroups() throws ServerException, UserNameAlreadyExistsException {
+        ProfileRepository userRepo = new ProfileRepository("DataBase", Profile.class);
+        GroupRepository groupRepo = new GroupRepository("DataBase", Group.class);
         System.out.println("### Populating Group table ###");
 
-        Class<Group> type = Group.class;
+
         List<Group> pool = new ArrayList<Group>();
-        boolean status = true;
-
-        try{
-
-            Class.forName("org.sqlite.JDBC");
-
-            /** create a connection source to our database */
-            ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl);
-
-            /**create DAO*/
-            Dao<Group, String> dao = DaoManager.createDao(connectionSource, type);
-
             /**Populate*/
-            //pool.add(Group e)
+            Profile admin = userRepo.getById(1);
+            Group   group = new Group("grupo1", admin, 5, 3, "baires");
+            System.out.println(group == null);
+            groupRepo.add(group);
+            //admin.joinGroup(group);
+            userRepo.update(admin, 2);
 
-            for(Group each : pool)
-                dao.createOrUpdate(each);
+            admin = userRepo.getById(2);
+            group = new Group("grupo2", admin, 5, 3, "Mendoza");
+            groupRepo.add(group);
+            //admin.joinGroup(groupRepo.getById(2));
+            userRepo.update(admin, 2);
 
-            /** close the connection source */
-            connectionSource.close();
-        }catch(Exception e){
-            System.err.println("[ERROR] || " + e.getMessage() + "\n" + e.getStackTrace().toString());
-            status = false;
-        }
-        if(status) System.out.println("OK");
+
     }
 
 
@@ -120,9 +124,9 @@ public class DataBaseTest {
             pool.add(new Profile("kochi", "Daniel", "Kochian", new Date(7, 5, 1994) , false, "agua", "neuquen", "kochis.mail@gmail.com") );
 
             for(Profile each : pool){
-            	System.out.println();
+                System.out.println();
                 System.out.println("Add user: " + each.getUsrName());
-            	userRepo.add(each);
+                userRepo.add(each);
             }
             System.out.println("asldfasdlkfasdf");
     }

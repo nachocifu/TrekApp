@@ -36,7 +36,6 @@ public class Group {
     /**
      * The admin's user that will be used to validate permissions
      */
-    @DatabaseField( foreign = true )
     private Profile admin;
 
     /**
@@ -77,13 +76,13 @@ public class Group {
 
     public Group(String groupName, Profile admin, Integer maxGroupSize, Integer filterAge, String filterCity){
         this.groupName=groupName;
-        this.admin=admin;
         this.members=new HashSet<Profile>();
         this.wall=new HashMap<Message, Profile>();
         this.memberRequests = new HashMap<Profile, RequestStatus>();
         this.maxGroupSize = maxGroupSize;
         this.filterAge = filterAge;
         this.filterCity = filterCity;
+        this.admin = admin;
         admin.joinGroup(this);
     }
 
@@ -128,8 +127,8 @@ public class Group {
      * @param admin
      */
     public void setAdminUser(Profile newAdmin){
-        if(!this.members.contains(newAdmin))
-            throw new IllegalArgumentException("The new admin does not belong to this group");
+    	if(!this.members.contains(newAdmin))
+            throw new IllegalArgumentException("ERROR || The new admin does not belong to this group");
         this.admin = newAdmin;
     }
 
@@ -402,4 +401,8 @@ public class Group {
     public Trip getGroupTrip(){
         return this.groupTrip;
     }
+
+	public Integer getId() {
+		return groupId;
+	}
 }
