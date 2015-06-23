@@ -17,6 +17,7 @@ import domain.Coordinates;
 import domain.Group;
 import domain.InvalidPermissionException;
 import domain.Profile;
+import domain.Review;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
 
@@ -41,11 +42,16 @@ public class DataBaseTest {
         repoAdmin.start(Trip.class);
         repoAdmin.start(ProfileRelationship.class);
         repoAdmin.start(Coordinates.class);
+        repoAdmin.start(TripProfileRelationship.class);
+        repoAdmin.start(Review.class);
+        repoAdmin.start(ReviewRelationship.class);
+        repoAdmin.start(GroupProfileRelationship.class);
+
 
         System.err.println("#########POPULATE USERS");
         repoAdmin.populateUsers();
         System.err.println("#########OPERATE WITH USERS");
-        //repoAdmin.operateWithUsers();
+        repoAdmin.operateWithUsers();
         System.err.println("#########POPULATE GROUPS");
         //repoAdmin.populateGroups();
         System.err.println("#########OPERATE WITH GROUPS");

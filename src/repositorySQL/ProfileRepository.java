@@ -218,7 +218,8 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 profile.getFriends() == null ||
                 profile.getBlockedUsrs() == null ||
                 profile.getGroups() == null ||
-                profile.getTrips() == null)
+                profile.getTrips() == null ||
+                profile.getReviews() == null)
             return;
         System.out.println("persito objetos dentro de " + profile.getUsrName());
         ConnectionSource connectionSource = null;

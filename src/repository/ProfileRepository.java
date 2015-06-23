@@ -111,11 +111,11 @@ public class ProfileRepository extends AbstractRepository<Profile> {
 
                 /** Build native query */
                 StringBuffer qryBuilder = new StringBuffer();
-                qryBuilder.append("SELECT prf ");
-                qryBuilder.append("FROM Profile prfl ");
+                qryBuilder.append("SELECT prf.* ");
+                qryBuilder.append("FROM Profile prf ");
                 qryBuilder.append("WHERE ");
-                qryBuilder.append( "prf.usrName = " + userName);
-                qryBuilder.append(" AND prf.password = " + passWord);
+                qryBuilder.append( "prf.usrName = \"" + userName + "\"");
+                qryBuilder.append(" AND prf.password = \"" + passWord + "\"");
 
                 String query = qryBuilder.toString();
 
