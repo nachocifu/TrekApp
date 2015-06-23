@@ -7,7 +7,7 @@ import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.RequestStatus;
 import domain.SessionNotActiveException;
-import repositorySQL.GroupRepository;
+import repositoryMem.GroupRepository;
 import domain.Message;
 
 public class MyGroupController extends GroupController {

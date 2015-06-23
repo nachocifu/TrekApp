@@ -1,4 +1,4 @@
-package Graphic;
+package graphic;
 
 import java.util.Calendar;
 import java.util.Observable;
