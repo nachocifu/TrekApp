@@ -1,19 +1,10 @@
 package repository;
 
-import java.rmi.ServerException;
-import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.management.openmbean.KeyAlreadyExistsException;
-
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.support.ConnectionSource;
 
 import domain.Profile;
 import domain.QueryFilters;
@@ -27,18 +18,11 @@ import domain.UserNameAlreadyExistsException;
  * @author nacho
  *
  */
-public abstract class AbstractRepository<T> {
-
-    /** path to the folder containing all the binary files */
-    protected final String databaseUrl;
-
-    /** the class of the objects this repository handles */
-    private final Class<T> reposClass;
-
-
-    public AbstractRepository(final String pathToDataBase, final Class<T> reposClass){
-        this.databaseUrl = ("jdbc:sqlite:" + pathToDataBase);
-        this.reposClass = reposClass;
+public abstract class AbstractRepository<T>{
+	private HashSet<T> repository;
+	
+    public AbstractRepository(){
+    	this.repository = new HashSet<T>();
     }
 
     /**
@@ -85,34 +69,7 @@ public abstract class AbstractRepository<T> {
      */
     public Integer update(T obj){
         Integer response = null;
-        ConnectionSource connectionSource = null;
-        try{
-            try{
-                Class.forName("org.sqlite.JDBC");
-                /** create a connection source to our database */
-                connectionSource = new JdbcConnectionSource(this.databaseUrl);
-
-                /** instantiate the dao */
-                Dao<T, String> dao = DaoManager.createDao(connectionSource, this.reposClass);
-
-                /** check if object exists and update */
-                response = dao.update(obj);
-
-            }
-            catch(Exception e){
-                System.err.println("[ERROR] || " + e.getMessage());
-            }
-            finally{
-                /** close the connection source */
-                connectionSource.close();
-            }
-        }
-        catch(SQLException e){
-            System.err.println("[ERROR] || " + e.getMessage());
-        }
-        finally{
-            return response;
-        }
+        
     }
 
     /**
@@ -122,37 +79,8 @@ public abstract class AbstractRepository<T> {
      * @throws UserNameAlreadyExistsException
      * @throws ServerException
      */
-    public void add(T obj) throws UserNameAlreadyExistsException, ServerException{
-        ConnectionSource connectionSource = null;
-        try{
-            try{
-                Class.forName("org.sqlite.JDBC");
-                /** create a connection source to our database */
-                connectionSource = new JdbcConnectionSource(this.databaseUrl);
-
-                /** instantiate the dao */
-                Dao<T, String> dao = DaoManager.createDao(connectionSource, this.reposClass);
-
-                /** check if object exists and update */
-                dao.createOrUpdate(obj);
-
-            }
-            catch(Exception e){
-                System.err.println("[ERROR] || " + e.getMessage());
-            }
-            finally{
-                /** close the connection source */
-                connectionSource.close();
-            }
-        }
-        catch(KeyAlreadyExistsException e){
-            System.err.println("[ERROR] || " + e.getMessage());
-            throw new UserNameAlreadyExistsException("ERROR || Unable to register user. Username already exists.");
-        }
-        catch(SQLException e){
-            System.err.println("[ERROR] || " + e.getMessage());
-            throw new ServerException("ERROR || Failed to register new user.");
-        }
+    public void add(T obj) throws UserNameAlreadyExistsException{
+        
     }
 
     /**

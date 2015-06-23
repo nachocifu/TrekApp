@@ -1,8 +1,5 @@
 package repository;
 
-
-import java.rmi.ServerException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,17 +8,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
-
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.dao.GenericRawResults;
-import com.j256.ormlite.dao.RawRowMapper;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.stmt.PreparedUpdate;
-import com.j256.ormlite.support.ConnectionSource;
-
-import controllers.Application;
 import domain.Coordinates;
 import domain.Profile;
 import domain.RequestStatus;
