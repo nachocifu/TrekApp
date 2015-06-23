@@ -114,11 +114,11 @@ public class ProfileRepository extends AbstractRepository<Profile> {
 
                 /** Build native query */
                 StringBuffer qryBuilder = new StringBuffer();
-                qryBuilder.append("SELECT prf ");
-                qryBuilder.append("FROM Profile prfl ");
+                qryBuilder.append("SELECT prf.* ");
+                qryBuilder.append("FROM Profile prf ");
                 qryBuilder.append("WHERE ");
-                qryBuilder.append( "prf.usrName = " + userName);
-                qryBuilder.append(" AND prf.password = " + passWord);
+                qryBuilder.append( "prf.usrName = \"" + userName + "\"");
+                qryBuilder.append(" AND prf.password = \"" + passWord + "\"");
 
                 String query = qryBuilder.toString();
 
@@ -264,7 +264,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
 
                 GroupRepository groupRepo = new GroupRepository(this.pathToDataBase, Group.class);
                 for( Group each: profile.getGroups()){
-                	daoGroups.createOrUpdate( new GroupProfileRelationship(each, profile, each.getAdminUser().equals(profile)));
+                    daoGroups.createOrUpdate( new GroupProfileRelationship(each, profile, each.getAdminUser().equals(profile)));
                     groupRepo.update(each, depth-1);
                 }
 
@@ -284,8 +284,8 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 Dao<Review, String> daoRvw = DaoManager.createDao(connectionSource, Review.class);
 
                 for( Review each: profile.getReviews()){
-                	daoRvw.createOrUpdate(each);
-                	daoReview.createOrUpdate(new ReviewRelationship(each));
+                    daoRvw.createOrUpdate(each);
+                    daoReview.createOrUpdate(new ReviewRelationship(each));
                     this.update(each.getprofileOrigin(), depth-1);
                     this.update(each.getprofileTarget(), depth-1);
                 }
@@ -383,7 +383,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 HashSet<Group> groups = new HashSet<Group>();
 
                 for(GroupProfileRelationship each: responseGroups){
-                	groups.add(groupRepo.getById(each.getGroup(), depth-1));
+                    groups.add(groupRepo.getById(each.getGroup(), depth-1));
                 }
                 profile.setGroups(groups);
 
@@ -408,7 +408,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 HashSet<Trip> trips = new HashSet<Trip>();
 
                 for(TripProfileRelationship each: responseTrips){
-                	trips.add(tripRepo.getById(each.getTrip(), depth-1));
+                    trips.add(tripRepo.getById(each.getTrip(), depth-1));
                 }
                 profile.setTrips(trips);
 
@@ -434,10 +434,10 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 HashSet<Review> reviews = new HashSet<Review>();
                 Review aux;
                 for(ReviewRelationship each: responseReview){
-                	aux = daoRvw.queryForId(each.getReviewId().toString());
-                	aux.setProfileOrigin(this.getById(each.getFrom(),2));
-                	aux.setProfileTarget(this.getById(each.getTo(),2));
-                	reviews.add(aux);
+                    aux = daoRvw.queryForId(each.getReviewId().toString());
+                    aux.setProfileOrigin(this.getById(each.getFrom(),2));
+                    aux.setProfileTarget(this.getById(each.getTo(),2));
+                    reviews.add(aux);
                 }
                 profile.setReviews(reviews);
 
