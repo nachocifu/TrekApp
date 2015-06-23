@@ -23,12 +23,12 @@ public abstract class AbstractRepository<T>{
     }
 
     /**
-     * Adds the object. Returns if it succeedes.
+     * Adds the object. Returns if it succeeds.
      * @param obj to save on system
      * @return status if success is true or false
      * @throws UserNameAlreadyExistsException
      */
-    public boolean add(T obj) throws UserNameAlreadyExistsException{
+    public boolean add(T obj){
         if(!this.repository.contains(obj)){
         	this.repository.add(obj);
         	return true;
