@@ -46,14 +46,14 @@ public class Trip {
         this.endCity = endCity;
         this.tripStatus = TripStatus.OPEN;
         }
-    
+
     /**
      * @return the amount of the days the trip will take
      */
     public int getTripDurationInDays(){
     	return (int)( (this.endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
     }
-    
+
     /**
      * @param newCostToAdd to the overall trips cost
      */
@@ -159,10 +159,10 @@ public class Trip {
         return tripStatus;
     }
 
-    /** 
+    /**
      * @param tripStatus to be set
      * @throws IllegalArgumentException will be thrown if the status update trying to be realized is not possible
-     * for example if the trip is finished the staus cannot be furtherly modified, if the trip is in progress it cannot 
+     * for example if the trip is finished the staus cannot be furtherly modified, if the trip is in progress it cannot
      * be set to open
      */
     public void setTripStatus(TripStatus tripStatus) {
@@ -198,6 +198,10 @@ public class Trip {
             return false;
         return true;
     }
+
+	public Integer getId() {
+		return this.tripId;
+	}
 
 
 

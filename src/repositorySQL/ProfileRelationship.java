@@ -31,7 +31,7 @@ class ProfileRelationship {
 
     }
 
-    protected ProfileRelationship(Profile thisUser, Profile otherUser, Relationship relation){
+    protected ProfileRelationship(Profile thisUser, Profile otherUser, RelationshipEnum relation){
         this.thisUser = thisUser.getUsrId();
         this.otherUser = otherUser.getUsrId();
         this.relation = relation.getStatus();

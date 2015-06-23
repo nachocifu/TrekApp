@@ -7,13 +7,13 @@ package repositorySQL;
  * @author nacho
  *
  */
-public enum Relationship {
+public enum RelationshipEnum {
 
      REJECTED("rejected"), WAINTING("waiting"), FRIEND("friend"), BLOCKED("blocked");
 
      private String status;
 
-     Relationship(String status){
+     RelationshipEnum(String status){
          this.status = status;
      }
 
@@ -21,13 +21,13 @@ public enum Relationship {
               return status;
      }
 
-     public static Relationship fromString(String i){
-            if(i.equals(Relationship.REJECTED.getStatus()))
-                return Relationship.REJECTED;
-            if(i.equals(Relationship.WAINTING.getStatus()))
-                return Relationship.WAINTING;
-            if(i.equals(Relationship.FRIEND.getStatus()))
-                return Relationship.FRIEND;
+     public static RelationshipEnum fromString(String i){
+            if(i.equals(RelationshipEnum.REJECTED.getStatus()))
+                return RelationshipEnum.REJECTED;
+            if(i.equals(RelationshipEnum.WAINTING.getStatus()))
+                return RelationshipEnum.WAINTING;
+            if(i.equals(RelationshipEnum.FRIEND.getStatus()))
+                return RelationshipEnum.FRIEND;
             return null;
         }
 }

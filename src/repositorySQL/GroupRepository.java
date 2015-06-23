@@ -31,5 +31,26 @@ public class GroupRepository extends AbstractRepository<Group> {
         return null;
     }
 
+    /**
+     * Query for group by group ID
+     * @param id The user ID
+     * @param depth as to how inside to load the group
+     * @return response The group or null if no results
+     */
+    public Group getById(Integer groupId, Integer depth){
+       Group obj = super.getById(groupId);
+       return this.loadProfilesInside(obj, depth);
+    }
+
+    /**
+     * Update the GROUP until the depth indicated
+     * @param obj The goup
+     * @param depth as to how inside to persist the group
+     */
+    public void update(Group obj, Integer depth){
+        super.update(obj);
+        this.persistObjectsInside(obj, depth);
+    }
+
 
 }

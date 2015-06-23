@@ -83,6 +83,7 @@ public class Group {
         this.filterAge = filterAge;
         this.filterCity = filterCity;
         this.admin = admin;
+        admin.joinGroup(this);
     }
 
     public Group(){
@@ -400,4 +401,8 @@ public class Group {
     public Trip getGroupTrip(){
         return this.groupTrip;
     }
+
+	public Integer getId() {
+		return groupId;
+	}
 }

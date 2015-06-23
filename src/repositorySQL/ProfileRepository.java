@@ -23,8 +23,11 @@ import com.j256.ormlite.support.ConnectionSource;
 
 import controllers.Application;
 import domain.Coordinates;
+import domain.Group;
 import domain.Profile;
 import domain.RequestStatus;
+import domain.Review;
+import domain.Trip;
 import domain.UserNameAlreadyExistsException;
 
 public class ProfileRepository extends AbstractRepository<Profile> {
@@ -73,7 +76,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 GenericRawResults<Profile> rawResponse = dao.queryRaw(query, mapper);
                 list = rawResponse.getResults();
                 for(Profile each:list)
-                    response.add(this.loadProfilesInside(each, 2));
+                    response.add(this.loadObjectsInside(each, 2));
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());
@@ -170,7 +173,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 GenericRawResults<Profile> rawResponse = dao. queryRaw(query, mapper);
 
                 response = rawResponse.getFirstResult();
-                response = this.loadProfilesInside(response, 2);
+                response = this.loadObjectsInside(response, 2);
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());
@@ -194,13 +197,17 @@ public class ProfileRepository extends AbstractRepository<Profile> {
      */
     public Profile getById(Integer userId, Integer depth){
        Profile obj = super.getById(userId);
-       return this.loadProfilesInside(obj, depth);
+       return this.loadObjectsInside(obj, depth);
     }
 
-    public Integer update(Profile obj, Integer depth){
+    /**
+     * Update the user until the depth indicated
+     * @param id The user ID
+     * @param depth as to how inside to persist the user
+     */
+    public void update(Profile obj, Integer depth){
         super.update(obj);
         this.persistObjectsInside(obj, depth);
-        return null;
     }
 
     private void persistObjectsInside(Profile profile, Integer depth){
@@ -209,35 +216,38 @@ public class ProfileRepository extends AbstractRepository<Profile> {
         if(depth <= 0 ||
                 profile.getFriendRequests() == null ||
                 profile.getFriends() == null ||
-                profile.getBlockedUsrs() == null)
+                profile.getBlockedUsrs() == null ||
+                profile.getGroups() == null ||
+                profile.getTrips() == null)
             return;
         System.out.println("persito objetos dentro de " + profile.getUsrName());
         ConnectionSource connectionSource = null;
             try{
                 Class.forName("org.sqlite.JDBC");
-
-                /** Generate Collection to persist */
-                Collection<ProfileRelationship> relationsList = new HashSet<ProfileRelationship>();
                 /** create a connection source to our database */
                 connectionSource = new JdbcConnectionSource(Application.getInstance().getDatabase());
+
+                //Persist Profiles
+                /** Generate Collection to persist */
+                Collection<ProfileRelationship> relationsList = new HashSet<ProfileRelationship>();
                 /** instantiate the dao */
                 Dao<ProfileRelationship, String> daoRelations = DaoManager.createDao(connectionSource, ProfileRelationship.class);
 
                 for( Profile each: profile.getFriends()){
-                    relationsList.add( new ProfileRelationship(profile, each, Relationship.FRIEND));
+                    relationsList.add( new ProfileRelationship(profile, each, RelationshipEnum.FRIEND));
                     this.update(each, depth-1);
                 }
 
                 for( Profile each: profile.getBlockedUsrs()){
-                    relationsList.add( new ProfileRelationship(profile, each, Relationship.BLOCKED));
+                    relationsList.add( new ProfileRelationship(profile, each, RelationshipEnum.BLOCKED));
                     this.update(each, depth-1);
                 }
                 for( Entry<Profile, RequestStatus> each: profile.getFriendRequests().entrySet()){
-                    Relationship relation;
+                    RelationshipEnum relation;
                     if( each.getValue().equals(RequestStatus.REJECTED))
-                        relation = Relationship.REJECTED;
+                        relation = RelationshipEnum.REJECTED;
                     else
-                        relation = Relationship.WAINTING;
+                        relation = RelationshipEnum.WAINTING;
 
                     relationsList.add( new ProfileRelationship(profile, each.getKey(), relation));
                 }
@@ -247,10 +257,39 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                     daoRelations.createOrUpdate(each);
                 }
 
-                /** Persist Coordinates */
-              //  connectionSource = new JdbcConnectionSource(Application.getInstance().getDatabase());
-                //Dao<Coordinates, String> daoCoordinates = DaoManager.createDao(connectionSource, Coordinates.class);
-                //daoCoordinates.update(profile.getCheckIn());
+                //Persist Groups
+                /** instantiate the dao */
+                Dao<GroupProfileRelationship, String> daoGroups = DaoManager.createDao(connectionSource, GroupProfileRelationship.class);
+
+                GroupRepository groupRepo = new GroupRepository(this.pathToDataBase, Group.class);
+                for( Group each: profile.getGroups()){
+                	daoGroups.createOrUpdate( new GroupProfileRelationship(each, profile, each.getAdminUser().equals(profile)));
+                    groupRepo.update(each, depth-1);
+                }
+
+                //Persist Trips
+                /** instantiate the dao */
+                Dao<TripProfileRelationship, String> daoTrips = DaoManager.createDao(connectionSource, TripProfileRelationship.class);
+
+                TripRepository tripRepo = new TripRepository(this.pathToDataBase, Trip.class);
+                for( Trip each: profile.getTrips()){
+                    daoTrips.createOrUpdate(new TripProfileRelationship(each, profile));
+                    tripRepo.update(each, depth-1);
+                }
+
+                //Persist Reviews
+                /** instantiate the dao */
+                Dao<ReviewRelationship, String> daoReview = DaoManager.createDao(connectionSource, ReviewRelationship.class);
+
+                for( Review each: profile.getReviews()){
+                	daoReview.createOrUpdate(new ReviewRelationship(each));
+                    this.update(each.getprofileOrigin(), depth-1);
+                    this.update(each.getprofileTarget(), depth-1);
+                }
+
+                //Persist Coordinates
+                Dao<Coordinates, String> daoCoordinates = DaoManager.createDao(connectionSource, Coordinates.class);
+                daoCoordinates.update(profile.getCoordinates());
 
             }
             catch(Exception e){
@@ -268,7 +307,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
 
         }
 
-    private Profile loadProfilesInside(Profile profile, Integer depth){
+    private Profile loadObjectsInside(Profile profile, Integer depth){
         if( depth <= 0 )
             return profile;
 
@@ -280,6 +319,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 /** create a connection source to our database */
                 connectionSource = new JdbcConnectionSource(this.databaseUrl);
 
+                //Get Profiles
                 /** instantiate the dao */
                 Dao<ProfileRelationship, ?> dao = DaoManager.createDao(connectionSource, ProfileRelationship.class);
 
@@ -296,13 +336,12 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 GenericRawResults<ProfileRelationship> rawResponse = dao.queryRaw(query, mapper);
                 List<ProfileRelationship> response = rawResponse.getResults();
 
-                System.err.println("response levanto perfiles dentro de :  " + response.size());
                 HashSet<Profile> friends = new HashSet<Profile>();
                 HashSet<Profile> blockedUsers = new HashSet<Profile>();
                 HashMap<Profile, RequestStatus> friendRequests = new HashMap<Profile, RequestStatus>();
 
                 for(ProfileRelationship relation: response){
-                    switch (Relationship.fromString(relation.getRelation())) {
+                    switch (RelationshipEnum.fromString(relation.getRelation())) {
                     case FRIEND:
                         friends.add(this.getById(relation.getOtherUser(), depth-1));
                         break;
@@ -319,6 +358,31 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 profile.setFriends(friends);
                 profile.setBlockedUsr(blockedUsers);
                 profile.setFriendRequests(friendRequests);
+
+                //Get Groups
+                /** instantiate the dao */
+                Dao<GroupProfileRelationship, ?> daoGroups = DaoManager.createDao(connectionSource, GroupProfileRelationship.class);
+
+                /** Build native query */
+                qryBuilder = new StringBuffer();
+                qryBuilder.append("SELECT rel.* ");
+                qryBuilder.append("FROM GroupProfileRelationship rel ");
+                qryBuilder.append("WHERE ");
+                qryBuilder.append( "rel.user = " + profile.getUsrId());
+
+                query = qryBuilder.toString();
+
+                RawRowMapper<GroupProfileRelationship> mapperGroup = daoGroups.getRawRowMapper();
+                GenericRawResults<GroupProfileRelationship> rawResponseGroup = dao.queryRaw(query, mapperGroup);
+                List<GroupProfileRelationship> responseGroups = rawResponseGroup.getResults();
+
+                GroupRepository groupRepo = new GroupRepository(this.pathToDataBase, Group.class);
+                HashSet<Group> groups = new HashSet<Group>();
+
+                for(GroupProfileRelationship each: responseGroups){
+                	groups.add(groupRepo.getById(each.getGroup(), depth-1));
+                }
+                profile.setGroups(groups);
             }
             catch(Exception e){
                 System.err.println("[ERROR] || " + e.getMessage());

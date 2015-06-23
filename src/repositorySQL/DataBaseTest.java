@@ -45,9 +45,9 @@ public class DataBaseTest {
         System.err.println("#########POPULATE USERS");
         repoAdmin.populateUsers();
         System.err.println("#########OPERATE WITH USERS");
-        repoAdmin.operateWithUsers();
+        //repoAdmin.operateWithUsers();
         System.err.println("#########POPULATE GROUPS");
-        repoAdmin.populateGroups();
+        //repoAdmin.populateGroups();
         System.err.println("#########OPERATE WITH GROUPS");
 
         System.err.println("--------END-------");

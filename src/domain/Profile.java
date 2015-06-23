@@ -65,7 +65,7 @@ public class Profile {
      *the user will be able to checkIn in a specific location, it will save the last
      *location where the user checked-in
      */
-    private Coordinates checkIn = null;
+    private Coordinates coordinates;
 
     /**the users friends*/
 
@@ -118,7 +118,7 @@ public class Profile {
         this.surname = surname;
         this.brthDay=brthDay;
         this.sex=sex;
-        this.checkIn=null;
+        this.coordinates=null;
         this.friends= new HashSet<Profile>();
         this.blockedUsr= new HashSet<Profile>();
         this.trips = new HashSet<Trip>();
@@ -292,25 +292,24 @@ public class Profile {
     /**
      * @return the last location where the user has checked in
      */
-    public Coordinates getCheckIn(){
-        return this.checkIn;
+    public Coordinates getCoordinates(){
+        return this.coordinates;
     }
 
     /**
      * @param location where the user has checked-in
      */
     public void checkIn(Coordinates location){
-        this.checkIn=location;
+        this.coordinates = location;
     }
 
     /**
      * @param x coordinate from the users location
      * @param y coordinate from the users location
-     * @deprecated
+     *
      */
     public void checkIn(Double x, Double y){
-        Coordinates coor = new Coordinates(x,y);
-        this.checkIn = coor;
+        this.coordinates = new Coordinates(this, x,y);
     }
 
     public Collection<Profile> getFriends(){
