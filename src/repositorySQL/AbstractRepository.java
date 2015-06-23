@@ -73,9 +73,9 @@ public abstract class AbstractRepository<T> {
         catch(SQLException e){
             System.err.println("[ERROR] || " + e.getMessage());
         }
-        finally{
+
             return response;
-        }
+
     }
 
     /**

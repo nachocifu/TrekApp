@@ -367,7 +367,7 @@ public class Profile {
      */
     public void joinGroup(Group group){
         if(groups.contains(group))
-            throw new IllegalArgumentException("The user already belongs to that group");
+            throw new IllegalArgumentException("ERROR || The user already belongs to that group");
         this.groups.add(group);
     }
 

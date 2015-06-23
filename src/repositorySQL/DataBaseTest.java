@@ -42,9 +42,15 @@ public class DataBaseTest {
         repoAdmin.start(ProfileRelationship.class);
         repoAdmin.start(Coordinates.class);
 
+        System.err.println("#########POPULATE USERS");
         repoAdmin.populateUsers();
+        System.err.println("#########OPERATE WITH USERS");
         repoAdmin.operateWithUsers();
-        System.out.println("--------END-------");
+        System.err.println("#########POPULATE GROUPS");
+        repoAdmin.populateGroups();
+        System.err.println("#########OPERATE WITH GROUPS");
+
+        System.err.println("--------END-------");
 
         //Application app = Application.getInstance();
     }
@@ -73,36 +79,28 @@ public class DataBaseTest {
         	System.out.println(each.getUsrName() + "lista" + each.getFriends().isEmpty());
     }
 
-    private void populateGroups() {
+    private void populateGroups() throws ServerException, UserNameAlreadyExistsException {
+    	ProfileRepository userRepo = new ProfileRepository("DataBase", Profile.class);
+    	GroupRepository groupRepo = new GroupRepository("DataBase", Group.class);
         System.out.println("### Populating Group table ###");
 
-        Class<Group> type = Group.class;
+
         List<Group> pool = new ArrayList<Group>();
-        boolean status = true;
-
-        try{
-
-            Class.forName("org.sqlite.JDBC");
-
-            /** create a connection source to our database */
-            ConnectionSource connectionSource = new JdbcConnectionSource(databaseUrl);
-
-            /**create DAO*/
-            Dao<Group, String> dao = DaoManager.createDao(connectionSource, type);
-
             /**Populate*/
-            //pool.add(Group e)
+            Profile admin = userRepo.getById(1);
+            Group   group = new Group("grupo1", admin, 5, 3, "baires");
+            System.out.println(group == null);
+            groupRepo.add(group);
+            //admin.joinGroup(group);
+            userRepo.update(admin, 2);
 
-            for(Group each : pool)
-                dao.createOrUpdate(each);
+            admin = userRepo.getById(2);
+            group = new Group("grupo2", admin, 5, 3, "Mendoza");
+            groupRepo.add(group);
+            //admin.joinGroup(groupRepo.getById(2));
+            userRepo.update(admin, 2);
 
-            /** close the connection source */
-            connectionSource.close();
-        }catch(Exception e){
-            System.err.println("[ERROR] || " + e.getMessage() + "\n" + e.getStackTrace().toString());
-            status = false;
-        }
-        if(status) System.out.println("OK");
+
     }
 
 
