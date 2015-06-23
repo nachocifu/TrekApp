@@ -25,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 
 import controllers.Application;
+import controllers.CurrentProfileController;
 import controllers.GroupController;
 import controllers.MyTripController;
 import domain.ControllerNotLoadedException;
@@ -40,7 +41,7 @@ public class TripGroups extends JFrame {
 	private JTable table;
 	private JLabel lblGroups;
 	private JButton btnBack;
-
+	private CurrentProfileController currentProfile;
 	/**
 	 * Launch the application.
 	 */
@@ -66,6 +67,14 @@ public class TripGroups extends JFrame {
 	 * @param language
 	 */
 	public TripGroups(final Application instance, final Session session, final boolean language){
+		
+		if(instance != null){
+			try {
+				currentProfile = instance.getCurrentProfileController();
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			}
+		}
 		
 		Locale currentLocale;
 		if(language){
@@ -102,7 +111,7 @@ public class TripGroups extends JFrame {
 	    if(instance != null){
 	    	ArrayList<GroupController> groupArray = null;
 			try {
-				groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());
+				groupArray = new ArrayList<>(currentProfile.getGroups());
 			} catch (SessionNotActiveException e2) {
 				e2.printStackTrace();
 			} catch (ControllerNotLoadedException e2) {

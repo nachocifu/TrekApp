@@ -34,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controllers.Application;
+import controllers.CurrentProfileController;
 import controllers.TripController;
 import domain.ControllerNotLoadedException;
 import controllers.Session;
@@ -48,6 +49,7 @@ public class OldTrips extends JFrame {
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JButton btnBack;
+	private CurrentProfileController currentProfile;
 
 	/**
 	 * Launch the application.
@@ -75,6 +77,14 @@ public class OldTrips extends JFrame {
 	 * @param language
 	 */
 	public OldTrips(final Application instance, final Session session, final Integer choice, final boolean language) {
+		
+		if(instance != null){
+			try {
+				currentProfile = instance.getCurrentProfileController();
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			}
+		}
 		
 		Locale currentLocale;
 		if(language){
@@ -206,7 +216,7 @@ public class OldTrips extends JFrame {
 		Collection<TripController> pastTripsAux = null;
 		if(instance != null){
 			try {
-				pastTripsAux = instance.getCurrentProfileController().getTrips();
+				pastTripsAux = currentProfile.getTrips();
 			} catch (SessionNotActiveException e3) {
 				e3.printStackTrace();
 			} catch (ControllerNotLoadedException e3) {

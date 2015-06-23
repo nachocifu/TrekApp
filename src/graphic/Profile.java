@@ -53,6 +53,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 
 import controllers.Application;
+import controllers.CurrentProfileController;
+import controllers.ProfileController;
 import domain.ControllerNotLoadedException;
 import domain.InvalidPasswordException;
 import domain.InvalidPermissionException;
@@ -78,6 +80,7 @@ public class Profile extends JFrame {
 	private JTextField tFTripNum;
 	private ResourceBundle messages;
 	private JTextField tFFUserName;
+	private CurrentProfileController currentProfile;
 	
 	/**
 	 * Launch the application.
@@ -108,7 +111,13 @@ public class Profile extends JFrame {
 	 * @param language
 	 */
 	public Profile(final Application instance, final Integer choice, final Session session, final boolean language) {
-		
+		if(instance != null){
+			try {
+				currentProfile = instance.getCurrentProfileController();
+			} catch (SessionNotActiveException e2) {
+				e2.printStackTrace();
+			}
+		}
 		final JLabel label_12 = new JLabel("*");  //$NON-NLS-1$
 		final JLabel lblCityBirth = new JLabel();
 		Locale currentLocale;
@@ -131,7 +140,7 @@ public class Profile extends JFrame {
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		panel.setLayout(null);
 		setContentPane(panel);
-
+		
 		
 		final JLabel lblProfile = new JLabel();
 		lblProfile.setFont(new Font("Tahoma", Font.BOLD, 24)); //$NON-NLS-1$
@@ -201,6 +210,23 @@ public class Profile extends JFrame {
 		tFUserName.setColumns(10);
 		tFUserName.setBounds(148, 142, 123, 20);
 		panel.add(tFUserName);
+		
+		tFEmail = new JTextField();
+		tFEmail.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
+		tFEmail.setHorizontalAlignment(SwingConstants.CENTER);
+		tFEmail.setBounds(494, 305, 145, 20);
+		panel.add(tFEmail);
+		tFEmail.setColumns(10);	
+		
+		tFTripNum = new JTextField();
+		tFTripNum.setHorizontalAlignment(SwingConstants.CENTER);
+		tFTripNum.setDisabledTextColor(Color.BLACK);
+		tFTripNum.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
+		tFTripNum.setForeground(Color.BLACK);
+		tFTripNum.setEditable(false);
+		tFTripNum.setBounds(420, 345, 163, 20);
+		panel.add(tFTripNum);
+		tFTripNum.setColumns(10);
 
 		final JButton btnApply = new JButton();
 		btnApply.setBounds(663, 544, 134, 23);
@@ -326,9 +352,11 @@ public class Profile extends JFrame {
 		
 		tFAge = new JFormattedTextField();
 		try {
-			MaskFormatter dateMask = new MaskFormatter("##/##/####");  //$NON-NLS-1$
+			System.out.println("hola");
+			MaskFormatter dateMask = new MaskFormatter("##/##/##");  //$NON-NLS-1$
             dateMask.install(tFAge);
         }catch (ParseException ex) {
+        	
         }
 		tFAge.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
 		tFAge.setHorizontalAlignment(SwingConstants.CENTER);
@@ -369,13 +397,28 @@ public class Profile extends JFrame {
 		
 		if(session != null){
 			try {
-				tFName.setText(instance.getCurrentProfileController().getUsername());
-				tFUserName.setText(instance.getCurrentProfileController().getUserName());
-				tFSurName.setText(instance.getCurrentProfileController().getSurname());
-				tFAge.setText(instance.getCurrentProfileController().getBirthday().toString());
-				tFEmail.setText(instance.getCurrentProfileController().getMail());
-				tFRate.setText(getReview(instance.getCurrentProfileController().getRating()));
-				//tFTripNum.setText(((Integer) instance.getCurrentProfileController().getTrips().size()).toString());
+				tFName.setText(currentProfile.getUserName());
+				tFUserName.setText(currentProfile.getUsername());
+				tFSurName.setText(currentProfile.getSurname());
+				tFEmail.setText(currentProfile.getMail());
+				tFRate.setText(getReview(currentProfile.getRating()));
+				tFTripNum.setText(((Integer) currentProfile.getTrips().size()).toString());
+				tFCityBirth.setText(currentProfile.getCity());
+				Integer day = currentProfile.getBirthday().getDay();
+				Integer month = currentProfile.getBirthday().getMonth();
+				Integer year = currentProfile.getBirthday().getYear();
+				String day1, month1;
+				if(day < 10){
+					day1 = "0" + day.toString();
+				}else{
+					day1 = day.toString();
+				}
+				if(month < 10){
+					month1 = "0" + month.toString();
+				}else{
+					month1 = month.toString();
+				}
+				tFAge.setText(day1 + "/" + month1.toString() + "/" + year.toString());
 			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 			
 			}
@@ -398,11 +441,9 @@ public class Profile extends JFrame {
 								flag = 0;
 								if(instance != null){
 									try {
-											instance.getCurrentProfileController().changePass(passwordField.getText(), passwordField_1.getText());
+										currentProfile.changePass(passwordField.getText(), passwordField_1.getText());
 									} catch (InvalidPasswordException e) {
 										
-									}catch (SessionNotActiveException e) {
-										e.printStackTrace();
 									}
 								}
 							}
@@ -510,28 +551,13 @@ public class Profile extends JFrame {
 		lblNumbertrips.setForeground(Color.BLACK);
 		panel.add(lblNumbertrips);
 		
-		tFTripNum = new JTextField();
-		tFTripNum.setHorizontalAlignment(SwingConstants.CENTER);
-		tFTripNum.setDisabledTextColor(Color.BLACK);
-		tFTripNum.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
-		tFTripNum.setForeground(Color.BLACK);
-		tFTripNum.setEditable(false);
-		tFTripNum.setBounds(420, 345, 163, 20);
-		panel.add(tFTripNum);
-		tFTripNum.setColumns(10);
-		
 		final JLabel lblEmail = new JLabel();
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
 		lblEmail.setForeground(Color.BLACK);
 		lblEmail.setBounds(428, 303, 72, 20);
 		panel.add(lblEmail);
 			
-		tFEmail = new JTextField();
-		tFEmail.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
-		tFEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		tFEmail.setBounds(494, 305, 145, 20);
-		panel.add(tFEmail);
-		tFEmail.setColumns(10);	
+		
 		
 		tFFUserName = new JTextField();
 		
@@ -612,8 +638,8 @@ public class Profile extends JFrame {
 							confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
 						}
 						try {
-							//if(instance.getCurrentProfileController().)session. && instance != null
-								instance.getCurrentProfileController().sendFriendRequest(tFFUserName.getText());
+							//if(currentProfile.)session. && instance != null
+							currentProfile.sendFriendRequest(tFFUserName.getText());
 						} catch (SessionNotActiveException e1) {
 							e1.printStackTrace();
 						} catch (ControllerNotLoadedException e1) {

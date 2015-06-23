@@ -109,7 +109,8 @@ public class Connect extends JFrame {
 				if(session.logIn(textField.getText(), password) != false ){
 					Options frame = new Options(instance, session,language);
 					frame.setVisible(true);
-					frame.setSize(484, 315);
+					frame.pack();
+					frame.setSize(900, 602);
 					close();
 				}else{
 					JOptionPane.showMessageDialog(null, messages.getString("Connect.4"), messages.getString("Connect.5"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$

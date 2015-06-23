@@ -29,6 +29,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import controllers.Application;
+import controllers.CurrentProfileController;
 import controllers.GroupController;
 import controllers.ProfileController;
 import controllers.Session;
@@ -39,6 +40,7 @@ import domain.TripNotClosedException;
 public class Calif extends JFrame {
 
 	private JPanel panel;
+	private CurrentProfileController currentProfile;
 
 	/**
 	 * Launch the application.
@@ -62,6 +64,14 @@ public class Calif extends JFrame {
 	 * Create the frame.
 	 */
 	public Calif(final Application instance, final Session session, final GroupController groupController ,final boolean language) {
+		
+		if(instance != null){
+			try {
+				currentProfile = instance.getCurrentProfileController();
+			} catch (SessionNotActiveException e2) {
+				e2.printStackTrace();
+			}
+		}
 		
 		Locale currentLocale;
 		if(language){
@@ -105,7 +115,7 @@ public class Calif extends JFrame {
 			try {
 				profile = new ArrayList<>(groupController.getMissingMembersToReview());
 				for(ProfileController each : profile){
-					if(! each.getUserName().equals(instance.getCurrentProfileController().getUserName())){
+					if(! each.getUserName().equals(currentProfile.getUserName())){
 						profiles.addElement(each.getUserName());
 					}
 				}

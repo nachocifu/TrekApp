@@ -26,6 +26,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
 
 import controllers.Application;
+import controllers.CurrentProfileController;
 import controllers.ProfileController;
 import domain.ControllerNotLoadedException;
 import domain.RequestStatus;
@@ -36,6 +37,7 @@ public class Contacts extends JFrame {
 
 	private static JPanel panel;
 	private JButton btnBack;
+	private CurrentProfileController currentProfile;
 
 	/**
 	 * Launch the application.
@@ -62,6 +64,13 @@ public class Contacts extends JFrame {
 	 * @param language
 	 */
 	public Contacts(final Application instance, final Session session,final boolean language) {
+		if(instance != null){
+			try {
+				currentProfile = instance.getCurrentProfileController();
+			} catch (SessionNotActiveException e2) {
+				e2.printStackTrace();
+			}
+		}
 		
 		final JLabel lblNewRequest = new JLabel();
 		Locale currentLocale;
@@ -91,7 +100,7 @@ public class Contacts extends JFrame {
 		if(instance != null){
 	
 			try {
-				auxFriends = (HashSet<ProfileController>) instance.getCurrentProfileController().getFriends();
+				auxFriends = (HashSet<ProfileController>) currentProfile.getFriends();
 				for(ProfileController each : auxFriends){
 					friends.addElement(each.getUsername());
 				}
@@ -103,7 +112,7 @@ public class Contacts extends JFrame {
 			
 			
 			try {
-				auxBlock = (HashSet<ProfileController>) instance.getCurrentProfileController().getBlockUsers();
+				auxBlock = (HashSet<ProfileController>) currentProfile.getBlockUsers();
 				for(ProfileController each : auxBlock){
 					block.addElement(each.getUsername());
 				}
@@ -165,7 +174,7 @@ public class Contacts extends JFrame {
 		
 			try {
 				if(instance != null){
-					requestsFriend =  instance.getCurrentProfileController().getFriendRequests();
+					requestsFriend =  currentProfile.getFriendRequests();
 				}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
@@ -199,7 +208,7 @@ public class Contacts extends JFrame {
 					friends.addElement(requests.getSelectedItem());
 					requests.remove(requests.getSelectedItem());
 					try {
-						instance.getCurrentProfileController().acceptFriend(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+						currentProfile.acceptFriend(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
 					} catch (SessionNotActiveException e) {
 						e.printStackTrace();
 					} catch (ControllerNotLoadedException e) {
@@ -224,7 +233,7 @@ public class Contacts extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				requests.remove(requests.getSelectedItem());
 				try {
-					instance.getCurrentProfileController().rejectAFriendRequest(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+					currentProfile.rejectAFriendRequest(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
 				} catch (SessionNotActiveException e1) {
 					e1.printStackTrace();
 				} catch (ControllerNotLoadedException e1) {
@@ -263,7 +272,7 @@ public class Contacts extends JFrame {
 					block.addElement(requests.getSelectedItem());
 					requests.remove(requests.getSelectedItem());
 					try {
-						instance.getCurrentProfileController().blockUser(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+						currentProfile.blockUser(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
 					} catch (SessionNotActiveException e) {
 						e.printStackTrace();
 					} catch (ControllerNotLoadedException e) {

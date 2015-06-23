@@ -30,6 +30,7 @@ import javax.swing.JButton;
 import javax.swing.ListSelectionModel;
 
 import controllers.Application;
+import controllers.CurrentProfileController;
 import controllers.GroupController;
 import controllers.MyGroupController;
 import controllers.MyTripController;
@@ -57,6 +58,7 @@ public class Group extends JFrame {
 	private JButton btnBack;
 	private JTextField tFFAge;
 	private JTextField tFFCity;
+	private CurrentProfileController currentProfile;
 
 	/**
 	 * Launch the application.
@@ -89,6 +91,14 @@ public class Group extends JFrame {
 	 */
 	// choice = 0 creando, choice = 1 viendo el propio, choice = 2 viendo el de otro
 	public Group(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> auxText, final Application instance, final Session session, final GroupController groupController, final boolean language){	
+		
+		if(instance != null){
+			try {
+				currentProfile = instance.getCurrentProfileController();
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			}
+		}
 		
 		Locale currentLocale;
 		if(language){
@@ -388,7 +398,7 @@ public class Group extends JFrame {
 
 						try {
 							MyGroupController group;
-							group = instance.registerGroup(tFName.getText(), instance.getCurrentProfileController(), Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
+							group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
 							group.addGroupTrip(myTrip);
 							if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
 								group.setFilters(Integer.parseInt(tFFAge.getText()), tFFCity.getText());
@@ -496,10 +506,10 @@ public class Group extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					if(instance != null){
 						try {
-							if(instance.getCurrentProfileController().getUserName().equals(groupController.getAdmin().getUserName())){
-								((MyGroupController)groupController).deleteMember(instance.getCurrentProfileController());
+							if(currentProfile.getUserName().equals(groupController.getAdmin().getUserName())){
+								((MyGroupController)groupController).deleteMember(currentProfile);
 							}else{
-								instance.getCurrentProfileController().leaveGroup(groupController);
+								currentProfile.leaveGroup(groupController);
 							}
 						} catch (SessionNotActiveException e) {
 							e.printStackTrace();
@@ -544,23 +554,19 @@ public class Group extends JFrame {
 			btnRequestcheck.addActionListener(new ActionListener() {
 			
 				public void actionPerformed(ActionEvent e) {
-					try {
-						if(requestsTripaux.containsKey(instance.getCurrentProfileController())){
-							btnRequestcheck.setText((requestsTripaux.get(instance.getCurrentProfileController()).toString()));
-							btnRequestcheck.setEnabled(false);
-						}else{	
-							try {
-								groupController.sendMemberRequest();
-							} catch (SessionNotActiveException e1) {
-								e1.printStackTrace();
-							} catch (ControllerNotLoadedException e1) {
-								e1.printStackTrace();
-							} catch (InvalidPermissionException e1) {
-								e1.printStackTrace();
-							}
+					if(requestsTripaux.containsKey(currentProfile)){
+						btnRequestcheck.setText((requestsTripaux.get(currentProfile).toString()));
+						btnRequestcheck.setEnabled(false);
+					}else{	
+						try {
+							groupController.sendMemberRequest();
+						} catch (SessionNotActiveException e1) {
+							e1.printStackTrace();
+						} catch (ControllerNotLoadedException e1) {
+							e1.printStackTrace();
+						} catch (InvalidPermissionException e1) {
+							e1.printStackTrace();
 						}
-					} catch (SessionNotActiveException e1) {
-						e1.printStackTrace();
 					}
 				
 				}
@@ -578,7 +584,7 @@ public class Group extends JFrame {
 			tFAdmin.setEditable(false);
 			if(instance != null){
 				try {
-					tFAdmin.setText(instance.getCurrentProfileController().getUserName());
+					tFAdmin.setText(currentProfile.getUserName());
 				} catch (SessionNotActiveException e1) {
 					e1.printStackTrace();
 				} catch (ControllerNotLoadedException e1) {

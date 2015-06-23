@@ -229,66 +229,66 @@ public class TripSearch extends JFrame {
 	        };
 	    };
 
-	    if(instance != null){
-	    	final ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());// lo que devuelva el buscador de trips
-	    
-			table.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					try{
-						if (arg0.getClickCount() == 2 ) {
-							String admin = null;
-							if(instance != null){
-								try {
-									admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
-								} catch (SessionNotActiveException e) {
-									e.printStackTrace();
-								} catch (ControllerNotLoadedException e) {
-									e.printStackTrace();
-								}
-								if( groupArray.get(table.getSelectedRow()) == null ){
-									
-								}else if(session.getUserName().equals(admin) && instance != null){
-									Group frame = new Group(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
-									frame.setVisible(true);
-									frame.pack();
-									frame.setSize(900, 602);
-									close();
-								}else{
-									Group frame = new Group(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
-									frame.setVisible(true);
-									frame.pack();
-									frame.setSize(900, 602);
-									close();
-								}
-							}
-						}
-					}catch(IndexOutOfBoundsException e){
-						e.printStackTrace();
-					} catch (SessionNotActiveException e) {
-						e.printStackTrace();
-					} catch (ControllerNotLoadedException e) {
-						e.printStackTrace();
-					}
-				}
-			});
-			
-			try {
-				int i = 0;
-				for(GroupController each : groupArray){
-					model.addRow(new Object[] { null, null,null,null,null});
-					model.setValueAt(each.getTripController().getStartDate(), i, 0);
-					model.setValueAt(each.getTripController().getEndDate(), i, 1);
-					model.setValueAt(each.getTripController().getOriginCity(), i, 2);
-					model.setValueAt(each.getTripController().getEndCity(), i, 3);
-					i++;
-			}
-			} catch (SessionNotActiveException e1) {
-				e1.printStackTrace();
-			} catch (ControllerNotLoadedException e1) {
-				e1.printStackTrace();
-			}
-	    }
+//	    if(instance != null){
+//	    	final ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());// lo que devuelva el buscador de trips
+//	    
+//			table.addMouseListener(new MouseAdapter() {
+//				@Override
+//				public void mouseClicked(MouseEvent arg0) {
+//					try{
+//						if (arg0.getClickCount() == 2 ) {
+//							String admin = null;
+//							if(instance != null){
+//								try {
+//									admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
+//								} catch (SessionNotActiveException e) {
+//									e.printStackTrace();
+//								} catch (ControllerNotLoadedException e) {
+//									e.printStackTrace();
+//								}
+//								if( groupArray.get(table.getSelectedRow()) == null ){
+//									
+//								}else if(session.getUserName().equals(admin) && instance != null){
+//									Group frame = new Group(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
+//									frame.setVisible(true);
+//									frame.pack();
+//									frame.setSize(900, 602);
+//									close();
+//								}else{
+//									Group frame = new Group(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
+//									frame.setVisible(true);
+//									frame.pack();
+//									frame.setSize(900, 602);
+//									close();
+//								}
+//							}
+//						}
+//					}catch(IndexOutOfBoundsException e){
+//						e.printStackTrace();
+//					} catch (SessionNotActiveException e) {
+//						e.printStackTrace();
+//					} catch (ControllerNotLoadedException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			});
+//			
+//			try {
+//				int i = 0;
+//				for(GroupController each : groupArray){
+//					model.addRow(new Object[] { null, null,null,null,null});
+//					model.setValueAt(each.getTripController().getStartDate(), i, 0);
+//					model.setValueAt(each.getTripController().getEndDate(), i, 1);
+//					model.setValueAt(each.getTripController().getOriginCity(), i, 2);
+//					model.setValueAt(each.getTripController().getEndCity(), i, 3);
+//					i++;
+//			}
+//			} catch (SessionNotActiveException e1) {
+//				e1.printStackTrace();
+//			} catch (ControllerNotLoadedException e1) {
+//				e1.printStackTrace();
+//			}
+//	    }
 	    table.getTableHeader().setReorderingAllowed(false);
 		table.setEnabled(true);
 		table.setCellSelectionEnabled(false);

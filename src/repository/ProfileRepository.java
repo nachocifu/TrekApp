@@ -18,7 +18,6 @@ public class ProfileRepository extends AbstractRepository<Profile> {
      * @return boolean If username and password exist and match.
      */
     public boolean validateCredentials(String userName, String password) {
-    	System.out.println(this.repository);
     	for (Profile profile : this.repository) {
     		if(profile.getUsrName().trim().equals(userName.trim()) && profile.comparePass(password.trim())){
     			return true;

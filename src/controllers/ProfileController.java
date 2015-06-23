@@ -129,7 +129,6 @@ public class ProfileController extends AbstractController<Profile> {
      */
     public String getMail() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        System.out.println(this.obj.getEmail());
         return this.obj.getEmail();
     }
 
