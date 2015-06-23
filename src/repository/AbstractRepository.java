@@ -16,7 +16,7 @@ public abstract class AbstractRepository<T>{
 	/**
 	 * Repository
 	 */
-	private HashSet<T> repository;
+	protected HashSet<T> repository;
 	
     public AbstractRepository(){
     	this.repository = new HashSet<T>();
@@ -48,5 +48,10 @@ public abstract class AbstractRepository<T>{
     	this.repository.remove(obj);
         return true;
     }
-
+    
+    public void update(T obj){
+    	if(this.repository.contains(obj)){
+    		this.repository.add(obj);
+    	}
+    }
 }

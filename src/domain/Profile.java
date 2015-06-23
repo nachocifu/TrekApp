@@ -116,9 +116,9 @@ public class Profile {
         this.usrId = usrId;
         this.name = name;
         this.surname = surname;
-        this.brthDay=brthDay;
-        this.sex=sex;
-        this.checkIn=null;
+        this.brthDay = brthDay;
+        this.sex = sex;
+        this.checkIn = null;
         this.friends= new HashSet<Profile>();
         this.blockedUsr= new HashSet<Profile>();
         this.trips = new HashSet<Trip>();
@@ -140,7 +140,22 @@ public class Profile {
      * @param sex
      */
     public Profile(String usrName, String name, String surname, Date brthDay, boolean sex, String password, String city, String email){
-        this(usrName, name, surname, null, brthDay, sex, password, city, email);
+    	this.usrName = usrName;
+        this.usrId = null;
+        this.name = name;
+        this.surname = surname;
+        this.brthDay = brthDay;
+        this.sex = sex;
+        this.checkIn = null;
+        this.friends= new HashSet<Profile>();
+        this.blockedUsr= new HashSet<Profile>();
+        this.trips = new HashSet<Trip>();
+        this.reviews = new HashSet<Review>();
+        this.groups = new HashSet<Group>();
+        this.friendRequests = new HashMap<Profile, RequestStatus>();
+        this.password = password;
+        this.city = city;
+        this.email = email;
     }
 
     /*Profile Methods*/
@@ -283,7 +298,7 @@ public class Profile {
      * @param email
      */
     public void setEmail(String email){
-        if(rating == null || city.trim().isEmpty()){
+        if(email == null || email.trim().isEmpty()){
             throw new IllegalArgumentException("The e-mail is either null or empty");
         }
         this.email=email;
@@ -415,6 +430,13 @@ public class Profile {
             throw new IllegalArgumentException("The user is already unblocked");
         this.blockedUsr.remove(usr);
     }
+    
+    public boolean comparePass(String password){
+    	if(this.password.trim().equals(password.trim())){
+    		return true;
+    	}
+    	return false;
+    }
 
     /**
      * @param friend that will be removed from the users friend list
@@ -430,7 +452,7 @@ public class Profile {
     /**
      * @return user friend requests
      */
-    public HashMap<Profile, RequestStatus>getFriendRequests(){
+    public HashMap<Profile, RequestStatus> getFriendRequests(){
         return this.friendRequests;
     }
 

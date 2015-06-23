@@ -375,7 +375,7 @@ public class Profile extends JFrame {
 				tFAge.setText(instance.getCurrentProfileController().getBirthday().toString());
 				tFEmail.setText(instance.getCurrentProfileController().getMail());
 				tFRate.setText(getReview(instance.getCurrentProfileController().getRating()));
-				tFTripNum.setText(	((Integer) instance.getCurrentProfileController().getTrips().size()).toString());
+				//tFTripNum.setText(((Integer) instance.getCurrentProfileController().getTrips().size()).toString());
 			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 			
 			}
@@ -721,6 +721,9 @@ public class Profile extends JFrame {
 	 * @return review
 	 */
 	public String getReview (Double rate){
+		if(rate == null){
+			return "";
+		}
 		if(rate >= 0.0 && rate < 0.9999){
 			return messages.getString("Profile.16"); //$NON-NLS-1$
 		}else if(rate >= 1.0000 && rate < 1.9999){

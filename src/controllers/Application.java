@@ -2,6 +2,7 @@ package controllers;
 
 import java.rmi.ServerException;
 import java.util.Date;
+
 import repository.GroupRepository;
 import repository.TripRepository;
 import repository.ProfileRepository;
@@ -10,6 +11,7 @@ import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
+import domain.UserNameDoesNotExist;
 
 public class Application{
 
@@ -44,6 +46,7 @@ public class Application{
         userRepo = new ProfileRepository(pathToDataBase, Profile.class);
         groupRepo = new GroupRepository(pathToDataBase, Group.class);
         tripRepo = new TripRepository(pathToDataBase, Trip.class);
+        this.userRepo.add(new Profile("naty", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com"));
     }
 
     /**
@@ -51,8 +54,9 @@ public class Application{
      * @return application The Application
      */
     public static Application getInstance(){
-        if(application == null)
-            application = new Application("");
+        if(application == null){
+        	application = new Application("");
+        }     
         return application;
     }
 
@@ -151,7 +155,7 @@ public class Application{
     /**
      * Returns a Controller of the actual logged user
      * @return
-     * @throws SessionNotActiveException
+     * @throws SessionNotActiveException 
      */
     public CurrentProfileController getCurrentProfileController() throws SessionNotActiveException{
         if(!Session.getInstance().isActive()){
