@@ -1,26 +1,19 @@
-package repository;
+package repositoryMem;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import domain.Group;
 import domain.Trip;
 
+public class TripRepository extends AbstractRepository<Trip> {
 
-/**
- * The connection to the file system regarding groups and their persistence.
- */
-public class GroupRepository extends AbstractRepository<Group> {
-
-
-    public GroupRepository(String pathToDataBase,Class reposClass) {     
+    public TripRepository(String pathToDataBase, Class<Trip> reposClass) {
     }
 
-    public Collection<Trip> getGroupTripBy(Date startDate, Date endDate, String startCity, String endCity, String description ){
+    public Collection<Trip> getTripBy(Date startDate, Date endDate, String startCity, String endCity, String description ){
     	Collection<Trip> result = new HashSet<Trip>();
-    	for (Group group : this.repository) {
-    		Trip trip = group.getGroupTrip();
+    	for (Trip trip : this.repository) {
 			if(trip.getStartDate().before(startDate)
 					&& trip.getEndDate().after(endDate)
 					&& trip.getOriginCity().trim().contains(startCity.trim())

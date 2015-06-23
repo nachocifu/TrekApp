@@ -1,4 +1,4 @@
-package repository;
+package repositoryMem;
 
 /**
  * Enum to be used by the repositorys only to facilitate persistance and

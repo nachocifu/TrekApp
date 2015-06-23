@@ -3,9 +3,9 @@ package controllers;
 import java.rmi.ServerException;
 import java.util.Date;
 
-import repository.GroupRepository;
-import repository.TripRepository;
-import repository.ProfileRepository;
+import repositoryMem.GroupRepository;
+import repositoryMem.ProfileRepository;
+import repositoryMem.TripRepository;
 import domain.Group;
 import domain.Profile;
 import domain.SessionNotActiveException;

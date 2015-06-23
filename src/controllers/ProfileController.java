@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import repository.AbstractRepository;
-import repository.ProfileRepository;
+import repositoryMem.AbstractRepository;
+import repositoryMem.ProfileRepository;
 import domain.ControllerNotLoadedException;
 import domain.Profile;
 import domain.Review;

@@ -1,4 +1,4 @@
-package repository;
+package repositoryMem;
 
 import domain.Profile;
 import domain.UserNameDoesNotExist;
