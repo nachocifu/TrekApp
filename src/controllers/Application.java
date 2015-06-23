@@ -2,9 +2,9 @@ package controllers;
 
 import java.rmi.ServerException;
 import java.util.Date;
-import repository.GroupRepository;
-import repository.TripRepository;
-import repository.ProfileRepository;
+import repositorySQL.GroupRepository;
+import repositorySQL.TripRepository;
+import repositorySQL.ProfileRepository;
 import domain.Group;
 import domain.Profile;
 import domain.SessionNotActiveException;
@@ -38,12 +38,10 @@ public class Application{
         if(this.currentDatabase.isEmpty())
             this.currentDatabase = this.DEFAULT_DATABASE;
 
-        this.currentDatabase = "jdbc:sqlite:" + this.currentDatabase;
-
         /* Start all Databases */
-        userRepo = new ProfileRepository(pathToDataBase, Profile.class);
-        groupRepo = new GroupRepository(pathToDataBase, Group.class);
-        tripRepo = new TripRepository(pathToDataBase, Trip.class);
+        userRepo = new ProfileRepository(currentDatabase, Profile.class);
+        groupRepo = new GroupRepository(currentDatabase, Group.class);
+        tripRepo = new TripRepository(currentDatabase, Trip.class);
     }
 
     /**

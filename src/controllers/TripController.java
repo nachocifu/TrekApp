@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
-import repository.AbstractRepository;
-import repository.TripRepository;
+import repositorySQL.AbstractRepository;
+import repositorySQL.TripRepository;
 import domain.ControllerNotLoadedException;
 import domain.SessionNotActiveException;
 import domain.Trip;

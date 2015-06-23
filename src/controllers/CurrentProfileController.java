@@ -8,7 +8,7 @@ import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.RequestStatus;
 import domain.SessionNotActiveException;
-import repository.ProfileRepository;
+import repositorySQL.ProfileRepository;
 
 public class CurrentProfileController extends ProfileController {
 
