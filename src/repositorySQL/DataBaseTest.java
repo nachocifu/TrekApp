@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import repository.ProfileRepository;
-
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -70,7 +68,7 @@ public class DataBaseTest {
 
         /**Operate*/
         System.out.println("get by id user1");
-        Profile user1 = userRepo.getById(1);
+        Profile user1 = userRepo.getById("nacho");
         System.out.println("get by id user2");
         Profile user2 = userRepo.getById(2);
         System.out.println("update user2");

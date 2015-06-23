@@ -165,7 +165,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 qryBuilder.append("SELECT prfl.* ");
                 qryBuilder.append("FROM Profile prfl ");
                 qryBuilder.append("WHERE ");
-                qryBuilder.append( "prfl.usrName = " + userName);
+                qryBuilder.append( "prfl.usrName = \"" + userName + "\"");
 
                 String query = qryBuilder.toString();
 
