@@ -19,48 +19,15 @@ import domain.UserNameAlreadyExistsException;
  *
  */
 public abstract class AbstractRepository<T>{
+	/**
+	 * Repository
+	 */
 	private HashSet<T> repository;
 	
     public AbstractRepository(){
     	this.repository = new HashSet<T>();
     }
 
-    /**
-     * Returns object with the id specified.
-     * @param id
-     * @return response object requested or null
-     */
-    public T getById(Integer id){
-
-        T response = null;
-        ConnectionSource connectionSource = null;
-        try{
-            try{
-                Class.forName("org.sqlite.JDBC");
-                /** create a connection source to our database */
-                connectionSource = new JdbcConnectionSource(this.databaseUrl);
-
-                /** instantiate the dao */
-                Dao<T, String> dao = DaoManager.createDao(connectionSource, this.reposClass);
-
-                /** retrieve the object from the database by its id */
-                response = dao.queryForId(id.toString());
-            }
-            catch(Exception e){
-                System.err.println("[ERROR] || " + e.getMessage());
-            }
-            finally{
-                /** close the connection source */
-                connectionSource.close();
-            }
-        }
-        catch(SQLException e){
-            System.err.println("[ERROR] || " + e.getMessage());
-        }
-        finally{
-            return response;
-        }
-    }
 
     /**
      * Updates the object. If failure, return number.
