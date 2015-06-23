@@ -40,7 +40,7 @@ public class GroupRepository extends AbstractRepository<Group> {
     public Group getById(Integer groupId, Integer depth){
        Group obj = super.getById(groupId);
        System.err.println("En este momento se deberian levantar los objetos y colocar adentro del group con id: " + groupId);
-       //obj = this.loadProfilesInside(obj, depth);
+       obj = this.loadObjectsInside(obj, depth);
        return obj;
     }
 
@@ -53,6 +53,11 @@ public class GroupRepository extends AbstractRepository<Group> {
         super.update(obj);
         System.err.println("En este momento se deberian persistir los objetos adentro del group con id: " + obj.getId());
         //this.persistObjectsInside(obj, depth);
+    }
+
+    private Group loadObjectsInside(Group obj, Integer depth) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 
