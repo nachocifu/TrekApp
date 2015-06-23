@@ -450,8 +450,7 @@ public class Profile extends JFrame {
                         }
                         if(flag == 0){
                             try {
-                                instance.registerUser(tFName.getText(), tFSurName.getText(), tFUserName.getText(), date , sex , passwordField.getText(), tFCityBirth.getText(), tFAge.getText()); //$NON-NLS-1$
-                            } catch (ServerException e) {
+                                instance.registerUser(tFUserName.getText(), tFName.getText(), tFSurName.getText(), date , sex , passwordField.getText(), tFCityBirth.getText(), tFAge.getText());                            } catch (ServerException e) {
                                 e.printStackTrace();
                             } catch (UserNameAlreadyExistsException e) {
                                 lblExists.setVisible(true);
