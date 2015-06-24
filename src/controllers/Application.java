@@ -7,6 +7,7 @@ import repositoryMem.GroupRepository;
 import repositoryMem.TripRepository;
 import repositoryMem.ProfileRepository;
 import domain.Group;
+import domain.GroupNameAlreadyExistsException;
 import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.Trip;
@@ -79,7 +80,8 @@ public class Application{
             || password.trim().isEmpty()
             || city.trim().isEmpty())
             throw new IllegalArgumentException("ERROR || Error registering user. Check arguments.");
-        this.userRepo.add( new Profile(username, name, surname, brthDay, sex, password, city, email));
+        if(! this.userRepo.add( new Profile(username, name, surname, brthDay, sex, password, city, email)))
+        	throw new UserNameAlreadyExistsException("the username already exists");
     }
 
     /**
@@ -94,7 +96,7 @@ public class Application{
      * @throws UserNameAlreadyExistsException
      */
     //Revisar el throwsUserName
-    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, UserNameAlreadyExistsException{
+    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, GroupNameAlreadyExistsException{
         if(groupName.trim().isEmpty()
             || admin == null
             || maxGroupSize <= 0
@@ -102,7 +104,8 @@ public class Application{
             || filterCity.trim().isEmpty())
             throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
         Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
-        this.groupRepo.add(newGroup);
+        if ( !this.groupRepo.add(newGroup))
+        	throw new GroupNameAlreadyExistsException("a group with this name already exists");
         return new MyGroupController(groupRepo);
     }
 
