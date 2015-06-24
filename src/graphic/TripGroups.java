@@ -162,16 +162,18 @@ public class TripGroups extends JFrame {
 			});
 			
 			try {
-				int i = 0;
+				int i = -1;
 				for(GroupController each : groupArray){
 					DateFormat df = new SimpleDateFormat("dd/MM/yy");
-					model.addRow(new Object[] { null, null,null,null,null});
+					if(each != null){
+						model.addRow(new Object[] { null, null,null,null,null});
+						i++;
+					}
 					model.setValueAt(each.getGroupName(), i, 0);
 					model.setValueAt(df.format(each.getTripController().getStartDate()), i, 1);
 					model.setValueAt(df.format(each.getTripController().getEndDate()), i, 2);
 					model.setValueAt(each.getTripController().getOriginCity(), i, 3);
 					model.setValueAt(each.getTripController().getEndCity(), i, 4);
-					i++;
 			}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();

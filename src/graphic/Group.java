@@ -225,6 +225,7 @@ public class Group extends JFrame {
 		if(instance != null && choice == 1){
 			try {
 				requestsTrip = ((MyGroupController)groupController).getMemberRequests();
+				System.out.println(requestsTrip);
 				for (ProfileController key : requestsTrip.keySet()) {
 					requests.add(key.getUserName() + " " + key.getSurname() + " - " + key.getUsername()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
@@ -246,7 +247,6 @@ public class Group extends JFrame {
 					ProfileController profile = getKey(requestsTripaux.keySet(),requests.getSelectedIndex());
 					members.addElement(requests.getSelectedItem());
 					((MyGroupController)groupController).addMember(profile);
-					requestsTripaux.remove(profile);
 				} catch (SessionNotActiveException e) {
 					e.printStackTrace();
 				} catch (ControllerNotLoadedException e) {
@@ -452,7 +452,7 @@ public class Group extends JFrame {
 						JOptionPane.showMessageDialog(null, messages.getString("Group.4"), "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					case 6:
-						JOptionPane.showMessageDialog(null, "No introdujo los filtros", "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
+						JOptionPane.showMessageDialog(null, messages.getString("Group.90"), "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					}
 				}
@@ -545,9 +545,7 @@ public class Group extends JFrame {
 						}
 					}
 				}
-					
 			});
-				
 			btnRequestcheck.setText(messages.getString("Group.33")); //$NON-NLS-1$
 			btnDelete.setVisible(true);
 		}else if(choice == 2 && instance != null){		
@@ -580,21 +578,19 @@ public class Group extends JFrame {
 			btnRequestcheck.addActionListener(new ActionListener() {
 			
 				public void actionPerformed(ActionEvent e) {
-					if(requestsTripaux.containsKey(currentProfile)){
+					try {
+						groupController.sendMemberRequest();
+					} catch (SessionNotActiveException e1) {
+						e1.printStackTrace();
+					} catch (ControllerNotLoadedException e1) {
+						e1.printStackTrace();
+					} catch (InvalidPermissionException e1) {
+						JOptionPane.showMessageDialog(null, messages.getString("Group.7"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					} catch (IllegalArgumentException e1){
+						JOptionPane.showMessageDialog(null,messages.getString("Group.8") , "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 						btnRequestcheck.setText((requestsTripaux.get(currentProfile).toString()));
 						btnRequestcheck.setEnabled(false);
-					}else{	
-						try {
-							groupController.sendMemberRequest();
-						} catch (SessionNotActiveException e1) {
-							e1.printStackTrace();
-						} catch (ControllerNotLoadedException e1) {
-							e1.printStackTrace();
-						} catch (InvalidPermissionException e1) {
-							e1.printStackTrace();
-						}
 					}
-				
 				}
 			});	
 			
