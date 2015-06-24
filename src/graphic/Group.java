@@ -467,7 +467,7 @@ public class Group extends JFrame {
 			tFAdmin.setEditable(false);
 			try {
 				tFName.setText(groupController.getGroupName());
-				tFCap.setText(groupController.groupSize().toString());
+				tFCap.setText(new Integer((groupController.getMaxGroupSize() - groupController.groupSize())).toString());
 				tFAdmin.setText(groupController.getAdmin().getUsername()); //$NON-NLS-1$
 			} catch (SessionNotActiveException e2) {
 				e2.printStackTrace();

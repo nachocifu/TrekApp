@@ -77,6 +77,7 @@ public class Group {
         this.maxGroupSize = maxGroupSize;
         this.filterAge = filterAge;
         this.filterCity = filterCity;
+        this.members.add(admin);
     }
 
     public Group(){
