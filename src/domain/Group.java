@@ -69,7 +69,8 @@ public class Group {
 
     /*Group Constructors*/
 
-    public Group(String groupName, Integer maxGroupSize, Integer filterAge, String filterCity){
+    public Group(String groupName, Profile admin, Integer maxGroupSize, Integer filterAge, String filterCity){
+    	this.admin = admin;
         this.groupName=groupName;
         this.members=new HashSet<Profile>();
         this.memberRequests = new HashMap<Profile, RequestStatus>();
