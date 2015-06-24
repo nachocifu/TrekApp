@@ -78,6 +78,7 @@ public class Group {
         this.filterAge = filterAge;
         this.filterCity = filterCity;
         this.members.add(admin);
+        admin.joinGroup(this);
     }
 
     public Group(){
