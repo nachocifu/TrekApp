@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import domain.ControllerNotLoadedException;
 import domain.Profile;
 import domain.SessionNotActiveException;
@@ -29,7 +28,7 @@ public class MyTripController extends TripController {
      */
     public void setStartDate(Date date) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.setStartDate(date);
+        this.obj.setStartDate(date);
         saveChanges();
     }
 
@@ -41,7 +40,7 @@ public class MyTripController extends TripController {
      */
     public void setEndDate(Date date) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.setEndDate(date);
+        this.obj.setEndDate(date);
         saveChanges();
     }
 
@@ -52,7 +51,7 @@ public class MyTripController extends TripController {
      */
     public void setEstimateCost(Double cost) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.setEstimateCost(cost);
+        this.obj.setEstimateCost(cost);
         saveChanges();
     }
 
@@ -64,7 +63,7 @@ public class MyTripController extends TripController {
      */
     public void setTripDescription(String description) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.setTripDescription(description);
+        this.obj.setTripDescription(description);
         saveChanges();
     }
 
@@ -76,7 +75,7 @@ public class MyTripController extends TripController {
      */
     public void setOriginCity(String city) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.setOriginCity(city);
+        this.obj.setOriginCity(city);
         saveChanges();
     }
 
@@ -88,7 +87,7 @@ public class MyTripController extends TripController {
      */
     public void setEndCity(String city) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.setEndCity(city);
+        this.obj.setEndCity(city);
         saveChanges();
     }
 
@@ -121,7 +120,7 @@ public class MyTripController extends TripController {
      */
     public void addNewCostToTrip(Double newCost) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.addNewCostToTrip(newCost);
+        this.obj.addNewCost(newCost);
         saveChanges();
     }
 
