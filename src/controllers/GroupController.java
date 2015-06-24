@@ -124,6 +124,16 @@ public class GroupController extends AbstractController<Group> {
     public Integer groupSize(){
         return this.obj.groupSize();
     }
+    
+    /**
+     * @return Returns the maximum group size
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    public Integer getMaxGroupSize() throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
+        return this.obj.getMaxGroupSize();
+    }
 
     /**
      * Validates who is sending the review and if that "member" is a member of the group
