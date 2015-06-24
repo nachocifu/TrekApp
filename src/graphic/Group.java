@@ -398,7 +398,7 @@ public class Group extends JFrame {
 						flag = 4;
 					}else if(!isIntNumeric(tFCap.getText())){
 						flag = 5;
-					}else if (isIntNumeric(tFCap.getText()) && Integer.parseInt(tFCap.getText()) > 0){
+					}else if (isIntNumeric(tFCap.getText()) && Integer.parseInt(tFCap.getText()) < 1){
 						flag = 5;
 					}else{
 						flag = 1;

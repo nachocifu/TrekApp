@@ -385,8 +385,8 @@ public class Trip extends JFrame {
 				textArea.setText(trip.getTripDescription());
 				
 				DateFormat df = new SimpleDateFormat("dd/MM/yy"); //$NON-NLS-1$
-				tFLeaving.setText(df.format(myTrip.getStartDate()));
-				tFArriving.setText(df.format(myTrip.getEndDate()));	
+				tFLeaving.setText(df.format(trip.getStartDate()));
+				tFArriving.setText(df.format(trip.getEndDate()));	
 				
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
