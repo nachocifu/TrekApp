@@ -224,7 +224,6 @@ public class Trip extends JFrame {
 					}
 					
 				}catch (Exception e1){
-					System.err.println("No introdujo fechas"); //$NON-NLS-1$
 				}
 
 				if(instance != null){

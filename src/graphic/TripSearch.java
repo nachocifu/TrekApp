@@ -8,6 +8,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -23,6 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -35,6 +37,7 @@ import javax.swing.UIManager;
 import javax.swing.ScrollPaneConstants;
 
 import controllers.Application;
+import controllers.CurrentProfileController;
 import controllers.GroupController;
 import controllers.MyTripController;
 import controllers.Session;
@@ -47,13 +50,13 @@ public class TripSearch extends JFrame {
 
 	private DatePicker dp1;
 	private DatePicker dp;
-	private ObservingTextField textField;
-	private ObservingTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private ObservingTextField tFLeaving;
+	private ObservingTextField tFArriving;
+	private JTextField tFFrom;
+	private JTextField tFTo;
 	private JTable table;
 	private static JPanel panel;
-	private JButton btnBack;
+	private CurrentProfileController currentProfile;
 	
 
 	/**
@@ -83,6 +86,15 @@ public class TripSearch extends JFrame {
 	 */
 	 
 	public TripSearch(final Application instance, final Session session, final boolean language) {	
+		
+		if(instance != null){
+			try {
+				currentProfile = instance.getCurrentProfileController();
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
 		final JLabel lblCityend = new JLabel();
 		final JLabel lblCityOrigin = new JLabel();
 		Locale currentLocale;
@@ -95,7 +107,7 @@ public class TripSearch extends JFrame {
 			lblCityend.setBounds(352, 120, 219, 28);
 			lblCityOrigin.setBounds(352, 56, 168, 28);
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 
 		panel = new ImagePanel(new ImageIcon("TripSearch.jpg").getImage()); //$NON-NLS-1$
 		setTitle("TreckApp"); //$NON-NLS-1$
@@ -113,48 +125,48 @@ public class TripSearch extends JFrame {
 		lblSearch.setBounds(293, 12, 158, 39);
 		panel.add(lblSearch);
 		
-		textField = new ObservingTextField();
-		textField.setEnabled(false);
-		textField.setDisabledTextColor(Color.BLACK);
-		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
-		textField.setBounds(172, 57, 106, 28);
-		panel.add(textField);
-		textField.setColumns(10);
+		tFLeaving = new ObservingTextField();
+		tFLeaving.setEnabled(false);
+		tFLeaving.setDisabledTextColor(Color.BLACK);
+		tFLeaving.setHorizontalAlignment(SwingConstants.CENTER);
+		tFLeaving.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
+		tFLeaving.setBounds(172, 57, 106, 28);
+		panel.add(tFLeaving);
+		tFLeaving.setColumns(10);
 		
 		final JButton btnNewButton = new JButton();
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String lang = null;
 				final Locale locale = getLocale(lang);
-				dp = new DatePicker(textField, locale);
-				Date selectedDate = dp.parseDate(textField.getText());
+				dp = new DatePicker(tFLeaving, locale);
+				Date selectedDate = dp.parseDate(tFLeaving.getText());
 				dp.setSelectedDate(selectedDate);
-				dp.start(textField);
+				dp.start(tFLeaving);
 				
 			}
 		});
 		btnNewButton.setBounds(47, 57, 106, 28);
 		panel.add(btnNewButton);
 		
-		textField_1 = new ObservingTextField();
-		textField_1.setDisabledTextColor(Color.BLACK);
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
-		textField_1.setEnabled(false);
-		textField_1.setColumns(10);
-		textField_1.setBounds(172, 121, 106, 28);
-		panel.add(textField_1);
+		tFArriving = new ObservingTextField();
+		tFArriving.setDisabledTextColor(Color.BLACK);
+		tFArriving.setHorizontalAlignment(SwingConstants.CENTER);
+		tFArriving.setFont(new Font("Tahoma", Font.PLAIN, 15)); //$NON-NLS-1$
+		tFArriving.setEnabled(false);
+		tFArriving.setColumns(10);
+		tFArriving.setBounds(172, 121, 106, 28);
+		panel.add(tFArriving);
 		
 		final JButton button = new JButton();
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String lang = null;
 				final Locale locale = getLocale(lang);
-				dp1 = new DatePicker(textField_1, locale);
-				Date selectedDate = dp1.parseDate(textField_1.getText());
+				dp1 = new DatePicker(tFArriving, locale);
+				Date selectedDate = dp1.parseDate(tFArriving.getText());
 				dp1.setSelectedDate(selectedDate);
-				dp1.start(textField_1);
+				dp1.start(tFArriving);
 				
 			}
 		});
@@ -165,19 +177,19 @@ public class TripSearch extends JFrame {
 		lblCityOrigin.setForeground(Color.BLACK);
 		panel.add(lblCityOrigin);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(530, 56, 149, 29);
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		tFFrom = new JTextField();
+		tFFrom.setBounds(530, 56, 149, 29);
+		panel.add(tFFrom);
+		tFFrom.setColumns(10);
 		
 		lblCityend.setForeground(Color.BLACK);
 		lblCityend.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		panel.add(lblCityend);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(530, 120, 149, 29);
-		panel.add(textField_3);
+		tFTo = new JTextField();
+		tFTo.setColumns(10);
+		tFTo.setBounds(530, 120, 149, 29);
+		panel.add(tFTo);
 		
 		final JLabel lblSearchDescription = new JLabel();
 		lblSearchDescription.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
@@ -190,21 +202,21 @@ public class TripSearch extends JFrame {
 		scrollPane.setBounds(252, 160, 339, 69);
 		panel.add(scrollPane);
 		
-		JTextArea textArea = new JTextArea();
+		final JTextArea textArea = new JTextArea();
 		scrollPane.setViewportView(textArea);
 		textArea.setFont(new Font("Tahoma", Font.PLAIN, 13)); //$NON-NLS-1$
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		
-		final JButton btnNewButton_1 = new JButton();
-		btnNewButton_1.setBounds(340, 240, 89, 23);
-		panel.add(btnNewButton_1);
+		final JButton btnSearch = new JButton();
+		btnSearch.setBounds(340, 240, 89, 23);
+		panel.add(btnSearch);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(31, 284, 709, 272);
 		panel.add(scrollPane_1);
 		
-		btnBack = new JButton();
+		final JButton btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Options frame = new Options(instance, session,language);
@@ -217,7 +229,7 @@ public class TripSearch extends JFrame {
 		btnBack.setBounds(765, 538, 93, 23);
 		panel.add(btnBack);
 
-		DefaultTableModel model = new DefaultTableModel();
+		final DefaultTableModel model = new DefaultTableModel();
 		table = new JTable(model){
 	        /**
 			 * 
@@ -229,66 +241,109 @@ public class TripSearch extends JFrame {
 	        };
 	    };
 
-//	    if(instance != null){
-//	    	final ArrayList<GroupController> groupArray = new ArrayList<>(instance.getCurrentProfileController().getGroups());// lo que devuelva el buscador de trips
-//	    
-//			table.addMouseListener(new MouseAdapter() {
-//				@Override
-//				public void mouseClicked(MouseEvent arg0) {
-//					try{
-//						if (arg0.getClickCount() == 2 ) {
-//							String admin = null;
-//							if(instance != null){
-//								try {
-//									admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
-//								} catch (SessionNotActiveException e) {
-//									e.printStackTrace();
-//								} catch (ControllerNotLoadedException e) {
-//									e.printStackTrace();
-//								}
-//								if( groupArray.get(table.getSelectedRow()) == null ){
-//									
-//								}else if(session.getUserName().equals(admin) && instance != null){
-//									Group frame = new Group(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
-//									frame.setVisible(true);
-//									frame.pack();
-//									frame.setSize(900, 602);
-//									close();
-//								}else{
-//									Group frame = new Group(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
-//									frame.setVisible(true);
-//									frame.pack();
-//									frame.setSize(900, 602);
-//									close();
-//								}
-//							}
-//						}
-//					}catch(IndexOutOfBoundsException e){
-//						e.printStackTrace();
-//					} catch (SessionNotActiveException e) {
-//						e.printStackTrace();
-//					} catch (ControllerNotLoadedException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			});
-//			
-//			try {
-//				int i = 0;
-//				for(GroupController each : groupArray){
-//					model.addRow(new Object[] { null, null,null,null,null});
-//					model.setValueAt(each.getTripController().getStartDate(), i, 0);
-//					model.setValueAt(each.getTripController().getEndDate(), i, 1);
-//					model.setValueAt(each.getTripController().getOriginCity(), i, 2);
-//					model.setValueAt(each.getTripController().getEndCity(), i, 3);
-//					i++;
-//			}
-//			} catch (SessionNotActiveException e1) {
-//				e1.printStackTrace();
-//			} catch (ControllerNotLoadedException e1) {
-//				e1.printStackTrace();
-//			}
-//	    }
+	    if(instance != null){
+	    	
+			btnSearch.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Integer flag = 0;
+					Integer day1= null;
+					Integer day2= null;
+					Integer month1= null;
+					Integer month2= null;
+					Integer year1= null;
+					Integer year2 = null;
+
+					try{
+						day1 = Integer.parseInt(tFLeaving.getText().substring(0, 2));
+						day2 = Integer.parseInt(tFArriving.getText().substring(0, 2));
+						month1 = Integer.parseInt(tFLeaving.getText().substring(3, 5));
+						month2 = Integer.parseInt(tFArriving.getText().substring(3, 5));
+						year1 = Integer.parseInt(tFLeaving.getText().substring(6, 8));
+						year2 = Integer.parseInt(tFArriving.getText().substring(6, 8));
+						
+						if(day1 > day2 && month1 == month2 & year1 == year2 || month1 > month2 && year1 == year2 || year1 > year2){	
+							JOptionPane.showMessageDialog(null, messages.getString("Trip.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+						}
+						
+					}catch (Exception e1){
+						
+					}
+					
+					Date dateL = new Date(year1, month1, day1);
+					Date dateA = new Date(year2, month2, day2);
+					
+					Collection<GroupController> groupControllers = null;
+					try {
+						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(dateL, dateA, tFFrom.getText(), tFTo.getText(), textArea.getText());
+					} catch (SessionNotActiveException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+			    	ArrayList<GroupController> groupArray = new ArrayList<GroupController>(groupControllers);
+			    	
+					try {
+						int i = 0;
+						for(GroupController each : groupArray){
+							model.addRow(new Object[] { null, null,null,null,null});
+							model.setValueAt(each.getTripController().getStartDate(), i, 0);
+							model.setValueAt(each.getTripController().getEndDate(), i, 1);
+							model.setValueAt(each.getTripController().getOriginCity(), i, 2);
+							model.setValueAt(each.getTripController().getEndCity(), i, 3);
+							i++;
+					}
+					} catch (SessionNotActiveException e1) {
+						e1.printStackTrace();
+					} catch (ControllerNotLoadedException e1) {
+						e1.printStackTrace();
+					}
+					
+				}
+			});
+	    	
+	    	
+			table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+
+					try{
+						if (arg0.getClickCount() == 2 ) {
+							String admin = null;
+							if(instance != null){
+								try {
+									admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
+								} catch (SessionNotActiveException e) {
+									e.printStackTrace();
+								} catch (ControllerNotLoadedException e) {
+									e.printStackTrace();
+								}
+								if( groupArray != null ){
+									
+								}
+								if(session.getUserName().equals(admin) && instance != null){
+									Group frame = new Group(1, (MyTripController)groupArrayaux.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArrayaux.get(table.getSelectedRow()), language);
+									frame.setVisible(true);
+									frame.pack();
+									frame.setSize(900, 602);
+									close();
+								}else{
+									Group frame = new Group(2, null, groupArrayaux.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArrayaux.get(table.getSelectedRow()),language);
+									frame.setVisible(true);
+									frame.pack();
+									frame.setSize(900, 602);
+									close();
+								}
+							}
+						}
+					}catch(IndexOutOfBoundsException e){
+						e.printStackTrace();
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
+					}
+				}
+			});			
+	    }
 	    table.getTableHeader().setReorderingAllowed(false);
 		table.setEnabled(true);
 		table.setCellSelectionEnabled(false);
@@ -354,7 +409,7 @@ public class TripSearch extends JFrame {
 		lblCityOrigin.setText(messages.getString("TripSearch.53")); //$NON-NLS-1$
 		lblCityend.setText(messages.getString("TripSearch.54")); //$NON-NLS-1$
 		lblSearchDescription.setText(messages.getString("TripSearch.55")); //$NON-NLS-1$
-		btnNewButton_1.setText(messages.getString("TripSearch.56")); //$NON-NLS-1$
+		btnSearch.setText(messages.getString("TripSearch.56")); //$NON-NLS-1$
 		btnBack.setText(messages.getString("TripSearch.57")); //$NON-NLS-1$
 	}
 	

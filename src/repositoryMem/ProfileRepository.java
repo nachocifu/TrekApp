@@ -17,9 +17,9 @@ public class ProfileRepository extends AbstractRepository<Profile> {
      * @param passWord
      * @return boolean If username and password exist and match.
      */
-    public boolean validateCredentials(String userName, String password) {
+    public boolean validateCredentials(String username, String password) {
     	for (Profile profile : this.repository) {
-    		if(profile.getUsrName().trim().equals(userName.trim()) && profile.comparePass(password.trim())){
+    		if(profile.getUsrName().trim().equals(username.trim()) && profile.comparePass(password.trim())){
     			return true;
     		}		
 		}
@@ -32,9 +32,9 @@ public class ProfileRepository extends AbstractRepository<Profile> {
      * @return response The Profile or null if no results
      * @throws UserNameDoesNotExist 
      */
-    public Profile getById(String userName){	
+    public Profile getById(String username){	
     	for (Profile profile : this.repository) {
-    		if(profile.getUsrName().trim().equals(userName.trim())){
+    		if(profile.getUsrName().trim().equals(username.trim())){
     			return profile;
     		}
     	}
