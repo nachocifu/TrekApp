@@ -92,9 +92,10 @@ public class Application{
      * @return
      * @throws ServerException
      * @throws UserNameAlreadyExistsException
+     * @throws SessionNotActiveException 
      */
     //Revisar el throwsUserName
-    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, UserNameAlreadyExistsException{
+    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException{
         if(groupName.trim().isEmpty()
             || admin == null
             || maxGroupSize <= 0
@@ -103,7 +104,7 @@ public class Application{
             throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
         Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
         this.groupRepo.add(newGroup);
-        return new MyGroupController(groupRepo);
+        return getMyGroupController(newGroup);
     }
 
     /**
@@ -125,9 +126,7 @@ public class Application{
                 throw new IllegalArgumentException("ERROR || Error registering trip. Check arguments.");
         Trip newTrip = new Trip(startDate, endDate, estimateCost, tripDescription, originCity, endCity);
         this.tripRepo.add(newTrip);
-        MyTripController myTripController = new MyTripController(tripRepo);
-        myTripController.load(newTrip);
-        return myTripController;
+        return getMyTripController(newTrip);
     }
 
     /**
