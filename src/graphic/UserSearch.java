@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
@@ -24,7 +25,9 @@ import javax.swing.JButton;
 import graphic.ImagePanel;
 import graphic.Options;
 import controllers.Application;
+import controllers.ProfileController;
 import controllers.Session;
+import domain.SessionNotActiveException;
 
 public class UserSearch extends JFrame {
 
@@ -60,11 +63,11 @@ public class UserSearch extends JFrame {
 		
 		Locale currentLocale;
 		if(language){
-			currentLocale = new Locale("en","US"); 
+			currentLocale = new Locale("en","US");  //$NON-NLS-1$ //$NON-NLS-2$
 		}else{
-			currentLocale = new Locale("es","AR");
+			currentLocale = new Locale("es","AR"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 900, 601);
@@ -99,16 +102,24 @@ public class UserSearch extends JFrame {
 		});
 		btnCheckUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				if(!(textField.getText()).isEmpty() && Profile.get.textField.getText()){
-//					//abrir el profile cargado
-//					Profile frame = new Profile(instance, 2, session);
-//					frame.setVisible(true);
-//				    frame.pack();
-//				    frame.setSize(900, 620);
-//					close();
-//				}else{
-//					JOptionPane.showMessageDialog(new UserSearch(instance,session), "No existe el usurio que esta buscando", "ERROR", JOptionPane.ERROR_MESSAGE);
-//				}
+				if(!(textField.getText()).isEmpty()){
+					ProfileController profile = null;
+					try {
+						profile = instance.getCollectionController().getProfileControllerByUsername(textField.getText());
+					} catch (SessionNotActiveException e1) {
+						e1.printStackTrace();
+					}
+					if(profile != null){
+						Profile frame = new Profile(instance, 2, session, profile,language);
+						frame.setVisible(true);
+					    frame.pack();
+					    frame.setSize(900, 620);
+						close();
+					}else{
+						JOptionPane.showMessageDialog(null, messages.getString("UserSearch.5"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					}
+				}
+				
 			}
 		});
 		btnCheckUser.setBounds(342, 243, 135, 23);

@@ -57,7 +57,7 @@ public class Options extends JFrame {
 		}else{
 			currentLocale = new Locale("es","AR");
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -70,7 +70,7 @@ public class Options extends JFrame {
 		final JButton btnProfile = new JButton();
 		btnProfile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, 1 , session, language);
+				Profile frame = new Profile(instance, 1 , session, null,language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 620);

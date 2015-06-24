@@ -242,41 +242,22 @@ public class TripSearch extends JFrame {
 	    };
 
 	    if(instance != null){
-	    	
+
 			btnSearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					Integer flag = 0;
-					Integer day1= null;
-					Integer day2= null;
-					Integer month1= null;
-					Integer month2= null;
-					Integer year1= null;
-					Integer year2 = null;
-
-					try{
-						day1 = Integer.parseInt(tFLeaving.getText().substring(0, 2));
-						day2 = Integer.parseInt(tFArriving.getText().substring(0, 2));
-						month1 = Integer.parseInt(tFLeaving.getText().substring(3, 5));
-						month2 = Integer.parseInt(tFArriving.getText().substring(3, 5));
-						year1 = Integer.parseInt(tFLeaving.getText().substring(6, 8));
-						year2 = Integer.parseInt(tFArriving.getText().substring(6, 8));
-						
-						if(day1 > day2 && month1 == month2 & year1 == year2 || month1 > month2 && year1 == year2 || year1 > year2){	
-							JOptionPane.showMessageDialog(null, messages.getString("Trip.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-						}
-						
-					}catch (Exception e1){
-						
-					}
 					
-					Date dateL = new Date(year1, month1, day1);
-					Date dateA = new Date(year2, month2, day2);
+					Date dateL = getDate(tFLeaving.getText());
+
+					Date dateA = getDate(tFArriving.getText());
+			
+					if(! correctDate(dateL, dateA)){
+						JOptionPane.showMessageDialog(null, messages.getString("Trip.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 					
 					Collection<GroupController> groupControllers = null;
 					try {
 						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(dateL, dateA, tFFrom.getText(), tFTo.getText(), textArea.getText());
 					} catch (SessionNotActiveException e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 					}
 			    	ArrayList<GroupController> groupArray = new ArrayList<GroupController>(groupControllers);
@@ -304,34 +285,44 @@ public class TripSearch extends JFrame {
 			table.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
+					
+					Date dateL = getDate(tFLeaving.getText());
+
+					Date dateA = getDate(tFArriving.getText());
+					
+					Collection<GroupController> groupControllers = null;
+					try {
+						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(dateL, dateA, tFFrom.getText(), tFTo.getText(), textArea.getText());
+					} catch (SessionNotActiveException e2) {
+						e2.printStackTrace();
+					}
+			    	ArrayList<GroupController> groupArray = new ArrayList<GroupController>(groupControllers);
 
 					try{
 						if (arg0.getClickCount() == 2 ) {
 							String admin = null;
-							if(instance != null){
-								try {
-									admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
-								} catch (SessionNotActiveException e) {
-									e.printStackTrace();
-								} catch (ControllerNotLoadedException e) {
-									e.printStackTrace();
-								}
-								if( groupArray != null ){
-									
-								}
-								if(session.getUserName().equals(admin) && instance != null){
-									Group frame = new Group(1, (MyTripController)groupArrayaux.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArrayaux.get(table.getSelectedRow()), language);
-									frame.setVisible(true);
-									frame.pack();
-									frame.setSize(900, 602);
-									close();
-								}else{
-									Group frame = new Group(2, null, groupArrayaux.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArrayaux.get(table.getSelectedRow()),language);
-									frame.setVisible(true);
-									frame.pack();
-									frame.setSize(900, 602);
-									close();
-								}
+							try {
+								admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
+							} catch (SessionNotActiveException e) {
+								e.printStackTrace();
+							} catch (ControllerNotLoadedException e) {
+								e.printStackTrace();
+							}
+							if( groupArray != null ){
+								
+							}
+							if(session.getUserName().equals(admin) && instance != null){
+								Group frame = new Group(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
+								frame.setVisible(true);
+								frame.pack();
+								frame.setSize(900, 602);
+								close();
+							}else{
+								Group frame = new Group(2, null, groupArray.get(table.getSelectedRow()).getTripController(), null, instance, session, groupArray.get(table.getSelectedRow()),language);
+								frame.setVisible(true);
+								frame.pack();
+								frame.setSize(900, 602);
+								close();
 							}
 						}
 					}catch(IndexOutOfBoundsException e){
@@ -433,4 +424,40 @@ public class TripSearch extends JFrame {
 		WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
 	}
+	
+	/**
+	 * Transforms a String into Date
+	 * @param fecha
+	 * @return Date
+	 */
+	private Date getDate(String fecha){
+		Integer day= null;
+		Integer month= null;
+		Integer year= null;
+
+		try{
+			day = Integer.parseInt(fecha.substring(0, 2));
+			month = Integer.parseInt(fecha.substring(3, 5));
+			year = Integer.parseInt(fecha.substring(6, 8));
+
+		}catch (Exception e1){
+			
+		}
+		if(day != null && month != null && year != null){
+			return new Date(year, month, day);
+		}else{
+			return new Date();
+		}
+		
+	}
+	
+	private boolean correctDate(Date date1, Date date2){
+		if(date1 == null || date2 == null ){
+			return true;
+		}else if((date1.getDate() > date2.getDate() && date1.getMonth() == date2.getMonth() && date1.getYear() == date2.getYear() )|| (date1.getMonth() > date2.getMonth() && date1.getYear() == date2.getYear()) || (date1.getYear() > date2.getYear())){
+			return false;
+		}
+		return true;
+	}
+	
 }
