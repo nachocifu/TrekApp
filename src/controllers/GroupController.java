@@ -10,8 +10,8 @@ import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.TripNotClosedException;
 import domain.TripStatus;
-import repositorySQL.AbstractRepository;
-import repositorySQL.GroupRepository;
+import repositoryMem.AbstractRepository;
+import repositoryMem.GroupRepository;
 import domain.Message;
 
 

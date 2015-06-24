@@ -17,8 +17,8 @@ public class GroupRepository extends AbstractRepository<Group> {
     public GroupRepository(String pathToDataBase,Class reposClass) {     
     }
 
-    public Collection<Trip> getGroupTripBy(Date startDate, Date endDate, String startCity, String endCity, String description ){
-    	Collection<Trip> result = new HashSet<Trip>();
+    public Collection<Group> getGroupsWithTripsBy(Date startDate, Date endDate, String startCity, String endCity, String description ){
+    	Collection<Group> result = new HashSet<Group>();
     	for (Group group : this.repository) {
     		Trip trip = group.getGroupTrip();
 			if(trip.getStartDate().before(startDate)
@@ -26,7 +26,7 @@ public class GroupRepository extends AbstractRepository<Group> {
 					&& trip.getOriginCity().trim().contains(startCity.trim())
 					&& trip.getEndCity().trim().contains(endCity.trim())
 					&& trip.getTripDescription().trim().contains(description.trim())){
-				result.add(trip);
+				result.add(group);
 			}
 		}
     	return result;

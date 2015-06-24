@@ -1,6 +1,6 @@
 package controllers;
 
-import repositorySQL.AbstractRepository;
+import repositoryMem.AbstractRepository;
 
 import domain.ControllerNotLoadedException;
 import domain.SessionNotActiveException;

@@ -1,26 +1,29 @@
 package controllers;
 
-import repositoryMem.AbstractRepository;
-import domain.ControllerNotLoadedException;
+import java.util.Collection;
+import java.util.Date;
+
+import repositoryMem.GroupRepository;
+import repositoryMem.ProfileRepository;
+import repositoryMem.TripRepository;
 import domain.SessionNotActiveException;
 
 
 public class CollectionController{
 	
-	protected ProfileRepository profileRepos;
-	protected GroupRepository repository;
-	protected TripRepository repository;
-
-
-    public AbstractController(AbstractRepository<T> repo){
-        if(repo == null)
-            throw new IllegalArgumentException();
-        repository = repo;
-    }
+	private ProfileRepository profileRepo;
+	private GroupRepository groupRepo;
+	private TripRepository tripRepo;
 	
-	protected void validateEnvironment() throws SessionNotActiveException, ControllerNotLoadedException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
+	public CollectionController(ProfileRepository profileRepo, GroupRepository groupRepo, TripRepository tripRepo){
+		this.profileRepo = profileRepo;
+		this.groupRepo = groupRepo;
+		this.tripRepo = tripRepo;
+	}
+	
+	public Collection<GroupController> getGroupsWithTripsBy(Date startDate, Date endDate, String startCity, String endCity, String description ){
+		
 	}
 
+	
 }

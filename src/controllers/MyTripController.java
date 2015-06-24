@@ -7,7 +7,7 @@ import domain.ControllerNotLoadedException;
 import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.TripStatus;
-import repositorySQL.TripRepository;
+import repositoryMem.TripRepository;
 
 
 

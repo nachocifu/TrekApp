@@ -3,9 +3,9 @@ package controllers;
 import java.rmi.ServerException;
 import java.util.Date;
 
-import repositorySQL.GroupRepository;
-import repositorySQL.TripRepository;
-import repositorySQL.ProfileRepository;
+import repositoryMem.GroupRepository;
+import repositoryMem.TripRepository;
+import repositoryMem.ProfileRepository;
 import domain.Group;
 import domain.Profile;
 import domain.SessionNotActiveException;
@@ -161,6 +161,13 @@ public class Application{
         }
         Profile currentProfile = this.userRepo.getById(Session.getInstance().getUserName());
         return getCurrentProfileController(currentProfile);
+    }
+    
+    public CollectionController getCollectionController() throws SessionNotActiveException{
+        if(!Session.getInstance().isActive()){
+            throw new SessionNotActiveException("There is no user logged in");
+        }
+        return new CollectionController(this.userRepo, this.groupRepo, this.tripRepo);
     }
 
     /**
