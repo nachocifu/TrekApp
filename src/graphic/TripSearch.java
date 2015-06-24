@@ -60,6 +60,9 @@ public class TripSearch extends JFrame {
 	private static JPanel panel;
 	private CurrentProfileController currentProfile;
 	
+	private Collection<GroupController> groupControllers;
+	private ArrayList<GroupController> groupArray;
+	
 
 	/**
 	 * Launch the application.
@@ -242,9 +245,10 @@ public class TripSearch extends JFrame {
 	                return false;               
 	        };
 	    };
-
+	    
+	    
 	    if(instance != null){
-
+	    	
 			btnSearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					
@@ -256,13 +260,12 @@ public class TripSearch extends JFrame {
 						JOptionPane.showMessageDialog(null, messages.getString("Trip.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					
-					Collection<GroupController> groupControllers = null;
 					try {
 						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(dateL, dateA, tFFrom.getText(), tFTo.getText(), textArea.getText());
 					} catch (SessionNotActiveException e2) {
 						e2.printStackTrace();
 					}
-			    	ArrayList<GroupController> groupArray = new ArrayList<GroupController>(groupControllers);
+			    	groupArray = new ArrayList<GroupController>(groupControllers);
 			    	
 					try {
 						int i = -1;
@@ -292,18 +295,6 @@ public class TripSearch extends JFrame {
 			table.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					
-					Date dateL = getDate(tFLeaving.getText());
-
-					Date dateA = getDate(tFArriving.getText());
-					
-					Collection<GroupController> groupControllers = null;
-					try {
-						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(dateL, dateA, tFFrom.getText(), tFTo.getText(), textArea.getText());
-					} catch (SessionNotActiveException e2) {
-						e2.printStackTrace();
-					}
-			    	ArrayList<GroupController> groupArray = new ArrayList<GroupController>(groupControllers);
 
 					try{
 						if (arg0.getClickCount() == 2 && table.getSelectedRow() <= groupArray.size()) {
