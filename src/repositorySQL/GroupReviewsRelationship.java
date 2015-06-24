@@ -4,6 +4,7 @@ package repositorySQL;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import domain.Group;
 import domain.Profile;
 import domain.Review;
 
@@ -15,10 +16,10 @@ import domain.Review;
  *
  */
 @DatabaseTable
-class ReviewRelationship {
+class GroupReviewsRelationship {
 
-    @DatabaseField( id = true )
-    private Integer reviewId;
+    @DatabaseField( generatedId = true )
+    private Integer id;
 
     @DatabaseField
     private Integer fromUser;
@@ -26,18 +27,25 @@ class ReviewRelationship {
     @DatabaseField
     private Integer toUser;
 
-    protected ReviewRelationship(){
+    @DatabaseField
+    private Integer group;
+
+    protected GroupReviewsRelationship(){
 
     }
 
-    protected ReviewRelationship(Review rvw){
-        this.reviewId = rvw.getId();
-        this.fromUser = rvw.getprofileOrigin().getUsrId();
-        this.toUser = rvw.getprofileTarget().getUsrId();
+    protected GroupReviewsRelationship(Profile to, Profile from, Group group){
+        this.fromUser = from.getUsrId();
+        this.toUser = to.getUsrId();
+        this.group = group.getId();
     }
 
-    public Integer getReviewId() {
-        return reviewId;
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getGroup(){
+        return group;
     }
 
     public Integer getFrom() {

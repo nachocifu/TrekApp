@@ -29,31 +29,39 @@ class GroupProfileRelationship {
     @DatabaseField
     private Boolean admin;
 
+    @DatabaseField
+    private String rel;
+
     protected GroupProfileRelationship(){
 
     }
 
-    protected GroupProfileRelationship(Group group, Profile user, Boolean userIsAdmin){
+    protected GroupProfileRelationship(Group group, Profile user, Boolean userIsAdmin, RelationshipEnum rel){
         this.user = user.getUsrId();
         this.group = group.getId();
         this.admin = userIsAdmin;
+        this.rel = rel.toString();
     }
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public Integer getGroup() {
-		return group;
-	}
+    public Integer getGroup() {
+        return group;
+    }
 
-	public Integer getUser() {
-		return user;
-	}
+    public Integer getUser() {
+        return user;
+    }
 
-	public Boolean getAdmin() {
-		return admin;
-	}
+    public Boolean getAdmin() {
+        return admin;
+    }
+
+    protected String getRel() {
+        return rel;
+    }
 
 
 }

@@ -226,7 +226,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
             try{
                 Class.forName("org.sqlite.JDBC");
                 /** create a connection source to our database */
-                connectionSource = new JdbcConnectionSource(Application.getInstance().getDatabase());
+                connectionSource = new JdbcConnectionSource(this.databaseUrl);
 
                 //Persist Profiles
                 /** Generate Collection to persist */
@@ -259,15 +259,16 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 }
 
                 //Persist Groups
+                System.out.println("llega a groups");
                 /** instantiate the dao */
                 Dao<GroupProfileRelationship, String> daoGroups = DaoManager.createDao(connectionSource, GroupProfileRelationship.class);
 
                 GroupRepository groupRepo = new GroupRepository(this.pathToDataBase, Group.class);
                 for( Group each: profile.getGroups()){
-                    daoGroups.createOrUpdate( new GroupProfileRelationship(each, profile, each.getAdminUser().equals(profile)));
+                    daoGroups.createOrUpdate( new GroupProfileRelationship(each, profile, each.getAdminUser().equals(profile), RelationshipEnum.MEMBER));
                     groupRepo.update(each, depth-1);
                 }
-
+                System.out.println("llega a trips");
                 //Persist Trips
                 /** instantiate the dao */
                 Dao<TripProfileRelationship, String> daoTrips = DaoManager.createDao(connectionSource, TripProfileRelationship.class);
@@ -304,6 +305,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 try {
                     connectionSource.close();
                 } catch (SQLException e) {
+                    System.err.println("ERROR || Errorr closing conection to file system");
                     e.printStackTrace();
                 }
             }
@@ -372,6 +374,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 qryBuilder.append("FROM GroupProfileRelationship rel ");
                 qryBuilder.append("WHERE ");
                 qryBuilder.append( "rel.user = " + profile.getUsrId());
+                qryBuilder.append( " AND rel.rel = \"" + RelationshipEnum.MEMBER.getStatus() + "\"");
 
                 query = qryBuilder.toString();
 
@@ -423,7 +426,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 qryBuilder.append("SELECT rel.* ");
                 qryBuilder.append("FROM ReviewRelationship rel ");
                 qryBuilder.append("WHERE ");
-                qryBuilder.append( "rel.to = " + profile.getUsrId());
+                qryBuilder.append( "rel.toUser = " + profile.getUsrId());
 
                 query = qryBuilder.toString();
 

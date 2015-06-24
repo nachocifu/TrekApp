@@ -47,6 +47,8 @@ public class DataBaseTest {
         repoAdmin.start(Review.class);
         repoAdmin.start(ReviewRelationship.class);
         repoAdmin.start(GroupProfileRelationship.class);
+        repoAdmin.start(TripGroupRelationship.class);
+        repoAdmin.start(GroupReviewsRelationship.class);
 
 
         System.err.println("#########POPULATE USERS");

@@ -127,7 +127,7 @@ public class Group {
      * @param admin
      */
     public void setAdminUser(Profile newAdmin){
-    	if(!this.members.contains(newAdmin))
+        if(!this.members.contains(newAdmin))
             throw new IllegalArgumentException("ERROR || The new admin does not belong to this group");
         this.admin = newAdmin;
     }
@@ -193,11 +193,11 @@ public class Group {
      */
     public void addMember(Profile newMember) throws InvalidPermissionException{
         if(newMember.equals(this.admin)){
-            throw new IllegalArgumentException("Cannot add yourself");
+            throw new IllegalArgumentException("ERROR || Cannot add yourself");
         }else if(members.contains(newMember)){
-            throw new IllegalArgumentException("User already in group");
+            throw new IllegalArgumentException("ERROR || User already in group");
         }else if (this.maxGroupSize > this.groupSize()){
-            throw new InvalidPermissionException("No more space to add a user");
+            throw new InvalidPermissionException("ERROR || No more space to add a user");
         }
         this.members.add(newMember);
         newMember.joinGroup(this);
@@ -402,7 +402,24 @@ public class Group {
         return this.groupTrip;
     }
 
-	public Integer getId() {
-		return groupId;
-	}
+    public Integer getId() {
+        return groupId;
+    }
+
+    /**
+     * Method to load list of members when loading object from database.
+     * @param list
+     */
+    public void setMembers(HashSet<Profile> list){
+        this.members = list;
+    }
+
+    public void setMissingReviewsToMake(
+            HashMap<Profile, HashSet<Profile>> missingReviewsToMake) {
+        this.missingReviewsToMake = missingReviewsToMake;
+    }
+
+    public void setRequests(HashMap<Profile, RequestStatus> requests) {
+        this.memberRequests = requests;
+    }
 }

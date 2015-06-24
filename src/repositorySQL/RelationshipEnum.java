@@ -7,9 +7,9 @@ package repositorySQL;
  * @author nacho
  *
  */
-public enum RelationshipEnum {
+enum RelationshipEnum {
 
-     REJECTED("rejected"), WAINTING("waiting"), FRIEND("friend"), BLOCKED("blocked");
+     REJECTED("rejected"), WAINTING("waiting"), FRIEND("friend"), BLOCKED("blocked"), MEMBER("member");
 
      private String status;
 
@@ -28,6 +28,8 @@ public enum RelationshipEnum {
                 return RelationshipEnum.WAINTING;
             if(i.equals(RelationshipEnum.FRIEND.getStatus()))
                 return RelationshipEnum.FRIEND;
+            if(i.equals(RelationshipEnum.MEMBER.getStatus()))
+                return RelationshipEnum.MEMBER;
             return null;
         }
 }

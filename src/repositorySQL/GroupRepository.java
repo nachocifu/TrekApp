@@ -3,10 +3,23 @@
  */
 package repositorySQL;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.dao.GenericRawResults;
+import com.j256.ormlite.dao.RawRowMapper;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
 
 import domain.Group;
 import domain.Profile;
+import domain.RequestStatus;
+import domain.Review;
+import domain.Trip;
 
 /**
  * The connection to the file system regarding groups and their persistence.
@@ -56,9 +69,127 @@ public class GroupRepository extends AbstractRepository<Group> {
     }
 
     private Group loadObjectsInside(Group obj, Integer depth) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+        if( depth <= 0 )
+            return obj;
 
+        ConnectionSource connectionSource = null;
+
+        try{
+            try{
+                Class.forName("org.sqlite.JDBC");
+                /** create a connection source to our database */
+                connectionSource = new JdbcConnectionSource(this.databaseUrl);
+
+
+                /** Build native query */
+                StringBuffer qryBuilder;
+
+                //Get Profiles
+                /** instantiate the dao */
+                Dao<GroupProfileRelationship, ?> daoProfiles = DaoManager.createDao(connectionSource, GroupProfileRelationship.class);
+
+                /** Build native query */
+                qryBuilder = new StringBuffer();
+                qryBuilder.append("SELECT rel.* ");
+                qryBuilder.append("FROM GroupProfileRelationship rel ");
+                qryBuilder.append("WHERE ");
+                qryBuilder.append( "rel.group = " + obj.getId());
+
+                String query = qryBuilder.toString();
+
+                RawRowMapper<GroupProfileRelationship> mapperProfile = daoProfiles.getRawRowMapper();
+                GenericRawResults<GroupProfileRelationship> rawResponseProfiles = daoProfiles.queryRaw(query, mapperProfile);
+                List<GroupProfileRelationship> responseProfiles = rawResponseProfiles.getResults();
+
+                ProfileRepository userRepo = new ProfileRepository(this.pathToDataBase, Group.class);
+                HashSet<Profile> profiles = new HashSet<Profile>();
+                HashMap<Profile,RequestStatus> requests = new HashMap<Profile,RequestStatus>();
+
+                Profile user = null;
+                Profile admin = null;
+                for(GroupProfileRelationship each: responseProfiles){
+                    user = userRepo.getById(each.getUser(), depth-1);
+                    if(each.getRel().equals(RelationshipEnum.MEMBER.getStatus())){
+                        profiles.add(user);
+                        if( each.getAdmin())
+                            admin = user;
+                    }else{
+                        requests.put(user, RequestStatus.fromString(each.getRel()));
+                    }
+                }
+                obj.setRequests(requests);
+                obj.setMembers(profiles);
+                obj.setAdminUser(admin);
+
+                //Get missingReviews list
+                /** instantiate the dao */
+                Dao<GroupReviewsRelationship, ?> daoReviews = DaoManager.createDao(connectionSource, GroupReviewsRelationship.class);
+
+                /** Build native query */
+                qryBuilder = new StringBuffer();
+                qryBuilder.append("SELECT rel.* ");
+                qryBuilder.append("FROM GroupReviewsRelationship rel ");
+                qryBuilder.append("WHERE ");
+                qryBuilder.append( "rel.group = " + obj.getId());
+
+                query = qryBuilder.toString();
+
+                RawRowMapper<GroupReviewsRelationship> mapperReviews = daoReviews.getRawRowMapper();
+                GenericRawResults<GroupReviewsRelationship> rawResponseReview = daoReviews.queryRaw(query, mapperReviews);
+                List<GroupReviewsRelationship> responseReview = rawResponseReview.getResults();
+
+                HashMap<Profile,HashSet<Profile>> reviews = new HashMap<Profile,HashSet<Profile>>();
+                Profile from;
+                Profile to;
+                HashSet<Profile> toReview;
+                for(GroupReviewsRelationship each: responseReview){
+                    from = userRepo.getById(each.getFrom(), depth-1);
+                    to = userRepo.getById(each.getTo(), depth-1);
+
+                    if(reviews.containsKey(from))
+                        reviews.get(from).add(to);
+                    else{
+                        toReview = new HashSet<Profile>();
+                        toReview.add(to);
+                        reviews.put(from, toReview);
+                    }
+                }
+                obj.setMissingReviewsToMake(reviews);
+
+                //Get Trip
+                /** instantiate the dao */
+                Dao<TripGroupRelationship, ?> daoTrips = DaoManager.createDao(connectionSource, TripGroupRelationship.class);
+
+                /** Build native query */
+                qryBuilder = new StringBuffer();
+                qryBuilder.append("SELECT rel.* ");
+                qryBuilder.append("FROM TripGroupRelationship rel ");
+                qryBuilder.append("WHERE ");
+                qryBuilder.append( "rel.group = " + obj.getId());
+
+                query = qryBuilder.toString();
+
+                RawRowMapper<TripGroupRelationship> mapperTrip = daoTrips.getRawRowMapper();
+                GenericRawResults<TripGroupRelationship> rawResponseTrip = daoTrips.queryRaw(query, mapperTrip);
+                TripGroupRelationship responseTrips = rawResponseTrip.getFirstResult();
+
+                TripRepository tripRepo = new TripRepository(this.pathToDataBase, Trip.class);
+                obj.addGroupTrip(tripRepo.getById(responseTrips.getTrip(), depth - 1));
+
+
+            }
+                catch(Exception e){
+                    System.err.println("[ERROR] || " + e.getMessage());
+                }
+                finally{
+                    /** close the connection source */
+                    connectionSource.close();
+                }
+            }
+            catch(SQLException e){
+                System.err.println("[ERROR] || " + e.getMessage());
+            }
+            return obj;
+    }
 
 }
