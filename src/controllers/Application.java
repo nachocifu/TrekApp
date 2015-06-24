@@ -163,11 +163,11 @@ public class Application{
         return getCurrentProfileController(currentProfile);
     }
     
-    public CollectionController getCollectionController() throws SessionNotActiveException{
+    public CollectionAndSearchController getCollectionController() throws SessionNotActiveException{
         if(!Session.getInstance().isActive()){
             throw new SessionNotActiveException("There is no user logged in");
         }
-        return new CollectionController(this.userRepo, this.groupRepo, this.tripRepo);
+        return new CollectionAndSearchController(this.userRepo, this.groupRepo, this.tripRepo);
     }
 
     /**

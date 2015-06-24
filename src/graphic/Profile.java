@@ -69,7 +69,7 @@ public class Profile extends JFrame {
 	private static JPanel panel;
 	private JTextField tFName;
 	private JTextField tFSurName;
-	private JTextField tFUserName;
+	private JTextField tFUsername;
 	private Integer flag;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField_1;
@@ -202,14 +202,14 @@ public class Profile extends JFrame {
 		tFSurName.setBounds(559, 96, 123, 20);
 		panel.add(tFSurName);
 		
-		tFUserName = new JTextField();
-		tFUserName.setDisabledTextColor(Color.BLACK);
-		tFUserName.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
-		tFUserName.setHorizontalAlignment(SwingConstants.CENTER);
-		tFUserName.setEnabled(true);
-		tFUserName.setColumns(10);
-		tFUserName.setBounds(148, 142, 123, 20);
-		panel.add(tFUserName);
+		tFUsername = new JTextField();
+		tFUsername.setDisabledTextColor(Color.BLACK);
+		tFUsername.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
+		tFUsername.setHorizontalAlignment(SwingConstants.CENTER);
+		tFUsername.setEnabled(true);
+		tFUsername.setColumns(10);
+		tFUsername.setBounds(148, 142, 123, 20);
+		panel.add(tFUsername);
 		
 		tFEmail = new JTextField();
 		tFEmail.setFont(new Font("Tahoma", Font.PLAIN, 16)); //$NON-NLS-1$
@@ -398,7 +398,7 @@ public class Profile extends JFrame {
 		if(session != null){
 			try {
 				tFName.setText(currentProfile.getUserName());
-				tFUserName.setText(currentProfile.getUsername());
+				tFUsername.setText(currentProfile.getUsername());
 				tFSurName.setText(currentProfile.getSurname());
 				tFEmail.setText(currentProfile.getMail());
 				tFRate.setText(getReview(currentProfile.getRating()));
@@ -470,7 +470,7 @@ public class Profile extends JFrame {
 					
 					if(choice == 0){
 						
-						if(tFName.getText().isEmpty() || tFSurName.getText().isEmpty() || tFUserName.getText().isEmpty() || tFAge.getText().isEmpty() || tFEmail.getText().isEmpty()){
+						if(tFName.getText().isEmpty() || tFSurName.getText().isEmpty() || tFUsername.getText().isEmpty() || tFAge.getText().isEmpty() || tFEmail.getText().isEmpty()){
 							flag = 3;
 						}else if(!validate(tFEmail.getText().trim())){
 							flag = 2;
@@ -499,7 +499,7 @@ public class Profile extends JFrame {
 						}
 						if(flag == 0){
 							try {
-								instance.registerUser(tFName.getText(), tFSurName.getText(), tFUserName.getText(), date , sex , passwordField.getText(), tFCityBirth.getText(), tFAge.getText()); //$NON-NLS-1$
+								instance.registerUser(tFUsername.getText(), tFName.getText(), tFSurName.getText(), date , sex , passwordField.getText(), tFCityBirth.getText(), tFAge.getText()); //$NON-NLS-1$
 							} catch (ServerException e) {
 								e.printStackTrace();
 							} catch (UserNameAlreadyExistsException e) {
@@ -574,7 +574,7 @@ public class Profile extends JFrame {
 			btn.setVisible(false);
 			tFName.setEnabled(true);
 			tFSurName.setEnabled(true);
-			tFUserName.setEnabled(true);
+			tFUsername.setEnabled(true);
 			label_2.setVisible(true);
 			label_4.setVisible(true);
 			label_6.setVisible(true);
@@ -594,7 +594,7 @@ public class Profile extends JFrame {
 			tFCityBirth.setEditable(false);
 			tFName.setEditable(false);
 			tFSurName.setEditable(false);
-			tFUserName.setEditable(false);
+			tFUsername.setEditable(false);
 			tFAge.setEditable(false);
 			choice2.setEnabled(false);
 			btnContacts.setText(messages.getString("Profile.50")); //$NON-NLS-1$
@@ -612,7 +612,7 @@ public class Profile extends JFrame {
 			tFCityBirth.setEditable(false);
 			tFName.setEditable(false);
 			tFSurName.setEditable(false);
-			tFUserName.setEditable(false);
+			tFUsername.setEditable(false);
 			tFAge.setEditable(false);
 			tFEmail.setEditable(false);
 			choice2.setEnabled(false);
@@ -662,7 +662,7 @@ public class Profile extends JFrame {
 				}
 			});
 			lblUser.setBounds(70, 200, 108, 20);
-			tFUserName.setBounds(148, 200, 123, 20);
+			tFUsername.setBounds(148, 200, 123, 20);
 			lblAge.setBounds(318, 200, 193, 20);
 			tFAge.setBounds(505, 200, 97, 20);
 			lblGender.setBounds(648, 200, 54, 22);
