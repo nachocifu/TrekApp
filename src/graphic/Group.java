@@ -390,6 +390,7 @@ public class Group extends JFrame {
 					//flag=3 no introdujo la capacidad maxima del viaje planeado
 					//flag=4 no se creo un viaje
 					//flag=5 no introdujo una capacidad correcta
+					//flag=6 no introdujo filtros
 					if(tFName.getText().isEmpty()){
 						flag = 2;
 					} else if(tFCap.getText().isEmpty()){
@@ -400,6 +401,8 @@ public class Group extends JFrame {
 						flag = 5;
 					}else if (isIntNumeric(tFCap.getText()) && Integer.parseInt(tFCap.getText()) < 1){
 						flag = 5;
+					}else if(tFFAge.getText().trim().isEmpty() || tFFCity.getText().trim().isEmpty()){
+						flag = 6;
 					}else{
 						flag = 1;
 					}
@@ -410,19 +413,9 @@ public class Group extends JFrame {
 
 							try {
 								MyGroupController group;
-								if(! tFFAge.getText().trim().isEmpty() && ! tFFCity.getText().trim().isEmpty()){
-									group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
-									group.addGroupTrip(myTrip);
-								}else if(! tFFAge.getText().trim().isEmpty()){
-									group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), null); //$NON-NLS-1$
-									group.addGroupTrip(myTrip);
-								}else if(! tFFCity.getText().trim().isEmpty()){
-									group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), null, tFFCity.getText()); //$NON-NLS-1$
-									group.addGroupTrip(myTrip);
-								}else{
-									group = instance.registerGroup(tFName.getText(), currentProfile, null, null, tFFCity.getText()); //$NON-NLS-1$
-									group.addGroupTrip(myTrip);
-								}
+								group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
+								group.addGroupTrip(myTrip);
+								
 							} catch (SessionNotActiveException e) {
 								e.printStackTrace();
 							} catch (ControllerNotLoadedException e) {
@@ -457,6 +450,9 @@ public class Group extends JFrame {
 						break;
 					case 5:
 						JOptionPane.showMessageDialog(null, messages.getString("Group.4"), "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
+						break;
+					case 6:
+						JOptionPane.showMessageDialog(null, "No introdujo los filtros", "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
 						break;
 					}
 				}
