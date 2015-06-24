@@ -54,11 +54,6 @@ public class Group {
     private Trip groupTrip;
 
     /**
-     *key: msgId, value:usrId of user that posted the message
-     */
-    private HashMap<Message, Profile> wall;
-
-    /**
      * REJECTED if he has been rejected and WAITING if is waiting for acceptance
      */
     private HashMap<Profile, RequestStatus> memberRequests;
@@ -77,7 +72,6 @@ public class Group {
     public Group(String groupName, Profile admin, Integer maxGroupSize, Integer filterAge, String filterCity){
         this.groupName=groupName;
         this.members=new HashSet<Profile>();
-        this.wall=new HashMap<Message, Profile>();
         this.memberRequests = new HashMap<Profile, RequestStatus>();
         this.maxGroupSize = maxGroupSize;
         this.filterAge = filterAge;
@@ -288,29 +282,6 @@ public class Group {
      */
     public void deleteGroupTrip(Trip trip){
         this.groupTrip = null;
-    }
-
-    /**
-     * Any member of the group can post on the wall
-     * @param user posting the message on the wall
-     * @param msg being posted
-     * @throws InvalidPermissionException
-     */
-    public void addPost(Profile user, Message msg) throws InvalidPermissionException{
-        if(msg == null || msg.getText().trim().isEmpty()){
-            throw new IllegalArgumentException("Cannot post because the message is either null or empty");
-        }
-        this.wall.put(msg, user);
-    }
-
-    /**
-     * Deletes a post in the Group
-     * @param msgId
-     */
-    public void deletePost(Message msg) throws IllegalArgumentException, InvalidPermissionException{
-        if(!this.wall.containsKey(msg))
-            throw new IllegalArgumentException("The message does not exist");
-        this.wall.remove(msg);
     }
 
     /**
