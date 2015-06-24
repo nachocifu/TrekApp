@@ -79,7 +79,7 @@ public class Calif extends JFrame {
 		}else{
 			currentLocale = new Locale("es","AR");
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 900, 601);

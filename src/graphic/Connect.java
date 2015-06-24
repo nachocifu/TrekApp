@@ -124,7 +124,7 @@ public class Connect extends JFrame {
 		final JButton btnNewUser = new JButton();
 		btnNewUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Profile frame = new Profile(instance , 0 , null, language);
+				Profile frame = new Profile(instance , 0 , null, null,language);
 				frame.setVisible(true);
 				frame.setSize(900, 620);
 				frame.pack();

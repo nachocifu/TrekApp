@@ -133,19 +133,19 @@ public class MyGroupController extends GroupController {
         this.obj = null;
     }
 
-    /**
-     * Deletes a post from the group
-     * @param msg
-     * @throws SessionNotActiveException
-     * @throws ControllerNotLoadedException
-     * @throws IllegalArgumentException
-     * @throws InvalidPermissionException
-     */
-    public void deletePost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, IllegalArgumentException, InvalidPermissionException{
-        this.validateEnvironment();
-        this.obj.deletePost(msg);
-        saveChanges();
-    }
+//    /**
+//     * Deletes a post from the group
+//     * @param msg
+//     * @throws SessionNotActiveException
+//     * @throws ControllerNotLoadedException
+//     * @throws IllegalArgumentException
+//     * @throws InvalidPermissionException
+//     */
+//    public void deletePost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, IllegalArgumentException, InvalidPermissionException{
+//        this.validateEnvironment();
+//        this.obj.deletePost(msg);
+//        saveChanges();
+//    }
 
 
     /**

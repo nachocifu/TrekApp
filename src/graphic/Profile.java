@@ -79,7 +79,6 @@ public class Profile extends JFrame {
 	private JTextField tFCityBirth;
 	private JTextField tFTripNum;
 	private ResourceBundle messages;
-	private JTextField tFFUserName;
 	private CurrentProfileController currentProfile;
 	
 	/**
@@ -89,7 +88,7 @@ public class Profile extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Profile frame = new Profile(null, 1, null,true);
+					Profile frame = new Profile(null, 1, null, null,true);
 					frame.setVisible(true);
 				    frame.pack();
 				    frame.setSize(900, 620);
@@ -110,10 +109,13 @@ public class Profile extends JFrame {
 	 * @param session
 	 * @param language
 	 */
-	public Profile(final Application instance, final Integer choice, final Session session, final boolean language) {
+	public Profile(final Application instance, final Integer choice, final Session session, final ProfileController invitedProfile, final boolean language) {
 		if(instance != null){
 			try {
-				currentProfile = instance.getCurrentProfileController();
+				if(choice == 1){
+					currentProfile = instance.getCurrentProfileController();
+				}
+				
 			} catch (SessionNotActiveException e2) {
 				e2.printStackTrace();
 			}
@@ -352,7 +354,6 @@ public class Profile extends JFrame {
 		
 		tFAge = new JFormattedTextField();
 		try {
-			System.out.println("hola");
 			MaskFormatter dateMask = new MaskFormatter("##/##/##");  //$NON-NLS-1$
             dateMask.install(tFAge);
         }catch (ParseException ex) {
@@ -385,7 +386,7 @@ public class Profile extends JFrame {
 		final JButton btnPastTrip = new JButton();
 		btnPastTrip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				OldTrips frame = new OldTrips(instance, session, choice, language);
+				OldTrips frame = new OldTrips(instance, session, choice, invitedProfile,language);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -395,7 +396,7 @@ public class Profile extends JFrame {
 		btnPastTrip.setBounds(297, 410, 193, 23);
 		panel.add(btnPastTrip);
 		
-		if(session != null){
+		if(instance != null && choice == 1){
 			try {
 				tFName.setText(currentProfile.getUserName());
 				tFUsername.setText(currentProfile.getUsername());
@@ -422,6 +423,36 @@ public class Profile extends JFrame {
 			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 			
 			}
+		}else if(instance != null && choice == 2){
+			
+			try {
+				tFName.setText(invitedProfile.getUserName());
+				tFUsername.setText(invitedProfile.getUsername());
+				tFSurName.setText(invitedProfile.getSurname());
+				tFEmail.setText(invitedProfile.getMail());
+				tFRate.setText(getReview(invitedProfile.getRating()));
+				tFTripNum.setText(((Integer) invitedProfile.getTrips().size()).toString());
+				tFCityBirth.setText(invitedProfile.getCity());
+				Integer day = invitedProfile.getBirthday().getDay();
+				Integer month = invitedProfile.getBirthday().getMonth();
+				Integer year = invitedProfile.getBirthday().getYear();
+				String day1, month1;
+				if(day < 10){
+					day1 = "0" + day.toString();
+				}else{
+					day1 = day.toString();
+				}
+				if(month < 10){
+					month1 = "0" + month.toString();
+				}else{
+					month1 = month.toString();
+				}
+				tFAge.setText(day1 + "/" + month1.toString() + "/" + year.toString());
+			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
+			
+			}
+			
+			
 		}
 		
 
@@ -556,16 +587,6 @@ public class Profile extends JFrame {
 		lblEmail.setForeground(Color.BLACK);
 		lblEmail.setBounds(428, 303, 72, 20);
 		panel.add(lblEmail);
-			
-		
-		
-		tFFUserName = new JTextField();
-		
-		final Object[] fields = {
-				"Escribir nombre de Usuario", tFFUserName,  //$NON-NLS-1$
-		};
-		
-		final Object[] options = {"A�adir Usuario","Cancelar"}; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		if(choice == 0){
 			btnContacts.setVisible(false);
@@ -626,39 +647,16 @@ public class Profile extends JFrame {
 			btnContacts.setVisible(true);
 			btnContacts.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
-
-					
-					
-					
-					int confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
-					if(confirm == JOptionPane.OK_OPTION){
-						while( !tFFUserName.getText().isEmpty() ){
-							JOptionPane.showMessageDialog(null, "No existe el usuario que quiere agregar", "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-							confirm = JOptionPane.showOptionDialog(null, fields, messages.getString("Group.11"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[1]); //$NON-NLS-1$
-						}
-						try {
-							//if(currentProfile.)session. && instance != null
-							currentProfile.sendFriendRequest(tFFUserName.getText());
-						} catch (SessionNotActiveException e1) {
-							e1.printStackTrace();
-						} catch (ControllerNotLoadedException e1) {
-							e1.printStackTrace();
-						} catch (InvalidPermissionException e1) {
-							e1.printStackTrace();
-						}/*catch (NO EXISTE EL USUARIO e1) {
-							JOptionPane.showMessageDialog(null, "No existe el usuario que quiere agregar", "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-						}*/
-						JOptionPane.showMessageDialog(null, "Se mando de manera exitosa la solicitud", "Felicitaciones", JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					try {
+						currentProfile.sendFriendRequest(invitedProfile.getUsername());
+					} catch (SessionNotActiveException e1) {
+						e1.printStackTrace();
+					} catch (ControllerNotLoadedException e1) {
+						e1.printStackTrace();
+					} catch (InvalidPermissionException e1) {
+						e1.printStackTrace();
 					}
-					
-					
-					
-					
-					
-					
-					
-					
+					JOptionPane.showMessageDialog(null, "Se mando de manera exitosa la solicitud", "Felicitaciones", JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$			
 				}
 			});
 			lblUser.setBounds(70, 200, 108, 20);
@@ -673,7 +671,7 @@ public class Profile extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Profile frame = new Profile(instance, choice, session, false);
+				Profile frame = new Profile(instance, choice, session, invitedProfile,false);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -690,7 +688,7 @@ public class Profile extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, choice, session, true);
+				Profile frame = new Profile(instance, choice, session, invitedProfile,true);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);

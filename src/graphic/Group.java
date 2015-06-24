@@ -324,8 +324,9 @@ public class Group extends JFrame {
 		btnCalif.setVisible(false);
 		panel.add(btnCalif);
 		
+		
 		try {
-			if(groupController.getTripStatus().equals("CLOSED")){
+			if(groupController != null && groupController.getTripStatus().equals(groupController.getTripStatus().CLOSED)){
 				btnCalif.setVisible(true);
 			}
 		} catch (SessionNotActiveException e3) {
@@ -389,7 +390,7 @@ public class Group extends JFrame {
 				}else if(myTrip == null){
 					flag = 4;
 				}else{
-					flag = 0;
+					flag = 1;
 				}
 				switch(flag){
 				case 1:
@@ -398,10 +399,9 @@ public class Group extends JFrame {
 
 						try {
 							MyGroupController group;
-							group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
-							group.addGroupTrip(myTrip);
 							if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
-								group.setFilters(Integer.parseInt(tFFAge.getText()), tFFCity.getText());
+								group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
+								group.addGroupTrip(myTrip);
 							}
 						} catch (SessionNotActiveException e) {
 							e.printStackTrace();

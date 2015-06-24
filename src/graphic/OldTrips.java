@@ -35,6 +35,7 @@ import javax.swing.SwingConstants;
 
 import controllers.Application;
 import controllers.CurrentProfileController;
+import controllers.ProfileController;
 import controllers.TripController;
 import domain.ControllerNotLoadedException;
 import controllers.Session;
@@ -58,7 +59,7 @@ public class OldTrips extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					OldTrips frame = new OldTrips(null, null, 1 ,true);
+					OldTrips frame = new OldTrips(null, null, 1 , null, true);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -76,7 +77,7 @@ public class OldTrips extends JFrame {
 	 * @param choice
 	 * @param language
 	 */
-	public OldTrips(final Application instance, final Session session, final Integer choice, final boolean language) {
+	public OldTrips(final Application instance, final Session session, final Integer choice, final ProfileController invitedProfile, final boolean language) {
 		
 		if(instance != null){
 			try {
@@ -92,7 +93,7 @@ public class OldTrips extends JFrame {
 		}else{
 			currentLocale = new Locale("es","AR");
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		setTitle("TreckApp"); //$NON-NLS-1$
 		setBounds(0, 0, 902, 602);
@@ -259,7 +260,7 @@ public class OldTrips extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, choice, session,language);
+				Profile frame = new Profile(instance, choice, session, invitedProfile,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
@@ -272,7 +273,7 @@ public class OldTrips extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				OldTrips frame = new OldTrips(instance, session, choice,false);
+				OldTrips frame = new OldTrips(instance, session, choice, invitedProfile,false);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);
@@ -289,7 +290,7 @@ public class OldTrips extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				OldTrips frame = new OldTrips(instance, session, choice,true);
+				OldTrips frame = new OldTrips(instance, session, choice, invitedProfile,true);
 				frame.setVisible(true);
 				frame.pack();
 				frame.setSize(900, 602);

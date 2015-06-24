@@ -82,7 +82,7 @@ public class TripGroups extends JFrame {
 		}else{
 			currentLocale = new Locale("es","AR");
 		}
-		ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		panel = new ImagePanel(new ImageIcon("TripGroups.jpg").getImage()); //$NON-NLS-1$
 		setTitle("TreckApp"); //$NON-NLS-1$
@@ -209,7 +209,7 @@ public class TripGroups extends JFrame {
 		btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Profile frame = new Profile(instance, 1, session, language);
+				Profile frame = new Profile(instance, 1, session, null,language);
 				frame.setVisible(true);
 			    frame.pack();
 			    frame.setSize(900, 620);
