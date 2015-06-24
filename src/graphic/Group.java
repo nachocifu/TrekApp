@@ -413,7 +413,6 @@ public class Group extends JFrame {
 								if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
 									group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
 									group.addGroupTrip(myTrip);
-									group.addMember(currentProfile);
 								}
 							} catch (SessionNotActiveException e) {
 								e.printStackTrace();
@@ -528,11 +527,7 @@ public class Group extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					if(instance != null){
 						try {
-							if(currentProfile.getUsername().equals(groupController.getAdmin().getUsername())){
-								((MyGroupController)groupController).deleteMember(currentProfile);
-							}else{
 								currentProfile.leaveGroup(groupController);
-							}
 						} catch (SessionNotActiveException e) {
 							e.printStackTrace();
 						} catch (ControllerNotLoadedException e) {

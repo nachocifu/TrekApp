@@ -122,7 +122,10 @@ public class Application{
      */
     //Revisar el throwsUserName
     public MyTripController registerTrip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException{
-        if(estimateCost < 0 || endCity.trim().isEmpty() || originCity.trim().isEmpty() || tripDescription.trim().isEmpty())
+        if(estimateCost < 0 
+        		|| endCity.trim().isEmpty() 
+        		|| originCity.trim().isEmpty() 
+        		|| tripDescription.trim().isEmpty())
                 throw new IllegalArgumentException("ERROR || Error registering trip. Check arguments.");
         Trip newTrip = new Trip(startDate, endDate, estimateCost, tripDescription, originCity, endCity);
         this.tripRepo.add(newTrip);
