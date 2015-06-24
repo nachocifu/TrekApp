@@ -19,6 +19,7 @@ import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.Review;
 import domain.Trip;
+import domain.TripStatus;
 import domain.UserNameAlreadyExistsException;
 
 /**
@@ -58,10 +59,38 @@ public class DataBaseTest {
         System.err.println("#########POPULATE GROUPS");
         //repoAdmin.populateGroups();
         System.err.println("#########OPERATE WITH GROUPS");
-
+        System.err.println("#########POPULATE TRIPS");
+        repoAdmin.populateTrips();
+        System.err.println("#########OPERATE WITH TRIPS");
+        repoAdmin.operateWithTrips();
         System.err.println("--------END-------");
         System.err.println(repoAdmin.getClass().getCanonicalName());
         //Application app = Application.getInstance();
+    }
+
+
+    private void operateWithTrips() {
+        TripRepository tripRepo = new TripRepository("DataBase", Trip.class);
+        Trip trip = tripRepo.getById(1);
+        System.out.println("Se levanta trip 1: " + trip.getTripStatus().getName() + " " + trip.getId() + " " + trip.getTripDescription());
+        trip.setTripStatus(TripStatus.IN_PROGRESS);
+        tripRepo.update(trip);
+        trip = tripRepo.getById(1);
+        System.out.println("Se levanta trip 1: " + trip.getTripStatus().getName() + " " + trip.getId() + " " + trip.getTripDescription());
+    }
+
+
+    @SuppressWarnings("deprecation")
+    private void populateTrips() throws ServerException, UserNameAlreadyExistsException {
+        TripRepository tripRepo = new TripRepository("DataBase", Trip.class);
+
+        /**Populate*/
+        Trip trip = new Trip(new java.util.Date(1994, 7, 7), new java.util.Date(1994, 7, 7), (double) 5000, "description", "OrgCity", "EndCity");
+        trip.setTripStatus(TripStatus.OPEN);
+        tripRepo.add(trip);
+
+        System.out.println("se popularon los trips");
+
     }
 
 
@@ -113,8 +142,6 @@ public class DataBaseTest {
 
 
     private void populateUsers() throws ServerException, UserNameAlreadyExistsException {
-
-
         ProfileRepository userRepo = new ProfileRepository("DataBase", Profile.class);
 
             /**Populate*/

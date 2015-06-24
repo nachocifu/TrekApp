@@ -51,14 +51,14 @@ public class Trip {
      * @return the amount of the days the trip will take
      */
     public int getTripDurationInDays(){
-    	return (int)( (this.endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        return (int)( (this.endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
     }
 
     /**
      * @param newCostToAdd to the overall trips cost
      */
     public void addNewCost(Double newCostToAdd){
-    	this.estimateCost += newCostToAdd;
+        this.estimateCost += newCostToAdd;
     }
 
     /**
@@ -166,11 +166,11 @@ public class Trip {
      * be set to open
      */
     public void setTripStatus(TripStatus tripStatus) {
-    	if(this.tripStatus == TripStatus.CLOSED && ((tripStatus == TripStatus.OPEN) || (tripStatus == TripStatus.IN_PROGRESS))){
-    		throw new IllegalArgumentException("Cannot set the status to Open or In Progress because the Trip is already closed");
-    	} else if((tripStatus == TripStatus.IN_PROGRESS) && this.tripStatus == TripStatus.OPEN){
-    		throw new IllegalArgumentException("Cannot set the status to Open when the Trip is In Progress");
-    	}
+        if(this.tripStatus == TripStatus.CLOSED){
+            throw new IllegalArgumentException("ERROR || Cannot change status of a CLOSED trip");
+        } else if(tripStatus == TripStatus.OPEN && this.tripStatus == TripStatus.IN_PROGRESS){
+            throw new IllegalArgumentException("ERROR || Cannot OPEN a trip IN_PROGRESS");
+        }
         this.tripStatus = tripStatus;
     }
 
@@ -199,9 +199,9 @@ public class Trip {
         return true;
     }
 
-	public Integer getId() {
-		return this.tripId;
-	}
+    public Integer getId() {
+        return this.tripId;
+    }
 
 
 

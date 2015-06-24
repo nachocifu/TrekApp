@@ -82,29 +82,4 @@ public class TripRepository extends AbstractRepository<Trip> {
     public List<Trip> searchBy(String searchTxt, Profile currentUser) {
         return this.searchBy(searchTxt, null, null, null, null, null, currentUser);
     }
-
-    /**
-     * Query for trip by trip ID
-     * @param id The trip ID
-     * @param depth as to how inside to load the trip
-     * @return response The trip or null if no results
-     */
-    public Trip getById(Integer tripId, Integer depth){
-       Trip obj = super.getById(tripId);
-       System.err.println("En este momento se deberian levantar los objetos y colocar adentro del trip con id: " + tripId);
-       //obj = this.loadObjectsInside(obj, depth);
-       return obj;
-    }
-
-    /**
-     * Update the trip until the depth indicated
-     * @param obj The trip
-     * @param depth as to how inside to persist the trip
-     */
-    public void update(Trip obj, Integer depth){
-        super.update(obj);
-        System.err.println("En este momento se deberian persistir los objetos adentro del trip con id: " + obj.getId());
-        //this.persistObjectsInside(obj, depth);
-    }
-
 }

@@ -276,7 +276,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 TripRepository tripRepo = new TripRepository(this.pathToDataBase, Trip.class);
                 for( Trip each: profile.getTrips()){
                     daoTrips.createOrUpdate(new TripProfileRelationship(each, profile));
-                    tripRepo.update(each, depth-1);
+                    tripRepo.update(each);
                 }
 
                 //Persist Reviews
@@ -411,7 +411,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
                 HashSet<Trip> trips = new HashSet<Trip>();
 
                 for(TripProfileRelationship each: responseTrips){
-                    trips.add(tripRepo.getById(each.getTrip(), depth-1));
+                    trips.add(tripRepo.getById(each.getTrip()));
                 }
                 profile.setTrips(trips);
 
