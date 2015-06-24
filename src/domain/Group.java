@@ -69,15 +69,13 @@ public class Group {
 
     /*Group Constructors*/
 
-    public Group(String groupName, Profile admin, Integer maxGroupSize, Integer filterAge, String filterCity){
+    public Group(String groupName, Integer maxGroupSize, Integer filterAge, String filterCity){
         this.groupName=groupName;
         this.members=new HashSet<Profile>();
         this.memberRequests = new HashMap<Profile, RequestStatus>();
         this.maxGroupSize = maxGroupSize;
         this.filterAge = filterAge;
         this.filterCity = filterCity;
-        this.admin = admin;
-        admin.joinGroup(this);
     }
 
     public Group(){
@@ -190,7 +188,7 @@ public class Group {
             throw new IllegalArgumentException("ERROR || Cannot add yourself");
         }else if(members.contains(newMember)){
             throw new IllegalArgumentException("ERROR || User already in group");
-        }else if (this.maxGroupSize > this.groupSize()){
+        }else if (this.maxGroupSize <= this.groupSize()){
             throw new InvalidPermissionException("ERROR || No more space to add a user");
         }
         this.members.add(newMember);

@@ -265,7 +265,7 @@ public class ProfileRepository extends AbstractRepository<Profile> {
 
                 GroupRepository groupRepo = new GroupRepository(this.pathToDataBase, Group.class);
                 for( Group each: profile.getGroups()){
-                    daoGroups.createOrUpdate( new GroupProfileRelationship(each, profile, each.getAdminUser().equals(profile), RelationshipEnum.MEMBER));
+                    daoGroups.createOrUpdate( new GroupProfileRelationship(each, profile, profile.equals(each.getAdminUser()), RelationshipEnum.MEMBER));
                     groupRepo.update(each, depth-1);
                 }
                 System.out.println("llega a trips");

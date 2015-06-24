@@ -57,8 +57,9 @@ public class DataBaseTest {
         System.err.println("#########OPERATE WITH USERS");
         repoAdmin.operateWithUsers();
         System.err.println("#########POPULATE GROUPS");
-        //repoAdmin.populateGroups();
+        repoAdmin.populateGroups();
         System.err.println("#########OPERATE WITH GROUPS");
+        repoAdmin.operateWithGroups();
         System.err.println("#########POPULATE TRIPS");
         repoAdmin.populateTrips();
         System.err.println("#########OPERATE WITH TRIPS");
@@ -66,6 +67,12 @@ public class DataBaseTest {
         System.err.println("--------END-------");
         System.err.println(repoAdmin.getClass().getCanonicalName());
         //Application app = Application.getInstance();
+    }
+
+
+    private void operateWithGroups() {
+        // TODO Auto-generated method stub
+
     }
 
 
@@ -116,7 +123,7 @@ public class DataBaseTest {
         System.out.println("Validate method ProfileRepo::ValidateCredentials: " + userRepo.validateCredentials("nacho", "agua"));
     }
 
-    private void populateGroups() throws ServerException, UserNameAlreadyExistsException {
+    private void populateGroups() throws ServerException, UserNameAlreadyExistsException, InvalidPermissionException {
         ProfileRepository userRepo = new ProfileRepository("DataBase", Profile.class);
         GroupRepository groupRepo = new GroupRepository("DataBase", Group.class);
         System.out.println("### Populating Group table ###");
@@ -124,18 +131,20 @@ public class DataBaseTest {
 
         List<Group> pool = new ArrayList<Group>();
             /**Populate*/
-            Profile admin = userRepo.getById(1);
-            Group   group = new Group("grupo1", admin, 5, 3, "baires");
-            System.out.println(group == null);
+            Profile admin = userRepo.getById(1,3);
+            Group   group = new Group("grupo1", 5, 3, "baires");
             groupRepo.add(group);
-            //admin.joinGroup(group);
-            userRepo.update(admin, 2);
-
-            admin = userRepo.getById(2);
-            group = new Group("grupo2", admin, 5, 3, "Mendoza");
-            groupRepo.add(group);
+            group = groupRepo.getById(1, 3);
+            userRepo.update(admin, 3);
+            group.addMember(admin);
+            group.setAdminUser(admin);
+            groupRepo.update(group,3);
+            group = groupRepo.getById(1,3);
+            System.out.println(group.getAdminUser().getName());
+            //group = new Group("grupo2", 5, 3, "Mendoza");
+            //groupRepo.add(group);
             //admin.joinGroup(groupRepo.getById(2));
-            userRepo.update(admin, 2);
+            //userRepo.update(admin, 2);
 
 
     }
