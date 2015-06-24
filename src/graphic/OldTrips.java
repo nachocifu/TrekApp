@@ -243,10 +243,13 @@ public class OldTrips extends JFrame {
 	            public void mousePressed(MouseEvent e)
 	            {
 					try {
-						textField_2.setText(pastTrips.get(list_1.getSelectedIndex()).getStartDate().toString());
-						textField_3.setText(pastTrips.get(list_1.getSelectedIndex()).getEndDate().toString());	
-						textField.setText(pastTrips.get(list_1.getSelectedIndex()).getOriginCity());	
-						textField_1.setText(pastTrips.get(list_1.getSelectedIndex()).getEndCity());	
+						if(list_1.getSelectedIndex() >= 0){
+							textField_2.setText(pastTrips.get(list_1.getSelectedIndex()).getStartDate().toString());
+							textField_3.setText(pastTrips.get(list_1.getSelectedIndex()).getEndDate().toString());	
+							textField.setText(pastTrips.get(list_1.getSelectedIndex()).getOriginCity());	
+							textField_1.setText(pastTrips.get(list_1.getSelectedIndex()).getEndCity());	
+						}
+						
 					} catch (SessionNotActiveException e1) {
 						e1.printStackTrace();
 					} catch (ControllerNotLoadedException e1) {

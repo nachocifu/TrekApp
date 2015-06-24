@@ -27,6 +27,7 @@ import graphic.Options;
 import controllers.Application;
 import controllers.ProfileController;
 import controllers.Session;
+import domain.ControllerNotLoadedException;
 import domain.SessionNotActiveException;
 
 public class UserSearch extends JFrame {
@@ -96,10 +97,6 @@ public class UserSearch extends JFrame {
 		textField.setColumns(10);
 		
 		final JButton btnCheckUser = new JButton();
-		btnCheckUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnCheckUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!(textField.getText()).isEmpty()){

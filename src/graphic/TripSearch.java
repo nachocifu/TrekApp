@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -263,14 +265,19 @@ public class TripSearch extends JFrame {
 			    	ArrayList<GroupController> groupArray = new ArrayList<GroupController>(groupControllers);
 			    	
 					try {
-						int i = 0;
+						int i = -1;
 						for(GroupController each : groupArray){
-							model.addRow(new Object[] { null, null,null,null,null});
-							model.setValueAt(each.getTripController().getStartDate(), i, 0);
-							model.setValueAt(each.getTripController().getEndDate(), i, 1);
+							if(each.getTripController().getTripDescription() != null){
+								i++;
+								model.addRow(new Object[] { null, null,null,null,null});
+							}
+							DateFormat df = new SimpleDateFormat("dd/MM/yy");
+
+							model.setValueAt(df.format(each.getTripController().getStartDate()), i, 0);
+							model.setValueAt(df.format(each.getTripController().getEndDate()), i, 1);
 							model.setValueAt(each.getTripController().getOriginCity(), i, 2);
 							model.setValueAt(each.getTripController().getEndCity(), i, 3);
-							i++;
+							
 					}
 					} catch (SessionNotActiveException e1) {
 						e1.printStackTrace();
@@ -299,19 +306,16 @@ public class TripSearch extends JFrame {
 			    	ArrayList<GroupController> groupArray = new ArrayList<GroupController>(groupControllers);
 
 					try{
-						if (arg0.getClickCount() == 2 ) {
+						if (arg0.getClickCount() == 2 && table.getSelectedRow() <= groupArray.size()) {
 							String admin = null;
 							try {
-								admin = groupArray.get(table.getSelectedRow()).getAdmin().getUserName();
+								admin = groupArray.get(table.getSelectedRow()).getAdmin().getUsername();
 							} catch (SessionNotActiveException e) {
 								e.printStackTrace();
 							} catch (ControllerNotLoadedException e) {
 								e.printStackTrace();
 							}
-							if( groupArray != null ){
-								
-							}
-							if(session.getUserName().equals(admin) && instance != null){
+							if(currentProfile.getUsername().equals(admin)){
 								Group frame = new Group(1, (MyTripController)groupArray.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArray.get(table.getSelectedRow()), language);
 								frame.setVisible(true);
 								frame.pack();

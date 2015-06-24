@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.rmi.ServerException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Date;
@@ -86,21 +88,21 @@ public class Trip extends JFrame {
 		final JLabel lblTo = new JLabel();
 		Locale currentLocale;
 		if(language){
-			currentLocale = new Locale("en","US");
+			currentLocale = new Locale("en","US"); //$NON-NLS-1$ //$NON-NLS-2$
 			lblState.setBounds(450, 87, 180, 35);
 			lblFrom.setBounds(170, 212, 180, 35);
 			lblTo.setBounds(180, 285, 211, 35);
 		}else{
-			currentLocale = new Locale("es","AR");
+			currentLocale = new Locale("es","AR"); //$NON-NLS-1$ //$NON-NLS-2$
 			lblState.setBounds(412, 87, 180, 35);
 			lblFrom.setBounds(26, 212, 180, 35);
 			lblTo.setBounds(26, 267, 211, 35);
 		}
-		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
+		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
 		
 		panel = new ImagePanel(new ImageIcon("Trip.jpg").getImage()); //$NON-NLS-1$
 		setContentPane(panel);
-		setTitle("TreckApp"); //$NON-NLS-1$
+		setTitle("TrekApp"); //$NON-NLS-1$
 		setBounds(0, 0, 766, 616);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -301,7 +303,7 @@ public class Trip extends JFrame {
 				}
 			}
 		});
-		btnReady.setBounds(651, 544, 89, 23);
+		btnReady.setBounds(566, 544, 174, 23);
 		panel.add(btnReady);
 		
 		final JLabel lblDescription = new JLabel();
@@ -374,15 +376,35 @@ public class Trip extends JFrame {
 			textArea.setEditable(false);
 		}
 		
-		if((trip != null || myTrip != null) && instance != null){
+		if(trip != null && instance != null){
 			try {
 				tFFrom.setText(trip.getOriginCity());
 				tFTo.setText(trip.getEndCity());
-				tFLeaving.setText(trip.getStartDate().toString());
-				tFArriving.setText(trip.getStartDate().toString());
-				tFCost.setText(" $ " + trip.getEstimateCost().toString()); //$NON-NLS-1$
+				tFCost.setText(trip.getEstimateCost().toString());
 				tFStatus.setText(trip.getTripStatus().getName());
 				textArea.setText(trip.getTripDescription());
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yy"); //$NON-NLS-1$
+				tFLeaving.setText(df.format(myTrip.getStartDate()));
+				tFArriving.setText(df.format(myTrip.getEndDate()));	
+				
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
+		}else if(myTrip != null && instance != null){
+			try {
+				tFFrom.setText(myTrip.getOriginCity());
+				tFTo.setText(myTrip.getEndCity());
+				tFCost.setText(myTrip.getEstimateCost().toString()); 
+				tFStatus.setText(myTrip.getTripStatus().getName());
+				textArea.setText(myTrip.getTripDescription());
+				
+				DateFormat df = new SimpleDateFormat("dd/MM/yy"); //$NON-NLS-1$
+				tFLeaving.setText(df.format(myTrip.getStartDate()));
+				tFArriving.setText(df.format(myTrip.getEndDate()));	
+				
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
 			} catch (ControllerNotLoadedException e1) {
@@ -424,12 +446,18 @@ public class Trip extends JFrame {
 		img2.setLocation(760,11); 
 		img2.setVisible(true); 
 		
+		if(choice == 0){
+			btnReady.setText(messages.getString("Trip.36")); //$NON-NLS-1$
+		}else if(choice == 1){
+			btnReady.setText(messages.getString("Trip.7")); //$NON-NLS-1$
+		}else if(choice == 2){
+			btnReady.setText(messages.getString("Trip.5")); //$NON-NLS-1$
+		}
 		
 		lblCost.setText(messages.getString("Trip.32")); //$NON-NLS-1$
 		lblTo.setText(messages.getString("Trip.33")); //$NON-NLS-1$
 		lblFrom.setText(messages.getString("Trip.34")); //$NON-NLS-1$
 		lblDescription.setText(messages.getString("Trip.35")); //$NON-NLS-1$
-		btnReady.setText(messages.getString("Trip.36")); //$NON-NLS-1$
 		lblState.setText(messages.getString("Trip.37")); //$NON-NLS-1$
 		button.setText(messages.getString("Trip.38")); //$NON-NLS-1$
 		btnNewButton.setText(messages.getString("Trip.39")); //$NON-NLS-1$

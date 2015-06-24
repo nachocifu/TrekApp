@@ -154,9 +154,9 @@ public class MyGroupController extends GroupController {
      * @throws SessionNotActiveException
      * @throws ControllerNotLoadedException
      */
-    public void changeGroupName(String newName) throws SessionNotActiveException, ControllerNotLoadedException{
+    public void changeGroupCapacity(Integer newCapacity) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
-        this.obj.setGroupName(newName);
+        this.obj.setMaxGroupSize(newCapacity);
         saveChanges();
     }
 

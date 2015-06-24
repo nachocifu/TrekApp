@@ -112,7 +112,7 @@ public class Profile extends JFrame {
 	public Profile(final Application instance, final Integer choice, final Session session, final ProfileController invitedProfile, final boolean language) {
 		if(instance != null){
 			try {
-				if(choice == 1){
+				if(choice == 1 || choice == 2){
 					currentProfile = instance.getCurrentProfileController();
 				}
 				
@@ -236,6 +236,9 @@ public class Profile extends JFrame {
 		
 		final JRadioButton radioButton = new JRadioButton(); //$NON-NLS-1$
 		radioButton.setBounds(284, 197, 21, 23);
+		radioButton.setOpaque(false);
+		radioButton.setContentAreaFilled(false);
+		radioButton.setBorderPainted(false);
 		panel.add(radioButton);
 		
 		passwordField = new JPasswordField();
@@ -314,6 +317,12 @@ public class Profile extends JFrame {
 					close();
 				}else if(choice == 2){
 					UserSearch frame = new UserSearch(instance, session, language);
+					frame.setVisible(true);
+					frame.pack();
+					frame.setSize(900, 602);
+					close();
+				}else{
+					Connect frame = new Connect(language);
 					frame.setVisible(true);
 					frame.pack();
 					frame.setSize(900, 602);
@@ -410,16 +419,16 @@ public class Profile extends JFrame {
 				Integer year = currentProfile.getBirthday().getYear();
 				String day1, month1;
 				if(day < 10){
-					day1 = "0" + day.toString();
+					day1 = "0" + day.toString(); //$NON-NLS-1$
 				}else{
 					day1 = day.toString();
 				}
 				if(month < 10){
-					month1 = "0" + month.toString();
+					month1 = "0" + month.toString(); //$NON-NLS-1$
 				}else{
 					month1 = month.toString();
 				}
-				tFAge.setText(day1 + "/" + month1.toString() + "/" + year.toString());
+				tFAge.setText(day1 + "/" + month1.toString() + "/" + year.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 			
 			}
@@ -438,16 +447,16 @@ public class Profile extends JFrame {
 				Integer year = invitedProfile.getBirthday().getYear();
 				String day1, month1;
 				if(day < 10){
-					day1 = "0" + day.toString();
+					day1 = "0" + day.toString(); //$NON-NLS-1$
 				}else{
 					day1 = day.toString();
 				}
 				if(month < 10){
-					month1 = "0" + month.toString();
+					month1 = "0" + month.toString(); //$NON-NLS-1$
 				}else{
 					month1 = month.toString();
 				}
-				tFAge.setText(day1 + "/" + month1.toString() + "/" + year.toString());
+				tFAge.setText(day1 + "/" + month1.toString() + "/" + year.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 			} catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 			
 			}
@@ -460,7 +469,7 @@ public class Profile extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				//flag=0 corresponde a que no hay error
-				//flag=1 error en la igualdad de constraseï¿½as
+				//flag=1 error en las contraseñas
 				//flag=2 no introdujo un mail valido
 				//flag=3 no introdujo campos obligatorios el usuario que se esta registrando
 				//flag=4 no introdujo una fecha de nacimineto correcta
@@ -468,14 +477,12 @@ public class Profile extends JFrame {
 					flag = 0;
 					if(choice == 1){
 						if(radioButton.isSelected()){
-							if(passwordField.getText().equals(passwordField_1.getText()) && !passwordField.getText().equals("") ){ //$NON-NLS-1$
+							if(!String.valueOf(passwordField.getPassword()).trim().equals("") && !String.valueOf(passwordField_1.getPassword()).trim().equals("") ){ //$NON-NLS-1$ //$NON-NLS-2$
 								flag = 0;
-								if(instance != null){
-									try {
-										currentProfile.changePass(passwordField.getText(), passwordField_1.getText());
-									} catch (InvalidPasswordException e) {
-										
-									}
+								try {
+									currentProfile.changePass(String.valueOf(passwordField.getPassword()), String.valueOf(passwordField_1.getPassword()));
+								} catch (InvalidPasswordException e) {
+									flag = 1;
 								}
 							}
 							else{
@@ -492,7 +499,7 @@ public class Profile extends JFrame {
 							close();
 						}else{
 							if(flag == 1){
-								JOptionPane.showMessageDialog(null, messages.getString("Profile.29"), messages.getString("Profile.30"), JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+								JOptionPane.showMessageDialog(null, messages.getString("Profile.7"), messages.getString("Profile.30"), JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
 							}else if(flag == 2){
 								JOptionPane.showMessageDialog(null, messages.getString("Profile.31"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 							}
@@ -515,19 +522,21 @@ public class Profile extends JFrame {
 						}else{
 							sex= false;
 						}	
-						
-						int day = Integer.parseInt(tFAge.getText().substring(0, 2));
-						int month = Integer.parseInt(tFAge.getText().substring(3, 5));
-						int year = Integer.parseInt(tFAge.getText().substring(6, 10));
 						Date date = null;
-						String inputDate = new String(year + "-" + month + "-" + day);  //$NON-NLS-1$ //$NON-NLS-2$
-						try {
-						    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  //$NON-NLS-1$
-						    formatter.setLenient(false);
-						    date = formatter.parse(inputDate);
-						} catch (ParseException e) { 
-						    flag = 4;
+						if(! tFAge.getText().substring(0, 2).trim().equals("") && tFAge.getText().substring(3, 5).trim().equals("") && tFAge.getText().substring(6, 8).trim().equals("")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							int day = Integer.parseInt(tFAge.getText().substring(0, 2));
+							int month = Integer.parseInt(tFAge.getText().substring(3, 5));
+							int year = Integer.parseInt(tFAge.getText().substring(6, 8));
+							String inputDate = new String(year + "-" + month + "-" + day);  //$NON-NLS-1$ //$NON-NLS-2$
+							try {
+							    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  //$NON-NLS-1$
+							    formatter.setLenient(false);
+							    date = formatter.parse(inputDate);
+							} catch (ParseException e) { 
+							    flag = 4;
+							}
 						}
+						
 						if(flag == 0){
 							try {
 								instance.registerUser(tFUsername.getText(), tFName.getText(), tFSurName.getText(), date , sex , passwordField.getText(), tFCityBirth.getText(), tFAge.getText()); //$NON-NLS-1$
@@ -592,7 +601,6 @@ public class Profile extends JFrame {
 			btnContacts.setVisible(false);
 			btnPastTrip.setVisible(false);
 			btnPresenttrips.setVisible(false);
-			btn.setVisible(false);
 			tFName.setEnabled(true);
 			tFSurName.setEnabled(true);
 			tFUsername.setEnabled(true);
@@ -648,15 +656,17 @@ public class Profile extends JFrame {
 			btnContacts.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
-						currentProfile.sendFriendRequest(invitedProfile.getUsername());
+						currentProfile.sendFriendRequest(invitedProfile);
+						JOptionPane.showMessageDialog(null, messages.getString("Profile.2"), messages.getString("Profile.3"), JOptionPane.INFORMATION_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
 					} catch (SessionNotActiveException e1) {
 						e1.printStackTrace();
 					} catch (ControllerNotLoadedException e1) {
 						e1.printStackTrace();
 					} catch (InvalidPermissionException e1) {
 						e1.printStackTrace();
-					}
-					JOptionPane.showMessageDialog(null, "Se mando de manera exitosa la solicitud", "Felicitaciones", JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$			
+					} catch (IllegalArgumentException e1){
+						JOptionPane.showMessageDialog(null, messages.getString("Profile.4"), "ERROR", JOptionPane.INFORMATION_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+					}				
 				}
 			});
 			lblUser.setBounds(70, 200, 108, 20);
@@ -705,11 +715,17 @@ public class Profile extends JFrame {
 		if(choice == 1){
 			btnContacts.setText(messages.getString("Profile.53")); //$NON-NLS-1$
 			btnApply.setText(messages.getString("Profile.54")); //$NON-NLS-1$
+			lblNewPass.setText(messages.getString("Profile.9"));  //$NON-NLS-1$
+			lblConfirmPass.setText(messages.getString("Profile.5"));  //$NON-NLS-1$
 		}else if(choice == 2){
 			btnContacts.setText(messages.getString("Profile.55")); //$NON-NLS-1$
 		}else if(choice == 0){
 			btnApply.setText(messages.getString("Profile.56")); //$NON-NLS-1$
+			lblNewPass.setText(messages.getString("Profile.66")); //$NON-NLS-1$
+			lblConfirmPass.setText(messages.getString("Profile.67")); //$NON-NLS-1$
 		}
+		
+		
 		
 		lblEmail.setText(messages.getString("Profile.47")); //$NON-NLS-1$
 		choice2.add(messages.getString("Profile.57")); //$NON-NLS-1$
@@ -721,8 +737,6 @@ public class Profile extends JFrame {
 		lblLastName.setText(messages.getString("Profile.63")); //$NON-NLS-1$
 		lblUser.setText(messages.getString("Profile.64")); //$NON-NLS-1$
 		lblChangePass.setText(messages.getString("Profile.65")); //$NON-NLS-1$
-		lblNewPass.setText(messages.getString("Profile.66")); //$NON-NLS-1$
-		lblConfirmPass.setText(messages.getString("Profile.67")); //$NON-NLS-1$
 		lblExists.setText(messages.getString("Profile.68")); //$NON-NLS-1$
 		label_11.setText(messages.getString("Profile.69")); //$NON-NLS-1$
 		btn.setText(messages.getString("Profile.70")); //$NON-NLS-1$
@@ -746,7 +760,7 @@ public class Profile extends JFrame {
 	 */
 	public String getReview (Double rate){
 		if(rate == null){
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		if(rate >= 0.0 && rate < 0.9999){
 			return messages.getString("Profile.16"); //$NON-NLS-1$
@@ -769,7 +783,7 @@ public class Profile extends JFrame {
 	* @return true valid hex, false invalid hex
 	*/
 	public static boolean validate(final String hex) {
-		final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+		final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"; //$NON-NLS-1$ //$NON-NLS-2$
 		
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		Matcher matcher = pattern.matcher(hex);

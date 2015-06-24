@@ -71,7 +71,7 @@ public class Connect extends JFrame {
 		
 		
 		panel = new ImagePanel(new ImageIcon("Connect.jpg").getImage()); //$NON-NLS-1$
-		setTitle("TreckApp"); //$NON-NLS-1$
+		setTitle("TrekApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel.setEnabled(true);
 		panel.setLayout(null);

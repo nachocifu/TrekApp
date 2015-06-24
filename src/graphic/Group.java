@@ -109,7 +109,7 @@ public class Group extends JFrame {
 		
 		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
 		
-		setTitle("TreckApp"); //$NON-NLS-1$
+		setTitle("TrekApp"); //$NON-NLS-1$
 		setBounds(0, 0, 902, 602);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel = new ImagePanel(new ImageIcon("Group.jpg").getImage()); //$NON-NLS-1$
@@ -194,7 +194,7 @@ public class Group extends JFrame {
 			try {
 				auxMembers = groupController.getMembers();
 				for(ProfileController each : auxMembers){
-					members.addElement(each.getUsername() + " " + each.getSurname()); //$NON-NLS-1$
+					members.addElement(each.getUserName() + " " + each.getSurname() + " - " + each.getUsername()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
@@ -226,7 +226,7 @@ public class Group extends JFrame {
 			try {
 				requestsTrip = ((MyGroupController)groupController).getMemberRequests();
 				for (ProfileController key : requestsTrip.keySet()) {
-					requests.add(key.getUsername() + " " + key.getSurname() + " - " + key.getUserName()); //$NON-NLS-1$ //$NON-NLS-2$
+					requests.add(key.getUserName() + " " + key.getSurname() + " - " + key.getUsername()); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
@@ -310,6 +310,11 @@ public class Group extends JFrame {
 		btnDelete.setBounds(397, 386, 145, 23);
 		panel.add(btnDelete);
 		
+		if(requests.countItems() < 1){
+			btnAccept.setEnabled(false);
+			btnReject.setEnabled(false);
+		}
+		
 		final JButton btnCalif = new JButton();
 		btnCalif.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -378,63 +383,76 @@ public class Group extends JFrame {
 		final JButton btnCreatetrip = new JButton();
 		btnCreatetrip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Integer flag = 0;
-				//flag=1 corresponde a que no hay error
-				//flag=2 no introdujo el nombre del grupo
-				//flag=3 no introdujo la capacidad maxima del viaje planeado
-				//flag=4 no se creo un viaje
-				if(tFName.getText().isEmpty()){
-					flag = 2;
-				} else if(tFCap.getText().isEmpty()){
-					flag = 3;
-				}else if(myTrip == null){
-					flag = 4;
-				}else{
-					flag = 1;
-				}
-				switch(flag){
-				case 1:
-					int confirm = JOptionPane.showConfirmDialog(null, messages.getString("Group.22"), messages.getString("Group.23"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
-					if(confirm == JOptionPane.YES_OPTION){
-
-						try {
-							MyGroupController group;
-							if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
-								group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
-								group.addGroupTrip(myTrip);
-							}
-						} catch (SessionNotActiveException e) {
-							e.printStackTrace();
-						} catch (ControllerNotLoadedException e) {
-							e.printStackTrace();
-						} catch (InvalidPermissionException e) {
-							e.printStackTrace();
-						}catch (NumberFormatException e) {
-							e.printStackTrace();
-						} catch (UserNameAlreadyExistsException e) {
-							e.printStackTrace();
-						}catch (ServerException e) {
-							e.printStackTrace();
-						}
-						
-						Options frame = new Options(instance, session,language);
-						frame.setVisible(true);
-						frame.pack();
-						frame.setSize(900, 602);
-						close();
+				if(choice == 0){
+					Integer flag = 0;
+					//flag=1 corresponde a que no hay error
+					//flag=2 no introdujo el nombre del grupo
+					//flag=3 no introdujo la capacidad maxima del viaje planeado
+					//flag=4 no se creo un viaje
+					//flag=5 no introdujo una capacidad correcta
+					if(tFName.getText().isEmpty()){
+						flag = 2;
+					} else if(tFCap.getText().isEmpty()){
+						flag = 3;
+					}else if(myTrip == null){
+						flag = 4;
+					}else if(!isIntNumeric(tFCap.getText())){
+						flag = 5;
+					}else if (isIntNumeric(tFCap.getText()) && Integer.parseInt(tFCap.getText()) > 0){
+						flag = 5;
+					}else{
+						flag = 1;
 					}
-					break;
-				case 2:
-					JOptionPane.showMessageDialog(null, messages.getString("Group.25"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-					break;
-				case 3:
-					JOptionPane.showMessageDialog(null, messages.getString("Group.27"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-					break;
-				case 4:
-					JOptionPane.showMessageDialog(null, messages.getString("Group.29"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-					break;
+					switch(flag){
+					case 1:
+						int confirm = JOptionPane.showConfirmDialog(null, messages.getString("Group.22"), messages.getString("Group.23"), JOptionPane.YES_NO_OPTION); //$NON-NLS-1$ //$NON-NLS-2$
+						if(confirm == JOptionPane.YES_OPTION){
+
+							try {
+								MyGroupController group;
+								if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
+									group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
+									group.addGroupTrip(myTrip);
+									group.addMember(currentProfile);
+								}
+							} catch (SessionNotActiveException e) {
+								e.printStackTrace();
+							} catch (ControllerNotLoadedException e) {
+								e.printStackTrace();
+							} catch (InvalidPermissionException e) {
+								e.printStackTrace();
+							}catch (NumberFormatException e) {
+								e.printStackTrace();
+							} catch (UserNameAlreadyExistsException e) {
+								e.printStackTrace();
+							}catch (ServerException e) {
+								e.printStackTrace();
+							}catch (IllegalArgumentException e){
+								e.printStackTrace();
+							}
+							
+							Options frame = new Options(instance, session,language);
+							frame.setVisible(true);
+							frame.pack();
+							frame.setSize(900, 602);
+							close();
+						}
+						break;
+					case 2:
+						JOptionPane.showMessageDialog(null, messages.getString("Group.25"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+						break;
+					case 3:
+						JOptionPane.showMessageDialog(null, messages.getString("Group.27"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+						break;
+					case 4:
+						JOptionPane.showMessageDialog(null, messages.getString("Group.29"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+						break;
+					case 5:
+						JOptionPane.showMessageDialog(null, messages.getString("Group.4"), "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
+						break;
+					}
 				}
-			}
+				}	
 		});
 		btnCreatetrip.setBounds(651, 530, 150, 23);
 		panel.add(btnCreatetrip);
@@ -443,59 +461,63 @@ public class Group extends JFrame {
 		btnLeaveGroup.setBounds(637, 260, 145, 23);
 		panel.add(btnLeaveGroup);
 		
-		if( choice == 1){
-			tFName.setEnabled(false);
-			tFCap.setEnabled(true);
-			tFAdmin.setEnabled(false);
-			if(instance != null){
-				try {
-					tFName.setText(groupController.getGroupName());
-					tFCap.setText(groupController.groupSize().toString());
-					tFAdmin.setText(groupController.getAdmin().getUserName()); //$NON-NLS-1$
-				} catch (SessionNotActiveException e2) {
-					e2.printStackTrace();
-				} catch (ControllerNotLoadedException e2) {
-					e2.printStackTrace();
-				}
+		if( choice == 1 && instance != null){
+			tFName.setEditable(false);
+			tFCap.setEditable(true);
+			tFAdmin.setEditable(false);
+			try {
+				tFName.setText(groupController.getGroupName());
+				tFCap.setText(groupController.groupSize().toString());
+				tFAdmin.setText(groupController.getAdmin().getUsername()); //$NON-NLS-1$
+			} catch (SessionNotActiveException e2) {
+				e2.printStackTrace();
+			} catch (ControllerNotLoadedException e2) {
+				e2.printStackTrace();
 			}
 			btnFilters.setVisible(false);
 			btnTrip.setText(messages.getString("Group.32")); //$NON-NLS-1$
 			btnTrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					if(instance != null){
-						Trip frame = null;
-						try {
-							frame = new Trip(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController,language);
-						} catch (SessionNotActiveException e) {
-							e.printStackTrace();
-						} catch (ControllerNotLoadedException e) {
-							e.printStackTrace();
-						}
-						frame.setVisible(true);
-						frame.pack();
-					    frame.setSize(900, 602);
-						close();
-					}	
-				}
+					Trip frame = null;
+					try {
+						frame = new Trip(1, null, (MyTripController)groupController.getTripController() ,null, instance, session, groupController,language);
+					} catch (SessionNotActiveException e) {
+						e.printStackTrace();
+					} catch (ControllerNotLoadedException e) {
+						e.printStackTrace();
+					}
+					frame.setVisible(true);
+					frame.pack();
+				    frame.setSize(900, 602);
+					close();
+				}	
 			});
 			btnCreatetrip.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					if(instance != null){
-						try {
-							((MyGroupController)groupController).changeGroupName(tFCap.getText());
-						} catch (NumberFormatException e) {
-							e.printStackTrace();
-						} catch (SessionNotActiveException e) {
-							e.printStackTrace();
-						} catch (ControllerNotLoadedException e) {
-							e.printStackTrace();
+					if(isIntNumeric(tFCap.getText())){
+						if(Integer.parseInt(tFCap.getText()) < 1){
+							JOptionPane.showMessageDialog(null, messages.getString("Group.4"), "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
+						}else{
+							try {
+								((MyGroupController)groupController).changeGroupCapacity(Integer.parseInt(tFCap.getText()));
+							} catch (NumberFormatException e) {
+								e.printStackTrace();
+							} catch (SessionNotActiveException e) {
+								e.printStackTrace();
+							} catch (ControllerNotLoadedException e) {
+								e.printStackTrace();
+							} catch (IllegalArgumentException e){
+								
+							}
+							
+							Options frame = new Options(instance, session,true);
+							frame.setVisible(true);
+							frame.pack();
+							frame.setSize(900, 602);
+							close();
 						}
-						
-						Options frame = new Options(instance, session,true);
-						frame.setVisible(true);
-						frame.pack();
-						frame.setSize(900, 602);
-						close();
+					}else{
+						JOptionPane.showMessageDialog(null, messages.getString("Group.4"), "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					
 					
@@ -506,7 +528,7 @@ public class Group extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					if(instance != null){
 						try {
-							if(currentProfile.getUserName().equals(groupController.getAdmin().getUserName())){
+							if(currentProfile.getUsername().equals(groupController.getAdmin().getUsername())){
 								((MyGroupController)groupController).deleteMember(currentProfile);
 							}else{
 								currentProfile.leaveGroup(groupController);
@@ -523,20 +545,18 @@ public class Group extends JFrame {
 				
 			btnRequestcheck.setText(messages.getString("Group.33")); //$NON-NLS-1$
 			btnDelete.setVisible(true);
-		}else if(choice == 2){		
-			tFName.setEnabled(false);
-			tFCap.setEnabled(false);
-			tFAdmin.setEnabled(false);
-			if( instance != null){
-				try {
-					tFName.setText(groupController.getGroupName());
-					tFCap.setText(groupController.groupSize().toString());
-					tFAdmin.setText(groupController.getAdmin().getUserName()); //$NON-NLS-1$
-				} catch (SessionNotActiveException e2) {
-					e2.printStackTrace();
-				} catch (ControllerNotLoadedException e2) {
-					e2.printStackTrace();
-				}
+		}else if(choice == 2 && instance != null){		
+			tFName.setEditable(false);
+			tFCap.setEditable(false);
+			tFAdmin.setEditable(false);
+			try {
+				tFName.setText(groupController.getGroupName());
+				tFCap.setText(groupController.groupSize().toString());
+				tFAdmin.setText(groupController.getAdmin().getUsername()); //$NON-NLS-1$
+			} catch (SessionNotActiveException e2) {
+				e2.printStackTrace();
+			} catch (ControllerNotLoadedException e2) {
+				e2.printStackTrace();
 			}
 			btnFilters.setVisible(false);
 			btnTrip.setText(messages.getString("Group.35")); //$NON-NLS-1$
@@ -584,7 +604,7 @@ public class Group extends JFrame {
 			tFAdmin.setEditable(false);
 			if(instance != null){
 				try {
-					tFAdmin.setText(currentProfile.getUserName());
+					tFAdmin.setText(currentProfile.getUsername());
 				} catch (SessionNotActiveException e1) {
 					e1.printStackTrace();
 				} catch (ControllerNotLoadedException e1) {

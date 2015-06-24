@@ -292,6 +292,12 @@ public class Contacts extends JFrame {
 		btnBlock.setBounds(416, 436, 123, 20);
 		panel.add(btnBlock);
 		
+		if(requests.countItems() < 1){
+			btnAccept.setEnabled(false);
+			btnBlock.setEnabled(false);
+			btnReject.setEnabled(false);
+		}
+		
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

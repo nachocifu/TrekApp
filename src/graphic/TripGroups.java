@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -162,10 +164,11 @@ public class TripGroups extends JFrame {
 			try {
 				int i = 0;
 				for(GroupController each : groupArray){
+					DateFormat df = new SimpleDateFormat("dd/MM/yy");
 					model.addRow(new Object[] { null, null,null,null,null});
 					model.setValueAt(each.getGroupName(), i, 0);
-					model.setValueAt(each.getTripController().getStartDate(), i, 1);
-					model.setValueAt(each.getTripController().getEndDate(), i, 2);
+					model.setValueAt(df.format(each.getTripController().getStartDate()), i, 1);
+					model.setValueAt(df.format(each.getTripController().getEndDate()), i, 2);
 					model.setValueAt(each.getTripController().getOriginCity(), i, 3);
 					model.setValueAt(each.getTripController().getEndCity(), i, 4);
 					i++;

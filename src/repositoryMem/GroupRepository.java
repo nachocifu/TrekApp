@@ -25,7 +25,6 @@ public class GroupRepository extends AbstractRepository<Group> {
     	try {
 			g.addGroupTrip(new Trip(new Date(7, 5, 2020), new Date(7, 5, 2023), 500000.0, "hola soy jesus", "buenos aires", "cordoba"));
 		} catch (InvalidPermissionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
