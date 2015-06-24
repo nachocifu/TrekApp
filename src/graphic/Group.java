@@ -527,7 +527,12 @@ public class Group extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					if(instance != null){
 						try {
-								currentProfile.leaveGroup(groupController);
+							currentProfile.leaveGroup(groupController);
+							Group frame = new Group(choice,myTrip,trip,auxText,instance,session,groupController,language);
+							frame.setVisible(true);
+							frame.pack();
+							frame.setSize(900, 602);
+							close();
 						} catch (SessionNotActiveException e) {
 							e.printStackTrace();
 						} catch (ControllerNotLoadedException e) {
@@ -544,6 +549,7 @@ public class Group extends JFrame {
 			tFName.setEditable(false);
 			tFCap.setEditable(false);
 			tFAdmin.setEditable(false);
+			btnCreatetrip.setVisible(false);
 			try {
 				tFName.setText(groupController.getGroupName());
 				tFCap.setText(groupController.groupSize().toString());
@@ -588,7 +594,15 @@ public class Group extends JFrame {
 			});	
 			
 			
-			
+			try {
+				if(! groupController.getMembers().contains(currentProfile)){
+					btnLeaveGroup.setVisible(false);
+				}
+			} catch (SessionNotActiveException e1) {
+				e1.printStackTrace();
+			} catch (ControllerNotLoadedException e1) {
+				e1.printStackTrace();
+			}
 			
 		}else if(choice == 0){
 			if(auxText != null){
