@@ -410,8 +410,17 @@ public class Group extends JFrame {
 
 							try {
 								MyGroupController group;
-								if(! tFFAge.getText().trim().isEmpty() || ! tFFCity.getText().trim().isEmpty()){
+								if(! tFFAge.getText().trim().isEmpty() && ! tFFCity.getText().trim().isEmpty()){
 									group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), tFFCity.getText()); //$NON-NLS-1$
+									group.addGroupTrip(myTrip);
+								}else if(! tFFAge.getText().trim().isEmpty()){
+									group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), Integer.parseInt(tFFAge.getText()), null); //$NON-NLS-1$
+									group.addGroupTrip(myTrip);
+								}else if(! tFFCity.getText().trim().isEmpty()){
+									group = instance.registerGroup(tFName.getText(), currentProfile, Integer.parseInt(tFCap.getText()), null, tFFCity.getText()); //$NON-NLS-1$
+									group.addGroupTrip(myTrip);
+								}else{
+									group = instance.registerGroup(tFName.getText(), currentProfile, null, null, tFFCity.getText()); //$NON-NLS-1$
 									group.addGroupTrip(myTrip);
 								}
 							} catch (SessionNotActiveException e) {
@@ -636,12 +645,13 @@ public class Group extends JFrame {
 						frame.pack();
 					    frame.setSize(900, 602);
 						close();
+					}else{
+						Trip frame = new Trip(0,null,null,aux, instance, session, groupController, language);
+						frame.setVisible(true);
+						frame.pack();
+					    frame.setSize(900, 602);
+						close();
 					}
-					Trip frame = new Trip(0,null,null,aux, instance, session, groupController, language);
-					frame.setVisible(true);
-					frame.pack();
-				    frame.setSize(900, 602);
-					close();
 				}
 			});
 			btnDelete.setVisible(false);
