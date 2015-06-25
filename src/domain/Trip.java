@@ -114,7 +114,7 @@ public class Trip {
      * @return a string with a trip description
      */
     public String getTripDescription() {
-        return tripDescription;
+        return this.tripDescription;
     }
 
     /**

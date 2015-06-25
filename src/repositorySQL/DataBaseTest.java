@@ -29,7 +29,7 @@ import domain.UserNameAlreadyExistsException;
  * NO EJECUTAR YA QUE PISA LA BASE DE DATOS
  *
  */
-/*public class DataBaseTest {
+public class DataBaseTest {
     private String databaseUrl = "jdbc:sqlite:DataBase";
 
 
@@ -205,4 +205,4 @@ import domain.UserNameAlreadyExistsException;
         if(status) System.out.println("OK");
     }
 }
-*/
+

@@ -172,6 +172,7 @@ public class CurrentProfileController extends ProfileController {
         if(group.groupSize() == 0)
         	((MyGroupController)group).deleteGroup();
         saveChanges();
+        group.saveChanges();
     }
 
     /**
