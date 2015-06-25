@@ -545,7 +545,7 @@ public class Group extends JFrame {
                 public void actionPerformed(ActionEvent arg0) {
                     if(instance != null){
                         try {
-                            currentProfile.leaveGroup(groupController);
+                        	((MyGroupController)groupController).deleteMember(currentProfile);
                             Options frame = new Options(instance, session,language);
                             frame.setVisible(true);
         					frame.pack();
