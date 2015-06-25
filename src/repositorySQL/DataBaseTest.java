@@ -132,7 +132,7 @@ public class DataBaseTest {
         List<Group> pool = new ArrayList<Group>();
             /**Populate*/
             Profile admin = userRepo.getById(1,3);
-            Group   group = new Group("grupo1", 5, 3, "baires");
+            Group   group = new Group("grupo1", null, 5, 3, "baires");
             groupRepo.add(group);
             group = groupRepo.getById(1, 3);
             userRepo.update(admin, 3);
