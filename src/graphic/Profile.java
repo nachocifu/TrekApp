@@ -480,6 +480,7 @@ public class Profile extends JFrame {
                 //flag=2 no introdujo un mail valido
                 //flag=3 no introdujo campos obligatorios el usuario que se esta registrando
                 //flag=4 no introdujo una fecha de nacimineto correcta
+            	//flag=5 Existe el username
                 if(instance != null){
                     flag = 0;
                     if(choice == 1){
@@ -566,6 +567,8 @@ public class Profile extends JFrame {
                                 e.printStackTrace();
                             } catch (UserNameAlreadyExistsException e) {
                                 lblExists.setVisible(true);
+                                JOptionPane.showMessageDialog(null, messages.getString("Profile.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+                                flag = 5;
                             }
                             TrekApp frame = new TrekApp(language);
                             frame.setVisible(true);
