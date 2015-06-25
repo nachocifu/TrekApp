@@ -4,14 +4,14 @@ import java.rmi.ServerException;
 import java.util.Date;
 
 import domain.ControllerNotLoadedException;
-import domain.GroupNameAlreadyExistsException;
+import domain.ObjectAlreadyExistsException;
 import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
 
 public class DEMO {
 
     @SuppressWarnings("deprecation")
-	public static void main(String[] args) throws SessionNotActiveException, ControllerNotLoadedException, GroupNameAlreadyExistsException {
+	public static void main(String[] args) throws SessionNotActiveException, ControllerNotLoadedException, ObjectAlreadyExistsException {
         Application app = Application.getInstance();
         Session session = Session.getInstance();
 

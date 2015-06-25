@@ -8,7 +8,7 @@ import repositoryMem.TripRepository;
 import repositoryMem.ProfileRepository;
 import domain.ControllerNotLoadedException;
 import domain.Group;
-import domain.GroupNameAlreadyExistsException;
+import domain.ObjectAlreadyExistsException;
 import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.Trip;
@@ -84,10 +84,10 @@ public class Application{
      * @throws ServerException
      * @throws UserNameAlreadyExistsException
      * @throws SessionNotActiveException
-     * @throws GroupNameAlreadyExistsException
+     * @throws ObjectAlreadyExistsException
      * @throws ControllerNotLoadedException
      */
-    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, GroupNameAlreadyExistsException, SessionNotActiveException, ControllerNotLoadedException{
+    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, ObjectAlreadyExistsException, SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         if(groupName.trim().isEmpty()
             || admin == null
@@ -97,7 +97,7 @@ public class Application{
             throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
         Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
         if (!this.groupRepo.add(newGroup))
-            throw new GroupNameAlreadyExistsException("a group with this name already exists");
+            throw new ObjectAlreadyExistsException("a group with this name already exists");
         admin.saveChanges();
         return getMyGroupController(newGroup);
     }

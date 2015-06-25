@@ -8,7 +8,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import domain.ControllerNotLoadedException;
-import domain.GroupNameAlreadyExistsException;
+import domain.ObjectAlreadyExistsException;
 import domain.InvalidPermissionException;
 import domain.Profile;
 import domain.SessionNotActiveException;
@@ -22,7 +22,7 @@ public class GroupControllerTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test(expected=TripNotClosedException.class)
-	public void groupControllerTest() throws ServerException, GroupNameAlreadyExistsException, SessionNotActiveException, ControllerNotLoadedException, UserNameAlreadyExistsException, InvalidPermissionException, TripNotClosedException{
+	public void groupControllerTest() throws ServerException, ObjectAlreadyExistsException, SessionNotActiveException, ControllerNotLoadedException, UserNameAlreadyExistsException, InvalidPermissionException, TripNotClosedException{
 		
 		Application app= Application.getInstance();
 		Session session = Session.getInstance();
@@ -75,7 +75,7 @@ public class GroupControllerTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test(expected=TripNotClosedException.class)
-	public void tripNotClosedTest() throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, GroupNameAlreadyExistsException, ControllerNotLoadedException, InvalidPermissionException, TripNotClosedException{
+	public void tripNotClosedTest() throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, ObjectAlreadyExistsException, ControllerNotLoadedException, InvalidPermissionException, TripNotClosedException{
 		
 		Application app= Application.getInstance();
 		Session session = Session.getInstance();
@@ -99,7 +99,7 @@ public class GroupControllerTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test(expected=IllegalArgumentException.class)
-	public void tripTest() throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, GroupNameAlreadyExistsException, ControllerNotLoadedException, InvalidPermissionException, TripNotClosedException{
+	public void tripTest() throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, ObjectAlreadyExistsException, ControllerNotLoadedException, InvalidPermissionException, TripNotClosedException{
 		
 		Application app= Application.getInstance();
 		Session session = Session.getInstance();

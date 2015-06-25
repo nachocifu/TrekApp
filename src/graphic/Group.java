@@ -37,7 +37,7 @@ import controllers.MyTripController;
 import controllers.ProfileController;
 import controllers.TripController;
 import domain.ControllerNotLoadedException;
-import domain.GroupNameAlreadyExistsException;
+import domain.ObjectAlreadyExistsException;
 import domain.InvalidPermissionException;
 import domain.RequestStatus;
 import controllers.Session;
@@ -429,7 +429,7 @@ public class Group extends JFrame {
                                 e.printStackTrace();
                             }catch (IllegalArgumentException e){
                                 e.printStackTrace();
-                            } catch (GroupNameAlreadyExistsException e) {
+                            } catch (ObjectAlreadyExistsException e) {
                                 // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }

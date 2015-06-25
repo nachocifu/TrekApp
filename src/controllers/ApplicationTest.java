@@ -12,7 +12,7 @@ import domain.Group;
 import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
-//import domain.GroupNameAlreadyExistsException;
+//import domain.ObjectAlreadyExistsException;
 
 public class ApplicationTest {
 
