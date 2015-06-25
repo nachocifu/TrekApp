@@ -187,6 +187,7 @@ public class Group {
      * @throws InvalidPermissionException
      */
     public void addMember(Profile newMember) throws InvalidPermissionException{
+    	
         if(newMember.equals(this.admin)){
             throw new IllegalArgumentException("ERROR || Cannot add yourself");
         }else if(members.contains(newMember)){
@@ -253,7 +254,8 @@ public class Group {
     * @throws IllegalArgumentException
     */
     public Boolean deleteMember(Profile member) throws IllegalArgumentException{
-    	if(!member.equals(this.admin) && !this.members.contains(member))
+    	
+    	if(!this.members.contains(member))
     		throw new IllegalArgumentException("the user you are trying to delete from the group does not belong to the group");
         
     	if(member.equals(this.admin)){
@@ -314,7 +316,7 @@ public class Group {
      * @return the amount of group members (the admin is considered a member as well)
      */
     public Integer groupSize(){
-        return this.members.size() + 1;
+        return this.members.size();
     }
 
     /**

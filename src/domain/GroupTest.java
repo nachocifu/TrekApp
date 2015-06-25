@@ -77,8 +77,10 @@ public class GroupTest {
 	
 	@Test
 	public void deleteMemberTest2() throws InvalidPermissionException{
-		//System.out.println(grp.groupSize());
-		assertTrue(grp.deleteMember(admin));
+		Profile admin2=new Profile("username2", "natalia", "navas", 1234, new Date(1992,12,18), true, "123456", "buenos aires", "email@itba.edu.ar");
+		System.out.println(grp.groupSize());
+		Group grp2= new Group("groupName2",admin2 , 3, 21, "buenos aires");
+		assertTrue(grp2.deleteMember(admin2));
 	}
 	
 	@Test
