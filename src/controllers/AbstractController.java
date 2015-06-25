@@ -33,8 +33,7 @@ public abstract class AbstractController<T> {
      * @throws ControllerNotLoadedException
      */
     protected void validateEnvironment() throws SessionNotActiveException, ControllerNotLoadedException{
-        if(!Session.getInstance().isActive())
-            throw new SessionNotActiveException("ERROR || You must log in before operating.");
+        Application.getInstance().validateEnvironment();
         if( this.obj == null )
             throw new ControllerNotLoadedException("ERROR || Cannot operate on unloaded controller.");
     }

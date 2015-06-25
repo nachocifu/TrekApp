@@ -191,8 +191,9 @@ public class ProfileController extends AbstractController<Profile> {
      * @param list
      * @return response List of controllers
      * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
      */
-    protected static HashSet<ProfileController> generateListOfControllers(Collection<Profile> list) throws SessionNotActiveException{
+    protected static HashSet<ProfileController> generateListOfControllers(Collection<Profile> list) throws SessionNotActiveException, ControllerNotLoadedException{
         HashSet<ProfileController> response = new  HashSet<ProfileController>();
         Application app = Application.getInstance();
         for(Profile each: list){

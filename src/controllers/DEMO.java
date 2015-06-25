@@ -21,13 +21,18 @@ public class DEMO {
 
             app.registerUser("naty", "natalia", "navas", new Date(1994, 3, 13), true, "agua", "lkj", "lkj@gmail.com");
             app.registerUser("nacho", "ignacio", "cifuentes", new Date(1994, 3, 13), false, "agua", "lkj", "lkj@gmail.com");
+
             System.out.println("SE CREO A NATY");
             session.logIn("naty", "agua");
+            CollectionAndSearchController searchContr = app.getCollectionController();
+
+            ProfileController nacho = searchContr.getProfileControllerByUsername("nacho");
             System.out.println(session.getUserName());
+            System.out.println(nacho.getUsername());
 
 
             CurrentProfileController naty = app.getCurrentProfileController();
-            //ProfileController nacho = app.getAProfileController(profile);
+
 
 
             System.out.println("se levanta user: " + naty.getUsername());

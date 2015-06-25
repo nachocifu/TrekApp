@@ -124,7 +124,7 @@ public class GroupController extends AbstractController<Group> {
     public Integer groupSize(){
         return this.obj.groupSize();
     }
-    
+
     /**
      * @return Returns the maximum group size
      * @throws SessionNotActiveException
@@ -183,8 +183,9 @@ public class GroupController extends AbstractController<Group> {
      * @param list
      * @return response List of controllers
      * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
      */
-    protected static HashSet<GroupController> generateListOfControllers(Collection<Group> list) throws SessionNotActiveException{
+    protected static HashSet<GroupController> generateListOfControllers(Collection<Group> list) throws SessionNotActiveException, ControllerNotLoadedException{
         HashSet<GroupController> response = new  HashSet<GroupController>();
         Application app = Application.getInstance();
         for(Group each: list){

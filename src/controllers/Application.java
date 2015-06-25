@@ -6,6 +6,7 @@ import java.util.Date;
 import repositoryMem.GroupRepository;
 import repositoryMem.TripRepository;
 import repositoryMem.ProfileRepository;
+import domain.ControllerNotLoadedException;
 import domain.Group;
 import domain.GroupNameAlreadyExistsException;
 import domain.Profile;
@@ -96,8 +97,10 @@ public class Application{
      * @throws UserNameAlreadyExistsException
      * @throws SessionNotActiveException
      * @throws GroupNameAlreadyExistsException
+     * @throws ControllerNotLoadedException
      */
-    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, GroupNameAlreadyExistsException, SessionNotActiveException{
+    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, GroupNameAlreadyExistsException, SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
         if(groupName.trim().isEmpty()
             || admin == null
             || maxGroupSize <= 0
@@ -107,6 +110,7 @@ public class Application{
         Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
         if (!this.groupRepo.add(newGroup))
             throw new GroupNameAlreadyExistsException("a group with this name already exists");
+        admin.saveChanges();
         return getMyGroupController(newGroup);
     }
 
@@ -124,7 +128,8 @@ public class Application{
      * @throws SessionNotActiveException
      */
     //Revisar el throwsUserName
-    public MyTripController registerTrip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException{
+    public MyTripController registerTrip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
         if(estimateCost < 0
                 || endCity.trim().isEmpty()
                 || originCity.trim().isEmpty()
@@ -139,8 +144,10 @@ public class Application{
      * Change the Default Data Base.
      * NOTE: ALL sessions are immediately logged out.
      * @param pathToDataBase
+     * @throws SessionNotActiveException
      */
-    public void changeDataBase(String pathToDataBase){
+    public void changeDataBase(String pathToDataBase) throws SessionNotActiveException{
+        this.validateEnvironment();
         Session.getInstance().logOut();
         application = new Application(pathToDataBase);
     }
@@ -161,17 +168,13 @@ public class Application{
      * @throws SessionNotActiveException
      */
     public CurrentProfileController getCurrentProfileController() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive()){
-            throw new SessionNotActiveException("There is no user logged in");
-        }
+        this.validateEnvironment();
         Profile currentProfile = this.userRepo.getById(Session.getInstance().getUserName());
         return getCurrentProfileController(currentProfile);
     }
 
     public CollectionAndSearchController getCollectionController() throws SessionNotActiveException{
-        if(!Session.getInstance().isActive()){
-            throw new SessionNotActiveException("There is no user logged in");
-        }
+        this.validateEnvironment();
         return new CollectionAndSearchController(this.userRepo, this.groupRepo, this.tripRepo);
     }
 
@@ -219,8 +222,10 @@ public class Application{
      * @param profile
      * @return
      * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
      */
-    protected ProfileController getAProfileController(Profile profile) throws SessionNotActiveException {
+    protected ProfileController getAProfileController(Profile profile) throws SessionNotActiveException, ControllerNotLoadedException {
+        this.validateEnvironment();
         if (profile.getUsrName().equals(Session.getInstance().getUserName())) {
             return getCurrentProfileController(profile);
         } else {
@@ -257,8 +262,10 @@ public class Application{
      * @param group
      * @return
      * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
      */
-    protected GroupController getAGroupController(Group group) throws SessionNotActiveException{
+    protected GroupController getAGroupController(Group group) throws SessionNotActiveException, ControllerNotLoadedException{
+        this.validateEnvironment();
         if (group.getAdminUser().getUsrName().equals(Session.getInstance().getUserName())) {
             return getMyGroupController(group);
         } else {
@@ -283,15 +290,28 @@ public class Application{
      * @param group
      * @return
      * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
      */
-    private GroupController getGroupController(Group group) throws SessionNotActiveException{
+    private GroupController getGroupController(Group group) throws SessionNotActiveException, ControllerNotLoadedException{
         GroupController newController = new GroupController(groupRepo);
         newController.load(group);
         return newController;
     }
 
-    public String getDatabase() {
+    public String getDatabase() throws SessionNotActiveException, ControllerNotLoadedException {
+        this.validateEnvironment();
         return this.currentDatabase;
+    }
+
+    /**
+     * Check for environment irregularities.
+     *
+     * @throws SessionNotActiveException
+     * @throws ControllerNotLoadedException
+     */
+    protected void validateEnvironment() throws SessionNotActiveException{
+        if(!Session.getInstance().isActive())
+            throw new SessionNotActiveException("ERROR || You must log in before operating.");
     }
 }
 
