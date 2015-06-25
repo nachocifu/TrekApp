@@ -321,7 +321,7 @@ public class TripSearch extends JFrame {
 //					}
 //					
 					try {
-						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(null, null, tFFrom.getText(), tFTo.getText(), textArea.getText());
+						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(null, null, null, null, textArea.getText());
 					} catch (SessionNotActiveException | ControllerNotLoadedException e2) {
 						e2.printStackTrace();
 					}
