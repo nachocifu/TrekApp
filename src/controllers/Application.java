@@ -97,8 +97,7 @@ public class Application{
      * @throws SessionNotActiveException
      * @throws GroupNameAlreadyExistsException
      */
-    //Revisar el throwsUserName
-    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, GroupNameAlreadyExistsException{
+    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, GroupNameAlreadyExistsException, SessionNotActiveException{
         if(groupName.trim().isEmpty()
             || admin == null
             || maxGroupSize <= 0
