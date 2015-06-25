@@ -106,10 +106,9 @@ public class Application{
             || filterCity.trim().isEmpty())
             throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
         Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
-
-        if ( !this.groupRepo.add(newGroup))
+        if (!this.groupRepo.add(newGroup))
             throw new GroupNameAlreadyExistsException("a group with this name already exists");
-        return new MyGroupController(groupRepo);
+        return getMyGroupController(newGroup);
     }
 
     /**
