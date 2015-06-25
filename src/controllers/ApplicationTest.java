@@ -24,8 +24,6 @@ public class ApplicationTest {
 		apl.registerUser("username3", "name", "surname", new Date(1993,12,18), true, "123456", "Buenos Aires", "email@itba.edu.ar" );
 	}
 	
-	
-	
 	@SuppressWarnings("deprecation")
 	@Test
 	public void testValidatePassword() throws ServerException, UserNameAlreadyExistsException{

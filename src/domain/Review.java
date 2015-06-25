@@ -25,7 +25,6 @@ public class Review {
 		private Integer id;
 
 		public Review(){
-
 		}
 
 		/**
@@ -113,7 +112,3 @@ public class Review {
 			this.profileOrigin = profileOrigin;
 		}
 }
-
-
-
-
