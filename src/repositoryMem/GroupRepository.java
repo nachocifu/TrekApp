@@ -38,9 +38,9 @@ public class GroupRepository extends AbstractRepository<Group> {
             if(
                     (startDate == null)? false : group.getGroupTrip().getStartDate().equals(startDate) ||
                     (endDate == null)? false : group.getGroupTrip().getEndDate().equals(endDate) ||
-                    (startCity.trim().isEmpty())? false : group.getGroupTrip().getOriginCity().toLowerCase().contains(startCity.toLowerCase()) ||
-                    (endCity.trim().isEmpty())? false : group.getGroupTrip().getEndCity().toLowerCase().contains(endCity.toLowerCase()) ||
-                    (description.trim().isEmpty())? false : group.getGroupTrip().getTripDescription().toLowerCase().contains(description.toLowerCase())
+                    (startCity == null? false : (startCity.trim().isEmpty())? false : group.getGroupTrip().getOriginCity().toLowerCase().contains(startCity.toLowerCase())) ||
+                    (endCity == null? false : (endCity.trim().isEmpty())? false : group.getGroupTrip().getEndCity().toLowerCase().contains(endCity.toLowerCase())) ||
+                    (description == null? false: (description.trim().isEmpty())? false : group.getGroupTrip().getTripDescription().toLowerCase().contains(description.toLowerCase()))
                     )
                 results.add(group);
         }
