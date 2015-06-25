@@ -59,7 +59,7 @@ public class Options extends JFrame {
 		}
 		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
-		setTitle("TreckApp"); //$NON-NLS-1$
+		setTitle("TrekApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel = new ImagePanel(new ImageIcon("Options.jpg").getImage()); //$NON-NLS-1$
 		panel.setBackground(new Color(25, 25, 112));
@@ -118,7 +118,7 @@ public class Options extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(instance != null){
 					session.logOut();
-					Connect frame = new Connect(language);
+					TrekApp frame = new TrekApp(language);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);
