@@ -115,7 +115,7 @@ public class TripSearch extends JFrame {
 		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 
 		panel = new ImagePanel(new ImageIcon("TripSearch.jpg").getImage()); //$NON-NLS-1$
-		setTitle("TreckApp"); //$NON-NLS-1$
+		setTitle("TrekApp"); //$NON-NLS-1$
 		setBounds(0, 0, 903, 600);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setContentPane(panel);
