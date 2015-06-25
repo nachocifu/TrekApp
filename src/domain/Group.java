@@ -259,10 +259,10 @@ public class Group {
     		throw new IllegalArgumentException("the user you are trying to delete from the group does not belong to the group");
         
     	if(member.equals(this.admin)){
+    		member.leaveGroup(this);
         	if (groupSize()==1)
         		return true;
         	this.admin= this.members.iterator().next();
-        	member.leaveGroup(this);
         	return false;
         }
        
