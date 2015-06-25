@@ -181,20 +181,62 @@ public class Group extends JFrame {
         }
 
         panel.add(btnTrip);
-
+        
+        final JLabel lblNewRequest = new JLabel();
+        lblNewRequest.setVisible(false);
+        lblNewRequest.setForeground(Color.WHITE);
+        lblNewRequest.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
+        lblNewRequest.setBounds(26, 448, 185, 34);
+        panel.add(lblNewRequest);
+        
         final JLabel lblMembers = new JLabel();
         lblMembers.setFont(new Font("Tahoma", Font.PLAIN, 19)); //$NON-NLS-1$
         lblMembers.setForeground(Color.BLACK);
         lblMembers.setHorizontalAlignment(SwingConstants.LEFT);
         lblMembers.setBounds(200, 208, 203, 34);
         panel.add(lblMembers);
+        
+        JButton btnLeaveGroup = new JButton();
+        btnLeaveGroup.setBounds(637, 260, 145, 23);
+        panel.add(btnLeaveGroup);
+        
+        final Choice requests = new Choice();
+        requests.setVisible(false);
+        requests.setBounds(233, 457, 200, 30);
+        
+        final JButton btnReject = new JButton();
+        final JButton btnAccept = new JButton();
+        
+        final JButton btnRequestcheck = new JButton();
+        btnRequestcheck.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                if(choice == 1){
+                    lblNewRequest.setVisible(true);
+                    btnAccept.setVisible(true);
+                    btnReject.setVisible(true);
+                    requests.setVisible(true);
+                }
+            }
+        });
+        btnRequestcheck.setBounds(552, 386, 150, 23);
+        panel.add(btnRequestcheck);
 
         final DefaultListModel members = new DefaultListModel();
         HashSet<ProfileController> auxMembers = new HashSet<>();
         if(instance != null && groupController != null){
             try {
+            	boolean flag1 = true;
+            	boolean flag2 = true;
                 auxMembers = groupController.getMembers();
                 for(ProfileController each : auxMembers){
+                	if(! each.getUsername().equals(currentProfile.getUsername()) && flag1 && choice == 2){
+                		flag1 = false;
+                        btnLeaveGroup.setVisible(false);
+                    }else if(each.getUsername().equals(currentProfile.getUsername()) && flag2 && choice == 2){
+                    	flag2 = false;
+                        btnRequestcheck.setVisible(false);
+                        btnLeaveGroup.setVisible(true);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    }
                     members.addElement(each.getUserName() + " " + each.getSurname() + " - " + each.getUsername()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             } catch (SessionNotActiveException e1) {
@@ -218,10 +260,6 @@ public class Group extends JFrame {
         list.setValueIsAdjusting(true);
         list.setEnabled(false);
 
-        final Choice requests = new Choice();
-        requests.setVisible(false);
-        requests.setBounds(233, 457, 200, 30);
-
         HashMap<ProfileController, RequestStatus> requestsTrip = null;
         if(instance != null && choice == 1){
             try {
@@ -236,9 +274,6 @@ public class Group extends JFrame {
             }
         }
         panel.add(requests);
-
-        final JButton btnReject = new JButton();
-        final JButton btnAccept = new JButton();
 
         final HashMap<ProfileController, RequestStatus> requestsTripaux = requestsTrip;
         btnAccept.addActionListener(new ActionListener() {
@@ -285,13 +320,6 @@ public class Group extends JFrame {
         btnReject.setVisible(false);
         btnReject.setBounds(637, 457, 123, 20);
         panel.add(btnReject);
-
-        final JLabel lblNewRequest = new JLabel();
-        lblNewRequest.setVisible(false);
-        lblNewRequest.setForeground(Color.WHITE);
-        lblNewRequest.setFont(new Font("Tahoma", Font.PLAIN, 18)); //$NON-NLS-1$
-        lblNewRequest.setBounds(26, 448, 185, 34);
-        panel.add(lblNewRequest);
 
         final JButton btnDelete = new JButton();
         btnDelete.addActionListener(new ActionListener() {
@@ -344,21 +372,6 @@ public class Group extends JFrame {
         } catch (ControllerNotLoadedException e3) {
             e3.printStackTrace();
         }
-
-
-        final JButton btnRequestcheck = new JButton();
-        btnRequestcheck.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                if(choice == 1){
-                    lblNewRequest.setVisible(true);
-                    btnAccept.setVisible(true);
-                    btnReject.setVisible(true);
-                    requests.setVisible(true);
-                }
-            }
-        });
-        btnRequestcheck.setBounds(552, 386, 150, 23);
-        panel.add(btnRequestcheck);
 
         final JLabel lblAdmin = new JLabel();
         lblAdmin.setForeground(Color.BLACK);
@@ -466,10 +479,6 @@ public class Group extends JFrame {
         btnCreatetrip.setBounds(651, 530, 150, 23);
         panel.add(btnCreatetrip);
 
-        JButton btnLeaveGroup = new JButton();
-        btnLeaveGroup.setBounds(637, 260, 145, 23);
-        panel.add(btnLeaveGroup);
-
         if( choice == 1 && instance != null){
             tFName.setEditable(false);
             tFCap.setEditable(true);
@@ -528,8 +537,6 @@ public class Group extends JFrame {
                     }else{
                         JOptionPane.showMessageDialog(null, messages.getString("Group.4"), "ERROR", JOptionPane.ERROR_MESSAGE);  //$NON-NLS-1$ //$NON-NLS-2$
                     }
-
-
                 }
             });
 
@@ -598,20 +605,6 @@ public class Group extends JFrame {
                 }
             });
 
-
-            try {
-                if(! groupController.getMembers().contains(currentProfile)){
-                    btnLeaveGroup.setVisible(false);
-                }else{
-                    btnRequestcheck.setVisible(false);
-                    btnLeaveGroup.setVisible(true);
-                }
-            } catch (SessionNotActiveException e1) {
-                e1.printStackTrace();
-            } catch (ControllerNotLoadedException e1) {
-                e1.printStackTrace();
-            }
-
         }else if(choice == 0){
             if(auxText != null){
                 tFName.setText(auxText.get(0));
@@ -631,7 +624,11 @@ public class Group extends JFrame {
             btnLeaveGroup.setVisible(false);
             btnFilters.setVisible(true);
             btnCreatetrip.setVisible(true);
-            btnTrip.setText(messages.getString("Group.37")); //$NON-NLS-1$
+            if(myTrip != null){
+				btnTrip.setText(messages.getString("Group.32")); //$NON-NLS-1$
+			}else{
+				btnTrip.setText(messages.getString("Group.37")); //$NON-NLS-1$
+			}
             btnTrip.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     ArrayList<String> aux = new ArrayList<String>();
