@@ -128,7 +128,7 @@ public class TripGroups extends JFrame {
 							String admin = null;
 							if(instance != null){
 								try {
-									admin = groupArrayaux.get(table.getSelectedRow()).getAdmin().getUserName();
+									admin = groupArrayaux.get(table.getSelectedRow()).getAdmin().getUsername();
 								} catch (SessionNotActiveException e) {
 									e.printStackTrace();
 								} catch (ControllerNotLoadedException e) {
