@@ -383,6 +383,7 @@ public class Profile {
         if(groups.contains(group))
             throw new IllegalArgumentException("ERROR || The user already belongs to that group");
         this.groups.add(group);
+        System.out.println(group);
     }
 
     /**
@@ -392,6 +393,7 @@ public class Profile {
         if(!groups.contains(group))
             throw new IllegalArgumentException("The user does not belong to that group");
         this.groups.remove(group);
+        group.getMembers().remove(this);
     }
 
 
