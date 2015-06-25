@@ -48,6 +48,8 @@ public class GroupController extends AbstractController<Group> {
      */
     public TripStatus getTripStatus() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
+        if(this.obj.getGroupName()== null)
+        	throw new ControllerNotLoadedException("ERROR || Group has no trip assigned");
         return this.obj.getGroupTrip().getTripStatus();
     }
 
@@ -80,24 +82,6 @@ public class GroupController extends AbstractController<Group> {
         this.validateEnvironment();
         return Application.getInstance().getAProfileController(this.obj.getAdminUser());
     }
-
-//    /**
-//     * Adds a post to the wall if the profile is a member of the group
-//     * @param profileController
-//     * @param msg
-//     * @throws SessionNotActiveException
-//     * @throws ControllerNotLoadedException
-//     * @throws InvalidPermissionException
-//     */
-//    public void addPost(Message msg) throws SessionNotActiveException, ControllerNotLoadedException, InvalidPermissionException{
-//        this.validateEnvironment();
-//        Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
-//        if(!this.obj.getMembers().contains(loggedUser)){
-//            throw new InvalidPermissionException("Cannot post because user is not a member of this group");
-//        }
-//        this.obj.addPost(loggedUser, msg);
-//        saveChanges();
-//    }
 
     /**
      * Adds a trip to the group if the profile is a member of the group

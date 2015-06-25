@@ -241,7 +241,7 @@ public class Group {
 
         if(memberRequests.containsKey(possibleMember)){
             throw new IllegalArgumentException("The user already belongs to the users requesting a place in the group");
-        }else if(!(possibleMember.getBirthDay().before(filterAgeAsDate) && possibleMember.getCity().equals(this.filterCity))){
+        }else if(!(possibleMember.getBirthDay().after(filterAgeAsDate) && possibleMember.getCity().equals(this.filterCity))){
             throw new InvalidPermissionException("The user does not match the requirements for this group");
         }
         memberRequests.put(possibleMember, RequestStatus.WAITING);
