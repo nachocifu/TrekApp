@@ -541,7 +541,7 @@ public class Profile extends JFrame {
                         
                         if(flag == 0){
                             try {
-                                instance.registerUser(tFUsername.getText(), tFName.getText(), tFSurName.getText(), date , sex , passwordField.getText(), tFCityBirth.getText(), tFAge.getText()); //$NON-NLS-1$
+                                instance.registerUser(tFUsername.getText(), tFName.getText(), tFSurName.getText(), date , sex , passwordField.getText(), tFCityBirth.getText(), tFEmail.getText()); //$NON-NLS-1$
                             } catch (ServerException e) {
                                 e.printStackTrace();
                             } catch (UserNameAlreadyExistsException e) {
