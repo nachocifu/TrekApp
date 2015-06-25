@@ -3,9 +3,6 @@ package controllers;
 import java.rmi.ServerException;
 import java.util.Date;
 
-import repositoryMem.GroupRepository;
-import repositoryMem.ProfileRepository;
-import repositoryMem.TripRepository;
 import domain.ControllerNotLoadedException;
 import domain.GroupNameAlreadyExistsException;
 import domain.SessionNotActiveException;
@@ -13,7 +10,8 @@ import domain.UserNameAlreadyExistsException;
 
 public class DEMO {
 
-    public static void main(String[] args) throws SessionNotActiveException, ControllerNotLoadedException, GroupNameAlreadyExistsException {
+    @SuppressWarnings("deprecation")
+	public static void main(String[] args) throws SessionNotActiveException, ControllerNotLoadedException, GroupNameAlreadyExistsException {
         Application app = Application.getInstance();
         Session session = Session.getInstance();
 
@@ -36,7 +34,8 @@ public class DEMO {
 
 
             System.out.println("se levanta user: " + naty.getUsername());
-            MyGroupController group1 = app.registerGroup("groupName", naty, 3, 3, "ciudad");
+            @SuppressWarnings("unused")
+			MyGroupController group1 = app.registerGroup("groupName", naty, 3, 3, "ciudad");
 
 
 
