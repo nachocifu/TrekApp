@@ -98,7 +98,7 @@ public class GroupControllerTest {
 	
 	
 	@SuppressWarnings("deprecation")
-	@Test(expected=ControllerNotLoadedException.class)
+	@Test(expected=IllegalArgumentException.class)
 	public void tripTest() throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, GroupNameAlreadyExistsException, ControllerNotLoadedException, InvalidPermissionException, TripNotClosedException{
 		
 		Application app= Application.getInstance();
@@ -116,9 +116,10 @@ public class GroupControllerTest {
 		MyTripController trip= app.registerTrip(new Date(2011,11,11), new Date(2012,1,1), 213.11, "hola", "buenos aires", "cordoba");
 		groupController.addGroupTrip(trip);
 		groupController.deleteGroupTrip(trip);
-		groupController.getTripStatus();
-		
+		groupController.getTripController();
 	}
+	
+	
 
 }
 

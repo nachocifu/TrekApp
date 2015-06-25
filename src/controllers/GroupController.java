@@ -48,6 +48,8 @@ public class GroupController extends AbstractController<Group> {
      */
     public TripStatus getTripStatus() throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
+        if(this.obj.getGroupName()== null)
+        	throw new ControllerNotLoadedException("ERROR || Group has no trip assigned");
         return this.obj.getGroupTrip().getTripStatus();
     }
 
