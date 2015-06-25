@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import graphic.ImagePanel;
 import graphic.Options;
 import controllers.Application;
+import controllers.CurrentProfileController;
 import controllers.ProfileController;
 import controllers.Session;
 import domain.ControllerNotLoadedException;
@@ -35,6 +36,7 @@ public class UserSearch extends JFrame {
 	private static JPanel panel;
 	private JTextField textField;
 	private JButton btnBack;
+	private CurrentProfileController currentProfile;
 
 	/**
 	 * Launch the application.
@@ -61,6 +63,12 @@ public class UserSearch extends JFrame {
 	 * @param language
 	 */
 	public UserSearch(final Application instance, final Session session, final boolean language) {
+		
+		try {
+			currentProfile = instance.getCurrentProfileController();
+		} catch (SessionNotActiveException e2) {
+			e2.printStackTrace();
+		}		
 		
 		Locale currentLocale;
 		if(language){
@@ -107,11 +115,26 @@ public class UserSearch extends JFrame {
 						e1.printStackTrace();
 					}
 					if(profile != null){
-						Profile frame = new Profile(instance, 2, session, profile,language);
-						frame.setVisible(true);
-					    frame.pack();
-					    frame.setSize(900, 620);
-						close();
+						try {
+							if(profile.getUsername().equals(currentProfile.getUsername())){
+								Profile frame = new Profile(instance, 1, session, profile,language);
+								frame.setVisible(true);
+							    frame.pack();
+							    frame.setSize(900, 620);
+								close();
+							}else{
+								Profile frame = new Profile(instance, 2, session, profile,language);
+								frame.setVisible(true);
+							    frame.pack();
+							    frame.setSize(900, 620);
+								close();
+							}
+						} catch (SessionNotActiveException e1) {
+							e1.printStackTrace();
+						} catch (ControllerNotLoadedException e1) {
+							e1.printStackTrace();
+						}
+						
 					}else{
 						JOptionPane.showMessageDialog(null, messages.getString("UserSearch.5"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					}

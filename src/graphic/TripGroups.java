@@ -136,7 +136,7 @@ public class TripGroups extends JFrame {
 								}
 								if( groupArrayaux.get(table.getSelectedRow()) == null ){
 									
-								}else if(session.getUserName().equals(admin) && instance != null){
+								}else if(currentProfile.getUsername().equals(admin) && instance != null){
 									Group frame = new Group(1, (MyTripController)groupArrayaux.get(table.getSelectedRow()).getTripController(), null, null, instance, session, groupArrayaux.get(table.getSelectedRow()), language);
 									frame.setVisible(true);
 									frame.pack();

@@ -226,7 +226,6 @@ public class Group extends JFrame {
         if(instance != null && choice == 1){
             try {
                 requestsTrip = ((MyGroupController)groupController).getMemberRequests();
-                System.out.println(requestsTrip);
                 for (ProfileController key : requestsTrip.keySet()) {
                     requests.add(key.getUserName() + " " + key.getSurname() + " - " + key.getUsername()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
@@ -300,6 +299,11 @@ public class Group extends JFrame {
                 if(instance != null && choice == 1){
                     try {
                         ((MyGroupController)groupController).deleteGroup();
+                        Options frame = new Options(instance, session,language);
+                        frame.setVisible(true);
+                        frame.pack();
+                        frame.setSize(900, 620);
+                        close();
                     } catch (SessionNotActiveException e1) {
                         e1.printStackTrace();
                     } catch (ControllerNotLoadedException e1) {
@@ -430,7 +434,6 @@ public class Group extends JFrame {
                             }catch (IllegalArgumentException e){
                                 e.printStackTrace();
                             } catch (ObjectAlreadyExistsException e) {
-                                // TODO Auto-generated catch block
                                 e.printStackTrace();
                             }
 
@@ -601,6 +604,7 @@ public class Group extends JFrame {
                     btnLeaveGroup.setVisible(false);
                 }else{
                     btnRequestcheck.setVisible(false);
+                    btnLeaveGroup.setVisible(true);
                 }
             } catch (SessionNotActiveException e1) {
                 e1.printStackTrace();
