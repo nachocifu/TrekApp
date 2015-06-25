@@ -32,14 +32,19 @@ public class GroupRepository extends AbstractRepository<Group> {
     }
 
     public Collection<Group> getGroupsWithTripsBy(Date startDate, Date endDate, String startCity, String endCity, String description ){
-        Collection<Group> result = new HashSet<Group>();
+        Collection<Group> results = new HashSet<Group>();
+        Trip trip;
         for (Group group : this.repository) {
-            Trip trip = group.getGroupTrip();
-            if(trip != null){
-                result.add(group);
-            }
+            if(
+                    (startDate == null)? false : group.getGroupTrip().getStartDate().equals(startDate) ||
+                    (endDate == null)? false : group.getGroupTrip().getEndDate().equals(endDate) ||
+                    (startCity.trim().isEmpty())? false : group.getGroupTrip().getOriginCity().toLowerCase().contains(startCity.toLowerCase()) ||
+                    (endCity.trim().isEmpty())? false : group.getGroupTrip().getEndCity().toLowerCase().contains(endCity.toLowerCase()) ||
+                    (description.trim().isEmpty())? false : group.getGroupTrip().getTripDescription().toLowerCase().contains(description.toLowerCase())
+                    )
+                results.add(group);
         }
-        return result;
+        return results;
 
     }
 
