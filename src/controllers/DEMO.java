@@ -16,10 +16,6 @@ public class DEMO {
     public static void main(String[] args) throws SessionNotActiveException, ControllerNotLoadedException, GroupNameAlreadyExistsException {
         Application app = Application.getInstance();
         Session session = Session.getInstance();
-        TripRepository tripRepo = new TripRepository(null, null);
-        GroupRepository groupRepo = new GroupRepository(null, null);
-        ProfileRepository userRepo = new ProfileRepository(null, null);
-        CollectionAndSearchController searchRepo = new CollectionAndSearchController(userRepo, groupRepo, tripRepo);
 
         try {
 
