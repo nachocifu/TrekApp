@@ -20,13 +20,6 @@ public class Application{
     /* Singleton Reference*/
     private static Application application = null;
 
-    /* Default database to be used if non selected.*/
-    private String DEFAULT_DATABASE = "DataBase";
-
-    /* Default database to be used if non selected.*/
-    private String currentDatabase;
-
-
     /* Store references to all repository's*/
     private ProfileRepository userRepo;
     private GroupRepository groupRepo;
@@ -37,16 +30,11 @@ public class Application{
      * NOTE: If database non existant, it will be created.
      * @param pathToDataBase Path to dataBase from  ./src/
      */
-    private Application(String pathToDataBase){
-        this.currentDatabase = pathToDataBase.trim();
-        if(this.currentDatabase.isEmpty())
-            this.currentDatabase = this.DEFAULT_DATABASE;
-
+    private Application(){
         /* Start all Databases */
-        userRepo = new ProfileRepository(currentDatabase, Profile.class);
-        groupRepo = new GroupRepository(currentDatabase, Group.class);
-        tripRepo = new TripRepository(currentDatabase, Trip.class);
-
+        userRepo = new ProfileRepository();
+        groupRepo = new GroupRepository();
+        tripRepo = new TripRepository();
     }
 
     /**
@@ -55,7 +43,7 @@ public class Application{
      */
     public static Application getInstance(){
         if(application == null){
-            application = new Application("");
+            application = new Application();
         }
         return application;
     }
@@ -138,18 +126,6 @@ public class Application{
         Trip newTrip = new Trip(startDate, endDate, estimateCost, tripDescription, originCity, endCity);
         this.tripRepo.add(newTrip);
         return getMyTripController(newTrip);
-    }
-
-    /**
-     * Change the Default Data Base.
-     * NOTE: ALL sessions are immediately logged out.
-     * @param pathToDataBase
-     * @throws SessionNotActiveException
-     */
-    public void changeDataBase(String pathToDataBase) throws SessionNotActiveException{
-        this.validateEnvironment();
-        Session.getInstance().logOut();
-        application = new Application(pathToDataBase);
     }
 
     /**
@@ -296,11 +272,6 @@ public class Application{
         GroupController newController = new GroupController(groupRepo);
         newController.load(group);
         return newController;
-    }
-
-    public String getDatabase() throws SessionNotActiveException, ControllerNotLoadedException {
-        this.validateEnvironment();
-        return this.currentDatabase;
     }
 
     /**

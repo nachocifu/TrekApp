@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
@@ -199,6 +200,8 @@ public class Contacts extends JFrame {
 		
 		panel.add(requests);		
 		
+		ArrayList<ProfileController> keys = new ArrayList<ProfileController>(requestsFriendaux.keySet());
+		
 		final JButton btnReject = new JButton();
 		final JButton btnAccept = new JButton();
 		final JButton btnBlock = new JButton();
@@ -208,7 +211,7 @@ public class Contacts extends JFrame {
 					friends.addElement(requests.getSelectedItem());
 					requests.remove(requests.getSelectedItem());
 					try {
-						currentProfile.acceptFriend(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+						instance.getCurrentProfileController().acceptFriend(getKey(keys, requests.getSelectedIndex()));
 					} catch (SessionNotActiveException e) {
 						e.printStackTrace();
 					} catch (ControllerNotLoadedException e) {
@@ -233,7 +236,7 @@ public class Contacts extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				requests.remove(requests.getSelectedItem());
 				try {
-					currentProfile.rejectAFriendRequest(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+					currentProfile.rejectAFriendRequest(getKey(keys, requests.getSelectedIndex()));
 				} catch (SessionNotActiveException e1) {
 					e1.printStackTrace();
 				} catch (ControllerNotLoadedException e1) {
@@ -272,7 +275,7 @@ public class Contacts extends JFrame {
 					block.addElement(requests.getSelectedItem());
 					requests.remove(requests.getSelectedItem());
 					try {
-						currentProfile.blockUser(getKey(requestsFriendaux.keySet(), requests.getSelectedIndex()));
+						currentProfile.blockUser(getKey(keys, requests.getSelectedIndex()));
 					} catch (SessionNotActiveException e) {
 						e.printStackTrace();
 					} catch (ControllerNotLoadedException e) {
@@ -356,12 +359,7 @@ public class Contacts extends JFrame {
 	 * @param value
 	 * @return the ProfileController selected
 	 */
-	private ProfileController getKey(Set<ProfileController> keys, Integer value){
-	    for(ProfileController each : keys){
-	        if(value == 0){
-	            return each; 
-	        }
-	    }
-	    return null;
+	private ProfileController getKey(ArrayList<ProfileController> keys, Integer value){
+	    return keys.get(value+1);
 	}
 }

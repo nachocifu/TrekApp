@@ -246,6 +246,9 @@ public class Trip extends JFrame {
 									e1.printStackTrace();
 								} catch (SessionNotActiveException e1) {
 									e1.printStackTrace();
+								} catch (ControllerNotLoadedException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
 								}
 								Group frame = new Group(0,viaje, null ,auxText, instance, session, groupController,language);
 								frame.setVisible(true);
