@@ -16,26 +16,27 @@ public class DEMO {
     public static void main(String[] args) throws SessionNotActiveException, ControllerNotLoadedException, GroupNameAlreadyExistsException {
         Application app = Application.getInstance();
         Session session = Session.getInstance();
-        TripRepository tripRepo = new TripRepository(null, null);
-        GroupRepository groupRepo = new GroupRepository(null, null);
-        ProfileRepository userRepo = new ProfileRepository(null, null);
-        CollectionAndSearchController searchRepo = new CollectionAndSearchController(userRepo, groupRepo, tripRepo);
-
+        
         try {
 
             app.registerUser("naty", "natalia", "navas", new Date(1994, 3, 13), true, "agua", "lkj", "lkj@gmail.com");
             app.registerUser("nacho", "ignacio", "cifuentes", new Date(1994, 3, 13), false, "agua", "lkj", "lkj@gmail.com");
+            
             System.out.println("SE CREO A NATY");
             session.logIn("naty", "agua");
-            System.out.println(session.getUserName());
+            CollectionAndSearchController searchContr = app.getCollectionController();
+
+            //ProfileController nacho = searchRepo.getProfileControllerByUsername("nacho");
+            //System.out.println(session.getUserName());
+            //System.out.println(nacho.getUsername());
 
 
-            CurrentProfileController naty = app.getCurrentProfileController();
+            //CurrentProfileController naty = app.getCurrentProfileController();
             //ProfileController nacho = app.getAProfileController(profile);
 
 
-            System.out.println("se levanta user: " + naty.getUsername());
-            MyGroupController group1 = app.registerGroup("groupName", naty, 3, 3, "ciudad");
+            //System.out.println("se levanta user: " + naty.getUsername());
+            //MyGroupController group1 = app.registerGroup("groupName", naty, 3, 3, "ciudad");
 
 
 
