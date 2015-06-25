@@ -261,67 +261,67 @@ public class TripSearch extends JFrame {
 			btnSearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					
-					Date dateL = null;
-					
-					Integer day = Integer.parseInt(tFLeaving.getText().substring(0, 2));
-                    Integer month = Integer.parseInt(tFLeaving.getText().substring(3, 5));
-                    Integer year = Integer.parseInt(tFLeaving.getText().substring(8, 10));
-                    String day1;
-                    String month1;
-                    try {
-                    	if(day < 10){
-                            day1 = "0" + day.toString(); //$NON-NLS-1$
-                        }else{
-                            day1 = day.toString();
-                        }
-                        if(month < 10){
-                            month1 = "0" + month.toString(); //$NON-NLS-1$
-                        }else{
-                            month1 = month.toString();
-                        }
-
-                        String inputDate = new String(year + "-" + month1 + "-" + day1);  //$NON-NLS-1$ //$NON-NLS-2$
-                        DateFormat formatter = new SimpleDateFormat("yy-MM-dd");  //$NON-NLS-1$
-                        formatter.setLenient(false);
-                        dateL = formatter.parse(inputDate);
-                    } catch (ParseException e) {
-                       
-                    }
-
-					Date dateA = null;
-					
-					Integer day2 = Integer.parseInt(tFLeaving.getText().substring(0, 2));
-                    Integer month2 = Integer.parseInt(tFLeaving.getText().substring(3, 5));
-                    Integer year2 = Integer.parseInt(tFLeaving.getText().substring(8, 10));
-                    String day3;
-                    String month3;
-                    try {
-                    	if(day2 < 10){
-                            day3 = "0" + day2.toString(); //$NON-NLS-1$
-                        }else{
-                            day3 = day2.toString();
-                        }
-                        if(month2 < 10){
-                            month3 = "0" + month2.toString(); //$NON-NLS-1$
-                        }else{
-                            month3 = month2.toString();
-                        }
-
-                        String inputDate = new String(year2 + "-" + month3 + "-" + day2);  //$NON-NLS-1$ //$NON-NLS-2$
-                        DateFormat formatter = new SimpleDateFormat("yy-MM-dd");  //$NON-NLS-1$
-                        formatter.setLenient(false);
-                        dateA = formatter.parse(inputDate);
-                    } catch (ParseException e) {
-                       
-                    }
-					
-			
-					if(! correctDate(dateL, dateA)){
-						JOptionPane.showMessageDialog(null, messages.getString("Trip.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-					}
-					
+//					Date dateL = null;
+//					
+//					Integer day = Integer.parseInt(tFLeaving.getText().substring(0, 2));
+//                    Integer month = Integer.parseInt(tFLeaving.getText().substring(3, 5));
+//                    Integer year = Integer.parseInt(tFLeaving.getText().substring(8, 10));
+//                    String day1;
+//                    String month1;
+//                    try {
+//                    	if(day < 10){
+//                            day1 = "0" + day.toString(); //$NON-NLS-1$
+//                        }else{
+//                            day1 = day.toString();
+//                        }
+//                        if(month < 10){
+//                            month1 = "0" + month.toString(); //$NON-NLS-1$
+//                        }else{
+//                            month1 = month.toString();
+//                        }
+//
+//                        String inputDate = new String(year + "-" + month1 + "-" + day1);  //$NON-NLS-1$ //$NON-NLS-2$
+//                        DateFormat formatter = new SimpleDateFormat("yy-MM-dd");  //$NON-NLS-1$
+//                        formatter.setLenient(false);
+//                        dateL = formatter.parse(inputDate);
+//                    } catch (ParseException e) {
+//                       
+//                    }
+//
+//					Date dateA = null;
+//					
+//					Integer day2 = Integer.parseInt(tFLeaving.getText().substring(0, 2));
+//                    Integer month2 = Integer.parseInt(tFLeaving.getText().substring(3, 5));
+//                    Integer year2 = Integer.parseInt(tFLeaving.getText().substring(8, 10));
+//                    String day3;
+//                    String month3;
+//                    try {
+//                    	if(day2 < 10){
+//                            day3 = "0" + day2.toString(); //$NON-NLS-1$
+//                        }else{
+//                            day3 = day2.toString();
+//                        }
+//                        if(month2 < 10){
+//                            month3 = "0" + month2.toString(); //$NON-NLS-1$
+//                        }else{
+//                            month3 = month2.toString();
+//                        }
+//
+//                        String inputDate = new String(year2 + "-" + month3 + "-" + day2);  //$NON-NLS-1$ //$NON-NLS-2$
+//                        DateFormat formatter = new SimpleDateFormat("yy-MM-dd");  //$NON-NLS-1$
+//                        formatter.setLenient(false);
+//                        dateA = formatter.parse(inputDate);
+//                    } catch (ParseException e) {
+//                       
+//                    }
+//					
+//			
+//					if(! correctDate(dateL, dateA)){
+//						JOptionPane.showMessageDialog(null, messages.getString("Trip.8"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+//					}
+//					
 					try {
-						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(dateL, dateA, tFFrom.getText(), tFTo.getText(), textArea.getText());
+						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(null, null, tFFrom.getText(), tFTo.getText(), textArea.getText());
 					} catch (SessionNotActiveException | ControllerNotLoadedException e2) {
 						e2.printStackTrace();
 					}
