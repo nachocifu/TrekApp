@@ -10,10 +10,8 @@ import org.junit.Test;
 import domain.ControllerNotLoadedException;
 import domain.ObjectAlreadyExistsException;
 import domain.InvalidPermissionException;
-import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.TripNotClosedException;
-import domain.TripStatus;
 import domain.UserNameAlreadyExistsException;
 
 public class GroupControllerTest {
@@ -105,12 +103,9 @@ public class GroupControllerTest {
 		Session session = Session.getInstance();
 		
 		app.registerUser("naty17", "natalia", "navas", new Date(1994, 3, 13), true, "agua", "lkj", "lkj@gmail.com");
-		app.registerUser("username17", "nombre", "apellido", new Date(2000,12,12), true, "12345","buenos aires", "nati@email.com");
 		session.logIn("naty17", "agua");
 		
 		CurrentProfileController profile1= app.getCurrentProfileController();
-        CollectionAndSearchController searchRepo = app.getCollectionController();
-		ProfileController profile2=searchRepo.getProfileControllerByUsername("username17");
 		MyGroupController groupController= app.registerGroup("grupo", profile1, 3, 33, "Buenos Aires");
 		
 		MyTripController trip= app.registerTrip(new Date(2011,11,11), new Date(2012,1,1), 213.11, "hola", "buenos aires", "cordoba");

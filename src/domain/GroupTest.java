@@ -69,12 +69,14 @@ public class GroupTest {
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	@Test(expected=IllegalArgumentException.class)
 	public void deleteMemberTest1(){
 		Profile notMember =new Profile("user1", "name", "surname" ,new Date(2000,01,01), true, "pass", "buenos aires", "mail@itba.edu.ar");
 		grp.deleteMember(notMember);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void deleteMemberTest2() throws InvalidPermissionException{
 		Profile admin2=new Profile("username2", "natalia", "navas", 1234, new Date(1992,12,18), true, "123456", "buenos aires", "email@itba.edu.ar");
@@ -83,6 +85,7 @@ public class GroupTest {
 		assertTrue(grp2.deleteMember(admin2));
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void deleteMemberTest3() throws InvalidPermissionException{
 		Profile member=new Profile("user1", "name", "surname" ,new Date(2000,01,01), true, "pass", "buenos aires", "mail@itba.edu.ar");
@@ -93,6 +96,7 @@ public class GroupTest {
 		assertFalse(member.getGroups().contains(grp));		
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void deleteMemberTest4() throws InvalidPermissionException{
 		Profile member=new Profile("user1", "name", "surname" ,new Date(2000,01,01), true, "pass", "buenos aires", "mail@itba.edu.ar");
@@ -105,6 +109,7 @@ public class GroupTest {
 		
 		
 	}
+	@SuppressWarnings("deprecation")
 	@Test(expected=InvalidPermissionException.class)
 	public void addGroupTest() throws InvalidPermissionException{
 		Trip trip1= new Trip(new Date(2014,1,1), new Date(2016,2,2), 123.1, "string1", "string2", "string4");
@@ -113,6 +118,7 @@ public class GroupTest {
 		grp.addGroupTrip(trip2);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void adminInGroupTest(){
 		Profile groupAdm= new Profile("groupAdmin", "name", "surname" ,new Date(2000,01,01), true, "pass", "buenos aires", "mail@itba.edu.ar");

@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -37,6 +36,7 @@ import domain.ControllerNotLoadedException;
 import domain.SessionNotActiveException;
 import domain.TripNotClosedException;
 
+@SuppressWarnings("serial")
 public class Calif extends JFrame {
 
 	private JPanel panel;

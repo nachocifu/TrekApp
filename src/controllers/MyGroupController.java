@@ -8,7 +8,7 @@ import domain.Profile;
 import domain.RequestStatus;
 import domain.SessionNotActiveException;
 import repositoryMem.GroupRepository;
-import domain.Message;
+
 
 public class MyGroupController extends GroupController {
 

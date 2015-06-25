@@ -12,7 +12,7 @@ import domain.TripNotClosedException;
 import domain.TripStatus;
 import repositoryMem.AbstractRepository;
 import repositoryMem.GroupRepository;
-import domain.Message;
+
 
 
 public class GroupController extends AbstractController<Group> {

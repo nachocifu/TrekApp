@@ -13,7 +13,7 @@ import domain.Profile;
 import domain.SessionNotActiveException;
 import domain.Trip;
 import domain.UserNameAlreadyExistsException;
-import domain.UserNameDoesNotExist;
+//import domain.UserNameDoesNotExist;
 
 public class Application{
 

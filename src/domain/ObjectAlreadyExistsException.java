@@ -1,5 +1,6 @@
 package domain;
 
+@SuppressWarnings("serial")
 public class ObjectAlreadyExistsException extends Exception {
 
 

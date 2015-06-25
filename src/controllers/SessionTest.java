@@ -7,10 +7,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import domain.ControllerNotLoadedException;
-import domain.Profile;
-import domain.SessionNotActiveException;
-import domain.TripNotClosedException;
 import domain.UserNameAlreadyExistsException;
 
 public class SessionTest {
