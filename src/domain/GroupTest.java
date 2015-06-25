@@ -78,7 +78,7 @@ public class GroupTest {
 	@Test
 	public void deleteMemberTest2() throws InvalidPermissionException{
 		Profile admin2=new Profile("username2", "natalia", "navas", 1234, new Date(1992,12,18), true, "123456", "buenos aires", "email@itba.edu.ar");
-		System.out.println(grp.groupSize());
+		//System.out.println(grp.groupSize());
 		Group grp2= new Group("groupName2",admin2 , 3, 21, "buenos aires");
 		assertTrue(grp2.deleteMember(admin2));
 	}
@@ -88,16 +88,38 @@ public class GroupTest {
 		Profile member=new Profile("user1", "name", "surname" ,new Date(2000,01,01), true, "pass", "buenos aires", "mail@itba.edu.ar");
 		grp.addMember(member);
 		grp.addMember(new Profile("user2", "name", "surname" ,new Date(2000,01,01), true, "pass", "buenos aires", "mail@itba.edu.ar"));
+		assertTrue(member.getGroups().contains(grp));
 		assertFalse(grp.deleteMember(member));
-		
+		assertFalse(member.getGroups().contains(grp));		
 	}
 	
+	@Test
+	public void deleteMemberTest4() throws InvalidPermissionException{
+		Profile member=new Profile("user1", "name", "surname" ,new Date(2000,01,01), true, "pass", "buenos aires", "mail@itba.edu.ar");
+		Group grp4= new Group("groupName2",member , 3, 21, "buenos aires");
+		grp.addMember(member);
+		assertTrue(member.getGroups().contains(grp4));
+		assertTrue(grp4.deleteMember(member));
+		assertFalse(member.getGroups().contains(grp4));	
+		
+		
+		
+	}
 	@Test(expected=InvalidPermissionException.class)
 	public void addGroupTest() throws InvalidPermissionException{
 		Trip trip1= new Trip(new Date(2014,1,1), new Date(2016,2,2), 123.1, "string1", "string2", "string4");
 		Trip trip2= new Trip(new Date(2014,1,1), new Date(2016,2,2), 123.1, "string1", "string2", "string4");
 		grp.addGroupTrip(trip1);
 		grp.addGroupTrip(trip2);
+	}
+	
+	@Test
+	public void adminInGroupTest(){
+		Profile groupAdm= new Profile("groupAdmin", "name", "surname" ,new Date(2000,01,01), true, "pass", "buenos aires", "mail@itba.edu.ar");
+		Group grp3= new Group("groupName",groupAdm , 3, 21, "buenos aires");
+		assertTrue(groupAdm.getGroups().contains(grp3));
+		assertTrue(grp3.deleteMember(groupAdm));
+		assertFalse(groupAdm.getGroups().contains(grp3));
 	}
 
 
