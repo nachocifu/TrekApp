@@ -168,6 +168,9 @@ public class CurrentProfileController extends ProfileController {
         this.validateEnvironment();
         this.validateController(group);
         this.obj.leaveGroup(group.getObject());
+        group.saveChanges();
+        if(group.groupSize() == 0)
+        	((MyGroupController)group).deleteGroup();
         saveChanges();
     }
 

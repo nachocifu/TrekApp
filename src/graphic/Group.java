@@ -535,11 +535,11 @@ public class Group extends JFrame {
                     if(instance != null){
                         try {
                             currentProfile.leaveGroup(groupController);
-                            Group frame = new Group(choice,myTrip,trip,auxText,instance,session,groupController,language);
+                            Options frame = new Options(instance, session,language);
                             frame.setVisible(true);
-                            frame.pack();
-                            frame.setSize(900, 602);
-                            close();
+        					frame.pack();
+        					frame.setSize(900, 602);
+        					close();
                         } catch (SessionNotActiveException e) {
                             e.printStackTrace();
                         } catch (ControllerNotLoadedException e) {

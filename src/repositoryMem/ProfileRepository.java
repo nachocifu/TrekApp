@@ -3,7 +3,6 @@ package repositoryMem;
 import java.sql.Date;
 
 import domain.Profile;
-import domain.Trip;
 import domain.UserNameDoesNotExist;
 
 public class ProfileRepository extends AbstractRepository<Profile> {
