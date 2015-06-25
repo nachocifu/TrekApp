@@ -435,6 +435,7 @@ public class Profile extends JFrame {
                 tFAge.setText(day1 + "/" + month1.toString() + "/" + year.toString()); //$NON-NLS-1$ //$NON-NLS-2$
             } catch (SessionNotActiveException | ControllerNotLoadedException e1) {
 
+            	
             }
         }else if(instance != null && choice == 2){
 
