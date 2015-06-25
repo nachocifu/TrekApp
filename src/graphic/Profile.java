@@ -523,7 +523,7 @@ public class Profile extends JFrame {
                             sex= false;
                         }
                         Date date = null;
-                        if(! tFAge.getText().substring(0, 2).trim().equals("") && !tFAge.getText().substring(3, 5).trim().equals("") && !tFAge.getText().substring(6, 8).trim().equals("")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        if(!tFAge.getText().substring(0, 2).trim().equals("") && !tFAge.getText().substring(3, 5).trim().equals("") && !tFAge.getText().substring(6, 10).trim().equals("")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             int day = Integer.parseInt(tFAge.getText().substring(0, 2));
                             int month = Integer.parseInt(tFAge.getText().substring(3, 5));
                             int year = Integer.parseInt(tFAge.getText().substring(6, 10));
