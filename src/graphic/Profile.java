@@ -90,7 +90,7 @@ public class Profile extends JFrame {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    Profile frame = new Profile(null, 1, null, null,true);
+                    Profile frame = new Profile(null, 0, null, null,true);
                     frame.setVisible(true);
                     frame.pack();
                     frame.setSize(900, 620);
@@ -361,8 +361,9 @@ public class Profile extends JFrame {
         label_4.setVisible(false);
 
         final Choice choice2 = new Choice();
-        choice2.setBounds(712, 143, 85, 20);
+        choice2.setBounds(712, 143, 100, 20);
         panel.add(choice2);
+        choice2.setBackground(Color.WHITE);
 
         tFAge = new JFormattedTextField();
         try {
