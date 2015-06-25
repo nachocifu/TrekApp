@@ -113,7 +113,7 @@ public class TripGroups extends JFrame {
 	    if(instance != null){
 	    	ArrayList<GroupController> groupArray = null;
 			try {
-				groupArray = new ArrayList<>(currentProfile.getGroups());
+				groupArray = new ArrayList<GroupController>(currentProfile.getGroups());
 			} catch (SessionNotActiveException e2) {
 				e2.printStackTrace();
 			} catch (ControllerNotLoadedException e2) {

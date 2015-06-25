@@ -576,7 +576,7 @@ public class Group extends JFrame {
 			btnDelete.setVisible(false);
 			btnRequestcheck.setText(messages.getString("Group.36")); //$NON-NLS-1$
 			btnRequestcheck.addActionListener(new ActionListener() {
-			
+				
 				public void actionPerformed(ActionEvent e) {
 					try {
 						groupController.sendMemberRequest();
@@ -588,7 +588,6 @@ public class Group extends JFrame {
 						JOptionPane.showMessageDialog(null, messages.getString("Group.7"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
 					} catch (IllegalArgumentException e1){
 						JOptionPane.showMessageDialog(null,messages.getString("Group.8") , "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
-						btnRequestcheck.setText((requestsTripaux.get(currentProfile).toString()));
 						btnRequestcheck.setEnabled(false);
 					}
 				}
@@ -598,6 +597,8 @@ public class Group extends JFrame {
 			try {
 				if(! groupController.getMembers().contains(currentProfile)){
 					btnLeaveGroup.setVisible(false);
+				}else{
+					btnRequestcheck.setVisible(false);
 				}
 			} catch (SessionNotActiveException e1) {
 				e1.printStackTrace();
