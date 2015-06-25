@@ -251,7 +251,6 @@ public class TripGroups extends JFrame {
 				frame.pack();
 				frame.setSize(900, 602);
 				close();
-				
 			}
 		});
 		ImageIcon imageE = new ImageIcon("EnglishFlag.jpg");  //$NON-NLS-1$
