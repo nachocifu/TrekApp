@@ -9,7 +9,8 @@ import domain.UserNameDoesNotExist;
 public class ProfileRepository extends AbstractRepository<Profile> {
 
 
-    public ProfileRepository(String pathToDataBase,Class reposClass) {
+    @SuppressWarnings("deprecation")
+	public ProfileRepository(String pathToDataBase,Class reposClass) {
     	Profile p = new Profile("naty2", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com");
     	
     	add(new Profile("naty", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com"));

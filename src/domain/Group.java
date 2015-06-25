@@ -248,21 +248,31 @@ public class Group {
 
    /**
     * Permanently deletes a member of this Group, if that member is the admin, a new admin is set, if that member is the last one, the group is deleted.
-    * @param member
+    * @param member that will be deleted from the group
     * @return If that member is yourself and you are the only one in the Group, returns True (useful to delete Group if it is saved).
     * @throws IllegalArgumentException
     */
     public Boolean deleteMember(Profile member) throws IllegalArgumentException{
-        if(!this.members.contains(member)){
-            throw new IllegalArgumentException("The user that you are trying to delete does not belong to the group");
-        }else if(member.equals(this.admin) || groupSize() == 1){
-            member.leaveGroup(this);
-            return true;
-        }else{
-            this.members.remove(member);
-            this.admin = this.members.iterator().next();
+    	if(!member.equals(this.admin) && !this.members.contains(member))
+    		throw new IllegalArgumentException("the user you are trying to delete from the group does not belong to the group");
+        
+    	if(member.equals(this.admin)){
+        	if (groupSize()==1)
+        		return true;
+        	this.admin= this.members.iterator().next();
+        	member.leaveGroup(this);
+        	return false;
         }
-        return false;
+       
+    	else if(groupSize()<=1){
+        	member.leaveGroup(this);
+        	return true;
+        }
+        else{
+        	this.members.remove(member);
+        	member.leaveGroup(this);
+        	return false;
+        }        	
     }
 
     /**
@@ -301,10 +311,10 @@ public class Group {
     }
 
     /**
-     * @return the amount of group members
+     * @return the amount of group members (the admin is considered a member as well)
      */
     public Integer groupSize(){
-        return this.members.size();
+        return this.members.size() + 1;
     }
 
     /**
