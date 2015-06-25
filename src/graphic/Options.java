@@ -118,7 +118,7 @@ public class Options extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(instance != null){
 					session.logOut();
-					Connect frame = new Connect(language);
+					TrekApp frame = new TrekApp(language);
 					frame.setVisible(true);
 					frame.pack();
 				    frame.setSize(900, 602);

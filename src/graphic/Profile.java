@@ -1,6 +1,6 @@
 package graphic;
 
-import graphic.Connect;
+import graphic.TrekApp;
 import graphic.Contacts;
 import graphic.ImagePanel;
 import graphic.OldTrips;
@@ -322,7 +322,7 @@ public class Profile extends JFrame {
                     frame.setSize(900, 602);
                     close();
                 }else{
-                    Connect frame = new Connect(language);
+                    TrekApp frame = new TrekApp(language);
                     frame.setVisible(true);
                     frame.pack();
                     frame.setSize(900, 602);
@@ -547,7 +547,7 @@ public class Profile extends JFrame {
                             } catch (UserNameAlreadyExistsException e) {
                                 lblExists.setVisible(true);
                             }
-                            Connect frame = new Connect(language);
+                            TrekApp frame = new TrekApp(language);
                             frame.setVisible(true);
                             frame.setSize(900, 602);
                             close();
