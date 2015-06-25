@@ -390,7 +390,7 @@ public class Profile {
      */
     public void leaveGroup(Group group){
         if(!groups.contains(group))
-            throw new IllegalArgumentException("ESTE ERRORThe user does not belong to that group");
+            throw new IllegalArgumentException("The user does not belong to that group");
         this.groups.remove(group);
     }
 
