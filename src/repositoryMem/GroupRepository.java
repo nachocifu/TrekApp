@@ -16,7 +16,8 @@ import domain.Trip;
 public class GroupRepository extends AbstractRepository<Group> {
 
 
-    public GroupRepository() {
+    @SuppressWarnings("deprecation")
+	public GroupRepository() {
         add(new Group("grupo1", new Profile("naty2", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com"), 5, 3, "baires"));
         add(new Group("grupo1", new Profile("naty2", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com"), 5, 3, "baires"));
         add(new Group("grupo1", new Profile("naty2", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com"), 5, 3, "baires"));

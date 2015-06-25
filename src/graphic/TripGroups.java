@@ -37,6 +37,7 @@ import domain.SessionNotActiveException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class TripGroups extends JFrame {
 
 	private static JPanel panel;

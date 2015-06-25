@@ -31,6 +31,7 @@ import controllers.Session;
 import domain.ControllerNotLoadedException;
 import domain.SessionNotActiveException;
 
+@SuppressWarnings("serial")
 public class UserSearch extends JFrame {
 
 	private static JPanel panel;

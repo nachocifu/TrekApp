@@ -63,6 +63,7 @@ public class Calif extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Calif(final Application instance, final Session session, final GroupController groupController ,final boolean language) {
 		
 		if(instance != null){
