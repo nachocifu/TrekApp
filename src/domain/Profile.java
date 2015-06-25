@@ -205,7 +205,7 @@ public class Profile {
     public void rejectAFriendRequest(Profile rejectedProfile){
         if(!friendRequests.containsKey(rejectedProfile)){
             throw new IllegalArgumentException("The user does not belong to the users requesting to be friends with this profile");
-        }else if(!(friendRequests.get(rejectedProfile) == RequestStatus.REJECTED)){
+        }else if(friendRequests.get(rejectedProfile) == RequestStatus.REJECTED){
             throw new IllegalArgumentException("The user has already been rejected");
         }
         friendRequests.put(rejectedProfile, RequestStatus.REJECTED);
