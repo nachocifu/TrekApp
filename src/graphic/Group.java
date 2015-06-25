@@ -235,7 +235,8 @@ public class Group extends JFrame {
                     }else if(each.getUsername().equals(currentProfile.getUsername()) && flag2 && choice == 2){
                     	flag2 = false;
                         btnRequestcheck.setVisible(false);
-                        btnLeaveGroup.setVisible(true);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                        btnLeaveGroup.setVisible(true);
+                        btnTrip.setBounds(430, 386, 145, 23);
                     }
                     members.addElement(each.getUserName() + " " + each.getSurname() + " - " + each.getUsername()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
@@ -592,12 +593,14 @@ public class Group extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     try {
                         groupController.sendMemberRequest();
+                        JOptionPane.showMessageDialog(null, messages.getString("Profile.2"), messages.getString("Profile.3"), JOptionPane.INFORMATION_MESSAGE);
                     } catch (SessionNotActiveException e1) {
                         e1.printStackTrace();
                     } catch (ControllerNotLoadedException e1) {
                         e1.printStackTrace();
                     } catch (InvalidPermissionException e1) {
                         JOptionPane.showMessageDialog(null, messages.getString("Group.7"), "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
+                        btnRequestcheck.setEnabled(false);
                     } catch (IllegalArgumentException e1){
                         JOptionPane.showMessageDialog(null,messages.getString("Group.8") , "ERROR", JOptionPane.ERROR_MESSAGE); //$NON-NLS-1$ //$NON-NLS-2$
                         btnRequestcheck.setEnabled(false);
