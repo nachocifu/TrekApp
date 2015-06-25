@@ -425,8 +425,6 @@ public class Group extends JFrame {
                                 e.printStackTrace();
                             }catch (NumberFormatException e) {
                                 e.printStackTrace();
-                            } catch (UserNameAlreadyExistsException e) {
-                                e.printStackTrace();
                             }catch (ServerException e) {
                                 e.printStackTrace();
                             }catch (IllegalArgumentException e){

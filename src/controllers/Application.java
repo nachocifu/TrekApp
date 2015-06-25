@@ -107,6 +107,7 @@ public class Application{
         Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
         if (!this.groupRepo.add(newGroup))
             throw new GroupNameAlreadyExistsException("a group with this name already exists");
+        admin.saveChanges();
         return getMyGroupController(newGroup);
     }
 
