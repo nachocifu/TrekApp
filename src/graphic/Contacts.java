@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -34,6 +33,7 @@ import domain.RequestStatus;
 import controllers.Session;
 import domain.SessionNotActiveException;
 
+@SuppressWarnings("serial")
 public class Contacts extends JFrame {
 
 	private static JPanel panel;
@@ -64,6 +64,7 @@ public class Contacts extends JFrame {
 	 * @param session
 	 * @param language
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 	public Contacts(final Application instance, final Session session, final boolean language) {
 		if(instance != null){
 			try {
@@ -186,6 +187,7 @@ public class Contacts extends JFrame {
 				
 		final Choice requests = new Choice();
 		requests.setBounds(377, 405, 200, 30);
+		@SuppressWarnings("unused")
 		int size = requestsFriendaux.size();
 		
 			try {

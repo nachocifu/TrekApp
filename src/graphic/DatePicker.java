@@ -291,8 +291,10 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             setCurrentMonth(parent.calendar);
             //setLabel(parent.calendar);
         }
-        private JComboBox monthBox;
-        private JComboBox yearBox;
+        @SuppressWarnings("rawtypes")
+		private JComboBox monthBox;
+        @SuppressWarnings("rawtypes")
+		private JComboBox yearBox;
         private String []months;
         private Integer []years;
         private Box box;
@@ -311,7 +313,8 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             }
 
         }
-        private void setMonthComboBox(Calendar c)
+        @SuppressWarnings({ "rawtypes", "unchecked" })
+		private void setMonthComboBox(Calendar c)
         {
             if(months==null)
             {
@@ -333,7 +336,8 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             monthBox.setModel(new DefaultComboBoxModel(months));
             monthBox.setSelectedIndex(c.get(Calendar.MONTH));
          }
-        private void setYearComboBox(Calendar c)
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+		private void setYearComboBox(Calendar c)
         {
             int y=c.get(Calendar.YEAR);
             years=new Integer[7];
@@ -362,7 +366,8 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
             add(lbl, BorderLayout.CENTER);
 
         }
-        public void actionPerformed(ActionEvent e) {
+        @SuppressWarnings("rawtypes")
+		public void actionPerformed(ActionEvent e) {
             Object src = e.getSource();
             Calendar c = new GregorianCalendar();
             c.setTime(parent.getCalendar().getTime());

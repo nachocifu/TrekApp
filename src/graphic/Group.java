@@ -15,7 +15,6 @@ import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -42,7 +41,6 @@ import domain.InvalidPermissionException;
 import domain.RequestStatus;
 import controllers.Session;
 import domain.SessionNotActiveException;
-import domain.UserNameAlreadyExistsException;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -50,6 +48,7 @@ import java.awt.event.WindowEvent;
 import java.awt.Choice;
 
 
+@SuppressWarnings("serial")
 public class Group extends JFrame {
 
     private static JPanel panel;
@@ -91,7 +90,8 @@ public class Group extends JFrame {
      * @param language
      */
     // choice = 0 creando, choice = 1 viendo el propio, choice = 2 viendo el de otro
-    public Group(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> auxText, final Application instance, final Session session, final GroupController groupController, final boolean language){
+    @SuppressWarnings({ "rawtypes", "unchecked", "deprecation", "static-access" })
+	public Group(final Integer choice, final MyTripController myTrip, final TripController trip, final ArrayList<String> auxText, final Application instance, final Session session, final GroupController groupController, final boolean language){
 
         if(instance != null){
             try {

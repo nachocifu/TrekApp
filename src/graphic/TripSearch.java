@@ -4,15 +4,12 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -24,12 +21,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -49,6 +44,7 @@ import domain.SessionNotActiveException;
 
 import java.awt.ComponentOrientation;
 
+@SuppressWarnings("serial")
 public class TripSearch extends JFrame {
 
 	private DatePicker dp1;
@@ -487,6 +483,7 @@ public class TripSearch extends JFrame {
 	 * @param fecha
 	 * @return Date
 	 */
+	@SuppressWarnings({ "deprecation", "unused" })
 	private Date getDate(String fecha){
 		Integer day= null;
 		Integer month= null;
@@ -508,13 +505,13 @@ public class TripSearch extends JFrame {
 		
 	}
 	
-	private boolean correctDate(Date date1, Date date2){
+	/*private boolean correctDate(Date date1, Date date2){
 		if(date1 == null || date2 == null ){
 			return true;
 		}else if((date1.getDate() > date2.getDate() && date1.getMonth() == date2.getMonth() && date1.getYear() == date2.getYear() )|| (date1.getMonth() > date2.getMonth() && date1.getYear() == date2.getYear()) || (date1.getYear() > date2.getYear())){
 			return false;
 		}
 		return true;
-	}
+	}*/
 	
 }

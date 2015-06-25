@@ -6,6 +6,7 @@ import java.util.Observer;
 
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class ObservingTextField extends JTextField implements Observer{
 
     public void update(Observable o, Object arg) {

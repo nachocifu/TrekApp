@@ -42,6 +42,7 @@ import controllers.Session;
 import domain.SessionNotActiveException;
 
 
+@SuppressWarnings("serial")
 public class OldTrips extends JFrame {
 
 	private static JPanel panel;

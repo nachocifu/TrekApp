@@ -65,6 +65,7 @@ import domain.UserNameAlreadyExistsException;
 
 
 
+@SuppressWarnings("serial")
 public class Profile extends JFrame {
 
     private static JPanel panel;
@@ -110,7 +111,8 @@ public class Profile extends JFrame {
      * @param session
      * @param language
      */
-    public Profile(final Application instance, final Integer choice, final Session session, final ProfileController invitedProfile, final boolean language) {
+    @SuppressWarnings("deprecation")
+	public Profile(final Application instance, final Integer choice, final Session session, final ProfileController invitedProfile, final boolean language) {
         if(instance != null){
             try {
                 if(choice == 1 || choice == 2){
