@@ -81,7 +81,7 @@ public class Application{
             || city.trim().isEmpty())
             throw new IllegalArgumentException("ERROR || Error registering user. Check arguments.");
         if(! this.userRepo.add( new Profile(username, name, surname, brthDay, sex, password, city, email)))
-        	throw new UserNameAlreadyExistsException("the username already exists");
+            throw new UserNameAlreadyExistsException("the username already exists");
     }
 
     /**
@@ -94,14 +94,12 @@ public class Application{
      * @return
      * @throws ServerException
      * @throws UserNameAlreadyExistsException
-     * @throws SessionNotActiveException 
+     * @throws SessionNotActiveException
+     * @throws GroupNameAlreadyExistsException
      */
     //Revisar el throwsUserName
-<<<<<<< HEAD
-    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException{
-=======
-    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, GroupNameAlreadyExistsException{
->>>>>>> junits
+    public MyGroupController registerGroup(String groupName, CurrentProfileController admin, Integer maxGroupSize, Integer filterAge, String filterCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, GroupNameAlreadyExistsException{
+
         if(groupName.trim().isEmpty()
             || admin == null
             || maxGroupSize <= 0
@@ -109,14 +107,10 @@ public class Application{
             || filterCity.trim().isEmpty())
             throw new IllegalArgumentException("ERROR || Error registering group. Check arguments.");
         Group newGroup = new Group(groupName, admin.getObject(), maxGroupSize, filterAge, filterCity);
-<<<<<<< HEAD
-        this.groupRepo.add(newGroup);
-        return getMyGroupController(newGroup);
-=======
+
         if ( !this.groupRepo.add(newGroup))
-        	throw new GroupNameAlreadyExistsException("a group with this name already exists");
+            throw new GroupNameAlreadyExistsException("a group with this name already exists");
         return new MyGroupController(groupRepo);
->>>>>>> junits
     }
 
     /**
@@ -134,10 +128,10 @@ public class Application{
      */
     //Revisar el throwsUserName
     public MyTripController registerTrip(Date startDate, Date endDate, Double estimateCost, String tripDescription, String originCity, String endCity) throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException{
-        if(estimateCost < 0 
-        		|| endCity.trim().isEmpty() 
-        		|| originCity.trim().isEmpty() 
-        		|| tripDescription.trim().isEmpty())
+        if(estimateCost < 0
+                || endCity.trim().isEmpty()
+                || originCity.trim().isEmpty()
+                || tripDescription.trim().isEmpty())
                 throw new IllegalArgumentException("ERROR || Error registering trip. Check arguments.");
         Trip newTrip = new Trip(startDate, endDate, estimateCost, tripDescription, originCity, endCity);
         this.tripRepo.add(newTrip);
@@ -176,7 +170,7 @@ public class Application{
         Profile currentProfile = this.userRepo.getById(Session.getInstance().getUserName());
         return getCurrentProfileController(currentProfile);
     }
-    
+
     public CollectionAndSearchController getCollectionController() throws SessionNotActiveException{
         if(!Session.getInstance().isActive()){
             throw new SessionNotActiveException("There is no user logged in");
