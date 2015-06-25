@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 
 import repositoryMem.GroupRepository;
 import repositoryMem.ProfileRepository;
@@ -32,6 +33,12 @@ public class CollectionAndSearchController{
         ProfileController profileController = new ProfileController(profileRepo);
         profileController.load(this.profileRepo.getById(username));
         return profileController;
+    }
+
+    public Collection<ProfileController> searchProfilesBy(String text) throws SessionNotActiveException{
+        validateEnvironment();
+        Collection<ProfileController> response = new HashSet<ProfileController>();
+        return response;
     }
 
     private void validateEnvironment() throws SessionNotActiveException{
