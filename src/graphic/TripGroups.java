@@ -161,6 +161,12 @@ public class TripGroups extends JFrame {
 				}
 			});
 			
+			model.addColumn(messages.getString("TripGroups.5"));
+		    model.addColumn(messages.getString("TripGroups.6"));
+		    model.addColumn( messages.getString("TripGroups.7"));
+		    model.addColumn(messages.getString("TripGroups.8"));
+		    model.addColumn(messages.getString("TripGroups.9"));
+			
 			try {
 				int i = -1;
 				for(GroupController each : groupArray){
@@ -193,12 +199,6 @@ public class TripGroups extends JFrame {
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14)); //$NON-NLS-1$
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setSurrendersFocusOnKeystroke(true);
-
-		model.addColumn(messages.getString("TripGroups.5"));
-	    model.addColumn(messages.getString("TripGroups.6"));
-	    model.addColumn( messages.getString("TripGroups.7"));
-	    model.addColumn(messages.getString("TripGroups.8"));
-	    model.addColumn(messages.getString("TripGroups.9"));
 	    
 		table.setBorder(UIManager.getBorder("ScrollPane.border")); //$NON-NLS-1$
 		table.setForeground(Color.WHITE);
