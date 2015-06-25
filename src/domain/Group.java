@@ -250,7 +250,7 @@ public class Group {
     }
 
    /**
-    * Permanently deletes a member of this Group, if that member is the admin, a new admin is set, if that member is the last one, the group is deleted.
+    * Permanently deletes a member of this Group, if that member is the admin, a new admin is set, if that member is the last one.
     * @param member that will be deleted from the group
     * @return If that member is yourself and you are the only one in the Group, returns True (useful to delete Group if it is saved).
     * @throws IllegalArgumentException

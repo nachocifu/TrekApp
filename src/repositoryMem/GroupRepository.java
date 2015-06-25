@@ -41,11 +41,11 @@ public class GroupRepository extends AbstractRepository<Group> {
                         ((endDate == null)?
                                 false : group.getGroupTrip().getEndDate().equals(endDate)) ||
                         ((startCity == null?
-                                false : (startCity.trim().isEmpty())? false : group.getGroupTrip().getOriginCity().toLowerCase().contains(startCity.toLowerCase()))) ||
+                                false : (startCity.trim().isEmpty())? false : group.getGroupTrip().getOriginCity().toLowerCase().contains(startCity.trim().toLowerCase()))) ||
                         ((endCity == null?
-                                false : (endCity.trim().isEmpty())? false : group.getGroupTrip().getEndCity().toLowerCase().contains(endCity.toLowerCase()))) ||
+                                false : (endCity.trim().isEmpty())? false : group.getGroupTrip().getEndCity().toLowerCase().contains(endCity.trim().toLowerCase()))) ||
                         ((description == null)?
-                                false: ((description.trim().isEmpty())? false : group.getGroupTrip().getTripDescription().toLowerCase().contains(description.toLowerCase())))
+                                false: ((description.trim().isEmpty())? false : group.getGroupTrip().getTripDescription().toLowerCase().contains(description.trim().toLowerCase())))
                         )
                     )
                 results.add(group);
