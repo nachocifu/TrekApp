@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import java.util.Iterator;
+
 //import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -70,7 +72,7 @@ public class Group {
     /*Group Constructors*/
 
     public Group(String groupName, Profile admin, Integer maxGroupSize, Integer filterAge, String filterCity){
-    	this.admin = admin;
+        this.admin = admin;
         this.groupName=groupName;
         this.members=new HashSet<Profile>();
         this.memberRequests = new HashMap<Profile, RequestStatus>();
@@ -187,7 +189,7 @@ public class Group {
      * @throws InvalidPermissionException
      */
     public void addMember(Profile newMember) throws InvalidPermissionException{
-    	
+
         if(newMember.equals(this.admin)){
             throw new IllegalArgumentException("ERROR || Cannot add yourself");
         }else if(members.contains(newMember)){
@@ -254,27 +256,21 @@ public class Group {
     * @throws IllegalArgumentException
     */
     public Boolean deleteMember(Profile member) throws IllegalArgumentException{
-    	
-    	if(!this.members.contains(member))
-    		throw new IllegalArgumentException("the user you are trying to delete from the group does not belong to the group");
-        
-    	if(member.equals(this.admin)){
-    		member.leaveGroup(this);
-        	if (groupSize()==1)
-        		return true;
-        	this.admin= this.members.iterator().next();
-        	return false;
+
+        if(!this.members.contains(member))
+            throw new IllegalArgumentException("ERROR || the user you are trying to delete from the group does not belong to the group");
+
+        if(this.members.contains(member)){
+            this.members.remove(member);
+            member.leaveGroup(this);
+            if(member.equals(this.admin)){
+                if(!this.members.isEmpty()){
+                    this.admin = this.members.iterator().next();
+                }
+            }
+            return true;
         }
-       
-    	else if(groupSize()<=1){
-        	member.leaveGroup(this);
-        	return true;
-        }
-        else{
-        	this.members.remove(member);
-        	member.leaveGroup(this);
-        	return false;
-        }        	
+        return false;
     }
 
     /**

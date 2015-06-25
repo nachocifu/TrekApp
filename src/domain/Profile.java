@@ -387,13 +387,11 @@ public class Profile {
     }
 
     /**
+     * The user most also be removed from the group itself
      * @param group of the group the user is leaving
      */
     public void leaveGroup(Group group){
-        if(!groups.contains(group))
-            throw new IllegalArgumentException("The user does not belong to that group");
         this.groups.remove(group);
-        group.getMembers().remove(this);
     }
 
 
