@@ -7,9 +7,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import repositoryMem.GroupRepository;
-import repositoryMem.ProfileRepository;
-import repositoryMem.TripRepository;
 import domain.ControllerNotLoadedException;
 import domain.GroupNameAlreadyExistsException;
 import domain.InvalidPermissionException;
@@ -23,6 +20,7 @@ public class GroupControllerTest {
 
 	
 	
+	@SuppressWarnings("deprecation")
 	@Test(expected=TripNotClosedException.class)
 	public void groupControllerTest() throws ServerException, GroupNameAlreadyExistsException, SessionNotActiveException, ControllerNotLoadedException, UserNameAlreadyExistsException, InvalidPermissionException, TripNotClosedException{
 		
@@ -55,12 +53,21 @@ public class GroupControllerTest {
 		assertTrue(groupController.getMaxGroupSize().equals(3));
 		groupController.changeGroupCapacity(6);
 		assertTrue(groupController.getMaxGroupSize().equals(6));
+		assertTrue(groupController.groupSize().equals(3));
+		assertTrue(groupController.getMembers().contains(profile1));
+		assertTrue(groupController.getMembers().contains(profile2));
+		assertTrue(groupController.getMembers().contains(profile3));
+		assertTrue(groupController.getAdmin().getUserName().equals("natalia"));
 		
+		/*try deleting members*/
+		groupController.deleteMember(profile3);
+		assertFalse(groupController.getMembers().contains(profile3));
 		
 	}
 	
 	
 	
+	@SuppressWarnings("deprecation")
 	@Test(expected=TripNotClosedException.class)
 	public void tripNotClosedTest() throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, GroupNameAlreadyExistsException, ControllerNotLoadedException, InvalidPermissionException, TripNotClosedException{
 		Application app= Application.getInstance();
@@ -82,7 +89,7 @@ public class GroupControllerTest {
 		groupController.sendReviewToAMember(profile2, "hola", 4);
 	}
 	
-	@Test(expected=InvalidPermissionException.class)
+	/*@Test(expected=InvalidPermissionException.class)
 	public void tripTest() throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, GroupNameAlreadyExistsException, ControllerNotLoadedException, InvalidPermissionException, TripNotClosedException{
 		Application app= Application.getInstance();
 		Session session = Session.getInstance();
@@ -108,7 +115,7 @@ public class GroupControllerTest {
 		
 		
 		
-	}
+	}*/
 	
 	/*
 	 this.validateEnvironment();
