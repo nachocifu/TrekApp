@@ -52,6 +52,9 @@ public class GroupControllerTest {
 		MyTripController trip= app.registerTrip(new Date(2011,11,11), new Date(2012,1,1), 213.11, "hola", "buenos aires", "cordoba");
 		groupController.addGroupTrip(trip);
 		groupController.sendReviewToAMember(profile2, "hola", 4);
+		assertTrue(groupController.getMaxGroupSize().equals(3));
+		groupController.changeGroupCapacity(6);
+		assertTrue(groupController.getMaxGroupSize().equals(6));
 		
 		
 	}
@@ -79,8 +82,59 @@ public class GroupControllerTest {
 		groupController.sendReviewToAMember(profile2, "hola", 4);
 	}
 	
-	@Test
-	public void deleteMemberTest(){
+	@Test(expected=InvalidPermissionException.class)
+	public void tripTest() throws ServerException, UserNameAlreadyExistsException, SessionNotActiveException, GroupNameAlreadyExistsException, ControllerNotLoadedException, InvalidPermissionException, TripNotClosedException{
+		Application app= Application.getInstance();
+		Session session = Session.getInstance();
+		
+		app.registerUser("naty2", "natalia", "navas", new Date(1994, 3, 13), true, "agua", "lkj", "lkj@gmail.com");
+		app.registerUser("username2", "nombre", "apellido", new Date(2000,12,12), true, "12345","buenos aires", "nati@email.com");
+		session.logIn("naty2", "agua");
+		
+		CurrentProfileController profile1= app.getCurrentProfileController();
+
+        CollectionAndSearchController searchRepo = app.getCollectionController();
+		ProfileController profile2=searchRepo.getProfileControllerByUsername("username2");
+		MyGroupController groupController= app.registerGroup("grupo", profile1, 3, 33, "Buenos Aires");
+		
+		MyTripController trip= app.registerTrip(new Date(2011,11,11), new Date(2012,1,1), 213.11, "hola", "buenos aires", "cordoba");
+		groupController.addGroupTrip(trip);
+		
+		session.logOut();
+		session.logIn("username2", "12345");
+		
+		CurrentProfileController profile4=app.getCurrentProfileController();
+		//groupController.addGroupTrip(tripController);
+		
+		
 		
 	}
+	
+	/*
+	 this.validateEnvironment();
+     this.validateController(tripController);
+     Profile loggedUser = Application.getInstance().getCurrentProfileController().getObject();
+     if(!this.obj.getMembers().contains(loggedUser)){
+         throw new InvalidPermissionException("Cannot add a trip because user is not a member of this group");
+     }
+	@Test
+	public void sendMemberRequestTest(){
+		Application app= Application.getInstance();
+		Session session = Session.getInstance();
+		
+		app.registerUser("naty1", "natalia", "navas", new Date(1994, 3, 13), true, "agua", "lkj", "lkj@gmail.com");
+		app.registerUser("username1", "nombre", "apellido", new Date(2000,12,12), true, "12345","buenos aires", "nati@email.com");
+		session.logIn("naty1", "agua");
+
+		
+		CurrentProfileController profile1= app.getCurrentProfileController();
+
+        CollectionAndSearchController searchRepo = app.getCollectionController();
+		ProfileController profile2=searchRepo.getProfileControllerByUsername("username1");
+		MyGroupController groupController= app.registerGroup("grupo", profile1, 3, 33, "Buenos Aires");
+		groupController.sendMemberRequest();
+		
+		
+	}*/
 }
+
