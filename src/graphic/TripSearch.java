@@ -262,7 +262,7 @@ public class TripSearch extends JFrame {
 					
 					try {
 						groupControllers = instance.getCollectionController().getGroupsWithTripsBy(dateL, dateA, tFFrom.getText(), tFTo.getText(), textArea.getText());
-					} catch (SessionNotActiveException e2) {
+					} catch (SessionNotActiveException | ControllerNotLoadedException e2) {
 						e2.printStackTrace();
 					}
 			    	groupArray = new ArrayList<GroupController>(groupControllers);
