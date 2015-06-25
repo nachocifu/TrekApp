@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-
 import javax.swing.SwingUtilities;
 
 import java.awt.event.MouseAdapter;
@@ -30,7 +29,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 
-public class Connect extends JFrame {
+@SuppressWarnings("serial")
+public class TrekApp
+extends JFrame {
 
 	private JTextField textField;
 	private JPasswordField passwordField;
@@ -44,7 +45,7 @@ public class Connect extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Connect frame = new Connect(true);
+					TrekApp frame = new TrekApp(true);
 					frame.setVisible(true);		
 				    frame.pack();
 				    frame.setSize(900, 602);
@@ -59,7 +60,7 @@ public class Connect extends JFrame {
 	 * Create the frame.
 	 * @param language
 	 */
-	public Connect(final boolean language) {
+	public TrekApp(final boolean language) {
 		
 		Locale currentLocale;
 		if(language){
@@ -137,7 +138,7 @@ public class Connect extends JFrame {
 		JButton img = new JButton();
 		img.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Connect frame = new Connect(false);
+				TrekApp frame = new TrekApp(false);
 				frame.setVisible(true);		
 			    frame.pack();
 			    frame.setSize(900, 602);
@@ -154,7 +155,7 @@ public class Connect extends JFrame {
 		JButton img2 = new JButton();
 		img2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Connect frame = new Connect(true);
+				TrekApp frame = new TrekApp(true);
 				frame.setVisible(true);		
 			    frame.pack();
 			    frame.setSize(900, 602);
