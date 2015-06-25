@@ -43,6 +43,7 @@ import java.rmi.ServerException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -414,9 +415,12 @@ public class Profile extends JFrame {
                 tFRate.setText(getReview(currentProfile.getRating()));
                 tFTripNum.setText(((Integer) currentProfile.getTrips().size()).toString());
                 tFCityBirth.setText(currentProfile.getCity());
-                Integer day = currentProfile.getBirthday().getDay();
-                Integer month = currentProfile.getBirthday().getMonth();
-                Integer year = currentProfile.getBirthday().getYear();
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(currentProfile.getBirthday());
+                Integer year = cal.get(Calendar.YEAR);
+                Integer month = cal.get(Calendar.MONTH) + 1;
+                Integer day = cal.get(Calendar.DAY_OF_MONTH);
+
                 String day1, month1;
                 if(day < 10){
                     day1 = "0" + day.toString(); //$NON-NLS-1$
@@ -522,14 +526,27 @@ public class Profile extends JFrame {
                         }else{
                             sex= false;
                         }
-                        Date date = null;
+                        Date date = null;                        
                         if(!tFAge.getText().substring(0, 2).trim().equals("") && !tFAge.getText().substring(3, 5).trim().equals("") && !tFAge.getText().substring(6, 10).trim().equals("")){ //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            int day = Integer.parseInt(tFAge.getText().substring(0, 2));
-                            int month = Integer.parseInt(tFAge.getText().substring(3, 5));
-                            int year = Integer.parseInt(tFAge.getText().substring(6, 10));
-                            String inputDate = new String(year + "-" + month + "-" + day);  //$NON-NLS-1$ //$NON-NLS-2$
+                            Integer day = Integer.parseInt(tFAge.getText().substring(0, 2));
+                            Integer month = Integer.parseInt(tFAge.getText().substring(3, 5));
+                            Integer year = Integer.parseInt(tFAge.getText().substring(8, 10));
+                            String day1;
+                            String month1;
                             try {
-                                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  //$NON-NLS-1$
+                            	if(day < 10){
+                                    day1 = "0" + day.toString(); //$NON-NLS-1$
+                                }else{
+                                    day1 = day.toString();
+                                }
+                                if(month < 10){
+                                    month1 = "0" + month.toString(); //$NON-NLS-1$
+                                }else{
+                                    month1 = month.toString();
+                                }
+
+                                String inputDate = new String(year + "-" + month1 + "-" + day1);  //$NON-NLS-1$ //$NON-NLS-2$
+                                DateFormat formatter = new SimpleDateFormat("yy-MM-dd");  //$NON-NLS-1$
                                 formatter.setLenient(false);
                                 date = formatter.parse(inputDate);
                             } catch (ParseException e) {
@@ -620,6 +637,7 @@ public class Profile extends JFrame {
             radioButton.setVisible(false);
             lblNumbertrips.setVisible(false);
             tFTripNum.setVisible(false);
+            lblChangePass.setVisible(false);
 
         }else if(choice == 1){
             tFCityBirth.setEditable(false);
