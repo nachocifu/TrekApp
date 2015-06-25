@@ -19,7 +19,7 @@ public class DEMO {
         TripRepository tripRepo = new TripRepository(null, null);
         GroupRepository groupRepo = new GroupRepository(null, null);
         ProfileRepository userRepo = new ProfileRepository(null, null);
-        CollectionAndSearchController
+        CollectionAndSearchController searchRepo = new CollectionAndSearchController(userRepo, groupRepo, tripRepo);
 
         try {
 
@@ -31,7 +31,7 @@ public class DEMO {
 
 
             CurrentProfileController naty = app.getCurrentProfileController();
-            ProfileController nacho = app.getAProfileController(profile);
+            //ProfileController nacho = app.getAProfileController(profile);
 
 
             System.out.println("se levanta user: " + naty.getUsername());
