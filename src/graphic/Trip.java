@@ -38,6 +38,7 @@ import domain.SessionNotActiveException;
 import domain.UserNameAlreadyExistsException;
 
 
+@SuppressWarnings("serial")
 public class Trip extends JFrame {
 
 	private static JPanel panel;
@@ -186,6 +187,7 @@ public class Trip extends JFrame {
 		
 		final JButton btnReady = new JButton();
 		btnReady.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				Integer flag = 0;
 				Integer day1= null;

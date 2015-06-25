@@ -29,7 +29,7 @@ import domain.UserNameAlreadyExistsException;
  * NO EJECUTAR YA QUE PISA LA BASE DE DATOS
  *
  */
-/*public class DataBaseTest {
+public class DataBaseTest {
     private String databaseUrl = "jdbc:sqlite:DataBase";
 
 
@@ -132,7 +132,7 @@ import domain.UserNameAlreadyExistsException;
         List<Group> pool = new ArrayList<Group>();
             /**Populate*/
             Profile admin = userRepo.getById(1,3);
-            Group   group = new Group("grupo1", 5, 3, "baires");
+            Group   group = new Group("grupo1", null, 5, 3, "baires");
             groupRepo.add(group);
             group = groupRepo.getById(1, 3);
             userRepo.update(admin, 3);
@@ -205,4 +205,4 @@ import domain.UserNameAlreadyExistsException;
         if(status) System.out.println("OK");
     }
 }
-*/
+

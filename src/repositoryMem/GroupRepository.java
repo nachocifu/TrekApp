@@ -16,7 +16,8 @@ import domain.Trip;
 public class GroupRepository extends AbstractRepository<Group> {
 
 
-    public GroupRepository() {
+    @SuppressWarnings("deprecation")
+	public GroupRepository() {
         add(new Group("grupo1", new Profile("naty2", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com"), 5, 3, "baires"));
         add(new Group("grupo1", new Profile("naty2", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com"), 5, 3, "baires"));
         add(new Group("grupo1", new Profile("naty2", "Ignacio", "Cifu", new Date(7, 5, 1994), true, "agua", "Baires", "naty.navas2@gmail.com"), 5, 3, "baires"));
@@ -33,20 +34,19 @@ public class GroupRepository extends AbstractRepository<Group> {
 
     public Collection<Group> getGroupsWithTripsBy(Date startDate, Date endDate, String startCity, String endCity, String description ){
         Collection<Group> results = new HashSet<Group>();
-        Trip trip;
         for (Group group : this.repository) {
             if( group.getGroupTrip() != null &&
                         (
-                        (startDate == null)?
-                                false : group.getGroupTrip().getStartDate().equals(startDate) ||
-                        (endDate == null)?
-                                false : group.getGroupTrip().getEndDate().equals(endDate) ||
-                        (startCity == null?
-                                false : (startCity.trim().isEmpty())? false : group.getGroupTrip().getOriginCity().toLowerCase().contains(startCity.toLowerCase())) ||
-                        (endCity == null?
-                                false : (endCity.trim().isEmpty())? false : group.getGroupTrip().getEndCity().toLowerCase().contains(endCity.toLowerCase())) ||
-                        (description == null)?
-                                false: ((description.trim().isEmpty())? false : group.getGroupTrip().getTripDescription().toLowerCase().contains(description.toLowerCase()))
+                        ((startDate == null)?
+                                false : group.getGroupTrip().getStartDate().equals(startDate)) ||
+                        ((endDate == null)?
+                                false : group.getGroupTrip().getEndDate().equals(endDate)) ||
+                        ((startCity == null?
+                                false : (startCity.trim().isEmpty())? false : group.getGroupTrip().getOriginCity().toLowerCase().contains(startCity.trim().toLowerCase()))) ||
+                        ((endCity == null?
+                                false : (endCity.trim().isEmpty())? false : group.getGroupTrip().getEndCity().toLowerCase().contains(endCity.trim().toLowerCase()))) ||
+                        ((description == null)?
+                                false: ((description.trim().isEmpty())? false : group.getGroupTrip().getTripDescription().toLowerCase().contains(description.trim().toLowerCase())))
                         )
                     )
                 results.add(group);

@@ -32,7 +32,7 @@ public abstract class AbstractRepository<T>{
         if(!this.repository.contains(obj)){
             this.repository.add(obj);
             return true;
-        }
+        };
         return false;
     }
 

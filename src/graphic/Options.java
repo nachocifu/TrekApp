@@ -21,6 +21,7 @@ import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+@SuppressWarnings("serial")
 public class Options extends JFrame {
 
 	private static JPanel panel;

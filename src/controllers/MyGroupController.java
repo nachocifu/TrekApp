@@ -41,8 +41,8 @@ public class MyGroupController extends GroupController {
     public void deleteMember(ProfileController profileController) throws SessionNotActiveException, ControllerNotLoadedException{
         this.validateEnvironment();
         this.validateController(profileController);
-        this.obj.deleteMember(profileController.getObject());
-
+        if( this.obj.deleteMember(profileController.getObject()) )
+            this.repository.delete(obj);
         profileController.saveChanges();
         saveChanges();
     }
