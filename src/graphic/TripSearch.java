@@ -139,6 +139,7 @@ public class TripSearch extends JFrame {
 		tFLeaving.setBounds(172, 57, 106, 28);
 		panel.add(tFLeaving);
 		tFLeaving.setColumns(10);
+		tFLeaving.setVisible(false);
 		
 		final JButton btnNewButton = new JButton();
 		btnNewButton.addActionListener(new ActionListener() {
@@ -154,6 +155,7 @@ public class TripSearch extends JFrame {
 		});
 		btnNewButton.setBounds(47, 57, 106, 28);
 		panel.add(btnNewButton);
+		btnNewButton.setVisible(false);
 		
 		tFArriving = new ObservingTextField();
 		tFArriving.setDisabledTextColor(Color.BLACK);
@@ -163,6 +165,7 @@ public class TripSearch extends JFrame {
 		tFArriving.setColumns(10);
 		tFArriving.setBounds(172, 121, 106, 28);
 		panel.add(tFArriving);
+		tFArriving.setVisible(false);
 		
 		final JButton button = new JButton();
 		button.addActionListener(new ActionListener() {
@@ -178,34 +181,39 @@ public class TripSearch extends JFrame {
 		});
 		button.setBounds(47, 121, 106, 28);
 		panel.add(button);
+		button.setVisible(false);
 
 		lblCityOrigin.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		lblCityOrigin.setForeground(Color.BLACK);
 		panel.add(lblCityOrigin);
+		lblCityOrigin.setVisible(false);
 		
 		tFFrom = new JTextField();
 		tFFrom.setBounds(530, 56, 149, 29);
 		panel.add(tFFrom);
 		tFFrom.setColumns(10);
+		tFFrom.setVisible(false);
 		
 		lblCityend.setForeground(Color.BLACK);
 		lblCityend.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		panel.add(lblCityend);
+		lblCityend.setVisible(false);
 		
 		tFTo = new JTextField();
 		tFTo.setColumns(10);
 		tFTo.setBounds(530, 120, 149, 29);
 		panel.add(tFTo);
+		tFTo.setVisible(false);
 		
 		final JLabel lblSearchDescription = new JLabel();
 		lblSearchDescription.setFont(new Font("Tahoma", Font.PLAIN, 17)); //$NON-NLS-1$
 		lblSearchDescription.setForeground(Color.BLACK);
-		lblSearchDescription.setBounds(83, 169, 175, 28);
+		lblSearchDescription.setBounds(85, 105, 175, 28);
 		panel.add(lblSearchDescription);
 		
 		JScrollPane scrollPane = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 	            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(252, 160, 339, 69);
+		scrollPane.setBounds(254, 96, 339, 69);
 		panel.add(scrollPane);
 		
 		final JTextArea textArea = new JTextArea();
@@ -449,6 +457,8 @@ public class TripSearch extends JFrame {
 		lblSearchDescription.setText(messages.getString("TripSearch.55")); //$NON-NLS-1$
 		btnSearch.setText(messages.getString("TripSearch.56")); //$NON-NLS-1$
 		btnBack.setText(messages.getString("TripSearch.57")); //$NON-NLS-1$
+		
+		
 	}
 	
 	/**
