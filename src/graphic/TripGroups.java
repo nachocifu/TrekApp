@@ -87,7 +87,7 @@ public class TripGroups extends JFrame {
 		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale); 
 		
 		panel = new ImagePanel(new ImageIcon("TripGroups.jpg").getImage()); //$NON-NLS-1$
-		setTitle("TreckApp"); //$NON-NLS-1$
+		setTitle("TrekApp"); //$NON-NLS-1$
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(0, 0, 901, 602);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));

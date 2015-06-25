@@ -70,7 +70,7 @@ public class UserSearch extends JFrame {
 		}
 		final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", currentLocale);  //$NON-NLS-1$
 		
-		setTitle("TreckApp"); //$NON-NLS-1$
+		setTitle("TrekApp"); //$NON-NLS-1$
 		setBounds(0, 0, 900, 601);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		panel = new ImagePanel(new ImageIcon("UserSearch.jpg").getImage()); //$NON-NLS-1$
