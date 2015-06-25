@@ -17,7 +17,6 @@ public class CurrentProfileController extends ProfileController {
         super(profileRepo);
     }
 
-
     /**
      * Sets the profile of the current user
      * @throws SessionNotActiveException
